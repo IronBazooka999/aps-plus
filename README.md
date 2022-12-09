@@ -1,6 +1,5 @@
-# Arras.io Private Server Template (Open Beta)
-
-Originally made by Oblivion#3940 (aka z46-dev), improved by Zenphia#5994.
+# APS+ 
+The Arras.io Private Server Template was originally made by Oblivion#3940 (aka z46-dev), then improved by Zenphia#5994, and now refined and optimized by damocles#0001 (https://github.com/SpanksMcYeet/)
 
 ***I am not taking requests for code edits. If you want to provide feedback, please do so in the suggestions channel in the discord server. The server isn't public yet but it soon will be.***
 
