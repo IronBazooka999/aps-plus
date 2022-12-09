@@ -1,3 +1,10 @@
+/***
+Can't be bothered to touch this shit yet.
+
+- damocles
+***/
+
+
 // Hierarchical Spatial Hash Grid: HSHG
 // https://gist.github.com/kirbysayshi/1760774
 (function (root, undefined) {
