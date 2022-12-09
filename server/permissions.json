@@ -1,0 +1,34 @@
+[
+  {
+    "key": "ExampleBT1Token",
+    "discordID": "0",
+    "nameColor": "#ffffff",
+    "testbedTank": "betaTesterMenu",
+    "name": "unnamed#0000",
+    "note": "note here"
+  },
+  {
+    "key": "ExampleBT2Token",
+    "discordID": "0",
+    "nameColor": "#ffffff",
+    "testbedTank": "gameModMenu",
+    "name": "unnamed#0000",
+    "note": "note here"
+  },
+  {
+    "key": "ExampleBT3Token",
+    "discordID": "0",
+    "nameColor": "#ffffff",
+    "testbedTank": "gameAdminMenu",
+    "name": "unnamed#0000",
+    "note": "note here"
+  },
+  {
+    "key": "ExampleBT4Token",
+    "discordID": "0",
+    "nameColor": "#ffffff",
+    "testbedTank": "developer",
+    "name": "unnamed#0000",
+    "note": "note here"
+  }
+]
