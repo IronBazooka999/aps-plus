@@ -11518,7 +11518,7 @@ exports.conqueror = {
   PARENT: [exports.genericTank],
   DANGER: 7,
   LABEL: "Conqueror",
-  STAT_NAMES: statnames.trap,
+  STAT_NAMES: statnames.generic,
   BODY: {
     SPEED: 0.8 * base.SPEED,
   },
@@ -16500,6 +16500,95 @@ exports.crasherGenerator = {
         SHOOT_SETTINGS: combineStats([g.basic, g.micro]),
         TYPE: exports.crasher,
         LABEL: "Spawned",
+      },
+    },
+  ],
+};
+
+// JOKE TANKS
+exports.wifeBeater = {
+  PARENT: [exports.genericTank],
+  LABEL: "Wife Beater",
+  DANGER: 8,
+  COLOR: 33,
+  STAT_NAMES: statnames.drone,
+  BODY: {
+    ACCELERATION: 0.75 * base.ACCEL,
+    SPEED: 0.8 * base.SPEED,
+    FOV: 1.1 * base.FOV,
+  },
+  MAX_CHILDREN: 16,
+  GUNS: [
+    {
+      POSITION: [6, 12, 1.2, 8, 0, 90, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.over]),
+        TYPE: exports.drone,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        WAIT_TO_CYCLE: true,
+      },
+    },
+    {
+      POSITION: [6, 12, 1.2, 8, 0, 180, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.over]),
+        TYPE: exports.drone,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        WAIT_TO_CYCLE: true,
+      },
+    },
+    {
+      POSITION: [6, 12, 1.2, 8, 0, 270, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.over]),
+        TYPE: exports.drone,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        WAIT_TO_CYCLE: true,
+      },
+    },
+    {
+      POSITION: [6, 12, 1.2, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.over]),
+        TYPE: exports.drone,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        WAIT_TO_CYCLE: true,
+      },
+    },
+  ],
+};
+exports.CONQ = {
+  PARENT: [exports.genericTank],
+  LABEL: "CONQ!!!",
+  DANGER: 8,
+  COLOR: 25,
+  BODY: {
+    SPEED: 0.8 * base.SPEED,
+  },
+  GUNS: [
+    {
+      POSITION: [20.5, 19.5, 1, 0, 0, 180, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [18, 18, 1, 0, 0, 0, 0],
+    },
+    {
+      POSITION: [2, 18, 1.2, 18, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.construct]),
+        TYPE: exports.setTrap,
       },
     },
   ],
