@@ -1,9 +1,9 @@
 # APS+ 
-The Arras.io Private Server Template was originally made by Oblivion#3940 (aka z46-dev), then improved by Zenphia#5994, and now refined and optimized by damocles#0001 (https://github.com/SpanksMcYeet/)
+The Arras.io Private Server Template was originally made by Oblivion#3940 (aka z46-dev), then continued and improved by Zenphia#5994 and damocles#0001 (https://github.com/SpanksMcYeet/)
 
 ## Setting up your server
 
-Once you've remixed the template, follow these steps:
+Once you've created a glitch project using the template, follow these steps:
 
 In the server's `config.json`:
 1. Find the `host` property.
