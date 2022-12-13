@@ -8,6 +8,8 @@ require('google-closure-library');
 goog.require('goog.structs.PriorityQueue');
 goog.require('goog.structs.QuadTree');
 
+const bossRush = new BossRush()
+
 const gamemodeLoop = (function() {
     if (c.MOTHERSHIP_LOOP) mothershipLoop.spawn();
     if (c.SPECIAL_BOSS_SPAWNS) bossRush.init();
