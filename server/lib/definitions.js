@@ -11552,27 +11552,29 @@ exports.bulwark = {
       },
     },
     {
-      POSITION: [14, 8, 1, 0, 5.5, 185, 0],
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [13, 8, 1, 0, 5.5, 185, 0],
     },
     {
-      POSITION: [3.25, 8, 1.7, 14, 5.5, 185, 0],
+       POSITION: [3, 9, 1.5, 13, 5.5, 185, 0],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.trap]),
-        TYPE: exports.trap,
-        STAT_CALCULATOR: gunCalcNames.trap,
-      },
+        SHOOT_SETTINGS: combineStats([g.trap, g.twin]),
+         TYPE: exports.trap,
+         STAT_CALCULATOR: gunCalcNames.trap
+      }
     },
     {
-      POSITION: [14, 8, 1, 0, -5.5, 175, 0],
-    },
-    {
-      POSITION: [3.25, 8, 1.7, 14, -5.5, 175, 0],
+      /* LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+       POSITION: [13, 8, 1, 0, -5.5, 175, 0],
+     },
+     {
+       POSITION: [3, 9, 1.5, 13, -5.5, 175, 0.5],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.trap]),
+         SHOOT_SETTINGS: combineStats([g.trap, g.twin]),
         TYPE: exports.trap,
-        STAT_CALCULATOR: gunCalcNames.trap,
-      },
-    },
+         STAT_CALCULATOR: gunCalcNames.trap
+       }
+    }
   ],
 };
 exports.peashooter = makeSwarming(exports.trapGuard, "Peashooter");
