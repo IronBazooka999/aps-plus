@@ -9246,7 +9246,7 @@ exports.dreadnought = {
     {
       /*  SIZE     X       Y     ANGLE    ARC */
       POSITION: [20, -4, 0, 0, 0, 0],
-      TYPE: [exports.genericTank, { COLOR: 16 }],
+      TYPE: exports.genericEntity,
     },
   ],
   GUNS: [
@@ -9267,66 +9267,13 @@ exports.dreadnought = {
         STAT_CALCULATOR: gunCalcNames.swarm,
       },
     },
-    {
-      POSITION: [4, 2, 1, 0, 0, 180, 0],
+    { 
+      POSITION: [1, 3, 1, 3, 0, 180, 0],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.machgun, g.thruster, [0.1, 3, 1, 1, 1, 1, 1, 1, 1, 0.075, 1, 2, 1]]),
         TYPE: exports.bullet,
       },
-    },
-    {
-      POSITION: [4, 2, 1, 0, 2.5, 180, 0.2],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [4, 2, 1, 0, -2.5, 180, 0.4],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [4, 2, 1, 0, 5, 180, 0.6],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [4, 2, 1, 0, -5, 180, 0.8],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
+    }, 
   ],
 };
 
@@ -15839,7 +15786,7 @@ exports.dreadnoughtDrone = {
     {
       /*  SIZE     X       Y     ANGLE    ARC */
       POSITION: [20, -4, 0, 0, 0, 0],
-      TYPE: [exports.genericTank, { COLOR: 16 }],
+      TYPE: exports.genericEntity,
     },
   ],
   GUNS: [
@@ -15860,66 +15807,13 @@ exports.dreadnoughtDrone = {
         STAT_CALCULATOR: gunCalcNames.swarm,
       },
     },
-    {
-      POSITION: [4, 2, 1, 0, 0, 180, 0],
+    { 
+      POSITION: [1, 3, 1, 3, 0, 180, 0],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.machgun, g.thruster, [0.1, 3, 1, 1, 1, 1, 1, 1, 1, 0.075, 1, 2, 1]]),
         TYPE: exports.bullet,
       },
-    },
-    {
-      POSITION: [4, 2, 1, 0, 2.5, 180, 0.2],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [4, 2, 1, 0, -2.5, 180, 0.4],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [4, 2, 1, 0, 5, 180, 0.6],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [4, 2, 1, 0, -5, 180, 0.8],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.thruster,
-          g.weak,
-          g.lessreload,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
+    }, 
   ],
 };
 exports.ironclad = {
