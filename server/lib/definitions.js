@@ -8581,10 +8581,6 @@ exports.spawner = {
   ],
 };
 exports.turretedDrone = makeAuto(exports.drone);
-exports.driveSymbol = {
-  PARENT: [exports.genericEntity],
-  SHAPE: 4,
-};
 exports.directordrive = {
   PARENT: [exports.genericTank],
   LABEL: "Directordrive",
@@ -8597,7 +8593,7 @@ exports.directordrive = {
   TURRETS: [
     {
       POSITION: [9, 0, 0, 0, 360, 1],
-      TYPE: exports.driveSymbol,
+      TYPE: makeDeco(4),
     },
   ],
   GUNS: [
@@ -10053,7 +10049,7 @@ exports.overdrive = {
   TURRETS: [
     {
       POSITION: [9, 0, 0, 0, 360, 1],
-      TYPE: exports.driveSymbol,
+      TYPE: makeDeco(4),
     },
   ],
   GUNS: [
@@ -10084,10 +10080,6 @@ exports.overdrive = {
   ],
 };
 exports.turretedSwarm = makeAuto(exports.swarm);
-exports.driveSymbolTriangle = {
-  PARENT: [exports.driveSymbol],
-  SHAPE: 3,
-};
 exports.cruiserdrive = {
   PARENT: [exports.genericTank],
   LABEL: "Cruiserdrive",
@@ -10101,7 +10093,7 @@ exports.cruiserdrive = {
   TURRETS: [
     {
       POSITION: [9, 0, 0, 0, 360, 1],
-      TYPE: exports.driveSymbolTriangle,
+      TYPE: makeDeco(3),
     },
   ],
   GUNS: [
@@ -10139,7 +10131,7 @@ exports.underdrive = {
   TURRETS: [
     {
       POSITION: [9, 0, 0, 0, 360, 1],
-      TYPE: exports.driveSymbol,
+      TYPE: makeDeco(4),
     },
   ],
   GUNS: [
@@ -10180,7 +10172,7 @@ exports.spawnerdrive = {
     {
       /** SIZE     X       Y     ANGLE    ARC */
       POSITION: [9, 0, 0, 0, 360, 1],
-      TYPE: exports.driveSymbol,
+      TYPE: makeDeco(4),
     },
   ],
   GUNS: [
@@ -10586,64 +10578,6 @@ exports.beekeeper = {
     },
   ],
 };
-exports.mender = {
-  PARENT: [exports.genericTank],
-  LABEL: "Mender",
-  DANGER: 7,
-  TOOLTIP:
-    "Right click to heal yourself (use sparingly, has a long cooldown once used!)",
-  TURRETS: [
-    {
-      /** SIZE     X       Y     ANGLE    ARC */
-      POSITION: [6, 0, 0, 0, 360, 1],
-      TYPE: exports.mendersymbol,
-    },
-  ],
-  GUNS: [
-    {
-      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-      POSITION: [20, 10, 1, 0, 0, 180, 50],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.fake]),
-        TYPE: exports.healerBullet,
-        ALT_FIRE: true,
-      },
-    },
-    {
-      POSITION: [5, 20, 1, -21, 0, 0, 50],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.healer]),
-        TYPE: exports.healerBullet,
-        ALT_FIRE: true,
-      },
-    },
-    {
-      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-      POSITION: [17, 3, 1, 0, -6, -7, 0.25],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
-        TYPE: exports.bullet,
-        LABEL: "Secondary",
-      },
-    },
-    {
-      POSITION: [17, 3, 1, 0, 6, 7, 0.75],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
-        TYPE: exports.bullet,
-        LABEL: "Secondary",
-      },
-    },
-    {
-      POSITION: [19, 12, 1, 0, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
-        TYPE: exports.bullet,
-        LABEL: "Heavy",
-      },
-    },
-  ],
-};
 exports.fieldGun = {
   PARENT: [exports.genericTank],
   LABEL: "Field Gun",
@@ -10683,6 +10617,59 @@ exports.fieldGun = {
     },
   ],
 };
+exports.mender = {
+  PARENT: [exports.genericTank],
+  LABEL: "Mender",
+  DANGER: 7,
+  TOOLTIP: "Right click to heal yourself (use sparingly, has a long cooldown once used!)",
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [17, 3, 1, 0, -6, -7, 0.25],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Secondary",
+      },
+    },
+    {
+      POSITION: [17, 3, 1, 0, 6, 7, 0.75],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Secondary",
+      },
+    },
+    {
+      POSITION: [19, 12, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Heavy",
+      },
+    },
+    { POSITION: [17, 10, 1, 0, 0, 180, 0] },
+    {
+      POSITION: [5, 18, 1, -19, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.pound,
+          g.destroy,
+          [2, 0, 1, 1, 1, -1, 1, 1, 1, 0.1, 1, 1, 1],
+        ]),
+        TYPE: [exports.bullet, { HEAL_MYSELF: true }],
+        ALT_FIRE: true,
+      },
+    },
+  ],
+  TURRETS: [
+    {
+      POSITION: [7, 0, 0, 0, 0, 1],
+      TYPE: makeDeco(3),
+    },
+  ],
+};
 
 // BEEKEEPER BRANCH
 exports.turretedBee = makeAuto(exports.bee);
@@ -10693,7 +10680,7 @@ exports.bumbler = {
   TURRETS: [
     {
       POSITION: [9, 0, 0, 0, 360, 1],
-      TYPE: exports.driveSymbolTriangle,
+      TYPE: makeDeco(3),
     },
   ],
   GUNS: [
