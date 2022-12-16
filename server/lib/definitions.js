@@ -823,6 +823,17 @@ function makeCeption(type, name = -1, options = {}) {
   output.DANGER = type.DANGER + 1;
   return output;
 }
+function makeDeco(shapes,color = 16) {
+  if(exports["deco"+shapes+"_"+color]==null){
+    exports["deco"+shapes+"_"+color] = {
+      PARENT: [exports.genericEntity],
+      SHAPE: shapes,
+      COLOR: color,
+      INDEPENDENT: true
+    }
+  }
+  return exports["deco"+shapes+"_"+color]
+};
 
 // ENTITY BASES
 exports.genericEntity = {
