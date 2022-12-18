@@ -39,7 +39,7 @@ function firmcollide(my, n, buffer = 0) {
         n.accel.x -= repel * (item1.x - item2.x) / dist;
         n.accel.y -= repel * (item1.y - item2.y) / dist;
     }
-    while (dist <= my.realSize + n.realSize && !(strike1 && strike2)) {
+    let cycles = 0; while (dist <= my.realSize + n.realSize && !(strike1 && strike2) && cycles < 150) { cycles += 1;
         strike1 = false;
         strike2 = false;
         if (my.velocity.length <= s1) {
