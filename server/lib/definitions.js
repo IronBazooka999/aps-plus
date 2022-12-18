@@ -16558,6 +16558,7 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
 
     exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper/*, exports.fender*/];
+        exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
         exports.hexaTank.UPGRADES_TIER_3 = [exports.octoTank, exports.cyclone, exports.hexaTrapper/*, exports.deathStar, exports.combo*/];
         exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle/*, exports.taser*/];
         exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee/*, exports.sniper3, exports.crowbar, exports.autoAuto3*/];
