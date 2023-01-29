@@ -11,4 +11,4 @@ In the server's `config.json`:
 
 Then, give your new project a name. (Settings > Edit project details)
 
-Your private server will be at <https://servername.glitch.me> (replace `servername` with its new name, it should be near the top-left corner)
+Your private server will be at <https://servername.glitch.me> (replace `servername` with its new name, it should be in the top-left corner above "Settings")
