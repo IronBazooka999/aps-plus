@@ -5153,7 +5153,7 @@ exports.stalker = {
   TOOLTIP: "Stay still to turn invisible.",
   GUNS: [
     {
-      POSITION: [27, 8.5, -2, 0, 0, 0, 0],
+      POSITION: [27, 8, -1.8, 0, 0, 0, 0],
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass]),
         TYPE: exports.bullet,
@@ -16072,9 +16072,6 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.machineGun.UPGRADES_TIER_3 = [exports.sprayer];
         exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade];
         exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner];
-        exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
-        exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
-        exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
 
     exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
         exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
@@ -16088,8 +16085,6 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander];
         exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor];
         exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner];
-        exports.directordrive.UPGRADES_TIER_3 = [exports.overdrive, exports.cruiserdrive, exports.underdrive, exports.spawnerdrive];
-        exports.honcho.UPGRADES_TIER_3 = [exports.bigCheese];
 
     exports.pounder.UPGRADES_TIER_2 = [exports.destroyer, exports.builder, exports.artillery, exports.launcher];
         exports.pounder.UPGRADES_TIER_3 = [exports.shotgun, exports.eagle];
@@ -16102,7 +16097,6 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror];
         exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
         exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
-        exports.autoTrapper.UPGRADES_TIER_3 = [exports.autoBuilder, exports.autoTrapGuard];
 
 // EXPANDED TANK UPGRADE PATHS
 /*exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
