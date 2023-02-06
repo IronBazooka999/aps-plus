@@ -9411,7 +9411,7 @@ exports.maleficitor = {
   TOOLTIP: "Press R and wait to turn your drones invisible.",
   STAT_NAMES: statnames.necro,
   BODY: {
-    ACCELERATION: base.ACCELERATION * 0.75,
+    ACCELERATION: base.ACCEL * 0.75,
     SPEED: base.SPEED * 0.85,
   },
   SHAPE: 4,
