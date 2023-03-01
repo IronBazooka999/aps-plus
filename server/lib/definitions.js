@@ -152,6 +152,7 @@ const g = {
   minion: [1, 1, 2, 1, 0.4, 0.4, 1.2, 1, 1, 0.75, 1, 2, 1],
   babyfactory: [1.5, 1, 1, 1, 1, 1, 1, 1, 1.35, 1, 1, 1, 1],
   factory: [72, 1, 0.1, 0.7, 2, 0.2, 1, 3, 1, 1, 1, 0.1, 1],
+  productionist: [75,    0.25,  0.05,   0.7,    1,      0.75,   1,      4,      1,      1.5,    1,      5,      1],
   mehdrone: [1, 1, 1, 1.35, 1.75, 1, 1, 1.125, 1, 1, 1, 1, 1],
   bigdrone: [1, 1, 1, 1.8, 2.5, 1, 1, 1.25, 1, 1, 1, 1, 1],
   mothership: [1.25, 1, 1, 1, 1, 1, 1.1, 0.775, 0.8, 15, 1, 1, 1.15],
@@ -1887,14 +1888,6 @@ exports.sunchip = {
   },
   DRAW_HEALTH: false,
 };
-exports.eggchip = {
-  PARENT: [exports.sunchip],
-  SHAPE: 0,
-};
-exports.pentachip = {
-  PARENT: [exports.sunchip],
-  SHAPE: 5,
-};
 exports.autosunchip = {
   PARENT: [exports.sunchip],
   AI: {
@@ -1902,6 +1895,22 @@ exports.autosunchip = {
     FARMER: true,
   },
   INDEPENDENT: true,
+};
+exports.eggchip = {
+  PARENT: [exports.sunchip],
+  SHAPE: 0,
+};
+exports.autoeggchip = {
+  PARENT: [exports.eggchip],
+  AI: {
+    BLIND: true,
+    FARMER: true,
+  },
+  INDEPENDENT: true,
+};
+exports.pentachip = {
+  PARENT: [exports.sunchip],
+  SHAPE: 5,
 };
 exports.summonerDrone = {
   PARENT: [exports.sunchip],
@@ -1983,27 +1992,36 @@ exports.megaMinion = {
   ],
 };
 exports.tinyMinion = {
-  PARENT: [exports.swarm],
-  LABEL: "Tiny Minion",
-  SHAPE: 0,
-  CONTROLLERS: [
-    "nearestDifferentMaster",
-    "mapAltToFire",
-    "minion",
-    "canRepel",
-    "hangOutNearMaster",
-  ],
-  GUNS: [
-    {
-      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-      POSITION: [17, 9, 1, 0, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.minion]),
-        WAIT_TO_CYCLE: true,
-        TYPE: exports.bullet,
-      },
+    PARENT: [exports.minion],
+    LABEL: "Tiny Minion",
+    ACCEPTS_SCORE: false,
+    SHAPE: 0,
+    MOTION_TYPE: 'swarm',
+    CRAVES_ATTENTION: true,
+    BODY: {
+        ACCELERATION: 3,
+        PENETRATION: 1.5,
+        HEALTH: 0.35 * 0.5,
+        DAMAGE: 2.25,
+        RESIST: 1.6,
+        RANGE: 300,
+        DENSITY: 12,
+        PUSHABILITY: 0.5,
+        FOV: 1.5,
     },
-  ],
+    AI: {
+        BLIND: true,
+    },
+    GUNS: [ { /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+        POSITION: [  17,     9,      1,      0,      0,      0,      0,   ], 
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.minion, g.lowpower]),
+            WAIT_TO_CYCLE: true,
+            TYPE: exports.bullet,
+        }, }, 
+    ],
+    DIE_AT_RANGE: true,
+    BUFF_VS_FOOD: true,
 };
 
 // TRAPS
@@ -3657,6 +3675,19 @@ exports.sentries = {
 exports.basic = {
   PARENT: [exports.genericTank],
   LABEL: "Basic",
+  BODY: {
+    ACCELERATION: base.ACCEL * 1,
+    SPEED: base.SPEED * 1,
+    HEALTH: base.HEALTH * 1,
+    DAMAGE: base.DAMAGE * 1,
+    PENETRATION: base.PENETRATION * 1,
+    SHIELD: base.SHIELD * 1,
+    REGEN: base.REGEN * 1,
+    FOV: base.FOV * 1,
+    DENSITY: base.DENSITY * 1,
+    PUSHABILITY: 1,
+    HETERO: 3,
+  },
   GUNS: [
     {
       POSITION: [18, 8, 1, 0, 0, 0, 0],
@@ -4063,7 +4094,6 @@ exports.doubleDual = {
   LABEL: "Double Dual",
   DANGER: 7,
   BODY: {
-    ACCEL: 0.8 * base.ACCEL,
     FOV: 1.1 * base.FOV,
   },
   GUNS: [
@@ -4133,7 +4163,6 @@ exports.doubleMusket = {
   PARENT: [exports.genericTank],
   LABEL: "Double Musket",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   GUNS: [
@@ -4912,7 +4941,6 @@ exports.sniper = {
   PARENT: [exports.genericTank],
   LABEL: "Sniper",
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     FOV: 1.2 * base.FOV,
   },
   GUNS: [
@@ -4930,7 +4958,6 @@ exports.assassin = {
   DANGER: 6,
   LABEL: "Assassin",
   BODY: {
-    ACCELERATION: 0.6 * base.ACCEL,
     SPEED: 0.85 * base.SPEED,
     FOV: 1.4 * base.FOV,
   },
@@ -4952,11 +4979,10 @@ exports.hunter = {
   LABEL: "Hunter",
   DANGER: 6,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     SPEED: base.SPEED * 0.9,
     FOV: base.FOV * 1.25,
   },
-  CONTROLLERS: ["canZoom"],
+  CONTROLLERS: ["zoom"],
   TOOLTIP: "Hold right click to zoom.",
   GUNS: [
     {
@@ -4980,7 +5006,6 @@ exports.rifle = {
   PARENT: [exports.genericTank],
   LABEL: "Rifle",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   GUNS: [
@@ -5001,7 +5026,6 @@ exports.retroRifle = {
   PARENT: [exports.genericTank],
   LABEL: "Retro Rifle",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   GUNS: [
@@ -5025,7 +5049,6 @@ exports.ranger = {
   LABEL: "Ranger",
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.5 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.5 * base.FOV,
   },
@@ -5047,7 +5070,6 @@ exports.falcon = {
   LABEL: "Falcon",
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.9 * base.ACCEL,
     FOV: 1.2 * base.FOV,
   },
   TOOLTIP: "Right click to fire your main barrel.",
@@ -5118,7 +5140,6 @@ exports.stalker = {
   DANGER: 7,
   LABEL: "Stalker",
   BODY: {
-    ACCELERATION: 0.55 * base.ACCEL,
     SPEED: 0.85 * base.SPEED,
     FOV: 1.35 * base.FOV,
   },
@@ -5139,7 +5160,6 @@ exports.railgun = {
   PARENT: [exports.genericTank],
   LABEL: "Railgun",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     SPEED: base.SPEED * 0.85,
     FOV: base.FOV * 1.225,
   },
@@ -5169,11 +5189,10 @@ exports.predator = {
   LABEL: "Predator",
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
-    SPEED: 0.85 * base.SPEED,
-    FOV: 1.3 * base.FOV,
+    SPEED: base.SPEED * 0.9,
+    FOV: base.FOV * 1.25,
   },
-  CONTROLLERS: ["canZoom"],
+  CONTROLLERS: ["zoom"],
   TOOLTIP: "Hold right click to zoom.",
   GUNS: [
     {
@@ -5212,16 +5231,54 @@ exports.predator = {
     },
   ],
 };
+exports.xHunter = {
+  PARENT: [exports.genericTank],
+  LABEL: "X-Hunter",
+  DANGER: 7,
+  BODY: {
+    SPEED: base.SPEED * 0.9,
+    FOV: base.FOV * 1.25,
+  },
+  CONTROLLERS: ["longZoom"],
+  TOOLTIP: "Hold right click to zoom.",
+  GUNS: [
+    {
+      POSITION: [24, 8, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.hunter,
+          g.hunter2,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [21, 12, 1, 0, 0, 0, 0.25],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.hunter,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [5, 11.5, -1.25, 7, 0, 0, 0],
+    },
+  ],
+};
 exports.poacher = makeHybrid(exports.hunter, "Poacher");
 exports.dual = {
   PARENT: [exports.genericTank],
   LABEL: "Dual",
   DANGER: 7,
   BODY: {
-    ACCEL: 0.8 * base.ACCEL,
     FOV: 1.1 * base.FOV,
   },
-  CONTROLLERS: ["canZoom"],
+  CONTROLLERS: ["zoom"],
   TOOLTIP: "Hold right click to zoom.",
   GUNS: [
     {
@@ -5263,7 +5320,6 @@ exports.musket = {
   PARENT: [exports.genericTank],
   LABEL: "Musket",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   GUNS: [
@@ -5291,7 +5347,6 @@ exports.crossbow = {
   PARENT: [exports.genericTank],
   LABEL: "Crossbow",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   GUNS: [
@@ -5399,7 +5454,6 @@ exports.ransacker = {
   PARENT: [exports.genericTank],
   LABEL: "Ransacker",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   DANGER: 7,
@@ -5524,7 +5578,6 @@ exports.sniperRifle = {
   PARENT: [exports.genericTank],
   LABEL: "Sniper Rifle",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: 1.4 * base.FOV,
   },
   GUNS: [
@@ -5545,7 +5598,6 @@ exports.rifleGuard = {
   PARENT: [exports.genericTank],
   LABEL: "Rifle Guard",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   DANGER: 7,
@@ -5578,7 +5630,6 @@ exports.spreadRifle = {
   PARENT: [exports.genericTank],
   LABEL: "Spread Rifle",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.225,
   },
   GUNS: [
@@ -5795,6 +5846,32 @@ exports.weirdGunner = {
     },
   ],
 };
+exports.sprayer = {
+  PARENT: [exports.genericTank],
+  LABEL: "Sprayer",
+  GUNS: [
+    {
+      POSITION: [23, 7, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.lowpower,
+          g.mach,
+          g.morerecoil,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
 exports.blaster = {
   PARENT: [exports.genericTank],
   LABEL: "Blaster",
@@ -5815,7 +5892,6 @@ exports.gatlingGun = {
   LABEL: "Gatling Gun",
   DANGER: 6,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.2,
   },
   GUNS: [
@@ -5845,32 +5921,6 @@ exports.machineFlank = {
       POSITION: [12, 10, 1.4, 8, 0, 180, 0],
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
-        TYPE: exports.bullet,
-      },
-    },
-  ],
-};
-exports.sprayer = {
-  PARENT: [exports.genericTank],
-  LABEL: "Sprayer",
-  GUNS: [
-    {
-      POSITION: [23, 7, 1, 0, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.gunner,
-          g.lowpower,
-          g.mach,
-          g.morerecoil,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [12, 10, 1.4, 8, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
         TYPE: exports.bullet,
       },
     },
@@ -5970,7 +6020,6 @@ exports.subverter = {
   DANGER: 7,
   BODY: {
     FOV: base.FOV * 1.2,
-    ACCELERATION: base.ACCEL * 0.75,
   },
   GUNS: [
     {
@@ -6003,9 +6052,6 @@ exports.taser = {
   PARENT: [exports.genericTank],
   LABEL: "Taser",
   DANGER: 7,
-  BODY: {
-    ACCELERATION: base.ACCEL * 0.8,
-  },
   SKILL_CAP: [
     dfltskl,
     dfltskl,
@@ -6435,7 +6481,6 @@ exports.worstTank = {
     HEALTH: base.HEALTH * 0.4,
     SHIELD: base.SHIELD * 0.4,
     DENSITY: base.DENSITY * 0.3,
-    ACCELERATION: 0.6 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
   },
   GUNS: [
@@ -6785,6 +6830,150 @@ exports.capgunner = makeCap(exports.weirdGunner);
 // RIMFIRE BRANCH
 exports.harbinger = makeOver(exports.rimfire, "Harbinger");
 
+// SPRAYER BRANCH
+exports.redistributor = {
+  PARENT: [exports.genericTank],
+  LABEL: "Redistributor",
+  GUNS: [
+    {
+      POSITION: [26, 7, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.lowpower,
+          g.mach,
+          g.morerecoil,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [23, 10, 1, 0, 0, 0, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.lowpower,
+          g.mach,
+          g.morerecoil,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
+exports.phoenix = {
+  PARENT: [exports.genericTank],
+  LABEL: "Phoenix",
+  DANGER: 7,
+  TOOLTIP: "Right click to fire your main barrel.",
+  GUNS: [
+    {
+      POSITION: [23, 7, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.lowpower,
+          g.mach,
+          g.morerecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Sprayer",
+        ALT_FIRE: !0,
+      },
+    },
+    {
+      POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
+        TYPE: exports.bullet,
+        LABEL: "Sprayer",
+        ALT_FIRE: !0,
+      },
+    },
+    {
+      POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.flank,
+          g.tri,
+          g.thruster,
+          g.halfrecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+    {
+      POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.flank,
+          g.tri,
+          g.thruster,
+          g.halfrecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+    {
+      POSITION: [18, 8, 1, 0, 0, 180, 0.6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.flank,
+          g.tri,
+          g.thruster,
+          g.halfrecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+  ],
+};
+// atomizer coming soon™
+exports.focal = {
+  PARENT: [exports.genericTank],
+  LABEL: "Focal",
+  GUNS: [
+    {
+      POSITION: [25, 7, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.lowpower,
+          g.mach,
+          g.morerecoil,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [14, 10, 1.3, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.chain]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
+exports.shower = makeHybrid(exports.sprayer, "Shower");
+exports.autoSprayer = makeAuto(exports.sprayer);
+
 // BLASTER BRANCH
 exports.triBlaster = {
   PARENT: [exports.genericTank],
@@ -6874,7 +7063,6 @@ exports.retroSprayer = {
   LABEL: "Retro Sprayer",
   DANGER: 7,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.2,
   },
   GUNS: [
@@ -6901,7 +7089,6 @@ exports.accurator = {
   LABEL: "Accurator",
   DANGER: 7,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.5,
     SPEED: base.SPEED * 0.8,
     FOV: base.FOV * 1.5,
   },
@@ -7430,9 +7617,6 @@ exports.deathStar = {
   PARENT: [exports.genericTank],
   LABEL: "Death Star",
   DANGER: 7,
-  BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
-  },
   GUNS: [
     {
       /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
@@ -7490,9 +7674,6 @@ exports.demise = {
   PARENT: [exports.genericTank],
   LABEL: "Demise",
   DANGER: 8,
-  BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
-  },
   GUNS: [
     {
       /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
@@ -7832,7 +8013,6 @@ exports.banshee = {
   LABEL: "Banshee",
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.5 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -7895,7 +8075,6 @@ exports.sniper3 = {
   LABEL: "Sniper-3",
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.6 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.25 * base.FOV,
   },
@@ -7920,7 +8099,6 @@ exports.crowbar = {
   DANGER: 7,
   LABEL: "Crowbar",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.6,
     SPEED: base.SPEED * 0.85,
     FOV: base.FOV * 1.4,
   },
@@ -8135,7 +8313,6 @@ exports.sniper5 = {
   LABEL: "Sniper-5",
   DANGER: 8,
   BODY: {
-    ACCELERATION: 0.6 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.25 * base.FOV,
   },
@@ -8170,7 +8347,6 @@ exports.spectre = {
   LABEL: "Spectre",
   DANGER: 8,
   BODY: {
-    ACCELERATION: 0.5 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -8267,7 +8443,6 @@ exports.pryer = {
   DANGER: 8,
   LABEL: "Pryer",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.6,
     SPEED: base.SPEED * 0.85,
     FOV: base.FOV * 1.4,
   },
@@ -8334,7 +8509,6 @@ exports.crank = {
   DANGER: 8,
   LABEL: "Crank",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.6,
     SPEED: base.SPEED * 0.85,
     FOV: base.FOV * 1.4,
   },
@@ -8383,7 +8557,6 @@ exports.chisel = {
   DANGER: 8,
   LABEL: "Chisel",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.6,
     SPEED: base.SPEED * 0.85,
     FOV: base.FOV * 1.4,
   },
@@ -8432,7 +8605,6 @@ exports.lever = {
   DANGER: 8,
   LABEL: "Lever",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.6,
     SPEED: base.SPEED * 0.85,
     FOV: base.FOV * 1.4,
   },
@@ -8493,7 +8665,6 @@ exports.director = {
   LABEL: "Director",
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.1,
   },
   GUNS: [
@@ -8516,7 +8687,6 @@ exports.oldDirector = {
   LABEL: "Old Director",
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.1,
   },
   MAX_CHILDREN: 5,
@@ -8540,7 +8710,6 @@ exports.overseer = {
   DANGER: 6,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
     SPEED: 0.9 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -8577,7 +8746,6 @@ exports.cruiser = {
   FACING_TYPE: "locksFacing",
   STAT_NAMES: statnames.swarm,
   BODY: {
-    ACCELERATION: 0.85 * base.ACCEL,
     FOV: 1.2 * base.FOV,
   },
   GUNS: [
@@ -8605,7 +8773,6 @@ exports.underseer = {
   DANGER: 6,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.9 * base.SPEED,
   },
   SHAPE: 4,
@@ -8640,7 +8807,6 @@ exports.spawner = {
   STAT_NAMES: statnames.drone,
   BODY: {
     SPEED: base.SPEED * 0.8,
-    ACCELERATION: base.ACCEL * 0.5,
     FOV: 1.1,
   },
   GUNS: [
@@ -8671,7 +8837,6 @@ exports.directordrive = {
   STAT_NAMES: statnames.drone,
   DANGER: 6,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.1,
   },
   TURRETS: [
@@ -8701,7 +8866,6 @@ exports.honcho = {
   DANGER: 6,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.1,
   },
   GUNS: [
@@ -8725,7 +8889,6 @@ exports.manager = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.6 * base.ACCEL,
     SPEED: 0.85 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -8753,7 +8916,6 @@ exports.overlord = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -8812,7 +8974,6 @@ exports.commander = {
   STAT_NAMES: statnames.drone,
   DANGER: 7,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.15,
   },
   GUNS: [
@@ -8885,7 +9046,6 @@ exports.oldCommander = {
   STAT_NAMES: statnames.drone,
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
     FOV: 1.15 * base.FOV,
   },
   FACING_TYPE: "autospin",
@@ -8922,7 +9082,6 @@ exports.overczar = {
   DANGER: 8,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -9006,7 +9165,6 @@ exports.carrier = {
   STAT_NAMES: statnames.swarm,
   FACING_TYPE: "locksFacing",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.2,
   },
   GUNS: [
@@ -9044,7 +9202,6 @@ exports.oldCarrier = {
   STAT_NAMES: statnames.swarm,
   FACING_TYPE: "locksFacing",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.3,
   },
   GUNS: [
@@ -9082,7 +9239,6 @@ exports.battleship = {
   STAT_NAMES: statnames.swarm,
   FACING_TYPE: "locksFacing",
   BODY: {
-    ACCELERATION: base.ACCEL,
     FOV: 1.2 * base.FOV,
   },
   GUNS: [
@@ -9209,14 +9365,13 @@ exports.fortress = {
   ],
 };
 exports.autoCruiser = makeAuto(exports.cruiser);
-exports.dreadnought = {
+exports.badDreadnought = {
   PARENT: [exports.genericTank],
-  LABEL: "Dreadnought",
+  LABEL: "Bad Dreadnought",
   DANGER: 7,
   FACING_TYPE: "locksFacing",
   STAT_NAMES: statnames.swarm,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.2,
   },
   TURRETS: [
@@ -9271,7 +9426,6 @@ exports.necromancer = {
   DANGER: 7,
   STAT_NAMES: statnames.necro,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
   },
   SHAPE: 4,
@@ -9341,7 +9495,6 @@ exports.maleficitor = {
   TOOLTIP: "Press R and wait to turn your drones invisible.",
   STAT_NAMES: statnames.necro,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     SPEED: base.SPEED * 0.85,
   },
   SHAPE: 4,
@@ -9372,15 +9525,13 @@ exports.infestor = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     SPEED: base.SPEED * 0.9,
   },
-  SHAPE: 4,
   MAX_CHILDREN: 20,
   GUNS: [
     {
       /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-      POSITION: [5.25, 6, 1.2, 8, -5, 90, 0],
+      POSITION: [7.25, 6, 1.2, 6, -5, 90, 0],
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
         TYPE: exports.eggchip,
@@ -9390,27 +9541,27 @@ exports.infestor = {
       },
     },
     {
-      POSITION: [5.25, 6, 1.2, 8, 5, 90, 0],
+      POSITION: [7.25, 6, 1.2, 6, 5, 90, 0.5],
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
-        TYPE: exports.eggchip,
+        TYPE: exports.autoeggchip,
         AUTOFIRE: true,
         SYNCS_SKILLS: true,
         STAT_CALCULATOR: gunCalcNames.necro,
       },
     },
     {
-      POSITION: [5.25, 6, 1.2, 8, -5, 270, 0],
+      POSITION: [7.25, 6, 1.2, 6, -5, 270, 0.5],
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
-        TYPE: exports.eggchip,
+        TYPE: exports.autoeggchip,
         AUTOFIRE: true,
         SYNCS_SKILLS: true,
         STAT_CALCULATOR: gunCalcNames.necro,
       },
     },
     {
-      POSITION: [5.25, 6, 1.2, 8, 5, 270, 0],
+      POSITION: [7.25, 6, 1.2, 6, 5, 270, 0],
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
         TYPE: exports.eggchip,
@@ -9427,7 +9578,6 @@ exports.pentaseer = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.9 * base.SPEED,
   },
   SHAPE: 5,
@@ -9463,7 +9613,6 @@ exports.prodigy = {
   SHAPE: 6,
   MAX_CHILDREN: 14,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.15,
   },
   GUNS: [
@@ -9544,7 +9693,6 @@ exports.diviner = {
   DANGER: 8,
   STAT_NAMES: statnames.necro,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
   },
   SHAPE: 6,
@@ -9642,7 +9790,6 @@ exports.femaleficitor = {
   DANGER: 8,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     SPEED: base.SPEED * 0.9,
   },
   SHAPE: 4,
@@ -9688,7 +9835,6 @@ exports.enchantress = {
   DANGER: 8,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.9 * base.SPEED,
   },
   SHAPE: 5,
@@ -9759,7 +9905,6 @@ exports.megaSpawner = {
   STAT_NAMES: statnames.drone,
   BODY: {
     SPEED: base.SPEED * 0.6,
-    ACCELERATION: base.ACCEL * 0.4,
     FOV: 1.15,
   },
   GUNS: [
@@ -9790,7 +9935,6 @@ exports.productionist = {
   STAT_NAMES: statnames.drone,
   BODY: {
     SPEED: base.SPEED * 0.75,
-    ACCELERATION: base.ACCEL * 0.5,
     FOV: 1.1,
   },
   MAX_CHILDREN: 12,
@@ -9802,7 +9946,7 @@ exports.productionist = {
     {
       POSITION: [1, 7.25, 1, 14.25, 4.75, 0, 0],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.swarm, g.babyfactory, g.lessreload]),
+        SHOOT_SETTINGS: combineStats([g.productionist]),
         TYPE: exports.tinyMinion,
         STAT_CALCULATOR: gunCalcNames.drone,
         SYNCS_SKILLS: true,
@@ -9817,7 +9961,7 @@ exports.productionist = {
     {
       POSITION: [1, 7.25, 1, 14.25, -4.75, 0, 0.5],
       PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.swarm, g.babyfactory, g.lessreload]),
+        SHOOT_SETTINGS: combineStats([g.productionist]),
         TYPE: exports.tinyMinion,
         STAT_CALCULATOR: gunCalcNames.drone,
         SYNCS_SKILLS: true,
@@ -9836,7 +9980,6 @@ exports.spawnerdrive = {
   STAT_NAMES: statnames.drone,
   BODY: {
     SPEED: base.SPEED * 0.8,
-    ACCELERATION: base.ACCEL * 0.5,
     FOV: 1.1,
   },
   TURRETS: [
@@ -9874,7 +10017,6 @@ exports.captain = {
   STAT_NAMES: statnames.drone,
   BODY: {
     SPEED: base.SPEED * 0.8,
-    ACCELERATION: base.ACCEL * 0.5,
     FOV: 1.1,
   },
   GUNS: [
@@ -9925,7 +10067,6 @@ exports.supervisor = {
   STAT_NAMES: statnames.drone,
   BODY: {
     SPEED: base.SPEED * 0.8,
-    ACCELERATION: base.ACCEL * 0.5,
     FOV: 1.1,
   },
   GUNS: [
@@ -10012,7 +10153,6 @@ exports.overdrive = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
     SPEED: 0.9 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -10057,7 +10197,6 @@ exports.cruiserdrive = {
   FACING_TYPE: "locksFacing",
   STAT_NAMES: statnames.swarm,
   BODY: {
-    ACCELERATION: 0.85 * base.ACCEL,
     FOV: 1.2 * base.FOV,
   },
   TURRETS: [
@@ -10092,7 +10231,6 @@ exports.underdrive = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.9 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -10135,7 +10273,6 @@ exports.bigCheese = {
   STAT_NAMES: statnames.drone,
   DANGER: 7,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.1,
   },
   GUNS: [
@@ -10159,7 +10296,6 @@ exports.honchodrive = {
   DANGER: 7,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.1,
   },
   TURRETS: [
@@ -10191,7 +10327,6 @@ exports.overcheese = {
   STAT_NAMES: statnames.drone,
   DANGER: 8,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.15,
   },
   GUNS: [
@@ -10226,9 +10361,6 @@ exports.overcheese = {
 exports.pounder = {
   PARENT: [exports.genericTank],
   LABEL: "Pounder",
-  BODY: {
-    ACCELERATION: base.ACCEL * 0.8,
-  },
   GUNS: [
     {
       /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
@@ -10244,9 +10376,6 @@ exports.destroyer = {
   PARENT: [exports.genericTank],
   LABEL: "Destroyer",
   DANGER: 6,
-  BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
-  },
   GUNS: [
     {
       POSITION: [21, 14, 1, 0, 0, 0, 0],
@@ -10314,9 +10443,6 @@ exports.shotgun = {
   PARENT: [exports.genericTank],
   DANGER: 7,
   LABEL: "Shotgun",
-  BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
-  },
   GUNS: [
     {
       POSITION: [4, 3, 1, 11, -3, 0, 0],
@@ -10458,9 +10584,6 @@ exports.annihilator = {
   PARENT: [exports.genericTank],
   LABEL: "Annihilator",
   DANGER: 7,
-  BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
-  },
   GUNS: [
     {
       POSITION: [20.5, 19.5, 1, 0, 0, 0, 0],
@@ -10536,54 +10659,10 @@ exports.ordnance = {
   LABEL: "Ordnance",
   DANGER: 7,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     SPEED: base.SPEED * 0.9,
     FOV: base.FOV * 1.25,
   },
-  GUNS: [
-    {
-      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-      POSITION: [17, 3, 1, 0, -5.75, -6, 0.25],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
-        TYPE: exports.bullet,
-        LABEL: "Secondary",
-      },
-    },
-    {
-      POSITION: [17, 3, 1, 0, 5.75, 6, 0.75],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
-        TYPE: exports.bullet,
-        LABEL: "Secondary",
-      },
-    },
-    {
-      POSITION: [24, 8, 1, 0, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunter2]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [21, 11, 1, 0, 0, 0, 0.25],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter]),
-        TYPE: exports.bullet,
-      },
-    },
-  ],
-};
-exports.ordnance2 = {
-  PARENT: [exports.genericTank],
-  LABEL: "Ordnance",
-  DANGER: 7,
-  BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
-    SPEED: base.SPEED * 0.9,
-    FOV: base.FOV * 1.25,
-  },
-  CONTROLLERS: ["canZoom"],
+  CONTROLLERS: ["zoom"],
   TOOLTIP: "Hold right click to zoom.",
   GUNS: [
     {
@@ -10889,7 +10968,6 @@ exports.sidewinder = {
   LABEL: "Sidewinder",
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.7 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.3 * base.FOV,
   },
@@ -10960,7 +11038,6 @@ exports.weirdTrapper = {
   DANGER: 6,
   STAT_NAMES: statnames.generic,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.6,
     SPEED: base.SPEED * 0.8,
     FOV: base.FOV * 1.2,
   },
@@ -11097,9 +11174,6 @@ exports.protector = {
   PARENT: [exports.genericTank],
   LABEL: "Protector",
   DANGER: 7,
-  BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
-  },
   GUNS: [
     /***** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */ {
       POSITION: [11, 12, 1, 6, 0, 0, 0.5],
@@ -11131,7 +11205,6 @@ exports.constructor = {
   STAT_NAMES: statnames.trap,
   DANGER: 7,
   BODY: {
-    ACCELERATION: 0.5 * base.ACCEL,
     SPEED: 0.7 * base.SPEED,
     FOV: 1.15 * base.FOV,
   },
@@ -11737,7 +11810,6 @@ exports.raider = {
   LABEL: "Raider",
   BODY: {
     DENSITY: 0.6 * base.DENSITY,
-    ACCELERATION: 0.7 * base.ACCEL,
     FOV: 1.2 * base.FOV,
   },
   DANGER: 8,
@@ -11831,7 +11903,6 @@ exports.medic = {
   PARENT: [exports.genericTank],
   LABEL: "Medic",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.2,
   },
   TURRETS: [
@@ -12052,7 +12123,6 @@ exports.doctor = {
   LABEL: "Doctor",
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: base.ACCEL * 0.7,
     FOV: base.FOV * 1.15,
   },
   MAX_CHILDREN: 1,
@@ -12413,7 +12483,6 @@ exports.lancer = {
   LABEL: "Lancer",
   BODY: {
     SPEED: base.SPEED * 1.2,
-    ACCELERATION: base.ACCEL * 0.8,
     DAMAGE: base.DAMAGE * 0.9,
   },
   HAS_NO_RECOIL: true,
@@ -15231,7 +15300,6 @@ exports.dreadnoughtDrone = {
   PARENT: [exports.minion],
   LABEL: "Dreadnought",
   BODY: {
-    ACCELERATION: base.ACCEL * 0.75,
     FOV: base.FOV * 1.2,
     HEALTH: base.HEALTH * 0.4,
     SHIELD: base.SHIELD * 0.4,
@@ -15870,7 +15938,6 @@ exports.wifeBeater = {
   COLOR: 33,
   STAT_NAMES: statnames.drone,
   BODY: {
-    ACCELERATION: 0.75 * base.ACCEL,
     SPEED: 0.8 * base.SPEED,
     FOV: 1.1 * base.FOV,
   },
@@ -15952,7 +16019,7 @@ exports.CONQ = {
 };
 
 // TOKEN "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde];
+exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde];
   exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
     exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
       exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
@@ -15972,8 +16039,8 @@ exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, expor
     exports.eliteBosses.UPGRADES_TIER_0 = [exports.eliteDestroyer, exports.eliteGunner, exports.eliteSprayer, exports.eliteBattleship, exports.eliteSpawner];
     exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
     exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
-    exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.dreadnought, exports.mender];
-      exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.infestor, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.taser];
+    exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
+      exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.taser];
     exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
@@ -15994,31 +16061,26 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
     exports.sniper.UPGRADES_TIER_2 = [exports.assassin, exports.hunter, exports.minigun, exports.rifle];
         exports.sniper.UPGRADES_TIER_3 = [exports.bushwhacker];
         exports.assassin.UPGRADES_TIER_3 = [exports.ranger, exports.falcon, exports.stalker, exports.autoAssassin];
-        exports.hunter.UPGRADES_TIER_3 = [exports.predator, exports.poacher, exports.ordnance, exports.dual];
+        exports.hunter.UPGRADES_TIER_3 = [exports.predator, exports.xHunter, exports.poacher, exports.ordnance, exports.dual];
         exports.rifle.UPGRADES_TIER_3 = [exports.musket, exports.crossbow, exports.armsman];
 
-    exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner];
-        exports.machineGun.UPGRADES_TIER_3 = [exports.sprayer];
+    exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer];
         exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade];
         exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner];
-        exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
-        exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
-        exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
+        exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.focal];
 
     exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
         exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
         exports.hexaTank.UPGRADES_TIER_3 = [exports.octoTank, exports.cyclone, exports.hexaTrapper];
-        exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle];
+        exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.phoenix];
         exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee];
 
     exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner];
         exports.director.UPGRADES_TIER_3 = [exports.manager, exports.bigCheese];
         exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrapper, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander];
         exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander];
-        exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor];
+        exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor, exports.infestor];
         exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner];
-        exports.directordrive.UPGRADES_TIER_3 = [exports.overdrive, exports.cruiserdrive, exports.underdrive, exports.spawnerdrive];
-        exports.honcho.UPGRADES_TIER_3 = [exports.bigCheese];
 
     exports.pounder.UPGRADES_TIER_2 = [exports.destroyer, exports.builder, exports.artillery, exports.launcher];
         exports.pounder.UPGRADES_TIER_3 = [exports.shotgun, exports.eagle];
@@ -16031,10 +16093,11 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror];
         exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
         exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
-        exports.autoTrapper.UPGRADES_TIER_3 = [exports.autoBuilder, exports.autoTrapGuard];
 
 // EXPANDED TANK UPGRADE PATHS
-/*exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
+// To use these, remove the /* and */ surrounding it.
+/*
+exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
     exports.basic.UPGRADES_TIER_2 = [exports.smasher];
         exports.basic.UPGRADES_TIER_3 = [exports.single];
         exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine, exports.bonker];
@@ -16051,23 +16114,23 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.hunter.UPGRADES_TIER_3 = [exports.predator, exports.poacher, exports.ordnance, exports.dual];
         exports.rifle.UPGRADES_TIER_3 = [exports.musket, exports.crossbow, exports.armsman, exports.blunderbuss];
 
-    exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.blaster, exports.gatlingGun, exports.machineFlank];
-        exports.machineGun.UPGRADES_TIER_3 = [exports.sprayer];
+    exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer, exports.blaster, exports.gatlingGun, exports.machineFlank];
         exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade, exports.subverter, exports.taser, exports.zipper, exports.autoMinigun];
         exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher, exports.flamethrower];
         exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
         exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
+        exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.focal, exports.shower, exports.autoSprayer, exports.splasher, exports.retroSprayer];
 
     exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
         exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
         exports.hexaTank.UPGRADES_TIER_3 = [exports.octoTank, exports.cyclone, exports.hexaTrapper, exports.deathStar, exports.combo];
-        exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.taser];
+        exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.phoenix, exports.taser];
         exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee, exports.sniper3, exports.crowbar, exports.autoAuto3];
 
     exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner, exports.directordrive, exports.honcho];
-        exports.director.UPGRADES_TIER_3 = [exports.manager, exports.bigCheese];
+        exports.director.UPGRADES_TIER_3 = [exports.manager];
         exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrapper, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander, exports.captain];
-        exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander, exports.productionist, exports.cruiserdrive, exports.zipper, exports.dreadnought];
+        exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander, exports.productionist, exports.cruiserdrive, exports.zipper, exports.badDreadnought];
         exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor, exports.autoUnderseer, exports.underdrive, exports.infestor, exports.pentaseer, exports.prodigy];
         exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner, exports.megaSmasher, exports.productionist, exports.spawnerdrive, exports.captain];
         exports.directordrive.UPGRADES_TIER_3 = [exports.overdrive, exports.cruiserdrive, exports.underdrive, exports.spawnerdrive, exports.honchodrive];
