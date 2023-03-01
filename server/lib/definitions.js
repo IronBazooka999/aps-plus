@@ -9937,7 +9937,6 @@ exports.productionist = {
     SPEED: base.SPEED * 0.75,
     FOV: 1.1,
   },
-  MAX_CHILDREN: 12,
   GUNS: [
     {
       /**** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
