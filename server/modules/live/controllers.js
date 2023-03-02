@@ -774,26 +774,45 @@ ioTypes.fleeAtLowHealth = class extends IO {
         }
     }
 }
-ioTypes.canZoom = class extends IO {
-  constructor(body) {
-    super(body);
-    this.distance = 225;
-  }
-  think(input) {
-    if (input.alt && input.target) {
-      if (this.body.cameraOverrideX === null) {
-        let direction = Math.atan2(input.target.y, input.target.x);
-        this.body.cameraOverrideX =
-          this.body.x + this.distance * Math.cos(direction);
-        this.body.cameraOverrideY =
-          this.body.y + this.distance * Math.sin(direction);
-      }
-    } else {
-      this.body.cameraOverrideX = null;
-      this.body.cameraOverrideY = null;
+
+ioTypes.zoom = class extends IO {
+    constructor(body) {
+        super(body);
+        this.distance = 225;
     }
-  }
-};
+
+    think(input) {
+        if (input.alt && input.target) {
+            if (this.body.cameraOverrideX === null) {
+                let direction = Math.atan2(input.target.y, input.target.x);
+                this.body.cameraOverrideX = this.body.x + this.distance * Math.cos(direction);
+                this.body.cameraOverrideY = this.body.y + this.distance * Math.sin(direction);
+            }
+        } else {
+            this.body.cameraOverrideX = null;
+            this.body.cameraOverrideY = null;
+        }
+    }
+}
+ioTypes.longZoom = class extends IO {
+    constructor(body) {
+        super(body);
+        this.distance = 550;
+    }
+
+    think(input) {
+        if (input.alt && input.target) {
+            if (this.body.cameraOverrideX === null) {
+                let direction = Math.atan2(input.target.y, input.target.x);
+                this.body.cameraOverrideX = this.body.x + this.distance * Math.cos(direction);
+                this.body.cameraOverrideY = this.body.y + this.distance * Math.sin(direction);
+            }
+        } else {
+            this.body.cameraOverrideX = null;
+            this.body.cameraOverrideY = null;
+        }
+    }
+}
 
 module.exports = {
     ioTypes,
