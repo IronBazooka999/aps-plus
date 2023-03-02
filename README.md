@@ -3,7 +3,7 @@ Originally made by Oblivion#3940 (aka z46-dev), then continued by Zenphia#5994 a
 
 ## Setting up your server
 
-Once you've created a Glitch (https://glitch.com0 project using the template, follow these steps:
+Once you've created a Glitch (https://glitch.com) project using the template, follow these steps:
 
 In the server's `config.json`:
 1. Find the `host` property.
