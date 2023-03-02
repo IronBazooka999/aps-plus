@@ -3,8 +3,8 @@ Originally made by Oblivion#3940 (aka z46-dev), then continued by Zenphia#5994 a
 
 ## Relevant Discord Servers
 
-APS+ - https://discord.gg/kvCAZfUCjy
-Arras.io - https://discord.gg/arras
+- APS+ - https://discord.gg/kvCAZfUCjy
+- Arras.io - https://discord.gg/arras
 
 ## Setting up your server
 
