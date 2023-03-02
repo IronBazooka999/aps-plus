@@ -1,6 +1,8 @@
 # APS+ 
 Originally made by Oblivion#3940 (aka z46-dev), then continued by Zenphia#5994 and optimized by damocles#0001 (https://github.com/SpanksMcYeet/)
 
+Join our public Discord server! https://discord.gg/kvCAZfUCjy
+
 ## Setting up your server
 
 Once you've created a glitch project using the template, follow these steps:
