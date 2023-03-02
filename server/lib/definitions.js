@@ -171,6 +171,7 @@ const g = {
   snakeskin: [0.6, 1, 2, 1, 0.5, 0.5, 1, 1, 0.2, 0.4, 1, 5, 1],
   rocketeer: [1.4, 1, 0.9, 1.2, 1.5, 1.4, 1.4, 0.3, 1, 1.2, 1, 1, 1.4],
   shotgun: [8, 0.4, 1, 1.5, 1, 0.4, 0.8, 1.8, 0.6, 1, 1.2, 1.2, 1],
+  acc:            [1,     1,     0.1,    1,      1,      1,      1,      1,      1,      1,      1,      1,      1],
   destroyerDominator: [6.5, 0, 1, 0.975, 6, 6, 6, 0.575, 0.475, 1, 1, 0.5, 1],
   closer: [1.25, 0.25, 1, 1, 1e3, 1e3, 1e3, 2.5, 2.25, 1.4, 4, 0.25, 1],
   
@@ -4885,6 +4886,84 @@ exports.triplet = {
   ],
 };
 exports.autoTripleShot = makeAuto(exports.tripleShot);
+exports.defect = {
+  PARENT: [exports.genericTank],
+  LABEL: "Defect",
+  DANGER: 7,
+  TOOLTIP: "Right click to fire your main barrels.",
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [19, 8, 1, 0, -2, -17.5, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.bent]),
+        TYPE: exports.bullet,
+        LABEL: "Triple Shot",
+        ALT_FIRE: !0,
+      },
+    },
+    {
+      POSITION: [19, 8, 1, 0, 2, 17.5, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.bent]),
+        TYPE: exports.bullet,
+        LABEL: "Triple Shot",
+        ALT_FIRE: !0,
+      },
+    },
+    {
+      POSITION: [22, 8, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.bent]),
+        TYPE: exports.bullet,
+        LABEL: "Triple Shot",
+        ALT_FIRE: !0,
+      },
+    },
+    {
+      POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.flank,
+          g.tri,
+          g.thruster,
+          g.halfrecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+    {
+      POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.flank,
+          g.tri,
+          g.thruster,
+          g.halfrecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+    {
+      POSITION: [18, 8, 1, 0, 0, 180, 0.6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.flank,
+          g.tri,
+          g.thruster,
+          g.halfrecoil,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+  ],
+};
 
 // BENT HYBRID BRANCH
 exports.overshot = makeOver(exports.tripleShot, "Overshot");
@@ -7904,6 +7983,44 @@ exports.surfer = {
   ],
 };
 exports.integrator = makeHybrid(exports.triAngle, "Integrator");
+exports.quadAngle = {
+  PARENT: [exports.genericTank],
+  LABEL: "Quad-Angle",
+  BODY: {
+    HEALTH: 0.8 * base.HEALTH,
+    SHIELD: 0.8 * base.SHIELD,
+    DENSITY: 0.6 * base.DENSITY,
+  },
+  DANGER: 7,
+  TURRETS: [
+    {
+      POSITION: [9, 8, 0, 45, 190, 0],
+      TYPE: exports.autoTankGun,
+    },
+    {
+      POSITION: [9, 8, 0, -45, 190, 0],
+      TYPE: exports.autoTankGun,
+    },
+  ],
+  GUNS: [
+    {
+      POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+    {
+      POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+        TYPE: exports.bullet,
+        LABEL: gunCalcNames.thruster,
+      },
+    },
+  ],
+};
 
 // AUTO-3 BRANCH
 exports.auto5 = {
@@ -8174,14 +8291,17 @@ exports.combo = {
     {
       POSITION: [11, 8, 0, 60, 190, 0],
       TYPE: exports.autoTankGun,
+      INDEPENDENT: true,
     },
     {
       POSITION: [11, 8, 0, 180, 190, 0],
       TYPE: exports.autoTankGun,
+      INDEPENDENT: true,
     },
     {
       POSITION: [11, 8, 0, 300, 190, 0],
       TYPE: exports.autoTankGun,
+      INDEPENDENT: true,
     },
   ],
 };
@@ -10057,6 +10177,128 @@ exports.captain = {
     },
   ],
 };
+exports.hangar = {
+  PARENT: [exports.genericTank],
+  LABEL: "Hangar",
+  DANGER: 7,
+  STAT_NAMES: statnames.drone,
+  BODY: {
+    SPEED: base.SPEED * 0.8,
+    FOV: 1.1,
+  },
+  GUNS: [
+    {
+      /**** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [7, 7.5, 0.6, 4.5, 5.5, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.swarm]),
+        TYPE: exports.swarm,
+        STAT_CALCULATOR: gunCalcNames.swarm,
+      },
+    },
+    {
+      POSITION: [7, 7.5, 0.6, 4.5, -5.5, 0, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.swarm]),
+        TYPE: exports.swarm,
+        STAT_CALCULATOR: gunCalcNames.swarm,
+      },
+    },
+    {
+      POSITION: [4.5, 10, 1, 10.5, 0, 0, 0],
+    },
+    {
+      POSITION: [1, 12, 1, 15, 0, 0, 0],
+      PROPERTIES: {
+        MAX_CHILDREN: 4,
+        SHOOT_SETTINGS: combineStats([g.factory, g.babyfactory]),
+        TYPE: exports.minion,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+      },
+    },
+    {
+      POSITION: [3.5, 12, 1, 8, 0, 0, 0],
+    },
+  ],
+};
+
+// PRODUCTIONIST BRANCH
+exports.bismarck = {
+  PARENT: [exports.genericTank],
+  LABEL: "Bismarck",
+  DANGER: 8,
+  STAT_NAMES: statnames.drone,
+  BODY: {
+    SPEED: base.SPEED * 0.75,
+    FOV: 1.1,
+  },
+  GUNS: [
+    {
+      /**** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [4.5, 6, 1, 10, 4.75, 90, 0],
+    },
+    {
+      POSITION: [1, 7.25, 1, 14.25, 4.75, 90, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.productionist]),
+        TYPE: exports.tinyMinion,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        SYNCS_SKILLS: true,
+      },
+    },
+    {
+      POSITION: [7.5, 7.25, -1.3, 3.5, 4.75, 90, 0],
+    },
+    {
+      POSITION: [4.5, 6, 1, 10, -4.75, 90, 0.5],
+    },
+    {
+      POSITION: [1, 7.25, 1, 14.25, -4.75, 90, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.productionist]),
+        TYPE: exports.tinyMinion,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        SYNCS_SKILLS: true,
+      },
+    },
+    {
+      POSITION: [7.5, 7.25, -1.3, 3.5, -4.75, 90, 0.5],
+    },
+    {
+      /**** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [4.5, 6, 1, 10, 4.75, 270, 0],
+    },
+    {
+      POSITION: [1, 7.25, 1, 14.25, 4.75, 270, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.productionist]),
+        TYPE: exports.tinyMinion,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        SYNCS_SKILLS: true,
+      },
+    },
+    {
+      POSITION: [7.5, 7.25, -1.3, 3.5, 4.75, 270, 0],
+    },
+    {
+      POSITION: [4.5, 6, 1, 10, -4.75, 270, 0.5],
+    },
+    {
+      POSITION: [1, 7.25, 1, 14.25, -4.75, 270, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.productionist]),
+        TYPE: exports.tinyMinion,
+        STAT_CALCULATOR: gunCalcNames.drone,
+        SYNCS_SKILLS: true,
+      },
+    },
+    {
+      POSITION: [7.5, 7.25, -1.3, 3.5, -4.75, 270, 0.5],
+    },
+  ],
+};
 
 // CAPTAIN BRANCH
 exports.supervisor = {
@@ -11010,6 +11252,8 @@ exports.rocketeer = {
     },
   ],
 };
+exports.heaver = makeHybrid(exports.launcher, "Heaver");
+exports.autoLauncher = makeAuto(exports.launcher);
 
 // TRAPPER BRANCH
 exports.trapper = {
@@ -12634,6 +12878,105 @@ exports.trapTurret = {
     },
   ],
 };
+exports.shottrapTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Turret',
+    BODY: {
+        FOV: 0,
+    },
+    INDEPENDENT: true,
+    CONTROLLERS: ['nearestDifferentMaster'], 
+    COLOR: 16,
+    AI: {
+        SKYNET: true,
+        FULL_VIEW: true,
+    },
+    GUNS: [ {  /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+        POSITION: [  4,      3,      1,     11,     -3,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  4,      3,      1,     11,      3,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  4,      3,      1,     13,      0,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     11,      1,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     12,     -1,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     11,      1,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {                
+        POSITION: [  1,      3,      1,     13,     -1,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     13,      1,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     13,      2,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     13,     -2,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     13,     -2,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     13,      2,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  1,      3,      1,     13,     -2,      0,      0,   ], 
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+                TYPE: exports.trap,
+            }, }, {
+        POSITION: [  16,    14,      1,      0,      0,      0,      0,   ],
+            }, {
+        POSITION: [   4,    14,     1.8,    16,      0,      0,      0,   ], 
+            }, {
+       POSITION:  [  8,     16,    -1.1,    4,       0,      0,      0,   ], }
+    ],
+};
 exports.barricadeTurret = {
   PARENT: [exports.genericTank],
   LABEL: "Turret",
@@ -13477,6 +13820,556 @@ exports.roguePalisade = (() => {
     ],
   };
 })();
+    exports.rogueArmada = (() => { // WORK IN PROGRESS!
+        let props = {
+            SHOOT_SETTINGS: combineStats([g.factory, g.pound, g.halfreload, g.halfreload]),
+            TYPE: exports.minion,
+            STAT_CALCULATOR: gunCalcNames.drone,                        
+            AUTOFIRE: true,
+            MAX_CHILDREN: 1,
+            SYNCS_SKILLS: true,   
+            WAIT_TO_CYCLE: true,
+        };
+        return {
+            PARENT: [exports.miniboss],
+            LABEL: 'Rogue Armada [WIP!]',
+            COLOR: 17,
+            SHAPE: 7,
+            SIZE: 28,
+            VALUE: 500000,
+            BODY: {
+                FOV: 1.3,
+                SPEED: base.SPEED * 0.1,
+                HEALTH: base.HEALTH * 2,
+                SHIELD: base.SHIELD * 2,
+                REGEN: base.REGEN,
+                DAMAGE: base.DAMAGE * 3,
+            },
+            FACING_TYPE: 'autospin',
+            GUNS: [ /***** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */ {
+                POSITION: [  4,      0.9,      1,     0,     -3,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      360/14,      0,   ], }, {
+                POSITION: [  4,      0.9,      1,     0,     -3,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      360/7+360/14,      0,   ], }, {
+                POSITION: [  4,      0.9,      1,     0,     -3,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      2*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      2*360/7+360/14,      0,   ], }, {
+                POSITION: [  4,      0.9,      1,     0,     -3,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      3*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      3*360/7+360/14,      0,   ], }, {
+                POSITION: [  4,      0.9,      1,     0,     -3,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      4*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      4*360/7+360/14,      0,   ], }, {
+                POSITION: [  4,      0.9,      1,     0,     -3,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      5*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      5*360/7+360/14,      0,   ], }, {
+                POSITION: [  4,      0.9,      1,     0,     -3,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      0.9,      1,     0,      3,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  4,      1.5,      1,     0,      0,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,     -1,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      1.2,      1,     0,      1,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {                
+                POSITION: [  1,      0.9,      1,     0,     -1,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.9,      1,     0,      1,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.bullet,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,      2,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.6,      1,     0,     -2,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,      2,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  1,      0.3,      1,     0,     -2,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [ 9,     6,      1,     4,       0,      6*360/7+360/14,      0,   ], 
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                        TYPE: exports.casing,
+                    }, }, {
+                POSITION: [  8,     6,    -1.1,    4,       0,      6*360/7+360/14,      0,   ], }
+            ],
+            TURRETS: [{ /*  SIZE     X       Y     ANGLE    ARC */
+                POSITION: [   5,    10,      0,      0,    110, 0], 
+                    TYPE: exports.shottrapTurret,
+                        }, {
+                POSITION: [   5,    10,      0,      360/7,    110, 0], 
+                    TYPE: exports.shottrapTurret,
+                        }, {
+                POSITION: [   5,    10,      0,     2*360/7,    110, 0], 
+                    TYPE: exports.shottrapTurret,
+                        }, {
+                POSITION: [   5,    10,      0,     3*360/7,    110, 0],
+                    TYPE: exports.shottrapTurret,
+                        }, {
+                POSITION: [   5,    10,      0,     4*360/7,    110, 0], 
+                    TYPE: exports.shottrapTurret,
+                        }, {
+                POSITION: [   5,    10,      0,     5*360/7,    110, 0], 
+                    TYPE: exports.shottrapTurret,
+                        }, {
+                POSITION: [   5,    10,      0,     6*360/7,    110, 0], 
+                    TYPE: exports.shottrapTurret,
+                        },
+            ],
+        };
+    })();
 
 // WINTER MAYHEM STRANGE BOSSES
 exports.pumpkinEmperor = {
@@ -16036,10 +16929,11 @@ exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.game
         exports.retroRifle.UPGRADES_TIER_3 = [exports.sniperRifle, exports.rifleGuard, exports.spreadRifle];
     exports.celestialBosses.UPGRADES_TIER_0 = [exports.paladin, exports.freyja, exports.zaphkiel, exports.nyx, exports.theia, exports.alviss, exports.tyr];
     exports.eliteBosses.UPGRADES_TIER_0 = [exports.eliteDestroyer, exports.eliteGunner, exports.eliteSprayer, exports.eliteBattleship, exports.eliteSpawner];
-    exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
+    exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.rogueArmada, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
     exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
     exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
       exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.taser];
+        exports.productionist.UPGRADES_TIER_0 = [exports.bismarck];
     exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
@@ -16093,58 +16987,50 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
         exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
 
-// EXPANDED TANK UPGRADE PATHS
+// EXPANDED TANK UPGRADE PATH ENABLER
 // To use these, remove the /* and */ surrounding it.
 /*
-exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
-    exports.basic.UPGRADES_TIER_2 = [exports.smasher];
-        exports.basic.UPGRADES_TIER_3 = [exports.single];
-        exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine, exports.bonker];
+exports.basic.UPGRADES_TIER_1.push();
+    exports.basic.UPGRADES_TIER_2.push();
+        exports.smasher.UPGRADES_TIER_3.push(exports.bonker);
 
-    exports.twin.UPGRADES_TIER_2 = [exports.doubleTwin, exports.tripleShot, exports.gunner, exports.hexaTank];
-        exports.twin.UPGRADES_TIER_3 = [exports.dual, exports.bulwark, exports.musket];
-        exports.doubleTwin.UPGRADES_TIER_3 = [exports.tripleTwin, exports.hewnDouble, exports.autoDouble, exports.bentDouble, exports.doubleGunner];
-        exports.tripleShot.UPGRADES_TIER_3 = [exports.pentaShot, exports.spreadshot, exports.bentHybrid, exports.bentDouble, exports.triplet, exports.autoTripleShot, exports.triBlaster];
-        exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner, exports.doubleGunner, exports.rimfire, exports.vulcan, exports.buttbuttin, exports.blower, exports.battery];
+    exports.twin.UPGRADES_TIER_2.push();
+        exports.doubleTwin.UPGRADES_TIER_3.push(exports.doubleGunner);
+        exports.tripleShot.UPGRADES_TIER_3.push(exports.autoTripleShot, exports.defect, exports.triBlaster);
+        exports.gunner.UPGRADES_TIER_3.push(exports.doubleGunner, exports.rimfire, exports.vulcan, exports.buttbuttin, exports.blower, exports.battery);
 
-    exports.sniper.UPGRADES_TIER_2 = [exports.assassin, exports.hunter, exports.minigun, exports.rifle, exports.gatlingGun];
-        exports.sniper.UPGRADES_TIER_3 = [exports.bushwhacker];
-        exports.assassin.UPGRADES_TIER_3 = [exports.ranger, exports.falcon, exports.stalker, exports.autoAssassin];
-        exports.hunter.UPGRADES_TIER_3 = [exports.predator, exports.poacher, exports.ordnance, exports.dual];
-        exports.rifle.UPGRADES_TIER_3 = [exports.musket, exports.crossbow, exports.armsman, exports.blunderbuss];
+    exports.sniper.UPGRADES_TIER_2.push(exports.gatlingGun);
+        exports.rifle.UPGRADES_TIER_3.push(exports.blunderbuss);
 
-    exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer, exports.blaster, exports.gatlingGun, exports.machineFlank];
-        exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade, exports.subverter, exports.taser, exports.zipper, exports.autoMinigun];
+    exports.machineGun.UPGRADES_TIER_2.push(exports.blaster, exports.gatlingGun, exports.machineFlank);
         exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher, exports.flamethrower];
         exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
         exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
-        exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.focal, exports.shower, exports.autoSprayer, exports.splasher, exports.retroSprayer];
+        exports.sprayer.UPGRADES_TIER_3.push(exports.shower, exports.autoSprayer, exports.splasher, exports.retroSprayer);
 
-    exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
-        exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
-        exports.hexaTank.UPGRADES_TIER_3 = [exports.octoTank, exports.cyclone, exports.hexaTrapper, exports.deathStar, exports.combo];
-        exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.phoenix, exports.taser];
-        exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee, exports.sniper3, exports.crowbar, exports.autoAuto3];
+    exports.flankGuard.UPGRADES_TIER_2.push();
+        exports.hexaTank.UPGRADES_TIER_3.push(exports.deathStar, exports.combo);
+        exports.triAngle.UPGRADES_TIER_3.push(exports.taser, exports.integrator, exports.defect, exports.quadAngle);
+        exports.auto3.UPGRADES_TIER_3.push(exports.sniper3, exports.crowbar, exports.autoAuto3, exports.combo);
 
-    exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner, exports.directordrive, exports.honcho];
+    exports.director.UPGRADES_TIER_2.push(exports.directordrive, exports.honcho);
         exports.director.UPGRADES_TIER_3 = [exports.manager];
-        exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrapper, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander, exports.captain];
-        exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander, exports.productionist, exports.cruiserdrive, exports.zipper, exports.badDreadnought];
-        exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor, exports.autoUnderseer, exports.underdrive, exports.infestor, exports.pentaseer, exports.prodigy];
-        exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner, exports.megaSmasher, exports.productionist, exports.spawnerdrive, exports.captain];
+        exports.overseer.UPGRADES_TIER_3.push(exports.captain);
+        exports.cruiser.UPGRADES_TIER_3.push(exports.productionist, exports.cruiserdrive, exports.hangar, exports.zipper, exports.badDreadnought);
+        exports.underseer.UPGRADES_TIER_3.push(exports.autoUnderseer, exports.underdrive, exports.pentaseer, exports.prodigy);
+        exports.spawner.UPGRADES_TIER_3.push(exports.megaSpawner, exports.productionist, exports.spawnerdrive, exports.captain, exports.hangar);
         exports.directordrive.UPGRADES_TIER_3 = [exports.overdrive, exports.cruiserdrive, exports.underdrive, exports.spawnerdrive, exports.honchodrive];
         exports.honcho.UPGRADES_TIER_3 = [exports.bigCheese, exports.honchodrive];
 
-    exports.pounder.UPGRADES_TIER_2 = [exports.destroyer, exports.builder, exports.artillery, exports.launcher];
-        exports.pounder.UPGRADES_TIER_3 = [exports.shotgun, exports.eagle];
-        exports.destroyer.UPGRADES_TIER_3 = [exports.conqueror, exports.annihilator, exports.hybrid, exports.constructor, exports.blower, exports.subverter, exports.deathStar];
-        exports.artillery.UPGRADES_TIER_3 = [exports.mortar, exports.ordnance, exports.beekeeper, exports.fieldGun, exports.mender];
-        exports.launcher.UPGRADES_TIER_3 = [exports.skimmer, exports.twister, exports.swarmer, exports.sidewinder, exports.fieldGun, exports.rocketeer];
+    exports.pounder.UPGRADES_TIER_2.push();
+        exports.destroyer.UPGRADES_TIER_3.push(exports.blower, exports.megaTrapper, exports.subverter, exports.deathStar);
+        exports.artillery.UPGRADES_TIER_3.push(exports.force, exports.autoArtillery, exports.mender);
+        exports.launcher.UPGRADES_TIER_3.push(exports.rocketeer, exports.heaver, exports.autoLauncher);
 
-    exports.trapper.UPGRADES_TIER_2 = [exports.builder, exports.triTrapper, exports.trapGuard, exports.autoTrapper];
-        exports.trapper.UPGRADES_TIER_3 = [exports.barricade, exports.overtrapper, exports.megaTrapper];
-        exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror, exports.quadBuilder];
-        exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect, exports.prodigy];
-        exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark, exports.peashooter, exports.autoTrapGuard];
+    exports.trapper.UPGRADES_TIER_2.push(exports.autoTrapper);
+        exports.trapper.UPGRADES_TIER_3.push(exports.megaTrapper);
+        exports.builder.UPGRADES_TIER_3.push(exports.fashioner, exports.quadBuilder);
+        exports.triTrapper.UPGRADES_TIER_3.push(exports.prodigy);
+        exports.trapGuard.UPGRADES_TIER_3.push(exports.peashooter, exports.autoTrapGuard);
         exports.autoTrapper.UPGRADES_TIER_3 = [exports.autoBuilder, exports.autoTrapGuard];
 */
