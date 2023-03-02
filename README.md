@@ -1,7 +1,10 @@
 # APS+ 
 Originally made by Oblivion#3940 (aka z46-dev), then continued by Zenphia#5994 and optimized by damocles#0001 (https://github.com/SpanksMcYeet/)
 
-Join our public Discord server! https://discord.gg/kvCAZfUCjy
+## Relevant Discord Servers
+
+APS+ - https://discord.gg/kvCAZfUCjy
+Arras.io - https://discord.gg/arras
 
 ## Setting up your server
 
