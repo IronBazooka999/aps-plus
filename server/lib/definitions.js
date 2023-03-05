@@ -16987,17 +16987,44 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
         exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
 
-// EXPANDED TANK UPGRADE PATH ENABLER
-// To use these, remove the /* and */ surrounding it.
+// To use the following branches, remove the /* and */ surrounding them.
+
+// RETROGRADE
 /*
 exports.basic.UPGRADES_TIER_1.push();
     exports.basic.UPGRADES_TIER_2.push();
         exports.smasher.UPGRADES_TIER_3.push(exports.bonker);
 
     exports.twin.UPGRADES_TIER_2.push();
-        exports.doubleTwin.UPGRADES_TIER_3.push(exports.doubleGunner);
+        exports.gunner.UPGRADES_TIER_3.push(exports.battery);
+
+    exports.sniper.UPGRADES_TIER_2.push(exports.gatlingGun);
+        exports.assassin.UPGRADES_TIER_3.push(exports.buttbuttin);
+        exports.rifle.UPGRADES_TIER_3.push(exports.blunderbuss);
+
+    exports.machineGun.UPGRADES_TIER_2.push(exports.blaster, exports.gatlingGun, exports.machineFlank);
+        exports.minigun.UPGRADES_TIER_3.push(exports.subverter);
+        exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
+        exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
+        exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
+
+    exports.flankGuard.UPGRADES_TIER_2.push();
+        exports.hexaTank.UPGRADES_TIER_3.push(exports.tornado, deathStar);
+
+    exports.pounder.UPGRADES_TIER_2.push();
+        exports.destroyer.UPGRADES_TIER_3.push(exports.blower);
+*/
+
+// ARMS RACE [WIP!]
+/*
+exports.basic.UPGRADES_TIER_1.push();
+    exports.basic.UPGRADES_TIER_2.push();
+        exports.smasher.UPGRADES_TIER_3.push(exports.bonker);
+
+    exports.twin.UPGRADES_TIER_2.push();
+        exports.doubleTwin.UPGRADES_TIER_3.push(exports.doubleFlankTwin, exports.doubleGunner);
         exports.tripleShot.UPGRADES_TIER_3.push(exports.autoTripleShot, exports.defect, exports.triBlaster);
-        exports.gunner.UPGRADES_TIER_3.push(exports.doubleGunner, exports.rimfire, exports.vulcan, exports.buttbuttin, exports.blower, exports.battery);
+        exports.gunner.UPGRADES_TIER_3.push(exports.battery, exports.buttbuttin, exports.blower, exports.rimfire, exports.doubleGunner);
 
     exports.sniper.UPGRADES_TIER_2.push(exports.gatlingGun);
         exports.rifle.UPGRADES_TIER_3.push(exports.blunderbuss);
