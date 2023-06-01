@@ -1,6 +1,5 @@
-import {
-    global
-} from "./global.js";
+import { global } from "./global.js";
+
 class Canvas {
     constructor(params) {
         this.directionLock = false;

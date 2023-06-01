@@ -672,18 +672,17 @@ let {
                         }
                     }
                     if (indices.skills) {
-                        let skk = parseInt(get.next(), 36).toString(16);
-                        skk = '0000000000'.substr(skk.length) + skk;
-                        gui.skills[0].amount = parseInt(skk.slice(0, 1), 16);
-                        gui.skills[1].amount = parseInt(skk.slice(1, 2), 16);
-                        gui.skills[2].amount = parseInt(skk.slice(2, 3), 16);
-                        gui.skills[3].amount = parseInt(skk.slice(3, 4), 16);
-                        gui.skills[4].amount = parseInt(skk.slice(4, 5), 16);
-                        gui.skills[5].amount = parseInt(skk.slice(5, 6), 16);
-                        gui.skills[6].amount = parseInt(skk.slice(6, 7), 16);
-                        gui.skills[7].amount = parseInt(skk.slice(7, 8), 16);
-                        gui.skills[8].amount = parseInt(skk.slice(8, 9), 16);
-                        gui.skills[9].amount = parseInt(skk.slice(9, 10), 16);
+                        let skk = parseInt(get.next();
+                        gui.skills[0].amount = parseInt(skk.slice( 0,  2), 16);
+                        gui.skills[1].amount = parseInt(skk.slice( 2,  4), 16);
+                        gui.skills[2].amount = parseInt(skk.slice( 4,  6), 16);
+                        gui.skills[3].amount = parseInt(skk.slice( 6,  8), 16);
+                        gui.skills[4].amount = parseInt(skk.slice( 8, 10), 16);
+                        gui.skills[5].amount = parseInt(skk.slice(10, 12), 16);
+                        gui.skills[6].amount = parseInt(skk.slice(12, 14), 16);
+                        gui.skills[7].amount = parseInt(skk.slice(14, 16), 16);
+                        gui.skills[8].amount = parseInt(skk.slice(16, 18), 16);
+                        gui.skills[9].amount = parseInt(skk.slice(18, 20), 16);
                     }
                     if (indices.accel) {
                         gui.accel = get.next();

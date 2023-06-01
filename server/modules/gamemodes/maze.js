@@ -142,6 +142,4 @@ function generateMaze(size) {
     }
 };
 
-module.exports = {
-    generateMaze
-};
+module.exports = { generateMaze };

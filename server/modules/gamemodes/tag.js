@@ -49,7 +49,4 @@ function tagDeathEvent(instance) {
     setTimeout(countPlayers, 1000);
 }
 
-module.exports = {
-    countPlayers,
-    tagDeathEvent
-};
+module.exports = { countPlayers, tagDeathEvent };

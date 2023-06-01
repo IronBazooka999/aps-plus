@@ -59,7 +59,4 @@ function evalPacket(socket) {
     });
 }
 
-module.exports = {
-    antiLagbot,
-    evalPacket
-};
+module.exports = { antiLagbot, evalPacket };

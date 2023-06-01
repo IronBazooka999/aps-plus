@@ -288,6 +288,4 @@ var color = {
         "border": 0.4
     }
 };
-export {
-    color
-}
+export { color }

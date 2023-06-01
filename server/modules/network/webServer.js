@@ -42,6 +42,4 @@ server.listen(c.port, function() {
     console.log("Express + WS server listening on port", c.port);
 });
 
-module.exports = {
-    server
-};
+module.exports = { server };

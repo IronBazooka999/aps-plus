@@ -282,6 +282,4 @@ const protocol = (function() {
         }
     }
 })();
-export {
-    protocol
-}
+export { protocol }

@@ -68,12 +68,7 @@ const dominatorLoop = (function() {
         if (dominators["-3"] === config.neededToWin) winner(2);
         if (dominators["-4"] === config.neededToWin) winner(3);
     };
-    return {
-        spawn,
-        tally
-    };
+    return { spawn, tally };
 })();
 
-module.exports = {
-    dominatorLoop
-};
+module.exports = { dominatorLoop };

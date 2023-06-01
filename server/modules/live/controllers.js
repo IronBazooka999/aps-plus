@@ -24,8 +24,7 @@ class IO {
         }
     }
 }
-let ioTypes = {};
-ioTypes.slowSpin = class extends IO {
+class io_slowSpin extends IO {
     constructor(b) {
         super(b);
         this.a = 0;
@@ -45,7 +44,7 @@ ioTypes.slowSpin = class extends IO {
         };
     }
 }
-ioTypes.reverseSlowSpin = class extends IO {
+class io_reverseSlowSpin extends IO {
     constructor(body) {
         super(body)
         this.a = 0
@@ -65,7 +64,7 @@ ioTypes.reverseSlowSpin = class extends IO {
         };
     }
 }
-ioTypes.bossRushAI = class extends IO {
+class io_bossRushAI extends IO {
     constructor(body) {
         super(body);
         this.enabled = true;
@@ -85,7 +84,7 @@ ioTypes.bossRushAI = class extends IO {
         }
     }
 }
-ioTypes.doNothing = class extends IO {
+class io_doNothing extends IO {
     constructor(body) {
         super(body)
         this.acceptsFromTop = false
@@ -102,7 +101,7 @@ ioTypes.doNothing = class extends IO {
         }
     }
 }
-ioTypes.moveInCircles = class extends IO {
+class io_moveInCircles extends IO {
     constructor(body) {
         super(body)
         this.acceptsFromTop = false
@@ -125,7 +124,7 @@ ioTypes.moveInCircles = class extends IO {
         }
     }
 }
-ioTypes.listenToPlayer = class extends IO {
+class io_listenToPlayer extends IO {
     constructor(b, p) {
         super(b)
         this.player = p
@@ -171,7 +170,7 @@ ioTypes.listenToPlayer = class extends IO {
         }
     }
 }
-ioTypes.mapTargetToGoal = class extends IO {
+class io_mapTargetToGoal extends IO {
     constructor(b) {
         super(b)
     }
@@ -187,7 +186,7 @@ ioTypes.mapTargetToGoal = class extends IO {
         }
     }
 }
-ioTypes.boomerang = class extends IO {
+class io_boomerang extends IO {
     constructor(b) {
         super(b)
         this.r = 0
@@ -225,7 +224,7 @@ ioTypes.boomerang = class extends IO {
         }
     }
 }
-ioTypes.goToMasterTarget = class extends IO {
+class io_goToMasterTarget extends IO {
     constructor(body) {
         super(body)
         this.myGoal = {
@@ -248,7 +247,7 @@ ioTypes.goToMasterTarget = class extends IO {
         }
     }
 }
-ioTypes.canRepel = class extends IO {
+class io_canRepel extends IO {
     constructor(b) {
         super(b)
     }
@@ -267,7 +266,7 @@ ioTypes.canRepel = class extends IO {
         }
     }
 }
-ioTypes.alwaysFire = class extends IO {
+class io_alwaysFire extends IO {
     constructor(body) {
         super(body)
     }
@@ -277,7 +276,7 @@ ioTypes.alwaysFire = class extends IO {
         }
     }
 }
-ioTypes.targetSelf = class extends IO {
+class io_targetSelf extends IO {
     constructor(body) {
         super(body)
     }
@@ -291,7 +290,7 @@ ioTypes.targetSelf = class extends IO {
         }
     }
 }
-ioTypes.mapAltToFire = class extends IO {
+class io_mapAltToFire extends IO {
     constructor(body) {
         super(body)
     }
@@ -303,7 +302,7 @@ ioTypes.mapAltToFire = class extends IO {
         }
     }
 }
-ioTypes.onlyAcceptInArc = class extends IO {
+class io_onlyAcceptInArc extends IO {
     constructor(body) {
         super(body)
     }
@@ -319,7 +318,7 @@ ioTypes.onlyAcceptInArc = class extends IO {
         }
     }
 }
-ioTypes.nearestDifferentMaster = class extends IO {
+class io_nearestDifferentMaster extends IO {
     constructor(body) {
         super(body);
         this.targetLock = undefined;
@@ -468,7 +467,7 @@ ioTypes.nearestDifferentMaster = class extends IO {
         return {};
     }
 }
-ioTypes.avoid = class extends IO {
+class io_avoid extends IO {
     constructor(body) {
         super(body)
     }
@@ -506,7 +505,7 @@ ioTypes.avoid = class extends IO {
         }
     }
 }
-ioTypes.minion = class extends IO {
+class io_minion extends IO {
     constructor(body) {
         super(body)
         this.turnwise = 1
@@ -562,7 +561,7 @@ ioTypes.minion = class extends IO {
         }
     }
 }
-ioTypes.hangOutNearMaster = class extends IO {
+class io_hangOutNearMaster extends IO {
     constructor(body) {
         super(body)
         this.acceptsFromTop = false
@@ -609,7 +608,7 @@ ioTypes.hangOutNearMaster = class extends IO {
         }
     }
 }
-ioTypes.spinWhenIdle = class extends IO {
+class io_spinWhenIdle extends IO {
     constructor(b) {
         super(b)
         this.a = 0
@@ -629,7 +628,7 @@ ioTypes.spinWhenIdle = class extends IO {
         }
     }
 }
-ioTypes.spin = class extends IO {
+class io_spin extends IO {
     constructor(b) {
         super(b)
         this.a = 0
@@ -649,7 +648,7 @@ ioTypes.spin = class extends IO {
         };
     }
 }
-ioTypes.fastspin = class extends IO {
+class io_fastspin extends IO {
     constructor(b) {
         super(b)
         this.a = 0
@@ -669,7 +668,7 @@ ioTypes.fastspin = class extends IO {
         };
     }
 }
-ioTypes.reversespin = class extends IO {
+class io_reversespin extends IO {
     constructor(b) {
         super(b)
         this.a = 0
@@ -689,7 +688,7 @@ ioTypes.reversespin = class extends IO {
         };
     }
 }
-ioTypes.reverseceles = class extends IO {
+class io_reverseceles extends IO {
   constructor(body) {
     super(body);
     this.a = 0;
@@ -710,7 +709,7 @@ ioTypes.reverseceles = class extends IO {
     };
   }
 };
-ioTypes.spinceles = class extends IO {
+class io_spinceles extends IO {
   constructor(body) {
     super(body);
     this.a = 0;
@@ -730,7 +729,7 @@ ioTypes.spinceles = class extends IO {
     };
   }
 };
-ioTypes.dontTurn = class extends IO {
+class io_dontTurn extends IO {
     constructor(b) {
         super(b)
     }
@@ -744,7 +743,7 @@ ioTypes.dontTurn = class extends IO {
         };
     }
 }
-ioTypes.dontTurnDominator = class extends IO {
+class io_dontTurnDominator extends IO {
     constructor(b) {
         super(b);
     }
@@ -758,7 +757,7 @@ ioTypes.dontTurnDominator = class extends IO {
         };
     }
 }
-ioTypes.fleeAtLowHealth = class extends IO {
+class io_fleeAtLowHealth extends IO {
     constructor(b) {
         super(b)
         this.fear = util.clamp(ran.gauss(0.7, 0.15), 0.1, 0.9)
@@ -775,7 +774,7 @@ ioTypes.fleeAtLowHealth = class extends IO {
     }
 }
 
-ioTypes.zoom = class extends IO {
+class io_zoom extends IO {
     constructor(body) {
         super(body);
         this.distance = 225;
@@ -794,7 +793,7 @@ ioTypes.zoom = class extends IO {
         }
     }
 }
-ioTypes.longZoom = class extends IO {
+class io_longZoom extends IO {
     constructor(body) {
         super(body);
         this.distance = 550;
@@ -813,6 +812,38 @@ ioTypes.longZoom = class extends IO {
         }
     }
 }
+
+let ioTypes = {
+    slowSpin: io_slowSpin,
+    reverseSlowSpin: io_reverseSlowSpin,
+    bossRushAI: io_bossRushAI,
+    doNothing: io_doNothing,
+    moveInCircles: io_moveInCircles,
+    listenToPlayer: io_listenToPlayer,
+    mapTargetToGoal: io_mapTargetToGoal,
+    boomerang: io_boomerang,
+    goToMasterTarget: io_goToMasterTarget,
+    canRepel: io_canRepel,
+    alwaysFire: io_alwaysFire,
+    targetSelf: io_targetSelf,
+    mapAltToFire: io_mapAltToFire,
+    onlyAcceptInArc: io_onlyAcceptInArc,
+    nearestDifferentMaster: io_nearestDifferentMaster,
+    avoid: io_avoid,
+    minion: io_minion,
+    hangOutNearMaster: io_hangOutNearMaster,
+    spinWhenIdle: io_spinWhenIdle,
+    spin: io_spin,
+    fastspin: io_fastspin,
+    reversespin: io_reversespin,
+    reverseceles: io_reverseceles,
+    spinceles: io_spinceles,
+    dontTurn: io_dontTurn,
+    dontTurnDominator: io_dontTurnDominator,
+    fleeAtLowHealth: io_fleeAtLowHealth,
+    zoom: io_zoom,
+    longZoom: io_longZoom
+};
 
 module.exports = {
     ioTypes,

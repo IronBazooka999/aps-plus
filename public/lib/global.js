@@ -1,3 +1,56 @@
+function Clickable() {
+    let region = {
+        x: 0,
+        y: 0,
+        w: 0,
+        h: 0,
+    };
+    let active = false;
+    return {
+        set: (x, y, w, h) => {
+            region.x = x * global.ratio;
+            region.y = y * global.ratio;
+            region.w = w * global.ratio;
+            region.h = h * global.ratio;
+            active = true;
+        },
+        check: target => {
+            let dx = Math.round(target.x - region.x);
+            let dy = Math.round(target.y - region.y);
+            return active && dx >= 0 && dy >= 0 && dx <= region.w && dy <= region.h;
+        },
+        hide: () => {
+            active = false;
+        },
+    };
+}
+let Region = (size) => {
+    // Define the region
+    let data = [];
+    for (let i = 0; i < size; i++) {
+        data.push(Clickable());
+    }
+    // Return the region methods
+    return {
+        place: (index, ...a) => {
+            if (index >= data.length) {
+                console.log(index);
+                console.log(data);
+                throw new Error('Trying to reference a clickable outside a region!');
+            }
+            data[index].set(...a);
+        },
+        hide: () => {
+            data.forEach(r => r.hide());
+        },
+        check: x => {
+            return data.findIndex(r => {
+                return r.check(x);
+            });
+        }
+    };
+};
+
 const global = {
     // Keys and other mathematical constants
     KEY_ESC: 27,
@@ -66,70 +119,12 @@ const global = {
     roomSetup: [],
     entities: [],
     updateTimes: 0,
-    clickables: (() => {
-        let Region = (() => {
-            // Protected classes
-            function Clickable() {
-                let region = {
-                    x: 0,
-                    y: 0,
-                    w: 0,
-                    h: 0,
-                };
-                let active = false;
-                return {
-                    set: (x, y, w, h) => {
-                        region.x = x * global.ratio;
-                        region.y = y * global.ratio;
-                        region.w = w * global.ratio;
-                        region.h = h * global.ratio;
-                        active = true;
-                    },
-                    check: target => {
-                        let dx = Math.round(target.x - region.x);
-                        let dy = Math.round(target.y - region.y);
-                        return active && dx >= 0 && dy >= 0 && dx <= region.w && dy <= region.h;
-                    },
-                    hide: () => {
-                        active = false;
-                    },
-                };
-            }
-            // Return the constructor
-            return (size) => {
-                // Define the region
-                let data = [];
-                for (let i = 0; i < size; i++) {
-                    data.push(Clickable());
-                }
-                // Return the region methods
-                return {
-                    place: (index, ...a) => {
-                        if (index >= data.length) {
-                            console.log(index);
-                            console.log(data);
-                            throw new Error('Trying to reference a clickable outside a region!');
-                        }
-                        data[index].set(...a);
-                    },
-                    hide: () => {
-                        data.forEach(r => r.hide());
-                    },
-                    check: x => {
-                        return data.findIndex(r => {
-                            return r.check(x);
-                        });
-                    }
-                };
-            };
-        })();
-        return {
-            stat: Region(10),
-            upgrade: Region(32),
-            hover: Region(1),
-            skipUpgrades: Region(1),
-        };
-    })(),
+    clickables: {
+        stat: Region(10),
+        upgrade: Region(32),
+        hover: Region(1),
+        skipUpgrades: Region(1),
+    },
     statHover: false,
     upgradeHover: false,
     statMaxing: false,
@@ -143,14 +138,9 @@ const global = {
         rendergap: 0,
         lastuplink: 0,
     },
-    target: {
-        x: 0,
-        y: 0
-    },
+    target: { x: 0, y: 0 },
     fps: 60,
     screenSize: Math.min(1920, Math.max(window.innerWidth, 1280)),
     ratio: window.devicePixelRatio
 };
-export {
-    global
-}
+export { global }

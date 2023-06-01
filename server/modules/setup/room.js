@@ -81,18 +81,12 @@ room.random = function() {
                 y: room.height / 2
             }) > room.width * 0.475 && i);
     }
-    return {
-        x,
-        y
-    };
+    return { x, y };
 };
 room.near = function(position, radius) {
     let x = position.x + ((Math.random() * (radius * 2) | 0) - radius);
     let y = position.y + ((Math.random() * (radius * 2) | 0) - radius);
-    return {
-        x,
-        y
-    };
+    return { x, y };
 };
 room.randomType = function(type) {
     if (!room[type]) return room.random();
@@ -210,7 +204,4 @@ for (let type of room.cellTypes) room.findType(type);
 
 room.nestFoodAmount = 1.5 * Math.sqrt(room.nest.length) / room.xgrid / room.ygrid;
 
-module.exports = {
-    room,
-    roomSpeed
-};
+module.exports = { room, roomSpeed };

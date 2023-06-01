@@ -1,9 +1,5 @@
-self.addEventListener("install", () => {
-    self.skipWaiting()
-}), self.addEventListener("activate", async () => {
-    var e;
+self.addEventListener("install", () => self.skipWaiting());
+self.addEventListener("activate", async () => {
     await self.registration.unregister();
-    for (e of await self.clients.matchAll({
-            type: "window"
-        })) e.navigate(e.url)
+    for (var e of await self.clients.matchAll({ type: "window" })) e.navigate(e.url)
 });
