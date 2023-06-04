@@ -69,7 +69,8 @@ const global = {
     KEY_AUTO_SPIN: 67,
     KEY_AUTO_FIRE: 69,
     KEY_OVER_RIDE: 82,
-    /*KEY_REVERSE_TANK: 86,*/ //will enable reverse_tank when it's added
+    KEY_REVERSE_TANK: 86,
+    KEY_REVERSE_MOUSE: 66,
     KEY_UPGRADE_ATK: 49,
     KEY_UPGRADE_HTL: 50,
     KEY_UPGRADE_SPD: 51,

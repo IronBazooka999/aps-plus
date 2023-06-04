@@ -1,24 +1,8 @@
-import {
-    global
-} from "./global.js";
-import {
-    util
-} from "./util.js";
-import {
-    config
-} from "./config.js";
-import {
-    protocol
-} from "./protocol.js";
-let {
-    socketInit,
-    gui,
-    leaderboard,
-    minimap,
-    moveCompensation,
-    lag,
-    getNow
-} = (function() {
+import { global } from "./global.js";
+import { util } from "./util.js";
+import { config } from "./config.js";
+import { protocol } from "./protocol.js";
+let { socketInit, gui, leaderboard, minimap, moveCompensation, lag, getNow } = (function() {
     var sync = [];
     var clockDiff = 0;
     var serverStart = 0,
@@ -672,7 +656,7 @@ let {
                         }
                     }
                     if (indices.skills) {
-                        let skk = parseInt(get.next();
+                        let skk = get.next();
                         gui.skills[0].amount = parseInt(skk.slice( 0,  2), 16);
                         gui.skills[1].amount = parseInt(skk.slice( 2,  4), 16);
                         gui.skills[2].amount = parseInt(skk.slice( 4,  6), 16);

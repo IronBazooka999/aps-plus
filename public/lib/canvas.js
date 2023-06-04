@@ -17,6 +17,8 @@ class Canvas {
         this.cv.addEventListener("mousedown", this.mouseDown, false);
         this.cv.addEventListener("mouseup", this.mouseUp, false);
         this.cv.parent = self;
+        this.reverseDirection = false;
+        this.inverseMouse = false;
         global.canvas = this;
     }
     keyboardDown(event) {
@@ -74,10 +76,15 @@ class Canvas {
                     break;
                 case global.KEY_OVER_RIDE:
                     this.parent.socket.talk('t', 2);
-                    break;/* will enable reverse_tank when it's added
-                case global.KEY_REVERSE_TANK:
+                    break;
+                case global.KEY_REVERSE_MOUSE: //client side only, no server effects except message
+                    this.inverseMouse = !this.inverseMouse;
+                    this.parent.socket.talk('t', 3);
+                    break;
+                case global.KEY_REVERSE_TANK: //client side only, no server effets except message
+                    this.reverseDirection = !this.reverseDirection;
                     this.parent.socket.talk('t', 4);
-                    break;*/
+                    break;
                 case global.KEY_CLASS_TREE:
                     global.showTree = !global.showTree;
                     break;
@@ -175,6 +182,9 @@ class Canvas {
         }
     }
     mouseDown(mouse) {
+        let primaryFire = 4,
+            secondaryFire = 6;
+        if (this.inverseMouse) [primaryFire, secondaryFire] = [secondaryFire, primaryFire];
         switch (mouse.button) {
             case 0:
                 let mpos = {
@@ -182,32 +192,37 @@ class Canvas {
                     y: mouse.clientY * global.ratio,
                 };
                 let statIndex = global.clickables.stat.check(mpos);
-                if (statIndex !== -1) this.parent.socket.talk('x', statIndex);
-                else if (global.clickables.skipUpgrades.check(mpos) !== -1) global.clearUpgrades();
-                else {
+                if (statIndex !== -1) {
+                    this.parent.socket.talk('x', statIndex);
+                } else if (global.clickables.skipUpgrades.check(mpos) !== -1) {
+                    global.clearUpgrades();
+                } else {
                     let upgradeIndex = global.clickables.upgrade.check(mpos);
                     if (upgradeIndex !== -1) this.parent.socket.talk('U', upgradeIndex);
-                    else this.parent.socket.cmd.set(4, true);
+                    else this.parent.socket.cmd.set(primaryFire, true);
                 }
                 break;
             case 1:
                 this.parent.socket.cmd.set(5, true);
                 break;
             case 2:
-                this.parent.socket.cmd.set(6, true);
+                this.parent.socket.cmd.set(secondaryFire, true);
                 break;
         }
     }
     mouseUp(mouse) {
+        let primaryFire = 4,
+            secondaryFire = 6;
+        if (this.inverseMouse) [primaryFire, secondaryFire] = [secondaryFire, primaryFire];
         switch (mouse.button) {
             case 0:
-                this.parent.socket.cmd.set(4, false);
+                this.parent.socket.cmd.set(primaryFire, false);
                 break;
             case 1:
                 this.parent.socket.cmd.set(5, false);
                 break;
             case 2:
-                this.parent.socket.cmd.set(6, false);
+                this.parent.socket.cmd.set(secondaryFire, false);
                 break;
         }
     }
@@ -215,6 +230,8 @@ class Canvas {
     gameInput(mouse) {
         this.parent.target.x = (mouse.clientX * global.ratio) - this.width / 2;
         this.parent.target.y = (mouse.clientY * global.ratio) - this.height / 2;
+        if (this.reverseDirection) this.parent.target.x *= -1;
+        if (this.reverseDirection) this.parent.target.y *= -1;
         global.target = this.parent.target;
         global.statHover = global.clickables.hover.check({
             x: mouse.clientX * global.ratio,
@@ -222,6 +239,4 @@ class Canvas {
         }) === 0;
     }
 }
-export {
-    Canvas
-}
+export { Canvas }

@@ -1,17 +1,14 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 let locsToAvoid = ["nest", "port"];
-for (let i = 1; i < 5; i++) locsToAvoid.push("bas" + i), locsToAvoid.push("bap" + i);
+for (let i = 1; i < 5; i++) {
+    locsToAvoid.push("bas" + i);
+    locsToAvoid.push("bap" + i);
+}
 let activeLocsThatWeCantPlaceIn = 0;
-for (let loc of locsToAvoid)
-    if (room[loc].length) activeLocsThatWeCantPlaceIn += room[loc].length;
+for (let loc of locsToAvoid) {
+    if (room[loc].length) {
+        activeLocsThatWeCantPlaceIn += room[loc].length;
+    }
+}
 
 function generateMaze(size) {
     let maze = JSON.parse(JSON.stringify(Array(size).fill(Array(size).fill(true))));

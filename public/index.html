@@ -76,35 +76,16 @@
                             </select>
                             <table>
                                 <tr>
-                                    <td>
-                                        <div>
-                                            <label><input id="optScreenshotMode" tabindex="-1" class="checkbox" type="checkbox"> Screenshot Mode</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <label><input id="optNoPointy" tabindex="-1" class="checkbox" type="checkbox"> Classic Traps</label>
-                                        </div>
-                                    </td>
+                                    <td><div><label><input id="optScreenshotMode" tabindex="-1" class="checkbox" type="checkbox"> Screenshot Mode</label></div></td>
+                                    <td><div><label><input id="optNoPointy"       tabindex="-1" class="checkbox" type="checkbox"> Classic Traps</label></div></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div>
-                                            <label><input id="optFancy" tabindex="-1" class="checkbox" type="checkbox"> Low Graphics</label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>
-                                            <label><input id="optPredictive" tabindex="-1" class="checkbox" type="checkbox"> Disable Hyperactivity</label>
-                                        </div>
-                                    </td>
+                                    <td><div><label><input id="optFancy"          tabindex="-1" class="checkbox" type="checkbox"> Low Graphics</label></div></td>
+                                    <td><div><label><input id="optPredictive"     tabindex="-1" class="checkbox" type="checkbox"> Disable Hyperactivity</label></div></td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <div>
-                                            <label><input id="coloredHealthbars" tabindex="-1" class="checkbox" type="checkbox"> Colored Health Bars</label>
-                                        </div>
-                                    </td>
+                                    <td><div><label><input id="coloredHealthbars" tabindex="-1" class="checkbox" type="checkbox"> Colored Health Bars</label></div></td>
+                                    <td><div><label><input id="centerTank"        tabindex="-1" class="checkbox" type="checkbox"> Smooth Camera</label></div></td>
                                 </tr>
                             </table>
                         </div>
@@ -153,27 +134,18 @@
     <script type="module" src="./lib/socketInit.js"></script>
     <script type="module" src="./app.js"></script>
     <script>
-        var clicked = true;
+        var clicked = false;
         $("#startMenuSlidingTrigger").on('click', function() {
+            clicked = !clicked;
             if (clicked) {
-                clicked = false;
                 $(this).html('<h3 class="nopadding">close options/help 🡶</h3>');
-                $(".slider").css({
-                    "top": "-265px"
-                })
+                $(".slider").css({ "top": "-265px" })
             } else {
-                clicked = true;
                 $(this).html('<h3 class="nopadding">view options/help 🡲</h3>');
-                $(".slider").css({
-                    "top": 0
-                });
+                $(".slider").css({ "top": 0 });
             }
         });
-        if (navigator.serviceWorker) {
-            navigator.serviceWorker.register('/service-worker.js', {
-                scope: '/'
-            }).then(registration => console.log('Service Worker Registered'));
-        }
+        if (navigator.serviceWorker) navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then(registration => console.log('Service Worker Registered'));
     </script>
 </body>
 

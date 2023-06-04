@@ -61,14 +61,14 @@ class Animation {
     }
 }
 let animations = {
-    connecting = new Animation(1, 0);
-    disconnected = new Animation(1, 0);
-    deathScreen = new Animation(1, 0);
-    upgradeMenu = new Animation(0, 1, 0.01);
-    skillMenu = new Animation(0, 1, 0.01);
-    optionsMenu = new Animation(1, 0);
-    minimap = new Animation(-1, 1, 0.025);
-    leaderboard = new Animation(-1, 1, 0.025);
+    connecting: new Animation(1, 0),
+    disconnected: new Animation(1, 0),
+    deathScreen: new Animation(1, 0),
+    upgradeMenu: new Animation(0, 1, 0.01),
+    skillMenu: new Animation(0, 1, 0.01),
+    optionsMenu: new Animation(1, 0),
+    minimap: new Animation(-1, 1, 0.025),
+    leaderboard: new Animation(-1, 1, 0.025)
 };
 window.animations = animations;
 // Color functions
@@ -442,16 +442,13 @@ global.player = {
 function startGame() {
     // Get options
     util.submitToLocalStorage("optScreenshotMode");
-    config.graphical.screenshotMode =
-        document.getElementById("optScreenshotMode").checked;
+    config.graphical.screenshotMode = document.getElementById("optScreenshotMode").checked;
     util.submitToLocalStorage("optFancy");
     config.graphical.pointy = !document.getElementById("optNoPointy").checked;
     util.submitToLocalStorage("optNoPointy");
-    config.graphical.fancyAnimations =
-        !document.getElementById("optFancy").checked;
+    config.graphical.fancyAnimations = !document.getElementById("optFancy").checked;
     util.submitToLocalStorage("coloredHealthbars");
-    config.graphical.coloredHealthbars =
-        document.getElementById("coloredHealthbars").checked;
+    config.graphical.coloredHealthbars = document.getElementById("coloredHealthbars").checked;
     util.submitToLocalStorage("centerTank");
     config.graphical.centerTank = document.getElementById("centerTank").checked;
     util.submitToLocalStorage("optPredictive");
@@ -1041,7 +1038,7 @@ function drawHealth(x, y, instance, ratio, alpha) {
     }
 }
 // Start animation
-window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || callback => setTimeout(callback, 1000 / 60);
+window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || (callback => setTimeout(callback, 1000 / 60));
 window.cancelAnimFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 // Drawing states
 const statMenu = Smoothbar(0, 0.7, 1.5, 0.05);
@@ -1489,45 +1486,17 @@ const gameDraw = (ratio, drawRatio) => {
             } else {
                 motion.set(instance.render.lastRender, instance.render.interval);
             }
-            instance.render.x = util.lerp(
-                instance.render.x,
-                Math.round(instance.x + instance.vx),
-                0.1,
-                true
-            );
-            instance.render.y = util.lerp(
-                instance.render.y,
-                Math.round(instance.y + instance.vy),
-                0.1,
-                true
-            );
+            instance.render.x = util.lerp(instance.render.x, Math.round(instance.x + instance.vx), 0.1, true);
+            instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
             instance.render.f =
                 instance.id === gui.playerid && !instance.twiggle && !global.died
                     ? Math.atan2(global.target.y, global.target.x)
                     : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
-            let x =
-                    instance.id === gui.playerid && config.graphical.centerTank
-                        ? 0
-                        : ratio * instance.render.x - px,
-                y =
-                    instance.id === gui.playerid && config.graphical.centerTank
-                        ? 0
-                        : ratio * instance.render.y - py;
+            let x = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.x - px,
+                y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py;
             x += global.screenWidth / 2;
             y += global.screenHeight / 2;
-            drawEntity(
-                x,
-                y,
-                instance,
-                ratio,
-                instance.id === gui.playerid || global.showInvisible
-                    ? instance.alpha
-                        ? instance.alpha * 0.6 + 0.4
-                        : 0.25
-                    : instance.alpha,
-                1.1,
-                instance.render.f
-            );
+            drawEntity(x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.6 + 0.4 : 0.25 : instance.alpha, 1.1, instance.render.f);
         }
         if (!config.graphical.screenshotMode) {
             for (let instance of global.entities) {
@@ -1683,53 +1652,47 @@ const gameDraw = (ratio, drawRatio) => {
                 col = color[skill.color],
                 cap = skill.softcap,
                 maxLevel = skill.cap;
-            if (cap) {
-                len = save;
-                let max = config.gui.expectedMaxSkillLevel,
-                    extension = cap > max,
-                    blocking = cap < maxLevel;
-                if (extension) {
-                    max = cap;
-                }
-                drawBar(x + height / 2, x - height / 2 + len * ska(cap), y + height / 2, height - 3 + config.graphical.barChunk, color.black);
-                drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(cap), y + height / 2, height - 3, color.grey);
-                drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(level), y + height / 2, height - 3.5, col);
-                // Blocked-off area
-                if (blocking) {
-                    ctx.lineWidth = 1;
-                    ctx.strokeStyle = color.grey;
-                    for (let j = cap + 1; j < max; j++) {
-                        drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
-                    }
-                }
-                // Vertical dividers
-                ctx.strokeStyle = color.black;
+            if (!cap) return;
+            len = save;
+            let max = config.gui.expectedMaxSkillLevel,
+                extension = cap > max,
+                blocking = cap < maxLevel;
+            if (extension) {
+                max = cap;
+            }
+            drawBar(x + height / 2, x - height / 2 + len * ska(cap), y + height / 2, height - 3 + config.graphical.barChunk, color.black);
+            drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(cap), y + height / 2, height - 3, color.grey);
+            drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(level), y + height / 2, height - 3.5, col);
+            // Blocked-off area
+            if (blocking) {
                 ctx.lineWidth = 1;
-                for (let j = 1; j < level + 1; j++) {
+                ctx.strokeStyle = color.grey;
+                for (let j = cap + 1; j < max; j++) {
                     drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
                 }
-                // Skill name
-                len = save * ska(max);
-                let textcolor =
-                    level == maxLevel
-                        ? col
-                        : !gui.points || (cap !== maxLevel && level == cap)
-                        ? color.grey
-                        : color.guiwhite;
-                text.skillNames[ticker - 1].draw(name, Math.round(x + len / 2) + 0.5, y + height / 2, height - 5, textcolor, "center", true);
-                // Skill key
-                text.skillKeys[ticker - 1].draw("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
-                if (textcolor === color.guiwhite) {
-                    // If it's active
-                    global.clickables.stat.place(ticker - 1, x, y, len, height);
-                }
-                // Skill value
-                if (level) {
-                    text.skillValues[ticker - 1].draw(textcolor === col ? "MAX" : "+" + level, Math.round(x + len + 4) + 0.5, y + height / 2, height - 5, col, "left", true);
-                }
-                // Move on
-                y -= height + vspacing;
             }
+            // Vertical dividers
+            ctx.strokeStyle = color.black;
+            ctx.lineWidth = 1;
+            for (let j = 1; j < level + 1; j++) {
+                drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
+            }
+            // Skill name
+            len = save * ska(max);
+            let textcolor = level == maxLevel ? col : !gui.points || (cap !== maxLevel && level == cap) ? color.grey : color.guiwhite;
+            text.skillNames[ticker - 1].draw(name, Math.round(x + len / 2) + 0.5, y + height / 2, height - 5, textcolor, "center", true);
+            // Skill key
+            text.skillKeys[ticker - 1].draw("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
+            if (textcolor === color.guiwhite) {
+                // If it's active
+                global.clickables.stat.place(ticker - 1, x, y, len, height);
+            }
+            // Skill value
+            if (level) {
+                text.skillValues[ticker - 1].draw(textcolor === col ? "MAX" : "+" + level, Math.round(x + len + 4) + 0.5, y + height / 2, height - 5, col, "left", true);
+            }
+            // Move on
+            y -= height + vspacing;
         });
         global.clickables.hover.place(0, 0, y, 0.8 * len, 0.8 * (global.screenHeight - y));
         if (gui.points !== 0) {

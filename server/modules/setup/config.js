@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 const defaults = require("../../config.json");
 
 const gamemode = "4TDM"; // keep it as ffa
@@ -486,13 +477,17 @@ const mode = gamemodes[gamemode];
 let output = {};
 for (let key in defaults) {
     output[key] = defaults[key];
-    if (mode[key]) output[key] = mode[key];
+    if (mode[key]) {
+        output[key] = mode[key];
+    }
 }
 
 output.gameModeName = gamemode;
-if (["Tag", "Domination", "Mothership"].includes(gamemode)) output.gameModeName = `${output.TEAMS} TDM ${gamemode}`;
-if (gamemode === "Open TDM") output.gameModeName = `Open ${output.TEAMS} TDM`;
+if (["Tag", "Domination", "Mothership"].includes(gamemode)) {
+    output.gameModeName = `${output.TEAMS} TDM ${gamemode}`;
+}
+if (gamemode === "Open TDM") {
+    output.gameModeName = `Open ${output.TEAMS} TDM`;
+}
 
-module.exports = {
-    output
-};
+module.exports = { output };

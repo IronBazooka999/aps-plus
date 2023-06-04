@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 function simplecollide(my, n) {
     let diff = (1 + util.getDistance(my, n) / 2) * roomSpeed;
     let a = (my.intangibility) ? 1 : my.pushability,
@@ -197,20 +188,8 @@ function advancedcollide(my, n, doDamage, doInelastic, nIsFirmCollide = false) {
                     // Calculate base damage
                     let resistDiff = my.health.resist - n.health.resist,
                         damage = {
-                            _me: c.DAMAGE_CONSTANT *
-                                my.damage *
-                                (1 + resistDiff) *
-                                (1 + n.heteroMultiplier * (my.settings.damageClass === n.settings.damageClass)) *
-                                ((my.settings.buffVsFood && n.settings.damageType === 1) ? 3 : 1) *
-                                my.damageMultiplier() *
-                                Math.min(2, Math.max(speedFactor._me, 1) * speedFactor._me),
-                            _n: c.DAMAGE_CONSTANT *
-                                n.damage *
-                                (1 - resistDiff) *
-                                (1 + my.heteroMultiplier * (my.settings.damageClass === n.settings.damageClass)) *
-                                ((n.settings.buffVsFood && my.settings.damageType === 1) ? 3 : 1) *
-                                n.damageMultiplier() *
-                                Math.min(2, Math.max(speedFactor._n, 1) * speedFactor._n),
+                            _me: c.DAMAGE_CONSTANT * my.damage * (1 + resistDiff) * (1 + n.heteroMultiplier  * (my.settings.damageClass === n.settings.damageClass)) * ((my.settings.buffVsFood && n.settings.damageType === 1) ? 3 : 1) * my.damageMultiplier() * Math.min(2, Math.max(speedFactor._me, 1) * speedFactor._me),
+                            _n:  c.DAMAGE_CONSTANT * n.damage  * (1 - resistDiff) * (1 + my.heteroMultiplier * (my.settings.damageClass === n.settings.damageClass)) * ((n.settings.buffVsFood && my.settings.damageType === 1) ? 3 : 1) * n.damageMultiplier()  * Math.min(2, Math.max(speedFactor._n , 1) * speedFactor._n ),
                         };
                     // Advanced damage calculations
                     if (my.settings.ratioEffects) {

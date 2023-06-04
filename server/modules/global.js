@@ -1,14 +1,6 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 // Global Utilities Requires
+let EventEmitter = require('events');
+global.events = new EventEmitter();
 global.c = require("./setup/config.js").output;
 global.c.port = process.env.PORT || c.port;
 global.ran = require(".././lib/random.js");
@@ -96,8 +88,10 @@ const requires = [
 
 for (let file of requires) {
     const module = require(file);
-    for (let key in module)
+    if (module.init) module.init(global);
+    for (let key in module) {
         if (module.hasOwnProperty(key)) global[key] = module[key];
+    }
 }
 
 module.exports = {

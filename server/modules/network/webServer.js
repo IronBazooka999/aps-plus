@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 const express = require("express");
 const expressWs = require("express-ws");
 const minify = require("express-minify");
@@ -15,7 +6,7 @@ const path = require("path");
 const server = express();
 server.use(express.json());
 expressWs(server);
-server.use(minify());
+if (!/localhost:\d*/.test(c.host)) server.use(minify());
 server.use(cors());
 if (c.servesStatic) {
     server.use(express.static(path.join(__dirname, "../../../public")));

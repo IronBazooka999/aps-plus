@@ -8,14 +8,13 @@
     "build": "node standaloneClient/build minify"
   },
   "dependencies": {
-    "google-closure-library": "latest",
-    "node-fetch": "latest",
-    "express": "latest",
-    "express-ws": "latest",
-    "express-minify": "latest",
     "cors": "latest",
+    "express": "latest",
+    "express-minify": "latest",
+    "express-ws": "latest",
     "forwarded-for": "latest",
     "javascript-obfuscator": "latest",
+    "node-fetch": "latest",
     "uglify-js": "latest"
   },
   "engines": {

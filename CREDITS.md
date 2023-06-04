@@ -40,6 +40,10 @@
 
 ## And most importantly...
 
+### Taureon
+
+- Master Upgrade of this Template
+
 ### CX & Damocles
 
 - Current active Arras.io developers

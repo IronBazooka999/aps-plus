@@ -1,11 +1,6 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require("google-closure-library");
-goog.require("goog.structs.PriorityQueue");
-goog.require("goog.structs.QuadTree");
+let EventEmitter = require('events'),
+    events,
+    init = g => events = g.events;
 
 class Gun {
     constructor(body, info) {
@@ -114,8 +109,7 @@ class Gun {
         if (this.canShoot && !this.body.settings.hasNoRecoil) {
             // Apply recoil to motion
             if (this.motion > 0) {
-                let recoilForce =
-                    (-this.position * this.trueRecoil * 0.045) / roomSpeed;
+                let recoilForce = (-this.position * this.trueRecoil * 1.08 / this.body.size) / roomSpeed;
                 this.body.accel.x += recoilForce * Math.cos(this.recoilDir);
                 this.body.accel.y += recoilForce * Math.sin(this.recoilDir);
             }
@@ -353,7 +347,7 @@ class Gun {
         this.recoilDir = this.body.facing + this.angle;
     }
     onShootHitscan() {
-        if (this.body.master.health.amount < 0) break;
+        if (this.body.master.health.amount < 0) return;
         let save = {
             x: this.body.master.x,
             y: this.body.master.y,
@@ -365,30 +359,27 @@ class Gun {
             y: save.y + this.body.master.control.target.y,
         };
         let amount = (util.getDistance(target, save) / s) | 0;
+        let gun = this;
         let explode = (e) => {
-            e.onDead = () => {
-                let o = new Entity(e, this.body);
+            e.on('dead', () => {
+                let o = new Entity(e, gun.body);
                 o.accel = {
                     x: 3 * Math.cos(save.angle),
                     y: 3 * Math.sin(save.angle),
                 };
-                o.color = this.body.master.color;
+                o.color = gun.body.master.color;
                 o.define(Class.hitScanExplosion);
                 // Pass the gun attributes
                 o.define({
-                    BODY: this.interpret(this.settings3),
-                    SKILL: this.getSkillRaw(),
-                    SIZE: (this.body.size * this.width * this.settings3.size) / 2,
-                    LABEL:
-                        this.master.label +
-                        (this.label ? " " + this.label : "") +
-                        " " +
-                        o.label,
+                    BODY: gun.interpret(gun.settings3),
+                    SKILL: gun.getSkillRaw(),
+                    SIZE: (gun.body.size * gun.width * gun.settings3.size) / 2,
+                    LABEL: gun.master.label + (gun.label ? " " + gun.label + " " : " ") + o.label,
                 });
                 o.refreshBodyAttributes();
                 o.life();
-                o.source = this.body;
-            };
+                o.source = gun.body;
+            });
         };
         let branchAlt = 0;
         let branchLength = 0;
@@ -439,13 +430,7 @@ class Gun {
                 if (this.body.master.health.amount < 0) return;
                 let x = save.x + s * Math.cos(save.angle) * i;
                 let y = save.y + s * Math.sin(save.angle) * i;
-                let e = new Entity(
-                    {
-                        x: x,
-                        y: y,
-                    },
-                    this.body
-                );
+                let e = new Entity({ x: x, y: y }, this.body);
                 e.facing = Math.atan2(target.y - y, target.x - x);
                 e.color = this.body.master.color;
                 e.define(Class.hitScanBullet);
@@ -555,8 +540,10 @@ class Gun {
     }
 }
 let entitiesIdLog = 0;
-class Entity {
-    constructor(position, master = this) {
+class Entity extends EventEmitter {
+    constructor(position, master) {
+        super();
+        if (!master) master = this;
         this.isGhost = false;
         this.killCount = {
             solo: 0,
@@ -788,9 +775,10 @@ class Entity {
             };
         })();
         this.updateAABB(true);
-        entities.push(this); // everything else
+        entities.push(this);
         views.forEach((v) => v.add(this));
         this.activation.update();
+        events.emit('spawn', this);
     }
     life() {
         bringToLife(this);
@@ -998,105 +986,19 @@ class Entity {
         if (set.ARENA_CLOSER != null) {
             this.ac = set.ARENA_CLOSER;
         }
-        if (set.UPGRADES_TIER_0 != null) {
-            set.UPGRADES_TIER_0.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_0,
-                    index: e.index,
-                    tier: 0,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_1 != null) {
-            set.UPGRADES_TIER_1.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_1,
-                    index: e.index,
-                    tier: 1,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_2 != null) {
-            set.UPGRADES_TIER_2.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_2,
-                    index: e.index,
-                    tier: 2,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_3 != null) {
-            set.UPGRADES_TIER_3.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_3,
-                    index: e.index,
-                    tier: 3,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_4 != null) {
-            set.UPGRADES_TIER_4.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_4,
-                    index: e.index,
-                    tier: 4,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_5 != null) {
-            set.UPGRADES_TIER_5.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_5,
-                    index: e.index,
-                    tier: 5,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_6 != null) {
-            set.UPGRADES_TIER_6.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_6,
-                    index: e.index,
-                    tier: 6,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_7 != null) {
-            set.UPGRADES_TIER_7.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_7,
-                    index: e.index,
-                    tier: 7,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_8 != null) {
-            set.UPGRADES_TIER_8.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_8,
-                    index: e.index,
-                    tier: 8,
-                });
-            });
-        }
-        if (set.UPGRADES_TIER_9 != null) {
-            set.UPGRADES_TIER_9.forEach((e) => {
-                this.upgrades.push({
-                    class: e,
-                    level: c.TIER_9,
-                    index: e.index,
-                    tier: 9,
-                });
-            });
+        for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
+            let tierProp = 'UPGRADES_TIER_' + i;
+            if (set[tierProp] != null) {
+                for (let j = 0; j < set[tierProp].length; j++) {
+                    let e = set[tierProp][j];
+                    this.upgrades.push({
+                        class: e,
+                        level: c.TIER_MULTIPLIER * i,
+                        index: e.index,
+                        tier: i
+                    });
+                }
+            }
         }
         if (set.SIZE != null) {
             this.SIZE = set.SIZE * this.squiggle;
@@ -1801,8 +1703,7 @@ class Entity {
         this.damageRecieved = 0;
         // Check for death
         if (this.isDead()) {
-            if (this.onDead) this.onDead();
-            if (c.TAG && (this.isPlayer || this.isBot)) tagDeathEvent(this);
+            this.emit('dead');
             // Initalize message arrays
             let killers = [],
                 killTools = [],
@@ -1993,7 +1894,4 @@ class Entity {
         return this.health.amount <= 0;
     }
 }
-module.exports = {
-    Gun,
-    Entity,
-};
+module.exports = { init, Gun, Entity };

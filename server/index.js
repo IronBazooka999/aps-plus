@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-("use strict");
-// General requires
-require("google-closure-library");
-goog.require("goog.structs.PriorityQueue");
-goog.require("goog.structs.QuadTree");
-
 const GLOBAL = require("./modules/global.js");
 console.log(`[${GLOBAL.creationDate}]: Server initialized.\nRoom Info:\n Dimensions: ${room.width} x ${room.height}\n Max Food / Nest Food: ${room.maxFood} / ${room.maxFood * room.nestFoodAmount}`);
 
@@ -357,11 +348,7 @@ let spawnBosses = (census) => {
                 } while (dirtyCheck(spot, 500) && m < 30);
                 let boss = new Entity(spot);
                 boss.name = name;
-                boss.define(
-                    selection.bosses.sort(() => 0.5 - Math.random())[
-                        i % selection.bosses.length
-                    ]
-                );
+                boss.define(selection.bosses.sort(() => 0.5 - Math.random())[i % selection.bosses.length]);
                 boss.team = -100;
             });
         }, 5000);

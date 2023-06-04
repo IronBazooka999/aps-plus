@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require("google-closure-library");
-goog.require("goog.structs.PriorityQueue");
-goog.require("goog.structs.QuadTree");
-
 let Class = (function () {
     const def = require("../../lib/definitions.js");
     let i = 0;
@@ -29,11 +20,6 @@ const skcnv = {
     rgn: 8,
     mob: 9,
 };
-const levelers = [
-    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-    23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-    43, 45,
-];
 
 const botBuilds = [
     [9, 9, 9, 9, 9, 0, 0, 0, 0, 0],
@@ -97,18 +83,7 @@ class Skill {
         // Just skill stuff.
         this.raw = inital;
         this.caps = [];
-        this.setCaps([
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-            c.MAX_SKILL,
-        ]);
+        this.setCaps([ c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL ]);
         this.name = [
             "Reload",
             "Bullet Penetration",
@@ -206,18 +181,7 @@ class Skill {
                 this.deduction += this.levelScore;
                 this.level += 1;
                 this.points += this.levelPoints;
-                if (
-                    this.level == c.TIER_0 ||
-                    this.level == c.TIER_1 ||
-                    this.level == c.TIER_2 ||
-                    this.level == c.TIER_3 ||
-                    this.level == c.TIER_4 ||
-                    this.level == c.TIER_5 ||
-                    this.level == c.TIER_6 ||
-                    this.level == c.TIER_7 ||
-                    this.level == c.TIER_8 ||
-                    this.level == c.TIER_9
-                ) {
+                if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER) {
                     this.canUpgrade = true;
                 }
                 this.update();
@@ -233,13 +197,9 @@ class Skill {
         return this.levelScore ? (this.score - this.deduction) / this.levelScore : 0;
     }
     get levelPoints() {
-        if (
-            levelers.findIndex((e) => {
-                return e === this.level;
-            }) != -1
-        ) {
-            return 1;
-        }
+        if (this.level < 2) return 0;
+        if (this.level <= 40) return 1;
+        if (this.level <= 45 && this.level & 1 == 1) return 1;
         return 0;
     }
     cap(skill, real = false) {
@@ -432,4 +392,4 @@ for (var i = 3; i < 17; i++) {
     lazyRealSizes.push(Math.sqrt(((2 * Math.PI) / i) * (1 / Math.sin((2 * Math.PI) / i))));
 }
 
-module.exports = { Class, skcnv, levelers, Skill, HealthType, dirtyCheck, purgeEntities, bringToLife, lazyRealSizes, botSets };
+module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, bringToLife, lazyRealSizes, botSets };

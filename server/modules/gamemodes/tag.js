@@ -1,13 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 function countPlayers() {
     let teams = [];
     for (let i = 1; i < c.TEAMS + 1; i++) teams.push([-i, 0]);
@@ -33,6 +23,31 @@ function winner(teamId) {
     setTimeout(closeArena, 3e3);
 };
 
+function init(g) {
+    g.events.on('spawn', entity => {
+        entity.on('death', () => {
+            if (!this.isPlayer && !this.isBot) return;
+            let killers = [];
+            for (let entry of entity.collisionArray) {
+                // TODO: fix arbitrary/magic team numbers
+                if (entry.team > -5 && entry.team < 0 && entity.team !== entry.team) {
+                    killers.push(entry);
+                }
+            }
+            if (!killers.length) return;
+            let killer = ran.choose(killers);
+            if (entity.socket) entity.socket.rememberedTeam = -killer.team;
+            if (entity.isBot) global.nextTagBotTeam = -killer.team;
+            /*if (room.width > 1500) {
+              room.width -= 10;
+              room.height -= 10;
+              sockets.broadcastRoom();
+            }*/
+            setTimeout(countPlayers, 1000);
+        });
+    });
+}
+
 function tagDeathEvent(instance) {
     let killers = [];
     for (let entry of instance.collisionArray)
@@ -49,4 +64,4 @@ function tagDeathEvent(instance) {
     setTimeout(countPlayers, 1000);
 }
 
-module.exports = { countPlayers, tagDeathEvent };
+module.exports = { init, countPlayers, tagDeathEvent };

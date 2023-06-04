@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require("google-closure-library");
-goog.require("goog.structs.PriorityQueue");
-goog.require("goog.structs.QuadTree");
-
 const permissions = require("../../permissions.json");
 const getIP = require("forwarded-for");
 
@@ -47,7 +38,7 @@ function close(socket) {
             }
         }
         // Disconnect everything
-        util.log("[INFO] User " + player.name + " disconnected!");
+        util.log("[INFO] " + (player.body ? "User " + player.body.name : "An User without an entity") + " disconnected!");
         util.remove(players, index);
     } else {
         util.log("[INFO] A player disconnected before entering the game.");
@@ -108,28 +99,6 @@ function incoming(message, socket) {
             }
             socket.verified = true;
             util.log("Clients: " + clients.length);
-            /*if (m.length !== 1) { socket.kick('Ill-sized key request.'); return 1; }
-            // Get data
-            // Verify it
-            if (typeof key !== 'string') { socket.kick('Weird key offered.'); return 1; }
-            if (key.length > 64) { socket.kick('Overly-long key offered.'); return 1; }
-            if (socket.status.verified) { socket.kick('Duplicate player spawn attempt.'); return 1; }
-            // Otherwise proceed to check if it's available.
-            if (keys.indexOf(key) != -1) {
-                    // Save the key
-                    socket.key = key.substr(0, 64);
-                    // Make it unavailable
-                    util.remove(keys, keys.indexOf(key));
-                    socket.verified = true;
-                    // Proceed
-                    socket.talk('w', true);
-                    util.log('[INFO] A socket was verified with the token: '); util.log(key);
-                    util.log('Clients: ' + clients.length);
-            } else {
-                    // If not, kick 'em (nicely)
-                    util.log('[INFO] Invalid player verification attempt.');
-                    socket.lastWords('w', false);
-            }*/
             break;
         case "s":
             // spawn request
@@ -306,6 +275,12 @@ function incoming(message, socket) {
                 case 2:
                     given = "override";
                     break;
+                case 3: //reverse mouse does nothing server-side, it's easier to make the client send swapped inputs
+                    given = "reverse mouse";
+                    break;
+                case 4: //reverse tank does nothing server-side, it's easier to make the client turn around 180 degrees
+                    given = "reverse tank";
+                    break;
                 // Kick if it sent us shit.
                 default:
                     socket.kick("Bad toggle.");
@@ -315,11 +290,7 @@ function incoming(message, socket) {
             if (player.command != null && player.body != null) {
                 player.command[given] = !player.command[given];
                 // Send a message.
-                player.body.sendMessage(
-                    given.charAt(0).toUpperCase() +
-                        given.slice(1) +
-                        (player.command[given] ? " enabled." : " disabled.")
-                );
+                player.body.sendMessage(given.charAt(0).toUpperCase() + given.slice(1) + (player.command[given] ? " enabled." : " disabled."));
             }
             break;
         case "U":
@@ -329,15 +300,15 @@ function incoming(message, socket) {
                 return 1;
             }
             // Get data
-            let number = m[0];
+            let upgrade = m[0];
             // Verify the request
-            if (typeof number != "number" || number < 0) {
+            if (typeof upgrade != "number" || upgrade < 0) {
                 socket.kick("Bad upgrade request.");
                 return 1;
             }
             // Upgrade it
             if (player.body != null) {
-                player.body.upgrade(number); // Ask to upgrade
+                player.body.upgrade(upgrade); // Ask to upgrade
             }
             break;
         case "x":
@@ -387,11 +358,7 @@ function incoming(message, socket) {
                 return 1;
             }
             // cheatingbois
-            if (
-                player.body != null &&
-                socket.permissions &&
-                socket.permissions.testbedTank
-            ) {
+            if (player.body != null && socket.permissions && socket.permissions.testbedTank) {
                 player.body.define(Class[socket.permissions.testbedTank]);
             }
             break;
@@ -400,20 +367,9 @@ function incoming(message, socket) {
             let possible = []
             for (let i = 0; i < entities.length; i++) {
                 let entry = entities[i];
-                if (entry.type === "miniboss") return entry;
-                if (
-                    entry.isDominator ||
-                    entry.isMothership ||
-                    entry.isArenaCloser
-                )
-                    possible.push(entry);
-                if (
-                    c.MODE === "tdm" &&
-                    -socket.rememberedTeam === entry.team &&
-                    entry.type === "tank" &&
-                    entry.bond == null
-                )
-                    possible.push(entry);
+                if (entry.type === "miniboss") possible.push(entry);
+                if (entry.isDominator || entry.isMothership || entry.isArenaCloser) possible.push(entry);
+                if (c.MODE === "tdm" && -socket.rememberedTeam === entry.team && entry.type === "tank" && entry.bond == null) possible.push(entry);
             }
             if (!possible.length) {
                 socket.talk("m", "There are no entities to spectate!");
@@ -654,18 +610,18 @@ function container(player) {
 // This makes a number for transmission
 function getstuff(s) {
     let val = '';
-    //these are in reverse order
-    val += s.amount("shi").toString(16);
-    val += s.amount("rgn").toString(16);
-    val += s.amount("mob").toString(16);
-    val += s.amount("rld").toString(16);
-    val += s.amount("dam").toString(16);
-    val += s.amount("pen").toString(16);
-    val += s.amount("str").toString(16);
-    val += s.amount("spd").toString(16);
-    val += s.amount("hlt").toString(16);
-    val += s.amount("atk").toString(16);
-    return val.toString(16);
+    //these have to be in reverse order
+    val += s.amount("shi").toString(16).padStart(2, '0');
+    val += s.amount("rgn").toString(16).padStart(2, '0');
+    val += s.amount("mob").toString(16).padStart(2, '0');
+    val += s.amount("rld").toString(16).padStart(2, '0');
+    val += s.amount("dam").toString(16).padStart(2, '0');
+    val += s.amount("pen").toString(16).padStart(2, '0');
+    val += s.amount("str").toString(16).padStart(2, '0');
+    val += s.amount("spd").toString(16).padStart(2, '0');
+    val += s.amount("hlt").toString(16).padStart(2, '0');
+    val += s.amount("atk").toString(16).padStart(2, '0');
+    return val;
 }
 // These are the methods
 function update(gui) {

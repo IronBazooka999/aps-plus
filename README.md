@@ -1,4 +1,4 @@
-# APS+ 
+# APS++
 Originally made by Oblivion#3940 (aka z46-dev), then continued by Zenphia#5994 and optimized by damocles#0001 (https://github.com/SpanksMcYeet/) and then further optimised by Taureon#5684 (https://github.com/Taureon/)
 
 ## Setting up your server

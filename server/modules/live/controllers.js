@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 // Define IOs (AI)
 class IO {
     constructor(body) {
@@ -384,6 +375,7 @@ class io_nearestDifferentMaster extends IO {
         for (let i = 0; i < this.body.guns.length; i++) {
             if (this.body.guns[i].canShoot && !this.body.aiSettings.SKYNET) {
                 let v = this.body.guns[i].getTracking();
+                if (v.speed == 0 || v.range == 0) continue;
                 tracking = v.speed;
                 //if (!this.body.isPlayer || this.body.type === "miniboss" || this.body.master !== this.body) range = 640 * this.body.FOV;
                 //else range = Math.min(range, (v.speed || 1) * (v.range || 90));
@@ -398,17 +390,15 @@ class io_nearestDifferentMaster extends IO {
             range = 640 * this.body.FOV;
         }
         // Check if my target's alive
-        if (this.targetLock) {
-            if (!this.validate(this.targetLock, {
-                    x: this.body.x,
-                    y: this.body.y,
-                }, {
-                    x: this.body.master.master.x,
-                    y: this.body.master.master.y,
-                }, range * range, range * range * 4 / 3)) {
-                this.targetLock = undefined;
-                this.tick = 100;
-            }
+        if (this.targetLock && !this.validate(this.targetLock, {
+                x: this.body.x,
+                y: this.body.y,
+            }, {
+                x: this.body.master.master.x,
+                y: this.body.master.master.y,
+            }, range * range, range * range * 4 / 3)) {
+            this.targetLock = undefined;
+            this.tick = 100;
         }
         // Think damn hard
         if (this.tick++ > 15 * roomSpeed) {

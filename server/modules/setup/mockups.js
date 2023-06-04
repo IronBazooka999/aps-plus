@@ -1,12 +1,3 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
 function rounder(val) {
     if (Math.abs(val) < 0.00001) val = 0;
     return +val.toPrecision(6);
@@ -157,35 +148,37 @@ function getDimensions(entities) {
     };
     // 3) Choose three different points (hopefully ones very far from each other)
     let chooseFurthestAndRemove = function(furthestFrom) {
-        let index = 0;
+        let indexFurthest = 0;
         if (furthestFrom != -1) {
-            let list = new goog.structs.PriorityQueue();
-            let d;
+            let distanceFurthest = -Infinity;
             for (let i = 0; i < endpoints.length; i++) {
                 let thisPoint = endpoints[i];
-                d = Math.pow(thisPoint.x - furthestFrom.x, 2) + Math.pow(thisPoint.y - furthestFrom.y, 2) + 1;
-                list.enqueue(1 / d, i);
+                let distance = Math.pow(thisPoint.x - furthestFrom.x, 2) + Math.pow(thisPoint.y - furthestFrom.y, 2);
+                if (distanceFurthest < distance) {
+                    distanceFurthest = distance;
+                    indexFurthest = i;
+                }
             }
-            index = list.dequeue();
         }
-        let output = endpoints[index];
-        endpoints.splice(index, 1);
+        let output = endpoints[indexFurthest];
+        endpoints.splice(indexFurthest, 1);
         return output;
     };
     let point1 = chooseFurthestAndRemove(massCenter);
     let point2 = chooseFurthestAndRemove(point1);
     let chooseBiggestTriangleAndRemove = function(point1, point2) {
-        let list = new goog.structs.PriorityQueue();
-        let index = 0;
-        let a;
+        let distanceFurthest = -Infinity,
+            indexFurthest = 0;
         for (let i = 0; i < endpoints.length; i++) {
             let thisPoint = endpoints[i];
-            a = Math.pow(thisPoint.x - point1.x, 2) + Math.pow(thisPoint.y - point1.y, 2) + Math.pow(thisPoint.x - point2.x, 2) + Math.pow(thisPoint.y - point2.y, 2);
-            list.enqueue(1 / a, i);
+            let distance = Math.pow(thisPoint.x - point1.x, 2) + Math.pow(thisPoint.y - point1.y, 2) + Math.pow(thisPoint.x - point2.x, 2) + Math.pow(thisPoint.y - point2.y, 2);
+            if (distanceFurthest < distance) {
+                distanceFurthest = distance;
+                indexFurthest = i;
+            }
         }
-        index = list.dequeue();
-        let output = endpoints[index];
-        endpoints.splice(index, 1);
+        let output = endpoints[indexFurthest];
+        endpoints.splice(indexFurthest, 1);
         return output;
     };
     let point3 = chooseBiggestTriangleAndRemove(point1, point2);
@@ -211,11 +204,7 @@ function getDimensions(entities) {
         let r2 = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
         let r3 = Math.sqrt(Math.pow(x - x3, 2) + Math.pow(y - y3, 2));
         //if (r != r2 || r != r3) util.log("Something is up with the mockups generation!");
-        return {
-            x: x,
-            y: y,
-            radius: r
-        };
+        return { x: x, y: y, radius: r };
     }
     let c = circleOfThreePoints(point1, point2, point3);
     pointDisplay = [{

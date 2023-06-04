@@ -1,8 +1,4 @@
-/*jslint node: true */
-"use strict"
-
 // Seed math
-
 exports.random = x => x * Math.random()
 
 exports.randomAngle = () => Math.PI * 2 * Math.random()

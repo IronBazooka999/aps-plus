@@ -1,13 +1,4 @@
-/*jslint node: true */
-/*jshint -W061 */
-/*global goog, Map, let */
-"use strict";
-// General requires
-require('google-closure-library');
-goog.require('goog.structs.PriorityQueue');
-goog.require('goog.structs.QuadTree');
-
-const BossRush = class {
+class BossRush {
     static generateWaves() {
         let bosses = [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer, Class.eliteBattleship, Class.eliteSpawner, Class.roguePalisade, Class.eliteSkimmer, Class.summoner, Class.nestKeeper].sort(() => 0.5 - Math.random())
         let waves = []
@@ -44,7 +35,8 @@ const BossRush = class {
     }
     spawn(loc, team, type = false) {
         type = type ? type : Class.destroyerDominator
-        let o = new Entity(loc)
+        let bossRush = this,
+            o = new Entity(loc)
         o.define(type)
         o.team = team
         o.color = [10, 11, 12, 15][-team - 1] || 3
@@ -53,35 +45,28 @@ const BossRush = class {
         o.SIZE = c.WIDTH / c.X_GRID / 10
         o.isDominator = true
         o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spinWhenIdle(o)]
-        o.onDead = () => {
+        o.on('dead', () => {
             if (o.team === -100) {
-                this.spawn(loc, -1, type)
+                bossRush.spawn(loc, -1, type)
                 room.setType('dom1', loc)
                 sockets.broadcast('A dominator has been captured by BLUE!')
             } else {
-                this.spawn(loc, -100, type)
+                bossRush.spawn(loc, -100, type)
                 room.setType('dom0', loc)
                 sockets.broadcast('A dominator has been captured by the bosses!')
             }
-        }
+        });
     }
     init() {
-        for (let i = 0; i < 1; i++) 
-          this.spawnMothership()
-      
-        for (let loc of room['bas1']) 
-          this.spawn(loc, -1)
-      
+        for (let i = 0; i < 1; i++) this.spawnMothership()
+        for (let loc of room.bas1) this.spawn(loc, -1)
         console.log('Boss rush initialized.')
     }
     getCensus() {
-        let census = {
-            bosses: 0,
-            motherships: 0,
-        }
+        let census = { bosses: 0, motherships: 0 };
         for (let e of entities) {
-            if (e.isBoss) census.bosses++
-            if (e.isMothership) census.motherships++
+            if (e.isBoss) census.bosses++;
+            if (e.isMothership) census.motherships++;
         }
         return census
     }
@@ -108,9 +93,7 @@ const BossRush = class {
                 } while (dirtyCheck(spot, 500) && m < 30)
                 let o = new Entity(spot)
                 o.define(boss)
-                o.define({
-                    DANGER: 25 + o.SIZE / 5
-                })
+                o.define({ DANGER: 25 + o.SIZE / 5 });
                 o.team = -100
                 o.FOV = 10
                 o.refreshBodyAttributes()

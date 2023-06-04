@@ -27,8 +27,7 @@ class CollisionGrid {
         let cellX = Math.floor(toAdd.x * this.gridSize / this.height);
         let cellY = Math.floor(toAdd.y * this.gridSize / this.height);
         this.totalInstances.push(instance);
-        if (!this.grid[cellY]) return this.outOfBoundObjects.push(toAdd);
-        if (!this.grid[cellY][cellX]) return this.outOfBoundObjects.push(toAdd);
+        if (!this.grid[cellY] || !this.grid[cellY][cellX]) return this.outOfBoundObjects.push(toAdd);
         this.grid[cellY][cellX].push(toAdd);
     }
     getCell(instance) {
@@ -82,30 +81,10 @@ class QuadTree {
         let subHeight = this.bounds.height / 2;
         let x = this.bounds.x;
         let y = this.bounds.y;
-        this.branches.push(new QuadTree({
-            x: x + subWidth,
-            y: y,
-            width: subWidth,
-            height: subHeight
-        }, this.maxObjects, this.maxLevels, nextLevel));
-        this.branches.push(new QuadTree({
-            x: x,
-            y: y,
-            width: subWidth,
-            height: subHeight
-        }, this.maxObjects, this.maxLevels, nextLevel));
-        this.branches.push(new QuadTree({
-            x: x,
-            y: y + subHeight,
-            width: subWidth,
-            height: subHeight
-        }, this.maxObjects, this.maxLevels, nextLevel));
-        this.branches.push(new QuadTree({
-            x: x + subWidth,
-            y: y + subHeight,
-            width: subWidth,
-            height: subHeight
-        }, this.maxObjects, this.maxLevels, nextLevel));
+        this.branches.push(new QuadTree({ x: x + subWidth, y: y            , width: subWidth, height: subHeight }, this.maxObjects, this.maxLevels, nextLevel));
+        this.branches.push(new QuadTree({ x: x           , y: y            , width: subWidth, height: subHeight }, this.maxObjects, this.maxLevels, nextLevel));
+        this.branches.push(new QuadTree({ x: x           , y: y + subHeight, width: subWidth, height: subHeight }, this.maxObjects, this.maxLevels, nextLevel));
+        this.branches.push(new QuadTree({ x: x + subWidth, y: y + subHeight, width: subWidth, height: subHeight }, this.maxObjects, this.maxLevels, nextLevel));
     }
     getBranches(object) {
         let output = [];
@@ -144,9 +123,7 @@ class QuadTree {
         let output = this.objects;
         if (this.branches.length)
             for (let i = 0; i < cells.length; i++) output = output.concat(this.branches[cells[i]].retrieve(object));
-        output = output.filter(function(item, index) {
-            return output.indexOf(item) >= index;
-        });
+        output = output.filter((item, index) => output.indexOf(item) >= index);
         return output;
     }
     hitDetection(object, other) {
