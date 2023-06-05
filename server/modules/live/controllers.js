@@ -1,3 +1,21 @@
+let compressMovementOffsets = [
+    { x: 1, y: 0},
+    { x: 1, y: 1},
+    { x: 0, y: 1},
+    { x:-1, y: 1},
+    { x:-1, y: 0},
+    { x:-1, y:-1},
+    { x: 0, y:-1},
+    { x: 1, y:-1}
+],
+compressMovement = (current, goal) => {
+    let offset = compressMovementOffsets[Math.round(( Math.atan2(current.y - goal.y, current.x - goal.x) / (Math.PI * 2) ) * 8 + 4) % 8];
+    return {
+        x: current.x + offset.x,
+        y: current.y + offset.y
+    }
+};
+
 // Define IOs (AI)
 class IO {
     constructor(body) {
@@ -123,7 +141,7 @@ class io_listenToPlayer extends IO {
     }
     // THE PLAYER MUST HAVE A VALID COMMAND AND TARGET OBJECT
     think() {
-        let targ = {
+        let target = {
             x: this.player.target.x,
             y: this.player.target.y,
         }
@@ -135,7 +153,7 @@ class io_listenToPlayer extends IO {
               if (this.player.command.rmb) thing = thing * -1
               kk += thing
             }
-            targ = {
+            target = {
                 x: 100 * Math.cos(kk),
                 y: 100 * Math.sin(kk),
             }
@@ -146,18 +164,15 @@ class io_listenToPlayer extends IO {
             }
         }
         this.body.autoOverride = this.player.command.override
-        let left = this.player.command.lmb
-        let right = this.player.command.rmb
-        left = this.player.command.autofire || left
+        let fire = this.player.command.autofire || this.player.command.lmb,
+            alt = this.player.command.autoalt || this.player.command.rmb;
         return {
-            target: targ,
+            target: target, fire, alt,
             goal: {
                 x: this.body.x + this.player.command.right - this.player.command.left,
                 y: this.body.y + this.player.command.down - this.player.command.up,
             },
-            fire: left,
-            main: left || this.player.command.autospin,
-            alt: right
+            main: fire || this.player.command.autospin
         }
     }
 }
@@ -289,6 +304,23 @@ class io_mapAltToFire extends IO {
         if (input.alt) {
             return {
                 fire: true,
+            }
+        }
+    }
+}
+class io_mapFireToAltIfHasAltFireGun extends IO {
+    constructor(body) {
+        super(body);
+    }
+
+    think(input) {
+        if (input.fire) {
+            for (let i = 0; i < this.body.guns.length; i++) {
+                if (this.body.guns[i].altFire) {
+                    return {
+                        alt: true,
+                    }
+                }
             }
         }
     }
@@ -802,6 +834,22 @@ class io_longZoom extends IO {
         }
     }
 }
+class io_wanderAroundMap extends IO {
+    constructor(b, opts = {}) {
+        super(b);
+        this.immitatePlayerMovement = opts.immitatePlayerMovement;
+        this.spot = room.randomType('norm');
+    }
+    think(input) {
+        let vector = new Vector( this.body.x - this.spot.x, this.body.y - this.spot.y );
+        if (vector.length < 50) this.spot = room.randomType('norm');
+        if (input.goal == null && !this.body.autoOverride) {
+            let goal = this.spot;
+            if (this.immitatePlayerMovement) goal = compressMovement(this.body, goal);
+            return { target: this.spot, goal };
+        }
+    }
+}
 
 let ioTypes = {
     slowSpin: io_slowSpin,
@@ -817,6 +865,7 @@ let ioTypes = {
     alwaysFire: io_alwaysFire,
     targetSelf: io_targetSelf,
     mapAltToFire: io_mapAltToFire,
+    mapFireToAltIfHasAltFireGun: io_mapFireToAltIfHasAltFireGun,
     onlyAcceptInArc: io_onlyAcceptInArc,
     nearestDifferentMaster: io_nearestDifferentMaster,
     avoid: io_avoid,
@@ -831,11 +880,9 @@ let ioTypes = {
     dontTurn: io_dontTurn,
     dontTurnDominator: io_dontTurnDominator,
     fleeAtLowHealth: io_fleeAtLowHealth,
+    wanderAroundMap: io_wanderAroundMap,
     zoom: io_zoom,
     longZoom: io_longZoom
 };
 
-module.exports = {
-    ioTypes,
-    IO
-};
+module.exports = { ioTypes, IO };

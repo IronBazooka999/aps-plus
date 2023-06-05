@@ -387,53 +387,6 @@ let spawnCrasher = (census) => {
     }
 };
 
-function spawnBot(TEAM = null) {
-    let set = ran.choose(botSets);
-    let team = TEAM ? TEAM : getTeam();
-    const botName = ran.chooseBotName();
-    let color = [10, 11, 12, 15][team - 1];
-    if (room.gameMode === "ffa")
-        color = c.RANDOM_COLORS ? Math.floor(Math.random() * 20) : 12;
-    let loc = c.SPECIAL_BOSS_SPAWNS
-        ? room.randomType("nest")
-        : room.randomType("norm");
-    let o = new Entity(loc);
-    o.color = color;
-    o.invuln = true;
-    o.define(Class[set.startClass]);
-    o.name += botName;
-    o.refreshBodyAttributes();
-    o.color = color;
-    if (room.gameMode === "tdm") o.team = -team;
-    o.skill.score = 23500;
-    o.isBot = true;
-    if (c.GROUPS) {
-        let master = {
-            player: {
-                body: o,
-            },
-        };
-        groups.addMember(master);
-        o.team = -master.rememberedTeam;
-        o.ondead = function () {
-            groups.removeMember(master);
-        };
-    }
-    setTimeout(function () {
-        if (!o || o.isDead()) return;
-        const index = o.index;
-        let className = set.startClass;
-        for (let key in Class) if (Class[key].index === index) className = key;
-        o.define(Class[set.ai]);
-        o.define(Class[className]);
-        o.refreshBodyAttributes();
-        o.name += botName;
-        o.invuln = false;
-        o.skill.set(set.build);
-    }, 3000 + Math.floor(Math.random() * 7000));
-    return o;
-}
-
 // Make base protectors if needed.
 for (let team = 1; team < 5; team++) {
     room["bap" + team].forEach((loc) => {
@@ -454,7 +407,8 @@ let makenpcs = () => {
         mothership: 0,
         sanctuary: 0,
     };
-    let npcs = entities.map(instance => {
+    let npcs = entities.filter(e => e)
+    .map(instance => {
         if (instance.isSanctuary) {
             census.sanctuary++;
             return instance;
@@ -467,29 +421,58 @@ let makenpcs = () => {
             census.mothership++;
             return instance;
         }
-    })
-    .filter((e) => {
-        return e;
     });
     // Spawning
     spawnCrasher(census);
     spawnBosses(census);
-    // Bots
-    if (bots.length < c.BOTS && !global.arenaClosed)
-        bots.push(spawnBot(global.nextTagBotTeam || null));
-    // Remove dead ones
-    bots = bots.filter((e) => {
-        return !e.isDead();
-    });
-    // Slowly upgrade them
-    loopThrough(bots, function (o) {
-        if (o.skill.level < 45) {
-            o.skill.score += 35;
-            o.skill.maintain();
+
+    // remove dead bots
+    bots = bots.filter(e => !e.isDead());
+
+    // upgrade existing ones
+    for (let i = 0; i < bots.length; i++) {
+        let o = bots[i];
+        if (o.skill.level < c.SKILL_CAP) o.skill.score += 125;
+        o.skill.maintain();
+        o.skillUp([ "atk", "hlt", "spd", "str", "pen", "dam", "rld", "mob", "rgn", "shi" ][ran.chooseChance(1, 1, 3, 4, 4, 4, 4, 2, 1, 1)]);
+        if (o.leftoverUpgrades && o.upgrade(ran.irandomRange(0, o.upgrades.length))) o.leftoverUpgrades--;
+    }
+
+    // then add new bots
+    if (bots.length < c.BOTS) {
+        let o = new Entity(room.randomType("norm")),
+            color = 17,
+            team = o.id;
+        if (c.RANDOM_COLORS && room.gameMode === "ffa") {
+            color = Math.floor(Math.random() * 20);
+        } else if (room.gameMode === "tdm") {
+            team = getTeam(0);
+            color = [10, 11, 12, 15][team - 1];
+            team = -team;
         }
-        if (o.upgrades.length && Math.random() > 0.5)
-            o.upgrade(Math.floor(Math.random() * o.upgrades.length));
-    });
+        o.define(Class.bot);
+        o.define(Class.basic);
+        o.refreshBodyAttributes();
+        o.isBot = true;
+        o.team = team;
+        o.color = color;
+        o.name += ran.chooseBotName();
+        o.leftoverUpgrades = ran.chooseChance(1, 5, 20, 37, 37); //some guy in discord once suggested that some bots shouldnt upgrade to latest tier
+        bots.push(o);
+
+        //TODO: add support for tag mode
+        //NOTE: this code will
+        // if (c.GROUPS) {
+        //     let master = {
+        //         player: {
+        //             body: o,
+        //         },
+        //     };
+        //     groups.addMember(master);
+        //     o.team = -master.rememberedTeam;
+        //     o.on('dead', () => groups.removeMember(master));
+        // }
+    }
 };
 
 // Place obstacles

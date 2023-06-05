@@ -141,7 +141,6 @@ function getColor(colorNumber) {
         case 11:
             return color.green;
         case 12:
-        case "FFA_RED":
             return color.red;
         case 13:
             return color.gold;
@@ -1133,8 +1132,8 @@ const timingGraph = graph(),
     gapGraph = graph();
 // The skill bar dividers
 let skas = [];
-for (let i = 0; i < config.gui.expectedMaxSkillLevel * 2; i++) {
-    skas.push(Math.log(4 * (i / config.gui.expectedMaxSkillLevel) + 1) / Math.log(5));
+for (let i = 0; i < 256; i++) { //if you want to have more skill levels than 255, then update this
+    skas.push(Math.log(4 * (i / 9) + 1) / Math.log(5));
 }
 const ska = (x) => skas[x];
 // Text objects
@@ -1654,7 +1653,7 @@ const gameDraw = (ratio, drawRatio) => {
                 maxLevel = skill.cap;
             if (!cap) return;
             len = save;
-            let max = config.gui.expectedMaxSkillLevel,
+            let max = 0,
                 extension = cap > max,
                 blocking = cap < maxLevel;
             if (extension) {

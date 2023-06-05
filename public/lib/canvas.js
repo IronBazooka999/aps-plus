@@ -65,6 +65,9 @@ class Canvas {
             case global.KEY_MAX_STAT:
                 global.statMaxing = true;
                 break;
+            case global.KEY_SUICIDE:
+                this.parent.socket.talk('1');
+                break;
         }
         if (!event.repeat) {
             switch (event.keyCode) {
@@ -81,49 +84,24 @@ class Canvas {
                     this.inverseMouse = !this.inverseMouse;
                     this.parent.socket.talk('t', 3);
                     break;
-                case global.KEY_REVERSE_TANK: //client side only, no server effets except message
+                case global.KEY_REVERSE_TANK: //client side only, no server effects except message
                     this.reverseDirection = !this.reverseDirection;
                     this.parent.socket.talk('t', 4);
                     break;
+                case global.KEY_AUTO_ALT:
+                    this.parent.socket.talk('t', 5);
                 case global.KEY_CLASS_TREE:
                     global.showTree = !global.showTree;
                     break;
             }
             if (global.canSkill) {
-                for (let i = 0; i < 1 + (8 * global.statMaxing); i ++) {
-                    switch (event.keyCode) {
-                        case global.KEY_UPGRADE_ATK:
-                            this.parent.socket.talk('x', 0);
-                            break;
-                        case global.KEY_UPGRADE_HTL:
-                            this.parent.socket.talk('x', 1);
-                            break;
-                        case global.KEY_UPGRADE_SPD:
-                            this.parent.socket.talk('x', 2);
-                            break;
-                        case global.KEY_UPGRADE_STR:
-                            this.parent.socket.talk('x', 3);
-                            break;
-                        case global.KEY_UPGRADE_PEN:
-                            this.parent.socket.talk('x', 4);
-                            break;
-                        case global.KEY_UPGRADE_DAM:
-                            this.parent.socket.talk('x', 5);
-                            break;
-                        case global.KEY_UPGRADE_RLD:
-                            this.parent.socket.talk('x', 6);
-                            break;
-                        case global.KEY_UPGRADE_MOB:
-                            this.parent.socket.talk('x', 7);
-                            break;
-                        case global.KEY_UPGRADE_RGN:
-                            this.parent.socket.talk('x', 8);
-                            break;
-                        case global.KEY_UPGRADE_SHI:
-                            this.parent.socket.talk('x', 9);
-                            break;
-                    }
-                }
+                let skill = [
+                    global.KEY_UPGRADE_ATK, global.KEY_UPGRADE_HTL, global.KEY_UPGRADE_SPD,
+                    global.KEY_UPGRADE_STR, global.KEY_UPGRADE_PEN, global.KEY_UPGRADE_DAM,
+                    global.KEY_UPGRADE_RLD, global.KEY_UPGRADE_MOB, global.KEY_UPGRADE_RGN,
+                    global.KEY_UPGRADE_SHI
+                ].indexOf(event.keyCode);
+                if (skill >= 0) this.parent.socket.talk('x', skill, 1 + 10 * global.statMaxing);
             }
             if (global.canUpgrade) {
                 switch (event.keyCode) {

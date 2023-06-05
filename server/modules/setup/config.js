@@ -200,8 +200,8 @@ const gamemodes = {
         MODE: "tdm",
         TEAMS: 4,
         ROOM_SETUP: [
-            ["bap1", "bas1", "norm", "norm", "norm", "roid", "roid", "norm", "norm", "norm", "bas3", "bap3"],
-            ["bas1", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas3", "bas3"],
+            ["bas1", "bas1", "norm", "norm", "norm", "roid", "roid", "norm", "norm", "norm", "bas3", "bas3"],
+            ["bas1", "bap1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bap3", "bas3"],
             ["norm", "norm", "rock", "norm", "norm", "norm", "norm", "norm", "norm", "rock", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "roid", "nest", "nest", "norm", "roid", "norm", "norm", "norm"],
@@ -210,8 +210,8 @@ const gamemodes = {
             ["norm", "norm", "norm", "norm", "roid", "nest", "nest", "norm", "roid", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "rock", "norm", "norm", "norm", "norm", "norm", "norm", "rock", "norm", "norm"],
-            ["bas4", "bas4", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bas2"],
-            ["bap4", "bas4", "norm", "norm", "norm", "roid", "roid", "norm", "norm", "norm", "bas2", "bap2"]
+            ["bas4", "bap4", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bap2", "bas2"],
+            ["bas4", "bas4", "norm", "norm", "norm", "roid", "roid", "norm", "norm", "norm", "bas2", "bas2"]
         ],
         BOTS: 16
     },
@@ -376,8 +376,8 @@ const gamemodes = {
         X_GRID: 15,
         Y_GRID: 15,
         ROOM_SETUP: [
-            ["bap1", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["bas1", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["bas1", "bap1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "dom0", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
@@ -389,8 +389,8 @@ const gamemodes = {
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "dom0", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
-            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bas2"],
-            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bap2"]
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bap2", "bas2"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bas2"]
         ],
         DOMINATOR_LOOP: true,
         secondaryGameMode: "Domination",
@@ -404,8 +404,8 @@ const gamemodes = {
         WIDTH: 6500,
         HEIGHT: 6500,
         ROOM_SETUP: [
-            ["bap1", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas3", "bap3"],
             ["bas1", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas3", "bas3"],
+            ["bas1", "bap1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bap3", "bas3"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "dom0", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
@@ -417,8 +417,8 @@ const gamemodes = {
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
             ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "dom0", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
-            ["bas4", "bas4", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bas2"],
-            ["bap4", "bas4", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bap2"]
+            ["bas4", "bap4", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bap2", "bas2"],
+            ["bas4", "bas4", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "bas2"]
         ],
         DOMINATOR_LOOP: true,
         secondaryGameMode: "Domination",

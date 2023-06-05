@@ -36,6 +36,7 @@
     "Y_GRID": 12,
     "DAMAGE_CONSTANT": 0.5,
     "KNOCKBACK_CONSTANT": 1.5,
+    "GLASS_HEALTH_FACTOR": 2,
     "ROOM_BOUND_FORCE": 0.01,
     "FOOD": [0, 0.75, 0.22, 0.1, 0.005, 0, 0],
     "FOOD_NEST": [0, 0.0, 0.0, 0.75, 0.23, 0.02, 0],

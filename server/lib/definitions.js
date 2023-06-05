@@ -36,16 +36,16 @@ const setBuild = (build) => {
 };
 let config = require("../config.json");
 let skcnv = {
+    atk: 6,
+    spd: 4,
+    dam: 3,
+    shi: 5,
+    str: 2,
+    mob: 9,
     rld: 0,
     pen: 1,
-    str: 2,
-    dam: 3,
-    spd: 4,
-    shi: 5,
-    atk: 6,
-    hlt: 7,
     rgn: 8,
-    mob: 9,
+    hlt: 7,
 };
 const skillSet = (args) => {
     let skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -848,7 +848,6 @@ exports.genericEntity = {
     HEALTH_WITH_LEVEL: true,
     CAN_BE_ON_LEADERBOARD: true,
     HAS_NO_RECOIL: false,
-    AUTO_UPGRADE: "none",
     BUFF_VS_FOOD: false,
     OBSTACLE: false,
     CRAVES_ATTENTION: false,
@@ -6756,41 +6755,61 @@ exports.tetraGunner = {
 exports.vulcan = {
     PARENT: [exports.genericTank],
     LABEL: "Vulcan",
-    DANGER: 7,
+    DANGER: 8,
     GUNS: [
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [28, 2, 1, 0, 2.25, 0, 7 / 8],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [28, 2, 1, 0, -2.25, 0, 5 / 8],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [28, 2, 1, 0, 0, 0, 6 / 8],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
             POSITION: [28, 2, 1, 0, 4, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
-            POSITION: [28, 2, 1, 0, -4, 0, 0.8],
+            POSITION: [28, 2, 1, 0, -4, 0, 4 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
-            POSITION: [28, 2, 1, 0, 2.25, 0, 0.2],
+            POSITION: [28, 2, 1, 0, 2.25, 0, 1 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
-            POSITION: [28, 2, 1, 0, -2.25, 0, 0.6],
+            POSITION: [28, 2, 1, 0, -2.25, 0, 3 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
-            POSITION: [28, 2, 1, 0, 0, 0, 0.4],
+            POSITION: [28, 2, 1, 0, 0, 0, 2 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
@@ -16051,38 +16070,9 @@ exports.arenaCloser = {
 
 // BOTS
 exports.bot = {
-    AUTO_UPGRADE: "random",
     FACING_TYPE: "looseToTarget",
-    BODY: {
-        SIZE: 10,
-    },
-    NAME: "ai_",
-    CONTROLLERS: [
-        "nearestDifferentMaster",
-        "mapAltToFire",
-        "minion",
-        "fleeAtLowHealth",
-    ],
-    AI: {
-        STRAFE: true,
-    },
-};
-exports.ramBot = {
-    AUTO_UPGRADE: "random",
-    FACING_TYPE: "looseToTarget",
-    BODY: {
-        SIZE: 10,
-    },
-    NAME: "ai_",
-    CONTROLLERS: [
-        "nearestDifferentMaster",
-        "mapAltToFire",
-        "minion",
-        "fleeAtLowHealth",
-    ],
-    AI: {
-        STRAFE: true,
-    },
+    NAME: "[AI] ",
+    CONTROLLERS: ["nearestDifferentMaster", "mapAltToFire", "minion", "fleeAtLowHealth", "mapFireToAltIfHasAltFireGun", ["wanderAroundMap", { immitatePlayerMovement: true }]],
 };
 
 // SCORE KEEPING
@@ -16813,9 +16803,96 @@ exports.CONQ = {
         },
     ],
 };
+exports.armyOfOneBullet = {
+    PARENT: [exports.bullet],
+    LABEL: "Unstoppable",
+    TURRETS: [
+        {
+            /** SIZE         X             Y         ANGLE        ARC */
+            POSITION: [18.5, 0, 0, 0, 360, 0],
+            TYPE: [exports.spikeBody, { COLOR: null }],
+        },
+        {
+            POSITION: [18.5, 0, 0, 180, 360, 0],
+            TYPE: [exports.spikeBody, { COLOR: null }],
+        },
+    ],
+};
+exports.armyOfOne = {
+    PARENT: [exports.genericTank],
+    LABEL: "Army Of One",
+    DANGER: 9,
+    SKILL_CAP: [31, 31, 31, 31, 31, 31, 31, 31, 31, 31],
+    BODY: {
+        SPEED: 0.5 * base.SPEED,
+        FOV: 1.8 * base.FOV,
+    },
+    GUNS: [
+        {
+            POSITION: [21, 19, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.destroy, g.destroy, g.destroy, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.doublereload, g.doublereload, g.doublereload, g.doublereload]),
+                TYPE: exports.armyOfOneBullet,
+            },
+        },{
+            POSITION: [21, 11, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.destroy, g.destroy, g.destroy, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.doublereload, g.doublereload, g.doublereload, g.doublereload, g.fake]),
+                TYPE: exports.bullet,
+            },
+        }
+    ],
+};
+exports.godbasic = {
+    PARENT: [exports.genericTank],
+    LABEL: "God Basic",
+    SKILL_CAP: [31, 31, 31, 31, 31, 31, 31, 31, 31, 31],
+    SKILL: [ 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 ],
+    BODY: {
+        ACCELERATION: base.ACCEL * 1,
+        SPEED: base.SPEED * 1,
+        HEALTH: base.HEALTH * 1,
+        DAMAGE: base.DAMAGE * 1,
+        PENETRATION: base.PENETRATION * 1,
+        SHIELD: base.SHIELD * 1,
+        REGEN: base.REGEN * 1,
+        FOV: base.FOV * 1,
+        DENSITY: base.DENSITY * 1,
+        PUSHABILITY: 1,
+        HETERO: 3,
+    },
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic]),
+                TYPE: exports.bullet,
+                COLOR: 16,
+                LABEL: "",
+                STAT_CALCULATOR: 0,
+                WAIT_TO_CYCLE: false,
+                AUTOFIRE: false,
+                SYNCS_SKILLS: false,
+                MAX_CHILDREN: 0,
+                ALT_FIRE: false,
+                NEGATIVE_RECOIL: false,
+            },
+        },
+    ],
+};
+
+
+exports.levels   = { PARENT: [exports.testbedBase],        LABEL: "Levels"    };
+exports.level0   = { PARENT: [exports.levels], LEVEL:   0, LABEL: "Level 0"   };
+exports.level15  = { PARENT: [exports.levels], LEVEL:  15, LABEL: "Level 15"  };
+exports.level30  = { PARENT: [exports.levels], LEVEL:  30, LABEL: "Level 30"  };
+exports.level45  = { PARENT: [exports.levels], LEVEL:  45, LABEL: "Level 45"  };
+exports.level60  = { PARENT: [exports.levels], LEVEL:  60, LABEL: "Level 60"  };
+exports.level120 = { PARENT: [exports.levels], LEVEL: 120, LABEL: "Level 120" };
+exports.levels.UPGRADES_TIER_0 = [exports.developer, exports.level0, exports.level15, exports.level30, exports.level45, exports.level60, exports.level120];
 
 // TOKEN "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde];
+exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
@@ -16841,7 +16918,7 @@ exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.game
         exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
-exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser];
+exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser, exports.armyOfOne, exports.godbasic];
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS

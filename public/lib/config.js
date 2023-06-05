@@ -14,9 +14,6 @@ const config = {
         neon: false,
         coloredHealthbars: false
     },
-    gui: {
-        expectedMaxSkillLevel: 9
-    },
     lag: {
         unresponsive: false,
         memory: 60

@@ -1,3 +1,4 @@
+let loop;
 function close() {
     sockets.broadcast("Closing!");
     clearInterval(loop);
@@ -37,7 +38,7 @@ function closeArena() {
         o.name = "Arena Closer";
     }
     let ticks = 0;
-    const loop = setInterval(function checkSurvivors() {
+    loop = setInterval(function checkSurvivors() {
         ticks++;
         if (ticks >= 240) return close();
         let alive = false;

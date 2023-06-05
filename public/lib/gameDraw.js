@@ -81,7 +81,6 @@ function getColor(colorNumber) {
         case 11:
             return color.green;
         case 12:
-        case "FFA_RED":
             return color.red;
         case 13:
             return color.gold;

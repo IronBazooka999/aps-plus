@@ -21,54 +21,6 @@ const skcnv = {
     mob: 9,
 };
 
-const botBuilds = [
-    [9, 9, 9, 9, 9, 0, 0, 0, 0, 0],
-    [8, 8, 8, 8, 8, 0, 0, 0, 0, 5],
-    [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-    [6, 7, 7, 7, 6, 3, 2, 2, 3, 3],
-    [9, 7, 7, 7, 6, 0, 0, 0, 0, 9],
-];
-
-const botSets = [
-    {
-        // Smasher Ram Bots
-        ai: "ramBot",
-        build: [0, 0, 0, 0, 0, 5, 9, 12, 3, 10],
-        startClass: "smasher",
-    },
-    {
-        // Tri-Angle Ram Bots
-        ai: "ramBot",
-        build: [9, 0, 0, 0, 0, 5, 9, 9, 4, 9],
-        startClass: "triAngle",
-    },
-    {
-        // Pounder Bots
-        ai: "bot",
-        build: [3, 8, 8, 8, 7, 0, 0, 3, 0, 7],
-        startClass: "pounder",
-    },
-    {
-        // Sniper Bots
-        ai: "bot",
-        build: [6, 8, 8, 8, 5, 0, 5, 5, 0, 2],
-        startClass: "sniper",
-    },
-    {
-        // Drone Bots
-        ai: "bot",
-        build: [3, 8, 8, 8, 7, 0, 3, 3, 0, 7],
-        startClass: "director",
-    },
-];
-for (let build of botBuilds) {
-    botSets.push({ // All the builds that bots have.
-        ai: "bot",
-        build: build,
-        startClass: "basic",
-    });
-}
-
 let curvePoints = [];
 for (let i = 0; i < c.MAX_SKILL * 2; i++) {
     curvePoints.push(Math.log(4 * (i / c.MAX_SKILL) + 1) / Math.log(5));
@@ -135,18 +87,18 @@ class Skill {
             }
         }
         this.rld = Math.pow(0.5, attrib[skcnv.rld]);
-        this.pen = apply(2.7, attrib[skcnv.pen]);
-        this.str = apply(2.2, attrib[skcnv.str]);
-        this.dam = apply(3.19, attrib[skcnv.dam]);
-        this.spd = 0.5 + apply(1.485, attrib[skcnv.spd]);
+        this.pen = apply(2.5, attrib[skcnv.pen]);
+        this.str = apply(2, attrib[skcnv.str]);
+        this.dam = apply(3, attrib[skcnv.dam]);
+        this.spd = 0.5 + apply(1.5, attrib[skcnv.spd]);
         this.acl = apply(0.5, attrib[skcnv.rld]);
         this.rst = 0.5 * attrib[skcnv.str] + 2.5 * attrib[skcnv.pen];
         this.ghost = attrib[skcnv.pen];
-        this.shi = apply(0.3, attrib[skcnv.shi]);
+        this.shi = c.GLASS_HEALTH_FACTOR * apply(3 / c.GLASS_HEALTH_FACTOR - 1, attrib[skcnv.shi]);
         this.atk = apply(0.021, attrib[skcnv.atk]);
-        this.hlt = apply(0.105, attrib[skcnv.hlt]);
-        this.mob = apply(0.79, attrib[skcnv.mob]);
-        this.rgn = apply(10, attrib[skcnv.rgn]);
+        this.hlt = c.GLASS_HEALTH_FACTOR * apply(2 / c.GLASS_HEALTH_FACTOR - 1, attrib[skcnv.hlt]);
+        this.mob = apply(0.8, attrib[skcnv.mob]);
+        this.rgn = apply(25, attrib[skcnv.rgn]);
         this.brst = 0.3 * (0.5 * attrib[skcnv.atk] + 0.5 * attrib[skcnv.hlt] + attrib[skcnv.rgn]);
     }
     set(thing) {
@@ -392,4 +344,4 @@ for (var i = 3; i < 17; i++) {
     lazyRealSizes.push(Math.sqrt(((2 * Math.PI) / i) * (1 / Math.sin((2 * Math.PI) / i))));
 }
 
-module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, bringToLife, lazyRealSizes, botSets };
+module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, bringToLife, lazyRealSizes };

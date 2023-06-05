@@ -1,4 +1,4 @@
-const permissions = require("../../permissions.json");
+const permissionsDict = require("../../permissions.json");
 const getIP = require("forwarded-for");
 
 let clients = [],
@@ -84,18 +84,19 @@ function incoming(message, socket) {
                 return 1;
             }
             if (socket.status.verified) {
-                socket.kick("Duplicate player spawn attempt.");
+                socket.kick("Duplicate verification attempt.");
                 return 1;
             }
             socket.talk("w", true);
             if (m.length === 1) {
                 let key = m[0].toString().trim();
+                socket.permissions = permissionsDict[key];
+                if (!socket.permissions) {
+                    socket.kick("Invalid key verification attempt.");
+                    return 1;
+                }
+                util.log("[INFO] A socket was verified with the token: " + key);
                 socket.key = key;
-                util.log("[INFO] A socket was verified with the token: ");
-                util.log(key);
-                socket.permissions = permissions.find(
-                    (user) => user.key === key
-                );
             }
             socket.verified = true;
             util.log("Clients: " + clients.length);
@@ -139,7 +140,6 @@ function incoming(message, socket) {
                 socket.makeView();
             }
             socket.party = m[1];
-            console.log(m[1]);
             socket.player = socket.spawn(name);
             //socket.view.gazeUpon();
             //socket.lastUptime = Infinity;
@@ -257,34 +257,27 @@ function incoming(message, socket) {
                 return 1;
             }
             // Get data
-            let given = "",
-                tog = m[0];
+            let tog = m[0];
             // Verify request
             if (typeof tog !== "number") {
                 socket.kick("Weird toggle.");
                 return 1;
             }
-            // Decipher what we're supposed to do.
-            switch (tog) {
-                case 0:
-                    given = "autospin";
-                    break;
-                case 1:
-                    given = "autofire";
-                    break;
-                case 2:
-                    given = "override";
-                    break;
-                case 3: //reverse mouse does nothing server-side, it's easier to make the client send swapped inputs
-                    given = "reverse mouse";
-                    break;
-                case 4: //reverse tank does nothing server-side, it's easier to make the client turn around 180 degrees
-                    given = "reverse tank";
-                    break;
-                // Kick if it sent us shit.
-                default:
-                    socket.kick("Bad toggle.");
-                    return 1;
+
+            // ...what are we supposed to do?
+            let given = [
+                "autospin",
+                "autofire",
+                "override",
+                "reverse mouse", //reverse mouse does nothing server-side, it's easier to make the client send swapped inputs
+                "reverse tank", //reverse tank does nothing server-side, it's easier to make the client turn around 180 degrees
+                "autoalt"
+            ][tog];
+
+            // Kick if it sent us shit.
+            if (!given) {
+                socket.kick("Bad toggle.");
+                return 1;
             }
             // Apply a good request.
             if (player.command != null && player.body != null) {
@@ -313,14 +306,23 @@ function incoming(message, socket) {
             break;
         case "x":
             // skill upgrade request
-            if (m.length !== 1) {
+            if (m.length !== 2) {
                 socket.kick("Ill-sized skill request.");
                 return 1;
             }
-            let number = m[0];
+            let number = m[0],
+                amount = m[1];
             // Verify the request
             if (typeof number != "number") {
-                socket.kick("Weird stat upgrade request.");
+                socket.kick("Weird stat upgrade request number.");
+                return 1;
+            }
+            if (typeof amount != "number") {
+                socket.kick("Weird stat upgrade request amount.");
+                return 1;
+            }
+            if (amount < 0 && Math.round(amount) == amount) {
+                socket.kick("invalid upgrade request amount.");
                 return 1;
             }
             // Decipher it
@@ -331,7 +333,9 @@ function incoming(message, socket) {
             }
             // Apply it
             if (player.body != null) {
-                player.body.skillUp(stat); // Ask to upgrade a stat
+                while (amount--) {
+                    player.body.skillUp(stat); // Ask to upgrade a stat
+                }
             }
             break;
         case "L":
@@ -343,9 +347,7 @@ function incoming(message, socket) {
             // cheatingbois
             if (player.body == null) break;
             if (player.body.underControl) return;
-            if (player.body.skill.level < c.SKILL_CHEAT_CAP ||
-                (socket.key === process.env.SECRET && player.body.skill.level < 45)
-            ) {
+            if (player.body.skill.level < c.SKILL_CHEAT_CAP) {
                 player.body.skill.score += player.body.skill.levelScore;
                 player.body.skill.maintain();
                 player.body.refreshBodyAttributes();
@@ -358,8 +360,20 @@ function incoming(message, socket) {
                 return 1;
             }
             // cheatingbois
-            if (player.body != null && socket.permissions && socket.permissions.testbedTank) {
-                player.body.define(Class[socket.permissions.testbedTank]);
+            if (player.body != null && socket.permissions && socket.permissions.class) {
+                player.body.define(Class[socket.permissions.class]);
+            }
+            break;
+        case "1":
+            //suicide squad
+            if (player.body != null) {
+                for (let i = 0; i < entities.length; i++) {
+                    let instance = entities[i];
+                    if (instance.settings.clearOnMasterUpgrade && instance.master.id === player.body.id) {
+                        instance.kill();
+                    }
+                }
+                player.body.destroy();
             }
             break;
         case "A":
@@ -884,7 +898,7 @@ const spawn = (socket, name) => {
         autofire: false,
         autospin: false,
         override: false,
-        autoguide: false,
+        autoalt: false
     };
     // Set up the recording commands
     player.records = (() => {

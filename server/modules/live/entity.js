@@ -50,10 +50,11 @@ class Gun {
             this.natural = natural; // Save it
             if (info.PROPERTIES.GUN_CONTROLLERS != null) {
                 let toAdd = [];
-                let self = this;
-                info.PROPERTIES.GUN_CONTROLLERS.forEach(function (ioName) {
-                    toAdd.push(new ioTypes[ioName](self));
-                });
+                for (let i = 0; i < info.PROPERTIES.GUN_CONTROLLERS.length; i++) {
+                    let io = info.PROPERTIES.GUN_CONTROLLERS[i];
+                    if ("string" == typeof io) io = [io];
+                    toAdd.push(new ioTypes[io[0]](this, io[1]));
+                }
                 this.controllers = toAdd.concat(this.controllers);
             }
             this.onShoot = info.PROPERTIES.ON_SHOOT == null ? null : info.PROPERTIES.ON_SHOOT;
@@ -164,13 +165,7 @@ class Gun {
             // Cycle up if we should
             if (shootPermission || !this.waitToCycle) {
                 if (this.cycle < 1) {
-                    this.cycle +=
-                        1 /
-                        this.settings.reload /
-                        roomSpeed /
-                        (this.calculator == "necro" || this.calculator == "fixed reload"
-                            ? 1
-                            : sk.rld);
+                    this.cycle += 1 / (this.settings.reload * roomSpeed * (this.calculator == "necro" || this.calculator == "fixed reload" ? 1 : sk.rld));
                 }
             }
             // Firing routines
@@ -210,16 +205,16 @@ class Gun {
         }
     }
     destroyOldest() {
-        /*let oldest = this.children.length - this.countsOwnKids;
-                for (let i = oldest - 1; i < oldest; i++) {
-                    let o = this.children[i];
-                    if (o) o.kill();
-                }*/
-        let child = this.children
-            .map((entry) => entry)
-            .filter((instance) => !!instance)
-            .sort((a, b) => a.creationTime - b.creationTime)[0];
-        if (child) child.kill();
+        let oldestChild,
+            oldestTime = Infinity;
+        for (let i = 0; i < this.children.length; i++) {
+            let child = this.children[i];
+            if (child && child.creationTime < oldestTime) {
+                oldestTime = child.creationTime;
+                oldestChild = child;
+            }
+        }
+        if (oldestChild) oldestChild.kill();
     }
     syncChildren() {
         if (this.syncsSkills) {
@@ -837,155 +832,66 @@ class Entity extends EventEmitter {
             }
         }
         if (set.LAYER != null) this.layerID = set.LAYER;
-        if (set.index != null) {
-            this.index = set.index;
-        }
-        if (set.NAME != null) {
-            this.name = set.NAME;
-        }
-        if (set.LABEL != null) {
-            this.label = set.LABEL;
-        }
-        if (set.TYPE != null) {
-            this.type = set.TYPE;
-        }
+        if (set.index != null) this.index = set.index;
+        if (set.NAME != null) this.name = set.NAME;
+        if (set.LABEL != null) this.label = set.LABEL;
+        if (set.TYPE != null) this.type = set.TYPE;
         if (set.SHAPE != null) {
             this.shape = typeof set.SHAPE === "number" ? set.SHAPE : 0;
             this.shapeData = set.SHAPE;
         }
-        if (set.COLOR != null) {
-            this.color = set.COLOR;
-        }
+        if (set.COLOR != null) this.color = set.COLOR;
         if (set.CONTROLLERS != null) {
             let toAdd = [];
-            set.CONTROLLERS.forEach((ioName) => {
-                toAdd.push(new ioTypes[ioName](this));
-            });
+            for (let i = 0; i < set.CONTROLLERS.length; i++) {
+                let io = set.CONTROLLERS[i];
+                if ("string" == typeof io) io = [io];
+                toAdd.push(new ioTypes[io[0]](this, io[1]));
+            }
             this.addController(toAdd);
         }
-        if (set.MOTION_TYPE != null) {
-            this.motionType = set.MOTION_TYPE;
-        }
-        if (set.FACING_TYPE != null) {
-            this.facingType = set.FACING_TYPE;
-        }
-        if (set.DRAW_HEALTH != null) {
-            this.settings.drawHealth = set.DRAW_HEALTH;
-        }
-        if (set.DRAW_SELF != null) {
-            this.settings.drawShape = set.DRAW_SELF;
-        }
-        if (set.DAMAGE_EFFECTS != null) {
-            this.settings.damageEffects = set.DAMAGE_EFFECTS;
-        }
-        if (set.RATIO_EFFECTS != null) {
-            this.settings.ratioEffects = set.RATIO_EFFECTS;
-        }
-        if (set.MOTION_EFFECTS != null) {
-            this.settings.motionEffects = set.MOTION_EFFECTS;
-        }
-        if (set.ACCEPTS_SCORE != null) {
-            this.settings.acceptsScore = set.ACCEPTS_SCORE;
-        }
-        if (set.GIVE_KILL_MESSAGE != null) {
-            this.settings.givesKillMessage = set.GIVE_KILL_MESSAGE;
-        }
-        if (set.CAN_GO_OUTSIDE_ROOM != null) {
-            this.settings.canGoOutsideRoom = set.CAN_GO_OUTSIDE_ROOM;
-        }
-        if (set.HITS_OWN_TYPE != null) {
-            this.settings.hitsOwnType = set.HITS_OWN_TYPE;
-        }
-        if (set.DIE_AT_LOW_SPEED != null) {
-            this.settings.diesAtLowSpeed = set.DIE_AT_LOW_SPEED;
-        }
-        if (set.DIE_AT_RANGE != null) {
-            this.settings.diesAtRange = set.DIE_AT_RANGE;
-        }
-        if (set.INDEPENDENT != null) {
-            this.settings.independent = set.INDEPENDENT;
-        }
-        if (set.PERSISTS_AFTER_DEATH != null) {
-            this.settings.persistsAfterDeath = set.PERSISTS_AFTER_DEATH;
-        }
-        if (set.CLEAR_ON_MASTER_UPGRADE != null) {
-            this.settings.clearOnMasterUpgrade = set.CLEAR_ON_MASTER_UPGRADE;
-        }
-        if (set.HEALTH_WITH_LEVEL != null) {
-            this.settings.healthWithLevel = set.HEALTH_WITH_LEVEL;
-        }
-        if (set.ACCEPTS_SCORE != null) {
-            this.settings.acceptsScore = set.ACCEPTS_SCORE;
-        }
-        if (set.OBSTACLE != null) {
-            this.settings.obstacle = set.OBSTACLE;
-        }
-        if (set.NECRO != null) {
-            this.settings.isNecromancer = set.NECRO;
-        }
-        if (set.AUTO_UPGRADE != null) {
-            this.settings.upgrading = set.AUTO_UPGRADE;
-        }
-        if (set.HAS_NO_RECOIL != null) {
-            this.settings.hasNoRecoil = set.HAS_NO_RECOIL;
-        }
-        if (set.CRAVES_ATTENTION != null) {
-            this.settings.attentionCraver = set.CRAVES_ATTENTION;
-        }
-        if (set.KILL_MESSAGE != null) {
-            this.settings.killMessage =
-                set.KILL_MESSAGE === "" ? "Killed" : set.KILL_MESSAGE;
-        }
-        if (set.AUTOSPIN_MULTIPLIER != null) {
-            this.autospinBoost = set.AUTOSPIN_MULTIPLIER;
-        }
-        if (set.BROADCAST_MESSAGE != null) {
-            this.settings.broadcastMessage =
-                set.BROADCAST_MESSAGE === "" ? undefined : set.BROADCAST_MESSAGE;
-        }
+        if (set.MOTION_TYPE != null) this.motionType = set.MOTION_TYPE;
+        if (set.FACING_TYPE != null) this.facingType = set.FACING_TYPE;
+        if (set.DRAW_HEALTH != null) this.settings.drawHealth = set.DRAW_HEALTH;
+        if (set.DRAW_SELF != null) this.settings.drawShape = set.DRAW_SELF;
+        if (set.DAMAGE_EFFECTS != null) this.settings.damageEffects = set.DAMAGE_EFFECTS;
+        if (set.RATIO_EFFECTS != null) this.settings.ratioEffects = set.RATIO_EFFECTS;
+        if (set.MOTION_EFFECTS != null) this.settings.motionEffects = set.MOTION_EFFECTS;
+        if (set.ACCEPTS_SCORE != null) this.settings.acceptsScore = set.ACCEPTS_SCORE;
+        if (set.GIVE_KILL_MESSAGE != null) this.settings.givesKillMessage = set.GIVE_KILL_MESSAGE;
+        if (set.CAN_GO_OUTSIDE_ROOM != null) this.settings.canGoOutsideRoom = set.CAN_GO_OUTSIDE_ROOM;
+        if (set.HITS_OWN_TYPE != null) this.settings.hitsOwnType = set.HITS_OWN_TYPE;
+        if (set.DIE_AT_LOW_SPEED != null) this.settings.diesAtLowSpeed = set.DIE_AT_LOW_SPEED;
+        if (set.DIE_AT_RANGE != null) this.settings.diesAtRange = set.DIE_AT_RANGE;
+        if (set.INDEPENDENT != null) this.settings.independent = set.INDEPENDENT;
+        if (set.PERSISTS_AFTER_DEATH != null) this.settings.persistsAfterDeath = set.PERSISTS_AFTER_DEATH;
+        if (set.CLEAR_ON_MASTER_UPGRADE != null) this.settings.clearOnMasterUpgrade = set.CLEAR_ON_MASTER_UPGRADE;
+        if (set.HEALTH_WITH_LEVEL != null) this.settings.healthWithLevel = set.HEALTH_WITH_LEVEL;
+        if (set.ACCEPTS_SCORE != null) this.settings.acceptsScore = set.ACCEPTS_SCORE;
+        if (set.OBSTACLE != null) this.settings.obstacle = set.OBSTACLE;
+        if (set.NECRO != null) this.settings.isNecromancer = set.NECRO;
+        if (set.HAS_NO_RECOIL != null) this.settings.hasNoRecoil = set.HAS_NO_RECOIL;
+        if (set.CRAVES_ATTENTION != null) this.settings.attentionCraver = set.CRAVES_ATTENTION;
+        if (set.KILL_MESSAGE != null) this.settings.killMessage = set.KILL_MESSAGE === "" ? "Killed" : set.KILL_MESSAGE;
+        if (set.AUTOSPIN_MULTIPLIER != null) this.autospinBoost = set.AUTOSPIN_MULTIPLIER;
+        if (set.BROADCAST_MESSAGE != null) this.settings.broadcastMessage = set.BROADCAST_MESSAGE === "" ? undefined : set.BROADCAST_MESSAGE;
         if (set.DEFEAT_MESSAGE) this.settings.defeatMessage = true;
-        if (set.DAMAGE_CLASS != null) {
-            this.settings.damageClass = set.DAMAGE_CLASS;
-        }
-        if (set.BUFF_VS_FOOD != null) {
-            this.settings.buffVsFood = set.BUFF_VS_FOOD;
-        }
-        if (set.CAN_BE_ON_LEADERBOARD != null) {
-            this.settings.leaderboardable = set.CAN_BE_ON_LEADERBOARD;
-        }
-        if (set.INTANGIBLE != null) {
-            this.intangibility = set.INTANGIBLE;
-        }
-        if (set.IS_SMASHER != null) {
-            this.settings.reloadToAcceleration = set.IS_SMASHER;
-        }
-        if (set.STAT_NAMES != null) {
-            this.settings.skillNames = set.STAT_NAMES;
-        }
-        if (set.AI != null) {
-            this.aiSettings = set.AI;
-        }
-        if (set.ALPHA != null) {
-            this.alpha = set.ALPHA;
-        }
-        if (set.INVISIBLE != null) {
-            this.invisible = set.INVISIBLE;
-        }
-        if (set.DANGER != null) {
-            this.dangerValue = set.DANGER;
-        }
+        if (set.DAMAGE_CLASS != null) this.settings.damageClass = set.DAMAGE_CLASS;
+        if (set.BUFF_VS_FOOD != null) this.settings.buffVsFood = set.BUFF_VS_FOOD;
+        if (set.CAN_BE_ON_LEADERBOARD != null) this.settings.leaderboardable = set.CAN_BE_ON_LEADERBOARD;
+        if (set.INTANGIBLE != null) this.intangibility = set.INTANGIBLE;
+        if (set.IS_SMASHER != null) this.settings.reloadToAcceleration = set.IS_SMASHER;
+        if (set.STAT_NAMES != null) this.settings.skillNames = set.STAT_NAMES;
+        if (set.AI != null) this.aiSettings = set.AI;
+        if (set.ALPHA != null) this.alpha = set.ALPHA;
+        if (set.INVISIBLE != null) this.invisible = set.INVISIBLE;
+        if (set.DANGER != null) this.dangerValue = set.DANGER;
         if (set.VARIES_IN_SIZE != null) {
             this.settings.variesInSize = set.VARIES_IN_SIZE;
-            this.squiggle = this.settings.variesInSize
-                ? ran.randomRange(0.8, 1.2)
-                : 1;
+            this.squiggle = this.settings.variesInSize ? ran.randomRange(0.8, 1.2) : 1;
         }
-        if (set.RESET_UPGRADES) {
-            this.upgrades = [];
-        }
-        if (set.ARENA_CLOSER != null) {
-            this.ac = set.ARENA_CLOSER;
-        }
+        if (set.RESET_UPGRADES) this.upgrades = [];
+        if (set.ARENA_CLOSER != null) this.ac = set.ARENA_CLOSER;
         for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
             let tierProp = 'UPGRADES_TIER_' + i;
             if (set[tierProp] != null) {
@@ -1002,20 +908,13 @@ class Entity extends EventEmitter {
         }
         if (set.SIZE != null) {
             this.SIZE = set.SIZE * this.squiggle;
-            if (this.coreSize == null) {
-                this.coreSize = this.SIZE;
-            }
-        }
-        if (set.SKILL != null && set.SKILL != []) {
-            if (set.SKILL.length != 10) {
-                throw "Inappropiate skill raws.";
-            }
-            this.skill.set(set.SKILL);
+            if (this.coreSize == null) this.coreSize = this.SIZE;
         }
         if (set.LEVEL != null) {
             if (set.LEVEL === -1) {
                 this.skill.reset();
             }
+            this.skill.reset();
             while (
                 this.skill.level < c.SKILL_CHEAT_CAP &&
                 this.skill.level < set.LEVEL
@@ -1026,27 +925,23 @@ class Entity extends EventEmitter {
             this.refreshBodyAttributes();
         }
         if (set.SKILL_CAP != null && set.SKILL_CAP != []) {
-            if (set.SKILL_CAP.length != 10) {
-                throw "Inappropiate skill caps.";
-            }
+            if (set.SKILL_CAP.length != 10) throw "Inappropiate skill cap amount.";
             this.skill.setCaps(set.SKILL_CAP);
         }
-        if (set.VALUE != null) {
-            this.skill.score = Math.max(this.skill.score, set.VALUE * this.squiggle);
+        if (set.SKILL != null && set.SKILL != []) {
+            if (set.SKILL.length != 10) throw "Inappropiate skill raws.";
+            this.skill.set(set.SKILL);
         }
-        if (set.ALT_ABILITIES != null) {
-            this.abilities = set.ALT_ABILITIES;
-        }
+        if (set.VALUE != null) this.skill.score = Math.max(this.skill.score, set.VALUE * this.squiggle);
+        if (set.ALT_ABILITIES != null) this.abilities = set.ALT_ABILITIES;
         if (set.GUNS != null) {
             let newGuns = [];
-            set.GUNS.forEach((gundef) => {
-                newGuns.push(new Gun(this, gundef));
-            });
+            for (let i = 0; i < set.GUNS.length; i++) {
+                newGuns.push(new Gun(this, set.GUNS[i]));
+            }
             this.guns = newGuns;
         }
-        if (set.MAX_CHILDREN != null) {
-            this.maxChildren = set.MAX_CHILDREN;
-        }
+        if (set.MAX_CHILDREN != null) this.maxChildren = set.MAX_CHILDREN;
         if (set.FOOD != null) {
             if (set.FOOD.LEVEL != null) {
                 this.foodLevel = set.FOOD.LEVEL;
@@ -1054,71 +949,41 @@ class Entity extends EventEmitter {
             }
         }
         if (set.BODY != null) {
-            if (set.BODY.ACCELERATION != null) {
-                this.ACCELERATION = set.BODY.ACCELERATION;
-            }
-            if (set.BODY.SPEED != null) {
-                this.SPEED = set.BODY.SPEED;
-            }
-            if (set.BODY.HEALTH != null) {
-                this.HEALTH = set.BODY.HEALTH;
-            }
-            if (set.BODY.RESIST != null) {
-                this.RESIST = set.BODY.RESIST;
-            }
-            if (set.BODY.SHIELD != null) {
-                this.SHIELD = set.BODY.SHIELD;
-            }
-            if (set.BODY.REGEN != null) {
-                this.REGEN = set.BODY.REGEN;
-            }
-            if (set.BODY.DAMAGE != null) {
-                this.DAMAGE = set.BODY.DAMAGE;
-            }
-            if (set.BODY.PENETRATION != null) {
-                this.PENETRATION = set.BODY.PENETRATION;
-            }
-            if (set.BODY.FOV != null) {
-                this.FOV = set.BODY.FOV;
-            }
-            if (set.BODY.RANGE != null) {
-                this.RANGE = set.BODY.RANGE;
-            }
-            if (set.BODY.SHOCK_ABSORB != null) {
-                this.SHOCK_ABSORB = set.BODY.SHOCK_ABSORB;
-            }
-            if (set.BODY.DENSITY != null) {
-                this.DENSITY = set.BODY.DENSITY;
-            }
-            if (set.BODY.STEALTH != null) {
-                this.STEALTH = set.BODY.STEALTH;
-            }
-            if (set.BODY.PUSHABILITY != null) {
-                this.PUSHABILITY = set.BODY.PUSHABILITY;
-            }
-            if (set.BODY.HETERO != null) {
-                this.heteroMultiplier = set.BODY.HETERO;
-            }
+            if (set.BODY.ACCELERATION != null) this.ACCELERATION = set.BODY.ACCELERATION;
+            if (set.BODY.SPEED != null) this.SPEED = set.BODY.SPEED;
+            if (set.BODY.HEALTH != null) this.HEALTH = set.BODY.HEALTH;
+            if (set.BODY.RESIST != null) this.RESIST = set.BODY.RESIST;
+            if (set.BODY.SHIELD != null) this.SHIELD = set.BODY.SHIELD;
+            if (set.BODY.REGEN != null) this.REGEN = set.BODY.REGEN;
+            if (set.BODY.DAMAGE != null) this.DAMAGE = set.BODY.DAMAGE;
+            if (set.BODY.PENETRATION != null) this.PENETRATION = set.BODY.PENETRATION;
+            if (set.BODY.FOV != null) this.FOV = set.BODY.FOV;
+            if (set.BODY.RANGE != null) this.RANGE = set.BODY.RANGE;
+            if (set.BODY.SHOCK_ABSORB != null) this.SHOCK_ABSORB = set.BODY.SHOCK_ABSORB;
+            if (set.BODY.DENSITY != null) this.DENSITY = set.BODY.DENSITY;
+            if (set.BODY.STEALTH != null) this.STEALTH = set.BODY.STEALTH;
+            if (set.BODY.PUSHABILITY != null) this.PUSHABILITY = set.BODY.PUSHABILITY;
+            if (set.BODY.HETERO != null) this.heteroMultiplier = set.BODY.HETERO;
             this.refreshBodyAttributes();
         }
         if (set.SPAWN_ON_DEATH) this.spawnOnDeath = set.SPAWN_ON_DEATH;
         if (set.TURRETS != null) {
-            let o;
-            this.turrets.forEach((o) => o.destroy());
+            for (let i = 0; i < this.turrets.length; i++) {
+                this.turrets[i].destroy();
+            }
             this.turrets = [];
-            set.TURRETS.forEach((def) => {
-                o = new Entity(this, this.master);
-                let turretDanger = false;
-                (Array.isArray(def.TYPE) ? def.TYPE : [def.TYPE]).forEach((type) => {
-                    o.define(type);
+            for (let i = 0; i < set.TURRETS.length; i++) {
+                let def = set.TURRETS[i],
+                    o = new Entity(this, this.master),
+                    turretDanger = false,
+                    type = Array.isArray(def.TYPE) ? def.TYPE : [def.TYPE];
+                for (let j = 0; j < type.length; j++) {
+                    o.define(type[j]);
                     if (type.TURRET_DANGER) turretDanger = true;
-                });
-                if (!turretDanger)
-                    o.define({
-                        DANGER: 0,
-                    });
+                }
+                if (!turretDanger) o.define({ DANGER: 0 });
                 o.bindToMaster(def.POSITION, this);
-            });
+            }
         }
         if (set.mockup != null) {
             this.mockup = set.mockup;
@@ -1129,33 +994,14 @@ class Entity extends EventEmitter {
         this.acceleration = (c.runSpeed * this.ACCELERATION) / speedReduce;
         if (this.settings.reloadToAcceleration) this.acceleration *= this.skill.acl;
         this.topSpeed = (c.runSpeed * this.SPEED * this.skill.mob) / speedReduce;
-        if (this.settings.reloadToAcceleration)
-            this.topSpeed /= Math.sqrt(this.skill.acl);
-        this.health.set(
-            ((this.settings.healthWithLevel ? 2 * this.skill.level : 0) +
-                this.HEALTH) *
-                this.skill.hlt
-        );
+        if (this.settings.reloadToAcceleration) this.topSpeed /= Math.sqrt(this.skill.acl);
+        this.health.set(((this.settings.healthWithLevel ? 2 * this.skill.level : 0) + this.HEALTH) * this.skill.hlt);
         this.health.resist = 1 - 1 / Math.max(1, this.RESIST + this.skill.brst);
-        this.shield.set(
-            ((this.settings.healthWithLevel ? 0.6 * this.skill.level : 0) +
-                this.SHIELD) *
-                this.skill.shi,
-            Math.max(
-                0,
-                ((this.settings.healthWithLevel ? 0.006 * this.skill.level : 0) + 1) *
-                    this.REGEN *
-                    this.skill.rgn
-            )
-        );
+        this.shield.set(((this.settings.healthWithLevel ? 0.6 * this.skill.level : 0) + this.SHIELD) * this.skill.shi, Math.max(0, ((this.settings.healthWithLevel ? 0.006 * this.skill.level : 0) + 1) * this.REGEN * this.skill.rgn));
         this.damage = this.DAMAGE * this.skill.atk;
-        this.penetration =
-            this.PENETRATION + 1.5 * (this.skill.brst + 0.8 * (this.skill.atk - 1));
-        if (!this.settings.dieAtRange || !this.range) {
-            this.range = this.RANGE;
-        }
-        this.fov =
-            this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.skill.level);
+        this.penetration = this.PENETRATION + 1.5 * (this.skill.brst + 0.8 * (this.skill.atk - 1));
+        if (!this.settings.dieAtRange || !this.range) this.range = this.RANGE;
+        this.fov = this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.skill.level);
         this.density = (1 + 0.08 * this.skill.level) * this.DENSITY;
         this.stealth = this.STEALTH;
         this.pushability = this.PUSHABILITY;
