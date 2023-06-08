@@ -263,23 +263,23 @@ function spawnWall(loc) {
 }
 
 let timer = Math.round((c.bossSpawnInterval || 8) * 60); // It's in minutes
-const bossSelections     = [{
+const bossSelections = [{
     bosses: [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer, Class.eliteBattleship, Class.eliteSpawner],
     location: "nest",
-    amount: [1, 2, 3],
+    amount: [5, 5, 4, 2, 1],
     nameType: "a",
     chance: 2,
 },{
     bosses: [Class.roguePalisade],
     location: "norm",
-    amount: [1, 2],
+    amount: [4, 1],
     nameType: "castle",
     message: "A strange trembling...",
     chance: 1,
 },{
     bosses: [Class.summoner, Class.eliteSkimmer, Class.nestKeeper],
     location: "norm",
-    amount: [1, 2, 3],
+    amount: [2, 2, 1],
     nameType: "a",
     message: "A strange trembling...",
     chance: 1,
@@ -331,7 +331,7 @@ let spawnBosses = (census) => {
     if (!census.miniboss && !timer--) {
         timer--;
         const selection = bossSelections[ran.chooseChance(...bossSelections.map((selection) => selection.chance))];
-        const amount = Math.floor(Math.random() * selection.amount[1]) + selection.amount[0];
+        const amount = ran.chooseChance(...selection.amount) + 1;
         sockets.broadcast(amount > 1 ? "Visitors are coming..." : "A visitor is coming...");
         if (selection.message) {
             setTimeout(sockets.broadcast, 2500, selection.message);

@@ -1074,22 +1074,8 @@ class Entity extends EventEmitter {
             alpha: this.alpha,
             facing: this.facing,
             vfacing: this.vfacing,
-            twiggle:
-                this.facingType === "autospin" ||
-                (this.facingType === "locksFacing" && this.control.alt),
-            layer: this.layerID
-                ? this.layerID
-                : this.bond != null
-                ? this.bound.layer
-                : this.type === "wall"
-                ? 11
-                : this.type === "food"
-                ? 10
-                : this.type === "tank"
-                ? 5
-                : this.type === "crasher"
-                ? 1
-                : 0,
+            twiggle: this.facingType === "autospin" || (this.facingType === "locksFacing" && this.control.alt),
+            layer: this.layerID ? this.layerID : this.bond != null ? this.bound.layer : this.type === "wall" ? 11 : this.type === "food" ? 10 : this.type === "tank" ? 5 : this.type === "crasher" ? 1 : 0,
             color: this.color,
             name: (this.nameColor || "#FFFFFF") + this.name,
             score: this.skill.score,
@@ -1249,18 +1235,10 @@ class Entity extends EventEmitter {
             case "bound":
                 let bound = this.bound,
                     ref = this.bond;
-                this.x =
-                    ref.x +
-                    ref.size *
-                        bound.offset *
-                        Math.cos(bound.direction + bound.angle + ref.facing);
-                this.y =
-                    ref.y +
-                    ref.size *
-                        bound.offset *
-                        Math.sin(bound.direction + bound.angle + ref.facing);
-                this.bond.velocity.x += bound.size * this.accel.x;
-                this.bond.velocity.y += bound.size * this.accel.y;
+                this.x = ref.x + ref.size * bound.offset * Math.cos(bound.direction + bound.angle + ref.facing);
+                this.y = ref.y + ref.size * bound.offset * Math.sin(bound.direction + bound.angle + ref.facing);
+                ref.velocity.x += bound.size * this.accel.x;
+                ref.velocity.y += bound.size * this.accel.y;
                 this.firingArc = [ref.facing + bound.angle, bound.arc / 2];
                 nullVector(this.accel);
                 this.blend = ref.blend;

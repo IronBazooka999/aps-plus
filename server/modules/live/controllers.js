@@ -837,6 +837,7 @@ class io_longZoom extends IO {
 class io_wanderAroundMap extends IO {
     constructor(b, opts = {}) {
         super(b);
+        this.lookAtGoal = opts.lookAtGoal;
         this.immitatePlayerMovement = opts.immitatePlayerMovement;
         this.spot = room.randomType('norm');
     }
@@ -846,7 +847,7 @@ class io_wanderAroundMap extends IO {
         if (input.goal == null && !this.body.autoOverride) {
             let goal = this.spot;
             if (this.immitatePlayerMovement) goal = compressMovement(this.body, goal);
-            return { target: this.spot, goal };
+            return { target: (this.lookAtGoal && input.target == null) ? this.spot : null, goal };
         }
     }
 }

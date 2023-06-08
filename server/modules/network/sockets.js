@@ -1506,7 +1506,7 @@ const sockets = {
                 socket.send(protocol.encode(message), { binary: true }, () => setTimeout(() => socket.terminate(), 1000));
             }
         };
-        socket.on("message", (message) => incoming(message, socket));
+        socket.on("message", message => incoming(message, socket));
         socket.on("close", () => {
             socket.loops.terminate();
             close(socket);
@@ -1525,7 +1525,7 @@ const sockets = {
         socket.spawn = (name) => spawn(socket, name);
         // Log it
         clients.push(socket);
-        util.log("[INFO] New socket opened");
+        util.log("[INFO] New socket opened with ip " + socket.ip);
     }
 };
 module.exports = { sockets };
