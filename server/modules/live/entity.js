@@ -850,6 +850,7 @@ class Entity extends EventEmitter {
             }
             this.addController(toAdd);
         }
+        if (set.IGNORED_BY_AI) this.ignoredByAi = set.IGNORED_BY_AI;
         if (set.MOTION_TYPE != null) this.motionType = set.MOTION_TYPE;
         if (set.FACING_TYPE != null) this.facingType = set.FACING_TYPE;
         if (set.DRAW_HEALTH != null) this.settings.drawHealth = set.DRAW_HEALTH;

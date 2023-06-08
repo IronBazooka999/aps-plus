@@ -267,16 +267,14 @@ class HealthType {
 }
 
 const dirtyCheck = function (p, r) {
-    return entitiesToAvoid.some((e) => {
-        return Math.abs(p.x - e.x) < r + e.size && Math.abs(p.y - e.y) < r + e.size;
-    });
+    for (let i = 0; i < entitiesToAvoid.length; i++) {
+        let e = entitiesToAvoid[i];
+        if (Math.abs(p.x - e.x) < r + e.size && Math.abs(p.y - e.y) < r + e.size) return true;
+    }
+    return false
 };
 
-const purgeEntities = function () {
-    entities = entities.filter((e) => {
-        return !e.isGhost;
-    });
-};
+const purgeEntities = () => entities = entities.filter(e => !e.isGhost);
 
 let remapTarget = (i, ref, self) => {
     if (i.target == null || !(i.main || i.alt)) return undefined;

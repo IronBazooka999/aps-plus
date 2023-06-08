@@ -447,6 +447,14 @@ let makenpcs = () => {
             color = Math.floor(Math.random() * 20);
         } else if (room.gameMode === "tdm") {
             team = getTeam(0);
+            if (room["bas" + team].length) {
+                let loc;
+                do {
+                    loc = room.randomType("bas" + team);
+                } while (dirtyCheck(loc, 50));
+                o.x = loc.x;
+                o.y = loc.y;
+            }
             color = [10, 11, 12, 15][team - 1];
             team = -team;
         }

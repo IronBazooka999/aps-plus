@@ -3369,6 +3369,7 @@ exports.testbedBase = {
         dfltskl,
         dfltskl,
     ],
+    IGNORED_BY_AI: true,
     TURRETS: [],
     GUNS: [
         {
@@ -3460,11 +3461,11 @@ exports.betaTesterMenu = {
     LABEL: "Beta Tester Menu",
 };
 exports.spectator = {
-    PARENT: [exports.genericTank],
+    PARENT: [exports.testbedBase],
     LABEL: "Spectator",
     INVISIBLE: [0, 0],
     CAN_BE_ON_LEADERBOARD: false,
-    SKILL_CAP: [0, 0, 0, 0, 0, 0, 0, 0, 0, 15],
+    SKILL_CAP: [0, 0, 0, 0, 0, 0, 0, 0, 0, 255],
     BODY: {
         DAMAGE: 0,
         SPEED: 5,
@@ -15891,6 +15892,7 @@ exports.baseProtector = {
     DAMAGE_CLASS: 0,
     ACCEPTS_SCORE: false,
     CAN_BE_ON_LEADERBOARD: false,
+    IGNORED_BY_AI: true,
     SKILL: skillSet({
         rld: 1,
         dam: 1,
