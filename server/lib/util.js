@@ -1,7 +1,7 @@
 /* jslint node: true */
 ("use strict")
 
-let cfg = require("../config.json")
+let cfg = require("../config.js")
 
 exports.addArticle = string => {
   let article = /^[aeiou]/i.test(string) ? 'an' : 'a'

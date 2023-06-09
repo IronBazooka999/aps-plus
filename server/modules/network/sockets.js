@@ -882,10 +882,7 @@ const spawn = (socket, name) => {
     player.teamColor =
         !c.RANDOM_COLORS && room.gameMode === "ffa" ? 10 : body.color; // blue
     // Set up the targeting structure
-    player.target = {
-        x: 0,
-        y: 0,
-    };
+    player.target = { x: 0, y: 0 };
     // Set up the command structure
     player.command = {
         up: false,
@@ -901,20 +898,16 @@ const spawn = (socket, name) => {
         autoalt: false
     };
     // Set up the recording commands
-    player.records = (() => {
-        let begin = util.time();
-        return () => {
-            return [
-                player.body.skill.score,
-                Math.floor((util.time() - begin) / 1000),
-                player.body.killCount.solo,
-                player.body.killCount.assists,
-                player.body.killCount.bosses,
-                player.body.killCount.killers.length,
-                ...player.body.killCount.killers,
-            ];
-        };
-    })();
+    let begin = util.time();
+    player.records = () => [
+        player.body.skill.score,
+        Math.floor((util.time() - begin) / 1000),
+        player.body.killCount.solo,
+        player.body.killCount.assists,
+        player.body.killCount.bosses,
+        player.body.killCount.killers.length,
+        ...player.body.killCount.killers,
+    ];
     // Set up the player's gui
     player.gui = newgui(player);
     // Save the the player
@@ -926,8 +919,12 @@ const spawn = (socket, name) => {
     socket.camera.fov = 2000;
     // Mark it as spawned
     socket.status.hasSpawned = true;
-    body.sendMessage("You have spawned! Welcome to the game.");
-    body.sendMessage("You will be invulnerable until you move or shoot.");
+
+    //send the welcome message
+    let msg = c.WELCOME_MESSAGE.split("\n");
+    for (let i = 0; i < msg.length; i++) {
+        body.sendMessage(msg[i]);
+    }
     // Move the client camera
     socket.talk("c", socket.camera.x, socket.camera.y, socket.camera.fov);
     return player;
@@ -938,10 +935,8 @@ function flatten(data) {
     let output = [data.type]; // We will remove the first entry in the persepective method
     if (data.type & 0x01) {
         output.push(
-            // 1: facing
-            data.facing,
-            // 2: layer
-            data.layer
+            /* 1 */ data.facing,
+            /* 2 */ data.layer
         );
     } else {
         output.push(
@@ -969,16 +964,12 @@ function flatten(data) {
         }
     }
     // Add the gun data to the array
-    let gundata = [data.guns.length];
-    for (let i = 0; i < data.guns.length; i++)
-        gundata.push(data.guns[i].time, data.guns[i].power);
-    output.push(...gundata);
+    output.push(data.guns.length);
+    for (let i = 0; i < data.guns.length; i++) output.push(data.guns[i].time, data.guns[i].power);
     // For each turret, add their own output
-    let turdata = [data.turrets.length];
-    for (let i = 0; i < data.turrets.length; i++)
-        turdata.push(...flatten(data.turrets[i]));
+    output.push(data.turrets.length);
+    for (let i = 0; i < data.turrets.length; i++) output.push(...flatten(data.turrets[i]));
     // Push all that to the array
-    output.push(...turdata);
     // Return it
     return output;
 }

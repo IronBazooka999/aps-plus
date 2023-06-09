@@ -241,13 +241,7 @@ class HealthType {
                 if (r === 1) {
                     this.amount = this.max;
                 } else {
-                    this.amount +=
-                        cons *
-                        ((this.regen *
-                            Math.exp(-50 * Math.pow(Math.sqrt(0.5 * r) - 0.4, 2))) /
-                            3 +
-                            (r * this.max) / 10 / 15 +
-                            boost);
+                    this.amount += cons * ((this.regen * Math.exp(-50 * Math.pow(Math.sqrt(0.5 * r) - 0.4, 2))) / 3 + (r * this.max) / 10 / 15 + boost);
                 }
                 break;
         }

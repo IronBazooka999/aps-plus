@@ -6,7 +6,7 @@ const path = require("path");
 const server = express();
 server.use(express.json());
 expressWs(server);
-if (!/localhost:\d*/.test(c.host)) server.use(minify());
+if (!/localhost(:\d*)/.test(c.host)) server.use(minify());
 server.use(cors());
 if (c.servesStatic) {
     server.use(express.static(path.join(__dirname, "../../../public")));
@@ -34,3 +34,32 @@ server.listen(c.port, function() {
 });
 
 module.exports = { server };
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// let http = require('http'),
+// server = http.createServer((req, res) => {
+//     let url = new URL(req.url);
+//     switch (url.pathname) {
+//         case "/lib/json/mockups.json":
+//             res.writeHead(200);
+//             res.end(mockupJsonData);
+//             break;
+//         case "/lib/json/gamemodeData.json":
+//             res.writeHead(200);
+//             res.end(JSON.stringify({
+//                 gameMode: c.gameModeName,
+//                 players: views.length,
+//                 code: [c.MODE, c.MODE === "ffa" ? "f" : c.TEAMS, c.secondaryGameMode].join("-"),
+//                 ip: c.host
+//             }));
+//             break;
+//         case "/serverData.json":
+//     }
+// });
+// server.on('upgrade', (req, socket, head) => {});
+// server.listen(c.port, () => console.log("Express + WS server listening on port", c.port));
+// module.exports = { server };

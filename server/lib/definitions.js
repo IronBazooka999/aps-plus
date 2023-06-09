@@ -34,7 +34,7 @@ const setBuild = (build) => {
         throw new RangeError("Build must be made up of 10 numbers");
     return [6, 4, 3, 5, 2, 9, 0, 1, 8, 7].map((r) => skills[r]);
 };
-let config = require("../config.json");
+let config = require("../config.js");
 let skcnv = {
     atk: 6,
     spd: 4,
@@ -12777,7 +12777,7 @@ exports.trapTurret = {
         FOV: 0.5,
     },
     INDEPENDENT: true,
-    CONTROLLERS: ["nearestDifferentMaster"],
+    CONTROLLERS: ["nearestDifferentMaster", 'onlyAcceptInArc'],
     COLOR: 16,
     AI: {
         SKYNET: true,
@@ -12809,7 +12809,7 @@ exports.shottrapTurret = {
                 FOV: 0,
         },
         INDEPENDENT: true,
-        CONTROLLERS: ['nearestDifferentMaster'], 
+        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'], 
         COLOR: 16,
         AI: {
                 SKYNET: true,
@@ -13654,20 +13654,10 @@ exports.nestKeeper = {
     ],
 };
 exports.roguePalisade = (() => {
-    let T = {
-        SHOOT_SETTINGS: combineStats([
-            g.factory,
-            g.pound,
-            g.halfreload,
-            g.halfreload,
-        ]),
-        TYPE: exports.minion,
-        STAT_CALCULATOR: gunCalcNames.drone,
-        AUTOFIRE: true,
-        MAX_CHILDREN: 1,
-        SYNCS_SKILLS: true,
-        WAIT_TO_CYCLE: true,
-    };
+    let T = SHOOT_SETTINGS => ({
+        SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]),
+        TYPE: exports.minion, STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true
+    });
     return {
         PARENT: [exports.miniboss],
         LABEL: "Rogue Palisade",
@@ -13675,6 +13665,7 @@ exports.roguePalisade = (() => {
         SHAPE: 6,
         SIZE: 30,
         VALUE: 5e5,
+        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
         BODY: {
             FOV: 1.4,
             SPEED: 0.05 * base.SPEED,
@@ -13683,617 +13674,73 @@ exports.roguePalisade = (() => {
             DAMAGE: 3 * base.DAMAGE,
         },
         GUNS: [
-            {
-                POSITION: [4, 6, -1.6, 8, 0, 0, 0],
-                PROPERTIES: T,
-            },
-            {
-                POSITION: [4, 6, -1.6, 8, 0, 60, 0],
-                PROPERTIES: T,
-            },
-            {
-                POSITION: [4, 6, -1.6, 8, 0, 120, 0],
-                PROPERTIES: T,
-            },
-            {
-                POSITION: [4, 6, -1.6, 8, 0, 180, 0],
-                PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.factory, g.pound]),
-                    TYPE: exports.minion,
-                    STAT_CALCULATOR: gunCalcNames.drone,
-                    AUTOFIRE: true,
-                    MAX_CHILDREN: 1,
-                    SYNCS_SKILLS: true,
-                    WAIT_TO_CYCLE: true,
-                },
-            },
-            {
-                POSITION: [4, 6, -1.6, 8, 0, 240, 0],
-                PROPERTIES: T,
-            },
-            {
-                POSITION: [4, 6, -1.6, 8, 0, 300, 0],
-                PROPERTIES: T,
-            },
+            { POSITION: [4, 6, -1.6, 8, 0, 0, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 60, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 120, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 180, 0], PROPERTIES: T(combineStats([g.factory, g.pound])) }, //why is that?
+            { POSITION: [4, 6, -1.6, 8, 0, 240, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 300, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
         ],
         TURRETS: [
-            {
-                POSITION: [5, 10, 0, 30, 110, 0],
-                TYPE: exports.trapTurret,
-            },
-            {
-                POSITION: [5, 10, 0, 90, 110, 0],
-                TYPE: exports.trapTurret,
-            },
-            {
-                POSITION: [5, 10, 0, 150, 110, 0],
-                TYPE: exports.trapTurret,
-            },
-            {
-                POSITION: [5, 10, 0, 210, 110, 0],
-                TYPE: exports.trapTurret,
-            },
-            {
-                POSITION: [5, 10, 0, 270, 110, 0],
-                TYPE: exports.trapTurret,
-            },
-            {
-                POSITION: [5, 10, 0, 330, 110, 0],
-                TYPE: exports.trapTurret,
-            },
+            { POSITION: [5, 10, 0, 30, 110, 0], TYPE: exports.trapTurret },
+            { POSITION: [5, 10, 0, 90, 110, 0], TYPE: exports.trapTurret },
+            { POSITION: [5, 10, 0, 150, 110, 0], TYPE: exports.trapTurret },
+            { POSITION: [5, 10, 0, 210, 110, 0], TYPE: exports.trapTurret },
+            { POSITION: [5, 10, 0, 270, 110, 0], TYPE: exports.trapTurret },
+            { POSITION: [5, 10, 0, 330, 110, 0], TYPE: exports.trapTurret },
         ],
     };
 })();
-        exports.rogueArmada = (() => { // WORK IN PROGRESS!
-                let props = {
-                        SHOOT_SETTINGS: combineStats([g.factory, g.pound, g.halfreload, g.halfreload]),
-                        TYPE: exports.minion,
-                        STAT_CALCULATOR: gunCalcNames.drone,                                                
-                        AUTOFIRE: true,
-                        MAX_CHILDREN: 1,
-                        SYNCS_SKILLS: true,     
-                        WAIT_TO_CYCLE: true,
-                };
-                return {
-                        PARENT: [exports.miniboss],
-                        LABEL: 'Rogue Armada [WIP!]',
-                        COLOR: 17,
-                        SHAPE: 7,
-                        SIZE: 28,
-                        VALUE: 500000,
-                        BODY: {
-                                FOV: 1.3,
-                                SPEED: base.SPEED * 0.1,
-                                HEALTH: base.HEALTH * 2,
-                                SHIELD: base.SHIELD * 2,
-                                REGEN: base.REGEN,
-                                DAMAGE: base.DAMAGE * 3,
-                        },
-                        FACING_TYPE: 'autospin',
-                        GUNS: [ /***** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */ {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            360/14,            0,     ], }, {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            360/7+360/14,            0,     ], }, {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            2*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            2*360/7+360/14,            0,     ], }, {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            3*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            3*360/7+360/14,            0,     ], }, {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            4*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            4*360/7+360/14,            0,     ], }, {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            5*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            5*360/7+360/14,            0,     ], }, {
-                                POSITION: [    4,            0.9,            1,         0,         -3,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            0.9,            1,         0,            3,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    4,            1.5,            1,         0,            0,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,         -1,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            1.2,            1,         0,            1,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {                                
-                                POSITION: [    1,            0.9,            1,         0,         -1,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.9,            1,         0,            1,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.bullet,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,            2,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.6,            1,         0,         -2,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,            2,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    1,            0.3,            1,         0,         -2,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [ 9,         6,            1,         4,             0,            6*360/7+360/14,            0,     ], 
-                                        PROPERTIES: {
-                                                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
-                                                TYPE: exports.casing,
-                                        }, }, {
-                                POSITION: [    8,         6,        -1.1,        4,             0,            6*360/7+360/14,            0,     ], }
-                        ],
-                        TURRETS: [{ /*    SIZE         X             Y         ANGLE        ARC */
-                                POSITION: [     5,        10,            0,            0,        110, 0], 
-                                        TYPE: exports.shottrapTurret,
-                                                }, {
-                                POSITION: [     5,        10,            0,            360/7,        110, 0], 
-                                        TYPE: exports.shottrapTurret,
-                                                }, {
-                                POSITION: [     5,        10,            0,         2*360/7,        110, 0], 
-                                        TYPE: exports.shottrapTurret,
-                                                }, {
-                                POSITION: [     5,        10,            0,         3*360/7,        110, 0],
-                                        TYPE: exports.shottrapTurret,
-                                                }, {
-                                POSITION: [     5,        10,            0,         4*360/7,        110, 0], 
-                                        TYPE: exports.shottrapTurret,
-                                                }, {
-                                POSITION: [     5,        10,            0,         5*360/7,        110, 0], 
-                                        TYPE: exports.shottrapTurret,
-                                                }, {
-                                POSITION: [     5,        10,            0,         6*360/7,        110, 0], 
-                                        TYPE: exports.shottrapTurret,
-                                                },
-                        ],
-                };
-        })();
+exports.rogueArmada = (() => {
+    let SHAPE = 7,
+        GUNS = [],
+        TURRETS = [];
+    for (let i = 0; i < SHAPE; i++) {
+        for (let j = 0; j < 12; j++) {
+            GUNS.push({
+                POSITION: [ 4, 0.3 * Math.floor(j / 4), 1, 0, (j + 3) % SHAPE - 3, (i + 0.5) * (360 / SHAPE), 0 ],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
+                    TYPE: j % SHAPE < 2 ? exports.bullet : exports.casing
+                }
+            });
+        }
+        GUNS.push({
+            POSITION: [ 9, 6  ,  1  , 4,  0, (i + 0.5) * (360 / SHAPE), 0 ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
+                TYPE: exports.casing
+            }
+        }, {
+            POSITION: [ 8, 6  , -1.1, 4,  0, (i + 0.5) * (360 / SHAPE), 0 ]
+        });
+    }
+    for (let i = 0; i < SHAPE; i++) {
+        TURRETS.push({
+            POSITION: [ 5, 10, 0, i * 360 / SHAPE, 110, 0],
+            TYPE: exports.shottrapTurret
+        });
+    }
+    return {
+        PARENT: [exports.miniboss],
+        LABEL: 'Rogue Armada',
+        COLOR: 17,
+        SHAPE,
+        SIZE: 28,
+        VALUE: 500000,
+        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
+        BODY: {
+            FOV: 1.3,
+            SPEED: base.SPEED * 0.1,
+            HEALTH: base.HEALTH * 2,
+            SHIELD: base.SHIELD * 2,
+            REGEN: base.REGEN,
+            DAMAGE: base.DAMAGE * 3,
+        },
+        FACING_TYPE: 'autospin',
+        GUNS, TURRETS
+    };
+})();
 
 // WINTER MAYHEM STRANGE BOSSES
 exports.pumpkinEmperor = {
@@ -14302,7 +13749,7 @@ exports.pumpkinEmperor = {
     NAME: "Jack Skeleton",
     COLOR: 40,
     BODY: {
-        SPEED: base.SPEED * (0.25 * 2),
+        SPEED: base.SPEED * 0.5,
     },
 };
 

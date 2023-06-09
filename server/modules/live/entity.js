@@ -72,6 +72,7 @@ class Gun {
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
             this.color = info.PROPERTIES.COLOR == null ? this.color : info.PROPERTIES.COLOR;
             this.destroyOldestChild = info.PROPERTIES.DESTROY_OLDEST_CHILD == null ? false : info.PROPERTIES.DESTROY_OLDEST_CHILD;
+            this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
             if (info.PROPERTIES.COLOR != null && info.PROPERTIES != null) this.color = info.PROPERTIES.COLOR;
         }
         if (info.PROPERTIES != null && info.PROPERTIES.COLOR != null) this.color = info.PROPERTIES.COLOR;
@@ -870,7 +871,7 @@ class Entity extends EventEmitter {
         if (set.HEALTH_WITH_LEVEL != null) this.settings.healthWithLevel = set.HEALTH_WITH_LEVEL;
         if (set.ACCEPTS_SCORE != null) this.settings.acceptsScore = set.ACCEPTS_SCORE;
         if (set.OBSTACLE != null) this.settings.obstacle = set.OBSTACLE;
-        if (set.NECRO != null) this.settings.isNecromancer = set.NECRO;
+        if (set.NECRO != null) this.settings.necroTypes = Array.isArray(set.NECRO) ? set.NECRO : set.NECRO ? [this.shape] : [];
         if (set.HAS_NO_RECOIL != null) this.settings.hasNoRecoil = set.HAS_NO_RECOIL;
         if (set.CRAVES_ATTENTION != null) this.settings.attentionCraver = set.CRAVES_ATTENTION;
         if (set.KILL_MESSAGE != null) this.settings.killMessage = set.KILL_MESSAGE === "" ? "Killed" : set.KILL_MESSAGE;
@@ -887,6 +888,7 @@ class Entity extends EventEmitter {
         if (set.ALPHA != null) this.alpha = set.ALPHA;
         if (set.INVISIBLE != null) this.invisible = set.INVISIBLE;
         if (set.DANGER != null) this.dangerValue = set.DANGER;
+        if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
         if (set.VARIES_IN_SIZE != null) {
             this.settings.variesInSize = set.VARIES_IN_SIZE;
             this.squiggle = this.settings.variesInSize ? ran.randomRange(0.8, 1.2) : 1;
@@ -1529,33 +1531,43 @@ class Entity extends EventEmitter {
         // Check for death
         if (this.isDead()) {
             this.emit('dead');
+
+            //Shoot on death
+            for (let i = 0; i < this.guns.length; i++) {
+                let gun = this.guns[i];
+                if (gun.shootOnDeath) {
+                    if (gun.body != null) {
+                        // Find the end of the gun
+                        let gx = gun.offset * Math.cos(gun.direction + gun.angle + gun.body.facing) + (1.5 * gun.length - (gun.width * gun.settings.size) / 2) * Math.cos(gun.angle + gun.body.facing);
+                        let gy = gun.offset * Math.sin(gun.direction + gun.angle + gun.body.facing) + (1.5 * gun.length - (gun.width * gun.settings.size) / 2) * Math.sin(gun.angle + gun.body.facing);
+                        // get Skills
+                        let sk = gun.bulletStats === "master" ? gun.body.skill : gun.bulletStats;
+                        // put bullet there
+                        gun.fire(gx, gy, sk);
+                    }
+                }
+            }
+
             // Initalize message arrays
             let killers = [],
                 killTools = [],
                 notJustFood = false;
             // If I'm a tank, call me a nameless player
-            let name =
-                this.master.name == ""
-                    ? this.master.type === "tank"
-                        ? "an unnamed " + this.label
-                        : this.master.type === "miniboss"
-                        ? "a visiting " + this.label
-                        : util.addArticle(this.label)
-                    : this.master.name + "'s " + this.label;
+            let name = this.master.name == ""
+                ? this.master.type === "tank"
+                    ? "an unnamed " + this.label : this.master.type === "miniboss"
+                    ? "a visiting " + this.label : util.addArticle(this.label)
+                : this.master.name + "'s " + this.label;
             // Calculate the jackpot
-            let jackpot = Math.ceil(
-                util.getJackpot(this.skill.score) / this.collisionArray.length
-            );
+            let jackpot = Math.ceil(util.getJackpot(this.skill.score) / this.collisionArray.length);
             // Now for each of the things that kill me...
             this.collisionArray.forEach((instance) => {
-                if (instance.type === "wall") return 0;
+                if (instance.type === 'wall' || !instance.damage) return;
                 if (instance.master.settings.acceptsScore) {
                     // If it's not food, give its master the score
-                    if (
-                        instance.master.type === "tank" ||
-                        instance.master.type === "miniboss"
-                    )
+                    if (instance.master.type === "tank" || instance.master.type === "miniboss") {
                         notJustFood = true;
+                    }
                     instance.master.skill.score += jackpot;
                     killers.push(instance.master); // And keep track of who killed me
                 } else if (instance.settings.acceptsScore) {

@@ -179,9 +179,9 @@ function advancedcollide(my, n, doDamage, doInelastic, nIsFirmCollide = false) {
                 };
                 /********** DO DAMAGE *********/
                 let bail = false;
-                if (my.shape === n.shape && my.settings.isNecromancer && n.type === 'food') {
+                if (n.type === 'food' && my.settings.necroTypes.includes(n.shape)) {
                     bail = my.necro(n);
-                } else if (my.shape === n.shape && n.settings.isNecromancer && my.type === 'food') {
+                } else if (my.type === 'food' && n.settings.necroTypes.includes(my.shape)) {
                     bail = n.necro(my);
                 }
                 if (!bail) {
