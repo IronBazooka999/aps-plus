@@ -352,12 +352,12 @@ class io_nearestDifferentMaster extends IO {
     }
     validate(e, m, mm, sqrRange, sqrRangeMaster) {
         return (e.health.amount > 0) &&
+        (!isNaN(e.dangerValue)) &&
         (!e.invuln && !e.master.master.passive && !this.body.master.master.passive) &&
         (e.master.master.team !== this.body.master.master.team) &&
         (e.master.master.team !== -101) &&
         (!e.master.master.ignoredByAi) &&
         (!e.master.master.isDominator) &&
-        (!isNaN(e.dangerValue)) &&
         (this.body.aiSettings.seeInvisible || this.body.isArenaCloser || e.alpha > 0.5) &&
         (e.type === "miniboss" || e.type === "tank" || e.type === "crasher" || (!this.body.aiSettings.IGNORE_SHAPES && e.type === 'food')) &&
         (this.body.aiSettings.BLIND || ((e.x - m.x) * (e.x - m.x) < sqrRange && (e.y - m.y) * (e.y - m.y) < sqrRange)) &&
@@ -368,29 +368,21 @@ class io_nearestDifferentMaster extends IO {
         let mostDangerous = 0,
             keepTarget = false;
         // Filter through everybody...
-        let out = entities.filter(e => {
+        let out = entities.filter(e =>
             // Only look at those within our view, and our parent's view, not dead, not invisible, not our kind, not a bullet/trap/block etc
-            return this.validate(e, {
-                    x: this.body.x,
-                    y: this.body.y,
-                }, {
-                    x: this.body.master.master.x,
-                    y: this.body.master.master.y,
-                }, range * range, range * range * 4 / 3);
-        }).filter((e) => {
+            this.validate(e, this.body, this.body.master.master, range * range, range * range * 4 / 3)
+        ).filter((e) => {
             // Only look at those within range and arc (more expensive, so we only do it on the few)
             if (this.body.firingArc == null || this.body.aiSettings.view360 || Math.abs(util.angleDifference(util.getDirection(this.body, e), this.body.firingArc[0])) < this.body.firingArc[1]) {
                 mostDangerous = Math.max(e.dangerValue, mostDangerous);
                 return true;
             }
-            return false;
         }).filter((e) => {
             // Only return the highest tier of danger
             if (this.body.aiSettings.farm || e.dangerValue === mostDangerous) {
                 if (this.targetLock && e.id === this.targetLock.id) keepTarget = true;
                 return true;
             }
-            return false;
         });
         // Reset target if it's not in there
         if (!keepTarget) this.targetLock = undefined;
@@ -844,12 +836,18 @@ class io_wanderAroundMap extends IO {
         this.spot = room.randomType('norm');
     }
     think(input) {
-        let vector = new Vector( this.body.x - this.spot.x, this.body.y - this.spot.y );
-        if (vector.length < 50) this.spot = room.randomType('norm');
+        if (new Vector( this.body.x - this.spot.x, this.body.y - this.spot.y ).isShorterThan(50)) {
+            this.spot = room.randomType('norm');
+        }
         if (input.goal == null && !this.body.autoOverride) {
             let goal = this.spot;
-            if (this.immitatePlayerMovement) goal = compressMovement(this.body, goal);
-            return { target: (this.lookAtGoal && input.target == null) ? this.spot : null, goal };
+            if (this.immitatePlayerMovement) {
+                goal = compressMovement(this.body, goal);
+            }
+            return {
+                target: (this.lookAtGoal && input.target == null) ? this.spot : null,
+                goal
+            };
         }
     }
 }
