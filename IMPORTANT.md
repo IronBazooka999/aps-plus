@@ -28,7 +28,7 @@
   - The configuration of the server.
   - Please use `modules/setup/config.js` to change the gamemode.
 
-- permissions.js
+- permissions.json
   - Manages server tokens.
   - It's highly recommended to make your glitch project private if you can afford a Glitch Pro membership so nobody else can see the tokens.
 
