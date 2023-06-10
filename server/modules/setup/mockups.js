@@ -41,11 +41,6 @@ function getMockup(e, positionInfo) {
             out.angle = rounder(t.bound.angle);
             return out;
         }),
-
-        upgradeColor: e.upgradeColor,
-        glowStrength: e.glowStrength,
-        glowColor: e.glowColor,
-        glowAlpha: e.glowAlpha,
     };
 }
 
