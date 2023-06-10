@@ -1,3 +1,4 @@
+module.exports = [
 {
   "ExampleBT1Token": {
     "discordID": "0",
@@ -28,3 +29,4 @@
     "note": "note here"
   }
 }
+];

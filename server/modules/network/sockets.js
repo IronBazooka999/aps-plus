@@ -1,4 +1,4 @@
-const permissionsDict = require("../../permissions.json");
+const permissionsDict = require("../../permissions.js");
 const getIP = require("forwarded-for");
 
 let clients = [],
