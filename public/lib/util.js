@@ -191,6 +191,11 @@ const util = {
                 o.facing = t.direction + t.angle;
                 return o;
             }),
+
+            upgradeColor: mockup.upgradeColor,
+            glowStrength: mockup.glowStrength,
+            glowColor: mockup.glowColor,
+            glowAlpha: mockup.glowAlpha,
         };
     }
 }

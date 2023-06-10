@@ -825,6 +825,21 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
         yy = y,
         source = turretInfo === false ? instance : turretInfo;
     if (fade === 0 || alpha === 0) return;
+    //Glow Implementation
+    context.shadowColor = m.glowColor!=null ? getColor(m.glowColor) : mixColors(
+        getColor(instance.color),
+        render.status.getColor(),
+        render.status.getBlend()
+    );
+    if (m.glowStrength && m.glowStrength>0){
+      context.shadowBlur = m.glowStrength;
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+    } else {
+      context.shadowBlur = 0
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+    }
     if (render.expandsWithDeath) drawSize *= 1 + 0.5 * (1 - fade);
     if (
         config.graphical.fancyAnimations &&
@@ -970,6 +985,9 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
         ctx.restore();
         //ctx.globalCompositeOperation = "source-over";
     }
+    context.shadowBlur = 0
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
 };
 function drawHealth(x, y, instance, ratio, alpha) {
     let fade = instance.render.status.getFade();
@@ -1561,21 +1579,24 @@ const gameDraw = (ratio, drawRatio) => {
                 ay = global.screenHeight / 2 + (y - full.height / 2) * tileSize,
                 size = tileSize;
             if (ax < -50 || ax + size - 50 > global.screenWidth) continue;
-            ctx.globalAlpha = 0.75;
-            ctx.fillStyle = getColor(10);
-            drawGuiRect(ax, ay, size, size);
-            ctx.globalAlpha = 0.15;
-            ctx.fillStyle = getColor(0);
-            drawGuiRect(ax, ay, size, size * 0.6);
-            ctx.fillStyle = color.black;
-            drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
-            ctx.globalAlpha = 1;
             let angle = -Math.PI / 4,
                 picture = util.getEntityImageFromMockup(index, 10),
                 position = global.mockups[index].position,
                 scale = (0.8 * size) / position.axis,
                 xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
                 yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle);
+          
+            ctx.globalAlpha = 0.75;
+            //Upgrade Menu upgradeColor Implementation
+            ctx.fillStyle = picture.upgradeColor!=null ? getColor(picture.upgradeColor) : getColor(10);
+            drawGuiRect(ax, ay, size, size);
+            ctx.globalAlpha = 0.15;
+            ctx.fillStyle = picture.upgradeColor!=null ? getColor(picture.upgradeColor) : getColor(0);
+            drawGuiRect(ax, ay, size, size * 0.6);
+            ctx.fillStyle = color.black;
+            drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
+            ctx.globalAlpha = 1;
+            
             drawEntity(xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
             ctx.strokeStyle = color.black;
             ctx.globalAlpha = 1;
@@ -1869,27 +1890,26 @@ const gameDraw = (ratio, drawRatio) => {
             let colorIndex = 10;
             let i = 0;
             gui.upgrades.forEach(function drawAnUpgrade(model) {
-                if (y > yo) yo = y;
-                xxx = x;
-                global.clickables.upgrade.place(i++, x, y, len, height);
-                // Draw box
-                ctx.globalAlpha = 0.5;
-                ctx.fillStyle = getColor(
-                    colorIndex > 18 ? colorIndex - 19 : colorIndex
-                );
-                drawGuiRect(x, y, len, height);
-                ctx.globalAlpha = 0.1;
-                ctx.fillStyle = getColor(-10 + colorIndex++);
-                drawGuiRect(x, y, len, height * 0.6);
-                ctx.fillStyle = color.black;
-                drawGuiRect(x, y + height * 0.6, len, height * 0.4);
-                ctx.globalAlpha = 1;
                 // Find offset location with rotation
                 let picture = util.getEntityImageFromMockup(model, gui.color),
                     position = global.mockups[model].position,
                     scale = (0.6 * len) / position.axis,
                     xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
                     yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin);
+                if (y > yo) yo = y;
+                xxx = x;
+                global.clickables.upgrade.place(i++, x, y, len, height);
+                // Draw box
+                ctx.globalAlpha = 0.5;
+                //Upgrade Menu upgradeColor Implementation
+                ctx.fillStyle = picture.upgradeColor!=null ? getColor(picture.upgradeColor) : getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
+                drawGuiRect(x, y, len, height);
+                ctx.globalAlpha = 0.1;
+                ctx.fillStyle = picture.upgradeColor!=null ? getColor(picture.upgradeColor) : getColor(-10 + colorIndex++);
+                drawGuiRect(x, y, len, height * 0.6);
+                ctx.fillStyle = color.black;
+                drawGuiRect(x, y + height * 0.6, len, height * 0.4);
+                ctx.globalAlpha = 1;
                 drawEntity(
                     xx,
                     yy,

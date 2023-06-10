@@ -91,10 +91,10 @@ function incoming(message, socket) {
             if (m.length === 1) {
                 let key = m[0].toString().trim();
                 socket.permissions = permissionsDict[key];
-                if (!socket.permissions) {
-                    socket.kick("Invalid key verification attempt.");
-                    return 1;
-                }
+                //if (!socket.permissions) {
+                //    socket.kick("Invalid key verification attempt.");
+                //    return 1;
+                //}
                 util.log("[INFO] A socket was verified with the token: " + key);
                 socket.key = key;
             }
