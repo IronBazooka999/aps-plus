@@ -8,14 +8,6 @@
     "build": "node standaloneClient/build minify"
   },
   "dependencies": {
-    "cors": "latest",
-    "express": "latest",
-    "express-minify": "latest",
-    "express-ws": "latest",
-    "forwarded-for": "latest",
-    "javascript-obfuscator": "latest",
-    "node-fetch": "latest",
-    "uglify-js": "latest",
     "ws": "^8.13.0"
   },
   "engines": {
