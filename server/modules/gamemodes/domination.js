@@ -3,7 +3,7 @@ let config = {
     neededToWin: 4
 };
 let gameWon = false;
-let spawn = (loc, team, type = false) => {
+let spawn = (loc, team, color, type = false) => {
     type = type ? type : ran.choose(config.types);
     let o = new Entity(loc);
     o.define(type);
@@ -17,12 +17,15 @@ let spawn = (loc, team, type = false) => {
     o.on('dead', () => {
         if (o.team === -100) {
             let killers = [];
-            for (let instance of o.collisionArray)
-                if (instance.team > -5 && instance.team < 0 && o.team !== instance.team) killers.push(instance);
-            let killer = ran.choose(killers);
-            let newTeam = killer.team;
-            spawn(loc, newTeam, type);
-            room.setType("dom" + -killer.team, loc);
+            for (let instance of o.collisionArray) {
+                if (instance.team > -5 && instance.team < 0 && o.team !== instance.team) {
+                    killers.push(instance);
+                }
+            }
+            let killer = ran.choose(killers),
+                newTeam = killer.team;
+            spawn(loc, newTeam, killer.color, type);
+            room.setType("dom" + ((killer.team < 0 && killer.team > 5) ? -killer.team : 0), loc);
             sockets.broadcast("A dominator is now controlled by " + ["BLUE", "GREEN", "RED", "PURPLE"][-newTeam - 1] + "!");
             for (let player of sockets.players) {
                 if (player.body) {
@@ -32,7 +35,7 @@ let spawn = (loc, team, type = false) => {
                 }
             }
         } else {
-            spawn(loc, -100, type);
+            spawn(loc, -100, 3, type);
             room.setType("dom0", loc);
             sockets.broadcast("A dominator is being contested!");
         }
@@ -43,9 +46,9 @@ let spawn = (loc, team, type = false) => {
 function winner(teamId) {
     gameWon = true;
     setTimeout(function() {
-        let team = ["BLUE", "GREEN", "RED", "PURPLE"][teamId];
+        let team = ["BLUE", "GREEN", "RED", "PURPLE"][teamId] || "An unknown team";
         sockets.broadcast(team + " has won the game!");
-        setTimeout(closeArena, 3e3);
+        setTimeout(closeArena, 3000);
     }, 1500);
 };
 

@@ -1,7 +1,6 @@
-const permissionsDict = require("../../permissions.json");
-const getIP = require("forwarded-for");
-
-let clients = [],
+let permissionsDict = require("../../permissions.json"),
+    net = require('net'),
+    clients = [],
     players = [],
     disconnections = [];
 
@@ -1242,21 +1241,18 @@ let minimapAll = new Delta(5, () => {
             my.type === "miniboss" ||
             (my.type === "tank" && my.lifetime) ||
             my.isMothership
-        )
+        ) {
             all.push({
                 id: my.id,
                 data: [
-                    my.type === "wall" || my.isMothership
-                        ? my.shape === 4
-                            ? 2
-                            : 1
-                        : 0,
+                    my.type === "wall" || my.isMothership ? my.shape === 4 ? 2 : 1 : 0,
                     util.clamp(Math.floor((256 * my.x) / room.width), 0, 255),
                     util.clamp(Math.floor((256 * my.y) / room.height), 0, 255),
                     my.color,
                     Math.round(my.SIZE),
                 ],
             });
+        }
     }
     return all;
 });
@@ -1401,8 +1397,10 @@ const sockets = {
         // This function initalizes the socket upon connection
         if (Date.now() - lastTime < 250) return socket.terminate();
         lastTime = Date.now();
+
         // Get information about the new connection and verify it
         util.log("A client is trying to connect...");
+
         // Set it up
         socket.binaryType = "arraybuffer";
         socket.key = "";
@@ -1412,14 +1410,12 @@ const sockets = {
         let mem = 0;
         let timer = 0;
         socket.timeout = {
+            check: (time) => timer && time - timer > c.maxHeartbeatInterval,
             set: (val) => {
                 if (mem !== val) {
                     mem = val;
                     timer = util.time();
                 }
-            },
-            check: (time) => {
-                return timer && time - timer > c.maxHeartbeatInterval;
             },
         };
         socket.awaiting = {};
@@ -1427,9 +1423,7 @@ const sockets = {
             socket.awaiting[options.packet] = {
                 callback: callback,
                 timeout: setTimeout(() => {
-                    console.log(
-                        "Socket did not respond to the eval packet, kicking..."
-                    );
+                    console.log("Socket did not respond to the eval packet, kicking...");
                     socket.kick("Did not comply with the server's protocol.");
                 }, options.timeout),
             };
@@ -1494,9 +1488,11 @@ const sockets = {
         };
         socket.lastWords = (...message) => {
             if (socket.readyState === socket.OPEN) {
-                socket.send(protocol.encode(message), { binary: true }, () => setTimeout(() => socket.terminate(), 1000));
+                socket.send(protocol.encode(message), { binary: true }, () => setTimeout(() => socket.close(), 1000));
             }
         };
+        // Put the player functions in the socket
+        socket.spawn = (name) => spawn(socket, name);
         socket.on("message", message => incoming(message, socket));
         socket.on("close", () => {
             socket.loops.terminate();
@@ -1506,14 +1502,11 @@ const sockets = {
             util.log("[ERROR]:");
             util.error(e);
         });
-        try {
-            socket.ip = getIP(req, req.headers).ip.split(":").pop();
-        } catch (e) {
-            console.log(e);
-            return socket.kick("Invalid IP");
-        }
-        // Put the player functions in the socket
-        socket.spawn = (name) => spawn(socket, name);
+        
+        //account for proxies
+        socket.ip = req.headers['fastly-client-ip'] || req.headers['x-forwarded-for'] || req.headers['z-forwarded-for'] ||
+                    req.headers['forwarded']        || req.headers['x-real-ip']       || req.connection.remoteAddress;
+        if (!net.isIP(socket.ip)) return socket.kick("Invalid IP: " + socket.ip);
         // Log it
         clients.push(socket);
         util.log("[INFO] New socket opened with ip " + socket.ip);

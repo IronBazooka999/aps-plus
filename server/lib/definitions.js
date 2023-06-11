@@ -15521,7 +15521,7 @@ exports.arenaCloser = {
 exports.bot = {
     FACING_TYPE: "looseToTarget",
     NAME: "[AI] ",
-    CONTROLLERS: ["nearestDifferentMaster", "mapAltToFire", "minion", "fleeAtLowHealth", "mapFireToAltIfHasAltFireGun", ["wanderAroundMap", { immitatePlayerMovement: true }]],
+    CONTROLLERS: ["nearestDifferentMaster", "mapAltToFire", "minion", "fleeAtLowHealth", ["mapFireToAlt", { onlyIfHasAltFireGun: true }], ["wanderAroundMap", { immitatePlayerMovement: true, lookAtGoal: true }]],
 };
 
 // SCORE KEEPING

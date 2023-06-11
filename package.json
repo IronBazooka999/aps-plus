@@ -15,7 +15,8 @@
     "forwarded-for": "latest",
     "javascript-obfuscator": "latest",
     "node-fetch": "latest",
-    "uglify-js": "latest"
+    "uglify-js": "latest",
+    "ws": "^8.13.0"
   },
   "engines": {
     "node": "16.x"

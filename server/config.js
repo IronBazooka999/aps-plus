@@ -65,6 +65,7 @@ module.exports = {
     secondaryGameMode: "z",
     GROUPS: false,
     TAG: false,
+    DEFAULT_FILE: 'index.html',
     WELCOME_MESSAGE: "You have spawned! Welcome to the game.\n"
                     +"You will be invulnerable until you move or shoot.\n"
                     +"Please contact Taureon#5684 if there are issues to report."

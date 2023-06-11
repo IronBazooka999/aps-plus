@@ -308,21 +308,13 @@ class io_mapAltToFire extends IO {
         }
     }
 }
-class io_mapFireToAltIfHasAltFireGun extends IO {
-    constructor(body) {
+class io_mapFireToAlt extends IO {
+    constructor(body, opts = {}) {
         super(body);
+        this.onlyIfHasAltFireGun = opts.onlyIfHasAltFireGun;
     }
-
     think(input) {
-        if (input.fire) {
-            for (let i = 0; i < this.body.guns.length; i++) {
-                if (this.body.guns[i].altFire) {
-                    return {
-                        alt: true,
-                    }
-                }
-            }
-        }
+        if (input.fire) for (let i = 0; i < this.body.guns.length; i++) if (!this.onlyIfHasAltFireGun || this.body.guns[i].altFire) return { alt: true }
     }
 }
 class io_onlyAcceptInArc extends IO {
@@ -335,15 +327,16 @@ class io_onlyAcceptInArc extends IO {
                 return {
                     fire: false,
                     alt: false,
-                    main: false,
+                    main: false
                 }
             }
         }
     }
 }
 class io_nearestDifferentMaster extends IO {
-    constructor(body) {
+    constructor(body, opts = {}) {
         super(body);
+        this.accountForMovement = opts.accountForMovement || true;
         this.targetLock = undefined;
         this.tick = ran.irandom(30);
         this.lead = 0;
@@ -403,8 +396,6 @@ class io_nearestDifferentMaster extends IO {
                 let v = this.body.guns[i].getTracking();
                 if (v.speed == 0 || v.range == 0) continue;
                 tracking = v.speed;
-                //if (!this.body.isPlayer || this.body.type === "miniboss" || this.body.master !== this.body) range = 640 * this.body.FOV;
-                //else range = Math.min(range, (v.speed || 1) * (v.range || 90));
                 range = Math.min(range, (v.speed || 1.5) * (v.range < (this.body.size * 2) ? this.body.fov : v.range));
                 break;
             }
@@ -416,13 +407,7 @@ class io_nearestDifferentMaster extends IO {
             range = 640 * this.body.FOV;
         }
         // Check if my target's alive
-        if (this.targetLock && !this.validate(this.targetLock, {
-                x: this.body.x,
-                y: this.body.y,
-            }, {
-                x: this.body.master.master.x,
-                y: this.body.master.master.y,
-            }, range * range, range * range * 4 / 3)) {
+        if (this.targetLock && !this.validate(this.targetLock, this.body, this.body.master.master, range * range, range * range * 4 / 3)) {
             this.targetLock = undefined;
             this.tick = 100;
         }
@@ -470,6 +455,7 @@ class io_nearestDifferentMaster extends IO {
             if (!Number.isFinite(this.lead)) {
                 this.lead = 0;
             }
+            if (!this.accountForMovement) this.lead = 0;
             // And return our aim
             return {
                 target: {
@@ -866,7 +852,7 @@ let ioTypes = {
     alwaysFire: io_alwaysFire,
     targetSelf: io_targetSelf,
     mapAltToFire: io_mapAltToFire,
-    mapFireToAltIfHasAltFireGun: io_mapFireToAltIfHasAltFireGun,
+    mapFireToAlt: io_mapFireToAlt,
     onlyAcceptInArc: io_onlyAcceptInArc,
     nearestDifferentMaster: io_nearestDifferentMaster,
     avoid: io_avoid,
