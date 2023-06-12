@@ -90,6 +90,7 @@ class Canvas {
                     break;
                 case global.KEY_AUTO_ALT:
                     this.parent.socket.talk('t', 5);
+                    break;
                 case global.KEY_CLASS_TREE:
                     global.showTree = !global.showTree;
                     break;
