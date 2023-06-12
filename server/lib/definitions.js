@@ -6947,7 +6947,33 @@ exports.phoenix = {
         },
     ],
 };
-// atomizer coming soon™
+exports.atomizer = {
+  PARENT: [exports.genericTank],
+  LABEL: "Atomizer",
+  GUNS: [
+    {
+      POSITION: [5, 7.5, 1.3, 18.5, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.lowpower,
+          g.mach,
+          g.morerecoil,
+          g.atomizer,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
 exports.focal = {
     PARENT: [exports.genericTank],
     LABEL: "Focal",
@@ -16390,7 +16416,7 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
         exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer];
                 exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade];
                 exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner];
-                exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.focal];
+                exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.atomizer, exports.focal];
 
         exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
                 exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
