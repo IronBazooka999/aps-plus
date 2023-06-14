@@ -535,6 +535,57 @@ class Gun {
         return out;
     }
 }
+
+function resetAN(me, data) {
+    data.x = me.x;
+    data.y = me.y;
+    data.vx = me.velocity.x;
+    data.vy = me.velocity.y;
+    data.ax = me.accel.x;
+    data.ay = me.accel.y;
+}
+
+function saveAN(me, data) {
+    me.x = data.x;
+    me.y = data.y;
+    me.velocity.x = data.vx;
+    me.velocity.y = data.vy;
+    me.accel.x = data.ax;
+    me.accel.y = data.ay;
+    me.velocity.update();
+    me.accel.update();
+}
+let amNaN = me => [
+    isNaN(me.x), isNaN(me.y),
+    isNaN(me.velocity.x), isNaN(me.velocity.y),
+    isNaN(me.accel.x), isNaN(me.accel.x)
+].map((entry) => !!entry).some((entry) => entry);
+function antiNaN(me) {
+    let nansInARow = 0;
+    let data = { x: 0, y: 0, vx: 0, vy: 0, ax: 0, ay: 0 };
+
+    return function() {
+        if (amNaN(me)) {
+            nansInARow++;
+            if (nansInARow > 50) {
+                console.log("NaN instance found. (Repeated)");
+                console.log("Debug:", [
+                    ["x,"        , isNaN(me.x)],
+                    ["y,"        , isNaN(me.y)],
+                    ["velocity.x", isNaN(me.velocity.x)],
+                    ["velocity.y", isNaN(me.velocity.y)],
+                    ["accel.x"   , isNaN(me.accel.x)],
+                    ["accel.y"   , isNaN(me.accel.y)],
+                ].map(entry => !!entry[1]));
+            }
+            saveAN(me, data);
+            if (amNaN(me)) console.log("NaN instance is still NaN.");
+        } else {
+            resetAN(me, data);
+            if (nansInARow > 0) nansInARow--;
+        }
+    }
+}
 let entitiesIdLog = 0;
 class Entity extends EventEmitter {
     constructor(position, master) {
@@ -643,74 +694,7 @@ class Entity extends EventEmitter {
         this.alpha = 1;
         this.invisible = [0, 0];
         this.autospinBoost = 0;
-        this.antiNaN = (function (me) {
-            let nansInARow = 0;
-            let data = {
-                x: 0,
-                y: 0,
-                vx: 0,
-                vy: 0,
-                ax: 0,
-                ay: 0,
-            };
-
-            function update(my) {
-                data.x = my.x;
-                data.y = my.y;
-                data.vx = my.velocity.x;
-                data.vy = my.velocity.y;
-                data.ax = my.accel.x;
-                data.ay = my.accel.y;
-            }
-
-            function set() {
-                me.x = data.x;
-                me.y = data.y;
-                me.velocity.x = data.vx;
-                me.velocity.y = data.vy;
-                me.accel.x = data.ax;
-                me.accel.y = data.ay;
-                me.velocity.update();
-                me.accel.update();
-            }
-
-            function check() {
-                let amNaN = () =>
-                    [
-                        isNaN(me.x),
-                        isNaN(me.y),
-                        isNaN(me.velocity.x),
-                        isNaN(me.velocity.y),
-                        isNaN(me.accel.x),
-                        isNaN(me.accel.x),
-                    ]
-                        .map((entry) => !!entry)
-                        .some((entry) => entry);
-                if (amNaN()) {
-                    nansInARow++;
-                    if (nansInARow > 50) {
-                        console.log("NaN instance found. (Repeated)");
-                        console.log(
-                            "Debug:",
-                            [
-                                isNaN(me.x),
-                                isNaN(me.y),
-                                isNaN(me.velocity.x),
-                                isNaN(me.velocity.y),
-                                isNaN(me.accel.x),
-                                isNaN(me.accel.y),
-                            ].map((entry) => !!entry)
-                        );
-                    }
-                    set();
-                    if (amNaN()) console.log("NaN instance is still NaN.");
-                } else {
-                    update(me);
-                    if (nansInARow > 0) nansInARow--;
-                }
-            }
-            return check;
-        })(this);
+        this.antiNaN = antiNaN(this);
         // Get a new unique id
         this.id = entitiesIdLog++;
         this.team = this.id;
@@ -733,22 +717,10 @@ class Entity extends EventEmitter {
                 if (this.isPlayer && !this.isDead()) this.refreshBodyAttributes();
                 this.antiNaN();
                 // Get bounds
-                let x1 =
-                    Math.min(this.x, this.x + this.velocity.x + this.accel.x) -
-                    this.realSize -
-                    5;
-                let y1 =
-                    Math.min(this.y, this.y + this.velocity.y + this.accel.y) -
-                    this.realSize -
-                    5;
-                let x2 =
-                    Math.max(this.x, this.x + this.velocity.x + this.accel.x) +
-                    this.realSize +
-                    5;
-                let y2 =
-                    Math.max(this.y, this.y + this.velocity.y + this.accel.y) +
-                    this.realSize +
-                    5;
+                let x1 = Math.min(this.x, this.x + this.velocity.x + this.accel.x) - this.realSize - 5;
+                let y1 = Math.min(this.y, this.y + this.velocity.y + this.accel.y) - this.realSize - 5;
+                let x2 = Math.max(this.x, this.x + this.velocity.x + this.accel.x) + this.realSize + 5;
+                let y2 = Math.max(this.y, this.y + this.velocity.y + this.accel.y) + this.realSize + 5;
                 // Size check
                 let size = getLongestEdge(x1, y1, x2, y1);
                 let sizeDiff = savedSize / size;
@@ -766,9 +738,7 @@ class Entity extends EventEmitter {
                     savedSize = data.size;
                 }
             };
-            return () => {
-                return data;
-            };
+            return () => data;
         })();
         this.updateAABB(true);
         entities.push(this);
@@ -1063,6 +1033,7 @@ class Entity extends EventEmitter {
                 tur * 0x01 +
                 this.settings.drawHealth * 0x02 +
                 (this.type === "tank") * 0x04,
+            invuln: this.invuln,
             id: this.id,
             index: this.index,
             x: this.x,

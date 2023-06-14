@@ -777,28 +777,9 @@ class io_fleeAtLowHealth extends IO {
 }
 
 class io_zoom extends IO {
-    constructor(body) {
+    constructor(body, opts = {}) {
         super(body);
-        this.distance = 225;
-    }
-
-    think(input) {
-        if (input.alt && input.target) {
-            if (this.body.cameraOverrideX === null) {
-                let direction = Math.atan2(input.target.y, input.target.x);
-                this.body.cameraOverrideX = this.body.x + this.distance * Math.cos(direction);
-                this.body.cameraOverrideY = this.body.y + this.distance * Math.sin(direction);
-            }
-        } else {
-            this.body.cameraOverrideX = null;
-            this.body.cameraOverrideY = null;
-        }
-    }
-}
-class io_longZoom extends IO {
-    constructor(body) {
-        super(body);
-        this.distance = 550;
+        this.distance = opts.distance || 225;
     }
 
     think(input) {
@@ -868,8 +849,7 @@ let ioTypes = {
     dontTurnDominator: io_dontTurnDominator,
     fleeAtLowHealth: io_fleeAtLowHealth,
     wanderAroundMap: io_wanderAroundMap,
-    zoom: io_zoom,
-    longZoom: io_longZoom
+    zoom: io_zoom
 };
 
 module.exports = { ioTypes, IO };

@@ -878,8 +878,7 @@ const spawn = (socket, name) => {
         }
     }
     // Decide what to do about colors when sending updates and stuff
-    player.teamColor =
-        !c.RANDOM_COLORS && room.gameMode === "ffa" ? 10 : body.color; // blue
+    player.teamColor = !c.RANDOM_COLORS && room.gameMode === "ffa" ? 10 : body.color; // blue
     // Set up the targeting structure
     player.target = { x: 0, y: 0 };
     // Set up the command structure
@@ -951,14 +950,15 @@ function flatten(data) {
             /* 10 */ data.twiggle,
             /* 11 */ data.layer,
             /* 12 */ data.color,
-            /* 13 */ Math.ceil(255 * data.health),
-            /* 14 */ Math.round(255 * data.shield),
-            /* 15 */ Math.round(255 * data.alpha)
+            /* 13 */ data.invuln,
+            /* 14 */ Math.ceil(255 * data.health),
+            /* 15 */ Math.round(255 * data.shield),
+            /* 16 */ Math.round(255 * data.alpha)
         );
         if (data.type & 0x04) {
             output.push(
-                /* 15 */ data.name,
-                /* 16 */ data.score
+                /* 17 */ data.name,
+                /* 18 */ data.score
             );
         }
     }

@@ -137,8 +137,9 @@ function entitiesactivationloop(my) {
 }
 function entitiesliveloop(my) {
     // Consider death.
-    if (my.contemplationOfMortality()) my.destroy();
-    else {
+    if (my.contemplationOfMortality()) {
+        my.destroy();
+    } else {
         if (my.bond == null) {
             // Resolve the physical behavior from the last collision cycle.
             logs.physics.set();
