@@ -33,46 +33,6 @@ class IO {
         }
     }
 }
-class io_slowSpin extends IO {
-    constructor(b) {
-        super(b);
-        this.a = 0;
-    }
-    think(input) {
-        this.a += 0.01;
-        let offset = 0;
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle;
-        }
-        return {
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset)
-            },
-            main: true
-        };
-    }
-}
-class io_reverseSlowSpin extends IO {
-    constructor(body) {
-        super(body)
-        this.a = 0
-    }
-    think(input) {
-        this.a -= 0.01;
-        let offset = 0
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle
-        }
-        return {
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset),
-            },
-            main: true,
-        };
-    }
-}
 class io_bossRushAI extends IO {
     constructor(body) {
         super(body);
@@ -595,10 +555,7 @@ class io_hangOutNearMaster extends IO {
                 let len = ran.randomRange(bound1, bound2)
                 let x = this.body.source.x - len * Math.cos(dir)
                 let y = this.body.source.y - len * Math.sin(dir)
-                this.currentGoal = {
-                    x: x,
-                    y: y,
-                };
+                this.currentGoal = { x: x, y: y };
             }
             if (dist < bound2) {
                 output.power = 0.15
@@ -610,151 +567,26 @@ class io_hangOutNearMaster extends IO {
         }
     }
 }
-class io_spinWhenIdle extends IO {
-    constructor(b) {
-        super(b)
-        this.a = 0
-    }
-    think(input) {
-        if (input.target) {
-            this.a = Math.atan2(input.target.y, input.target.x)
-            return input
-        }
-        this.a += 0.02
-        return {
-            target: {
-                x: Math.cos(this.a),
-                y: Math.sin(this.a),
-            },
-            main: true
-        }
-    }
-}
 class io_spin extends IO {
-    constructor(b) {
+    constructor(b, opts = {}) {
         super(b)
-        this.a = 0
+        this.a = opts.startAngle || 0;
+        this.speed = opts.speed ?? 0.04;
+        this.onlyWhenIdle = opts.onlyWhenIdle;
+        this.independent = opts.independent;
     }
     think(input) {
-        this.a += 0.04
-        let offset = 0
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle
+        if (this.onlyWhenIdle && input.target) {
+            this.a = Math.atan2(input.target.y, input.target.x);
+            return input;
         }
+        this.a += this.speed;
+        let offset = (!this.independent && this.body.bond != null) ? this.body.bound.angle : 0;
         return {
             target: {
                 x: Math.cos(this.a + offset),
                 y: Math.sin(this.a + offset),
             },
-            main: true,
-        };
-    }
-}
-class io_fastspin extends IO {
-    constructor(b) {
-        super(b)
-        this.a = 0
-    }
-    think(input) {
-        this.a += 0.08
-        let offset = 0
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle
-        }
-        return {
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset),
-            },
-            main: true,
-        };
-    }
-}
-class io_reversespin extends IO {
-    constructor(b) {
-        super(b)
-        this.a = 0
-    }
-    think(input) {
-        this.a -= 0.05
-        let offset = 0
-        if (this.body.bond != null) {
-            offset = this.body.bound.angle
-        }
-        return {
-            target: {
-                x: Math.cos(this.a + offset),
-                y: Math.sin(this.a + offset),
-            },
-            main: true,
-        };
-    }
-}
-class io_reverseceles extends IO {
-  constructor(body) {
-    super(body);
-    this.a = 0;
-  }
-
-  think(input) {
-    this.a -= 0.025;
-    let offset = 0;
-    if (this.body.bond != null) {
-      offset = this.body.bound.angle;
-    }
-    return {
-      target: {
-        x: Math.cos(this.a + offset),
-        y: Math.sin(this.a + offset),
-      },
-      main: true,
-    };
-  }
-};
-class io_spinceles extends IO {
-  constructor(body) {
-    super(body);
-    this.a = 0;
-  }
-  think(input) {
-    this.a += 0.02;
-    let offset = 0;
-    if (this.body.bond != null) {
-      offset = this.body.bound.angle;
-    }
-    return {
-      target: {
-        x: Math.cos(this.a + offset),
-        y: Math.sin(this.a + offset),
-      },
-      main: true,
-    };
-  }
-};
-class io_dontTurn extends IO {
-    constructor(b) {
-        super(b)
-    }
-    think(input) {
-        return {
-            target: {
-                x: 0,
-                y: 1,
-            },
-            main: true,
-        };
-    }
-}
-class io_dontTurnDominator extends IO {
-    constructor(b) {
-        super(b);
-    }
-    think(input) {
-        return {
-            target: rotatePoint({
-                x: 10,
-                y: 10
-            }, Math.PI / 4),
             main: true,
         };
     }
@@ -820,36 +652,32 @@ class io_wanderAroundMap extends IO {
 }
 
 let ioTypes = {
-    slowSpin: io_slowSpin,
-    reverseSlowSpin: io_reverseSlowSpin,
-    bossRushAI: io_bossRushAI,
+    //misc
+    zoom: io_zoom,
     doNothing: io_doNothing,
-    moveInCircles: io_moveInCircles,
     listenToPlayer: io_listenToPlayer,
-    mapTargetToGoal: io_mapTargetToGoal,
-    boomerang: io_boomerang,
-    goToMasterTarget: io_goToMasterTarget,
-    canRepel: io_canRepel,
     alwaysFire: io_alwaysFire,
-    targetSelf: io_targetSelf,
     mapAltToFire: io_mapAltToFire,
     mapFireToAlt: io_mapFireToAlt,
-    onlyAcceptInArc: io_onlyAcceptInArc,
+
+    //aiming related
     nearestDifferentMaster: io_nearestDifferentMaster,
+    targetSelf: io_targetSelf,
+    onlyAcceptInArc: io_onlyAcceptInArc,
+    spin: io_spin,
+
+    //movement related
+    canRepel: io_canRepel,
+    mapTargetToGoal: io_mapTargetToGoal,
+    bossRushAI: io_bossRushAI,
+    moveInCircles: io_moveInCircles,
+    boomerang: io_boomerang,
+    goToMasterTarget: io_goToMasterTarget,
     avoid: io_avoid,
     minion: io_minion,
     hangOutNearMaster: io_hangOutNearMaster,
-    spinWhenIdle: io_spinWhenIdle,
-    spin: io_spin,
-    fastspin: io_fastspin,
-    reversespin: io_reversespin,
-    reverseceles: io_reverseceles,
-    spinceles: io_spinceles,
-    dontTurn: io_dontTurn,
-    dontTurnDominator: io_dontTurnDominator,
     fleeAtLowHealth: io_fleeAtLowHealth,
-    wanderAroundMap: io_wanderAroundMap,
-    zoom: io_zoom
+    wanderAroundMap: io_wanderAroundMap
 };
 
 module.exports = { ioTypes, IO };

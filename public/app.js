@@ -16,9 +16,7 @@ fetch("changelog.md", { cache: "no-cache" })
     console.log(changelogs);
     changelogs.forEach((changelog) => {
         changelog[0] = changelog[0].split(":").map((line) => line.trim());
-        document.getElementById(
-            "patchNotes"
-        ).innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${
+        document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${
             changelog[0].slice(1).join(":") || "Update lol"
         }<ul>${changelog
             .slice(1)
@@ -1386,18 +1384,8 @@ const gameDraw = (ratio, drawRatio) => {
         };
         GRAPHDATA = motion.getPrediction();
         // Don't move the camera if you're dead. This helps with jitter issues
-        global.player.renderx = util.lerp(
-            global.player.renderx,
-            global.player.cx,
-            0.1,
-            true
-        );
-        global.player.rendery = util.lerp(
-            global.player.rendery,
-            global.player.cy,
-            0.1,
-            true
-        );
+        global.player.renderx = util.lerp(global.player.renderx, global.player.cx, 0.1, true);
+        global.player.rendery = util.lerp(global.player.rendery, global.player.cy, 0.1, true);
         px = ratio * global.player.renderx;
         py = ratio * global.player.rendery;
     }
@@ -1411,37 +1399,15 @@ const gameDraw = (ratio, drawRatio) => {
         for (let row of global.roomSetup) {
             let j = 0;
             for (let cell of row) {
-                let left = Math.max(
-                        0,
-                        (ratio * j * global.gameWidth) / W - px + global.screenWidth / 2
-                    ),
-                    top = Math.max(
-                        0,
-                        (ratio * i * global.gameHeight) / H -
-                            py +
-                            global.screenHeight / 2
-                    ),
-                    right = Math.min(
-                        global.screenWidth,
-                        (ratio * (j + 1) * global.gameWidth) / W -
-                            px +
-                            global.screenWidth / 2
-                    ),
-                    bottom = Math.min(
-                        global.screenHeight,
-                        (ratio * (i + 1) * global.gameHeight) / H -
-                            py +
-                            global.screenHeight / 2
-                    );
+                let left = Math.max(0, (ratio * j * global.gameWidth) / W - px + global.screenWidth / 2),
+                    top = Math.max(0, (ratio * i * global.gameHeight) / H - py + global.screenHeight / 2),
+                    right = Math.min(global.screenWidth, (ratio * (j + 1) * global.gameWidth) / W - px + global.screenWidth / 2),
+                    bottom = Math.min(global.screenHeight, (ratio * (i + 1) * global.gameHeight) / H - py + global.screenHeight / 2);
                 ctx.globalAlpha = 1;
-                ctx.fillStyle = config.graphical.screenshotMode
-                    ? color.guiwhite
-                    : color.white;
+                ctx.fillStyle = config.graphical.screenshotMode ? color.guiwhite : color.white;
                 ctx.fillRect(left, top, right - left, bottom - top);
                 ctx.globalAlpha = 0.3;
-                ctx.fillStyle = config.graphical.screenshotMode
-                    ? color.guiwhite
-                    : getZoneColor(cell, true);
+                ctx.fillStyle = config.graphical.screenshotMode ? color.guiwhite : getZoneColor(cell, true);
                 ctx.fillRect(left, top, right - left, bottom - top);
                 j++;
             }
@@ -1874,9 +1840,7 @@ const gameDraw = (ratio, drawRatio) => {
                 global.clickables.upgrade.place(i++, x, y, len, height);
                 // Draw box
                 ctx.globalAlpha = 0.5;
-                ctx.fillStyle = getColor(
-                    colorIndex > 18 ? colorIndex - 19 : colorIndex
-                );
+                ctx.fillStyle = getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
                 drawGuiRect(x, y, len, height);
                 ctx.globalAlpha = 0.1;
                 ctx.fillStyle = getColor(-10 + colorIndex++);
@@ -1890,41 +1854,19 @@ const gameDraw = (ratio, drawRatio) => {
                     scale = (0.6 * len) / position.axis,
                     xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
                     yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin);
-                drawEntity(
-                    xx,
-                    yy,
-                    picture,
-                    1,
-                    1,
-                    scale / picture.size,
-                    upgradeSpin,
-                    true
-                );
+                drawEntity(xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
                 let upgradeKey = getClassUpgradeKey(ticker);
                 // Tank name
-                text.upgradeNames[i - 1].draw(
-                    picture.name,
-                    x + ((upgradeKey ? 0.9 : 1) * len) / 2,
-                    y + height - 6,
-                    height / 8 - 3,
-                    color.guiwhite,
-                    "center"
-                );
+                text.upgradeNames[i - 1].draw(picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
                 // Upgrade key
-                if (upgradeKey)
-                    text.upgradeKeys[i - 1].draw(
-                        "[" + upgradeKey + "]",
-                        x + len - 4,
-                        y + height - 6,
-                        height / 8 - 3,
-                        color.guiwhite,
-                        "right"
-                    );
+                if (upgradeKey) {
+                    text.upgradeKeys[i - 1].draw("[" + upgradeKey + "]", x + len - 4, y + height - 6, height / 8 - 3, color.guiwhite, "right");
+                }
                 ctx.strokeStyle = color.black;
                 ctx.globalAlpha = 1;
                 ctx.lineWidth = 3;
                 drawGuiRect(x, y, len, height, true); // Border
-                if (++ticker % 3 === 0) {
+                if (++ticker % Math.max(3, Math.ceil(gui.upgrades.length / 4)) === 0) {
                     x = xStart;
                     y += height + internalSpacing;
                 } else {
@@ -1937,23 +1879,9 @@ const gameDraw = (ratio, drawRatio) => {
                 m = measureText(msg, h - 3) + 10;
             let xx = xo + (xxx + len + internalSpacing - xo) / 2,
                 yy = yo + height + internalSpacing;
-            drawBar(
-                xx - m / 2,
-                xx + m / 2,
-                yy + h / 2,
-                h + config.graphical.barChunk,
-                color.black
-            );
+            drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h + config.graphical.barChunk, color.black);
             drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h, color.white);
-            text.skipUpgrades.draw(
-                msg,
-                xx,
-                yy + h / 2,
-                h - 2,
-                color.guiwhite,
-                "center",
-                true
-            );
+            text.skipUpgrades.draw(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
             global.clickables.skipUpgrades.place(0, xx - m / 2, yy, m, h);
         } else {
             global.canUpgrade = false;

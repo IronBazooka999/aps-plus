@@ -172,7 +172,7 @@ class Canvas {
                 };
                 let statIndex = global.clickables.stat.check(mpos);
                 if (statIndex !== -1) {
-                    this.parent.socket.talk('x', statIndex);
+                    this.parent.socket.talk('x', statIndex, 1);
                 } else if (global.clickables.skipUpgrades.check(mpos) !== -1) {
                     global.clearUpgrades();
                 } else {

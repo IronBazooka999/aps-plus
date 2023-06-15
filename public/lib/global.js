@@ -43,11 +43,7 @@ let Region = (size) => {
         hide: () => {
             data.forEach(r => r.hide());
         },
-        check: x => {
-            return data.findIndex(r => {
-                return r.check(x);
-            });
-        }
+        check: x => data.findIndex(r => r.check(x))
     };
 };
 

@@ -3189,49 +3189,42 @@ exports.tracker3gun = {
 // TANK BODIES
 exports.smasherBody = {
     LABEL: "",
-    CONTROLLERS: ["spin"],
+    CONTROLLERS: [["spin", { independent: true }]],
     COLOR: 9,
     SHAPE: 6,
     INDEPENDENT: true,
 };
 exports.landmineBody = {
     LABEL: "",
-    CONTROLLERS: ["fastspin"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.08 }]],
     COLOR: 9,
     SHAPE: 6,
     INDEPENDENT: !0,
 };
 exports.spikeBody = {
     LABEL: "",
-    CONTROLLERS: ["spin"],
+    CONTROLLERS: [["spin", { independent: true }]],
     COLOR: 9,
     SHAPE: 3,
     INDEPENDENT: true,
 };
 exports.weirdSpikeBody1 = {
     LABEL: "",
-    CONTROLLERS: ["fastspin"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.08 }]],
     COLOR: 9,
     SHAPE: 3,
     INDEPENDENT: true,
 };
 exports.weirdSpikeBody2 = {
     LABEL: "",
-    CONTROLLERS: ["reversespin"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.05 }]],
     COLOR: 9,
     SHAPE: 3,
     INDEPENDENT: true,
 };
-exports.dominationBody = {
-    LABEL: "",
-    CONTROLLERS: ["dontTurn"],
-    COLOR: 9,
-    SHAPE: 8,
-    INDEPENDENT: true,
-};
 exports.physicianBody = {
     LABEL: "",
-    CONTROLLERS: ["spin"],
+    CONTROLLERS: [["spin", { independent: true }]],
     COLOR: 9,
     SHAPE: 4,
     INDEPENDENT: true,
@@ -3273,7 +3266,7 @@ exports.surgeonPillboxTurret = {
         FOV: 3,
     },
     HAS_NO_RECOIL: true,
-    CONTROLLERS: ["fastspin"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.08 }]],
     //CONTROLLERS: ['nearestDifferentMaster'],
     TURRETS: [
         {
@@ -13914,7 +13907,7 @@ exports.paladinDrone = {
 };
 exports.paladinLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 14,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14004,7 +13997,7 @@ exports.paladinLowerBody = {
 };
 exports.paladinUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     AUTOSPIN: true,
     COLOR: 14,
     SIZE: 100,
@@ -14124,7 +14117,7 @@ exports.cruiserTurret = {
 };
 exports.freyjaLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 1,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14166,7 +14159,7 @@ exports.freyjaLowerBody = {
 };
 exports.freyjaUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     COLOR: 1,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14257,7 +14250,7 @@ exports.zaphkielSkimmerTurret = {
 };
 exports.zaphkielLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 2,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14336,7 +14329,7 @@ exports.zaphkielLowerBody = {
 };
 exports.zaphkielUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     AUTOSPIN: true,
     COLOR: 2,
     SIZE: 100,
@@ -14456,7 +14449,7 @@ exports.rocketeerTurret = {
 };
 exports.nyxLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 5,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14532,7 +14525,7 @@ exports.nyxLowerBody = {
 };
 exports.nyxUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     AUTOSPIN: true,
     COLOR: 5,
     SIZE: 100,
@@ -14669,7 +14662,7 @@ exports.theiaTwisterTurret = {
 };
 exports.theiaLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 35,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14752,7 +14745,7 @@ exports.theiaLowerBody = {
 };
 exports.theiaUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     AUTOSPIN: true,
     COLOR: 35,
     SIZE: 100,
@@ -14898,7 +14891,7 @@ exports.alvissLowerTurret = {
 };
 exports.alvissLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 17,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -14940,7 +14933,7 @@ exports.alvissLowerBody = {
 };
 exports.alvissUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     COLOR: 17,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -15056,7 +15049,7 @@ exports.tyrLowerTurret = {
 };
 exports.tyrLowerBody = {
     LABEL: "",
-    CONTROLLERS: ["reverseceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
     COLOR: 17,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -15098,7 +15091,7 @@ exports.tyrLowerBody = {
 };
 exports.tyrUpperBody = {
     LABEL: "",
-    CONTROLLERS: ["spinceles"],
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
     COLOR: 17,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
@@ -15184,7 +15177,7 @@ exports.tyr = {
 // DOMINATORS
 exports.dominationBody = {
     LABEL: "",
-    CONTROLLERS: ["dontTurnDominator"],
+    CONTROLLERS: [["spin", { startAngle: Math.PI / 2, speed: 0, independent: true }]],
     COLOR: 9,
     SHAPE: 6,
     INDEPENDENT: true,
@@ -16357,6 +16350,16 @@ exports.godbasic = {
     ],
 };
 
+exports.treetest = { PARENT: [exports.testbedBase], LABEL: "Upgrade Tree Test" };
+for (let i = 1; i < 33; i++) {
+    let thistree = "treetest" + i;
+    exports[thistree] = { PARENT: [exports.testbedBase], LABEL: i.toString() };
+    if (i == 1) {
+        exports.treetest.UPGRADES_TIER_0 = [thistree];
+    } else {
+        exports["treetest" + (i - 1)].UPGRADES_TIER_0 = Array(i).fill(exports[thistree]);
+    }
+}
 
 exports.levels   = { PARENT: [exports.testbedBase],        LABEL: "Levels"    };
 exports.level0   = { PARENT: [exports.levels], LEVEL:   0, LABEL: "Level 0"   };
@@ -16364,8 +16367,17 @@ exports.level15  = { PARENT: [exports.levels], LEVEL:  15, LABEL: "Level 15"  };
 exports.level30  = { PARENT: [exports.levels], LEVEL:  30, LABEL: "Level 30"  };
 exports.level45  = { PARENT: [exports.levels], LEVEL:  45, LABEL: "Level 45"  };
 exports.level60  = { PARENT: [exports.levels], LEVEL:  60, LABEL: "Level 60"  };
+exports.level75  = { PARENT: [exports.levels], LEVEL:  75, LABEL: "Level 75"  };
+exports.level90  = { PARENT: [exports.levels], LEVEL:  90, LABEL: "Level 90"  };
+exports.level105 = { PARENT: [exports.levels], LEVEL: 105, LABEL: "Level 105" };
 exports.level120 = { PARENT: [exports.levels], LEVEL: 120, LABEL: "Level 120" };
-exports.levels.UPGRADES_TIER_0 = [exports.developer, exports.level0, exports.level15, exports.level30, exports.level45, exports.level60, exports.level120];
+exports.level135 = { PARENT: [exports.levels], LEVEL: 135, LABEL: "Level 135" };
+exports.level150 = { PARENT: [exports.levels], LEVEL: 150, LABEL: "Level 150" };
+exports.level165 = { PARENT: [exports.levels], LEVEL: 165, LABEL: "Level 165" };
+exports.level180 = { PARENT: [exports.levels], LEVEL: 180, LABEL: "Level 180" };
+exports.level195 = { PARENT: [exports.levels], LEVEL: 195, LABEL: "Level 195" };
+exports.level210 = { PARENT: [exports.levels], LEVEL: 210, LABEL: "Level 210" };
+exports.levels.UPGRADES_TIER_0 = [exports.developer, exports.level0, exports.level15, exports.level30, exports.level45, exports.level60, exports.level75, exports.level90, exports.level105, exports.level120, exports.level135, exports.level150, exports.level165, exports.level180, exports.level195, exports.level210];
 
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
@@ -16394,7 +16406,7 @@ exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.game
         exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
-exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser, exports.armyOfOne, exports.godbasic];
+exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser, exports.armyOfOne, exports.godbasic, exports.treetest];
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS

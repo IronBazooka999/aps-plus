@@ -1047,14 +1047,8 @@ const eyes = (socket) => {
                 // I live!
                 else if (player.body.photo) {
                     // Update camera position and motion
-                    camera.x =
-                        player.body.cameraOverrideX === null
-                            ? player.body.photo.x
-                            : player.body.cameraOverrideX;
-                    camera.y =
-                        player.body.cameraOverrideY === null
-                            ? player.body.photo.y
-                            : player.body.cameraOverrideY;
+                    camera.x = player.body.cameraOverrideX === null ? player.body.photo.x : player.body.cameraOverrideX;
+                    camera.y = player.body.cameraOverrideY === null ? player.body.photo.y : player.body.cameraOverrideY;
                     camera.vx = player.body.photo.vx;
                     camera.vy = player.body.photo.vy;
                     // Get what we should be able to see

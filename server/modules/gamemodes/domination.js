@@ -13,7 +13,7 @@ let spawn = (loc, team, color, type = false) => {
     o.name = "Dominator";
     o.SIZE = c.WIDTH / c.X_GRID / 10;
     o.isDominator = true;
-    o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spinWhenIdle(o)];
+    o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spin(o, { onlyWhenIdle: true })];
     o.on('dead', () => {
         if (o.team === -100) {
             let killers = [];

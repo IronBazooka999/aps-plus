@@ -776,7 +776,7 @@ class Entity extends EventEmitter {
         if (!player.body.isMothership)
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
-                new ioTypes.spinWhenIdle(player.body),
+                new ioTypes.spin(o, { onlyWhenIdle: true }),
             ];
         else if (player.body.isMothership)
             player.body.controllers = [
@@ -1005,20 +1005,13 @@ class Entity extends EventEmitter {
         this.move();
     }
     get size() {
-        if (this.bond == null)
-            return (this.coreSize || this.SIZE) * (1 + this.skill.level / 45);
-        return this.bond.size * this.bound.size;
+        return this.bond == null ? (this.coreSize || this.SIZE) * (1 + this.skill.level / 45) : this.bond.size * this.bound.size;
     }
     get mass() {
         return this.density * (this.size * this.size + 1);
     }
     get realSize() {
-        return (
-            this.size *
-            (Math.abs(this.shape) > lazyRealSizes.length
-                ? 1
-                : lazyRealSizes[Math.abs(this.shape)])
-        );
+        return this.size * (Math.abs(this.shape) > lazyRealSizes.length ? 1 : lazyRealSizes[Math.abs(this.shape)]);
     }
     get m_x() {
         return (this.velocity.x + this.accel.x) / roomSpeed;
@@ -1062,6 +1055,11 @@ class Entity extends EventEmitter {
         if (suc) {
             this.refreshBodyAttributes();
             for (let i = 0; i < this.guns.length; i++) this.guns[i].syncChildren();
+            for (let i = 0; i < this.turrets.length; i++) {
+                for (let j = 0; j < this.turrets[i].guns.length; j++) {
+                    this.turrets[i].guns[j].syncChildren();
+                }
+            }
         }
         return suc;
     }

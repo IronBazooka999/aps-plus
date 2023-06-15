@@ -149,10 +149,7 @@ class Skill {
         return this.levelScore ? (this.score - this.deduction) / this.levelScore : 0;
     }
     get levelPoints() {
-        if (this.level < 2) return 0;
-        if (this.level <= 40) return 1;
-        if (this.level <= 45 && this.level & 1 == 1) return 1;
-        return 0;
+        return c.LEVEL_SKILL_POINT_FUNCTION(this.level);
     }
     cap(skill, real = false) {
         if (!real && this.level < c.SKILL_SOFT_CAP) {
