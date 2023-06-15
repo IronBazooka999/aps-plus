@@ -16350,17 +16350,6 @@ exports.godbasic = {
     ],
 };
 
-exports.treetest = { PARENT: [exports.testbedBase], LABEL: "Upgrade Tree Test" };
-for (let i = 1; i < 33; i++) {
-    let thistree = "treetest" + i;
-    exports[thistree] = { PARENT: [exports.testbedBase], LABEL: i.toString() };
-    if (i == 1) {
-        exports.treetest.UPGRADES_TIER_0 = [thistree];
-    } else {
-        exports["treetest" + (i - 1)].UPGRADES_TIER_0 = Array(i).fill(exports[thistree]);
-    }
-}
-
 exports.levels   = { PARENT: [exports.testbedBase],        LABEL: "Levels"    };
 exports.level0   = { PARENT: [exports.levels], LEVEL:   0, LABEL: "Level 0"   };
 exports.level15  = { PARENT: [exports.levels], LEVEL:  15, LABEL: "Level 15"  };
@@ -16406,7 +16395,7 @@ exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.game
         exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
-exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser, exports.armyOfOne, exports.godbasic, exports.treetest];
+exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser, exports.armyOfOne, exports.godbasic];
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS
