@@ -1538,7 +1538,7 @@ class Entity extends EventEmitter {
                 dothISendAText = this.settings.givesKillMessage,
                 killCountType = this.type == "food" ? "polygons" :
                                 this.type == "miniboss" ? "bosses" :
-                                killers.length ? "assists" : "solo";
+                                killers.length == 1 ? "solo" : "assists";
             for (let i = 0; i < killers.length; i++) {
                 killers[i].killCount[killCountType]++;
                 this.killCount.killers.push(killers[i].index);

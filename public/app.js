@@ -1814,8 +1814,10 @@ let getKills = () => {
     }, killCountTexts = [];
     let destruction = 0;
     for (let key in finalKills) {
-        destruction += finalKills[key][0] * finalKills[key][1];
-        killCountTexts.push(finalKills[key][0] + key);
+        if (finalKills[key][0]) {
+            destruction += finalKills[key][0] * finalKills[key][1];
+            killCountTexts.push(finalKills[key][0] + key);
+        }
     }
     return (
         (destruction === 0 ? "🌼"
