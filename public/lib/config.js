@@ -12,11 +12,15 @@ const config = {
         fontSizeBoost: 1.4,
         fontStrokeRatio: 4.5,
         neon: false,
-        coloredHealthbars: false
+        coloredHealthbars: false,
+        seperatedHealthbars: false
     },
     lag: {
         unresponsive: false,
         memory: 60
+    },
+    game: {
+        autoLevelUp: false
     }
 };
 export {

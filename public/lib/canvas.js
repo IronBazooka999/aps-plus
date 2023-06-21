@@ -1,4 +1,5 @@
 import { global } from "./global.js";
+import { config } from "./config.js";
 
 class Canvas {
     constructor(params) {
@@ -24,7 +25,7 @@ class Canvas {
     keyboardDown(event) {
         switch (event.keyCode) {
             case 13:
-                if (global.died) this.parent.socket.talk('s', global.playerName, 0);
+                if (global.died) this.parent.socket.talk('s', global.playerName, 0, 1 * config.game.autoLevelUp);
                 global.died = false;
                 break; // Enter to respawn
             case global.KEY_UP_ARROW:

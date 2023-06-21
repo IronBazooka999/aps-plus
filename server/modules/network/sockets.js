@@ -106,16 +106,17 @@ function incoming(message, socket) {
                 socket.kick("Trying to spawn while already alive.");
                 return 1;
             }
-            if (m.length !== 2) {
+            if (m.length !== 3) {
                 socket.kick("Ill-sized spawn request.");
                 return 1;
             }
             // Get data
             let name = m[0].replace(c.BANNED_CHARACTERS_REGEX, "");
             let needsRoom = m[1];
+            let autoLVLup = m[2];
             // Verify it
             if (typeof name != "string") {
-                socket.kick("Bad spawn request.");
+                socket.kick("Bad spawn request name.");
                 return 1;
             }
             if (encodeURI(name).split(/%..|./).length > 48) {
@@ -123,7 +124,11 @@ function incoming(message, socket) {
                 return 1;
             }
             if (typeof m[1] !== "number") {
-                socket.kick("Bad spawn request.");
+                socket.kick("Bad spawn request needsRoom.");
+                return 1;
+            }
+            if (typeof autoLVLup !== "number") {
+                socket.kick("Bad spawn request autoLVLup.");
                 return 1;
             }
             if (global.arenaClosed) return 1;
@@ -140,6 +145,14 @@ function incoming(message, socket) {
             }
             socket.party = m[1];
             socket.player = socket.spawn(name);
+
+            if (autoLVLup) {
+                while (socket.player.body.skill.level < c.SKILL_CHEAT_CAP) {
+                    socket.player.body.skill.score += socket.player.body.skill.levelScore;
+                    socket.player.body.skill.maintain();
+                    socket.player.body.refreshBodyAttributes();
+                }
+            }
             //socket.view.gazeUpon();
             //socket.lastUptime = Infinity;
             // Give it the room state
@@ -903,6 +916,7 @@ const spawn = (socket, name) => {
         player.body.killCount.solo,
         player.body.killCount.assists,
         player.body.killCount.bosses,
+        player.body.killCount.polygons,
         player.body.killCount.killers.length,
         ...player.body.killCount.killers,
     ];

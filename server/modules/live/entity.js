@@ -70,7 +70,7 @@ class Gun {
             this.countsOwnKids = info.PROPERTIES.MAX_CHILDREN == null ? false : info.PROPERTIES.MAX_CHILDREN;
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
-            this.color = info.PROPERTIES.COLOR == null ? this.color : info.PROPERTIES.COLOR;
+            this.color = info.PROPERTIES.COLOR == null ? 16 : info.PROPERTIES.COLOR;
             this.destroyOldestChild = info.PROPERTIES.DESTROY_OLDEST_CHILD == null ? false : info.PROPERTIES.DESTROY_OLDEST_CHILD;
             this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
             if (info.PROPERTIES.COLOR != null && info.PROPERTIES != null) this.color = info.PROPERTIES.COLOR;
@@ -596,6 +596,7 @@ class Entity extends EventEmitter {
             solo: 0,
             assists: 0,
             bosses: 0,
+            polygons: 0,
             killers: [],
         };
         this.creationTime = new Date().getTime();
@@ -1423,43 +1424,28 @@ class Entity extends EventEmitter {
                     roomSpeed;
             }
         }
-        if (
-            c.SPECIAL_BOSS_SPAWNS &&
-            (this.type === "tank" || this.type === "food") &&
-            room.isIn("outb", {
-                x: this.x,
-                y: this.y,
-            })
-        )
+        if (c.SPECIAL_BOSS_SPAWNS && (this.type === "tank" || this.type === "food") && room.isIn("outb", this)) {
             this.kill();
-        if (
-            this.type === "food" &&
-            room.isIn("boss", {
-                x: this.x,
-                y: this.y,
-            })
-        )
+        }
+        if (this.type === "food" && room.isIn("boss", this)) {
             this.kill();
-        if (
-            room.gameMode === "tdm" &&
-            this.type !== "food" &&
-            this.master.label !== "Arena Closer"
-        ) {
-            let loc = {
-                x: this.x,
-                y: this.y,
-            };
+        }
+        if (room.gameMode === "tdm" && this.type !== "food" && this.master.label !== "Arena Closer") {
+            let loc = this;
             let inEnemyBase = false;
             for (let i = 1; i < 5; i++) {
-                if (room["bas" + i].length)
+                if (room["bas" + i].length) {
                     if (this.team !== -i && room.isIn("bas" + i, loc)) inEnemyBase = true;
-                if (room["bap" + i].length)
+                }
+                if (room["bap" + i].length) {
                     if (this.team !== -i && room.isIn("bap" + i, loc)) inEnemyBase = true;
+                }
             }
             if (c.TEAMS === 1) inEnemyBase = false;
             if (room.isIn("boss", loc) && this.team !== -100) inEnemyBase = true;
-            if (inEnemyBase && !this.isArenaCloser && !this.master.isArenaCloser)
+            if (inEnemyBase && !this.isArenaCloser && !this.master.isArenaCloser) {
                 this.kill();
+            }
         }
     }
     contemplationOfMortality() {
@@ -1530,7 +1516,8 @@ class Entity extends EventEmitter {
             // Calculate the jackpot
             let jackpot = Math.ceil(util.getJackpot(this.skill.score) / this.collisionArray.length);
             // Now for each of the things that kill me...
-            this.collisionArray.forEach((instance) => {
+            for (let i = 0; i < this.collisionArray.length; i++) {
+                let instance = this.collisionArray[i];
                 if (instance.type === 'wall' || !instance.damage) return;
                 if (instance.master.settings.acceptsScore) {
                     // If it's not food, give its master the score
@@ -1543,60 +1530,42 @@ class Entity extends EventEmitter {
                     instance.skill.score += jackpot;
                 }
                 killTools.push(instance); // Keep track of what actually killed me
-            });
+            }
             // Remove duplicates
-            killers = killers.filter((elem, index, self) => {
-                return index == self.indexOf(elem);
-            });
+            killers = killers.filter((elem, index, self) => index == self.indexOf(elem));
             // If there's no valid killers (you were killed by food), change the message to be more passive
             let killText = notJustFood ? "" : "You have been killed by ",
-                dothISendAText = this.settings.givesKillMessage;
-            killers.forEach((instance) => {
-                this.killCount.killers.push(instance.index);
-                if (this.type === "tank") {
-                    if (killers.length > 1) instance.killCount.assists++;
-                    else instance.killCount.solo++;
-                } else if (this.type === "miniboss") instance.killCount.bosses++;
-            });
+                dothISendAText = this.settings.givesKillMessage,
+                killCountType = this.type == "food" ? "polygons" :
+                                this.type == "miniboss" ? "bosses" :
+                                killers.length ? "assists" : "solo";
+            for (let i = 0; i < killers.length; i++) {
+                killers[i].killCount[killCountType]++;
+                this.killCount.killers.push(killers[i].index);
+            }
             // Add the killers to our death message, also send them a message
             if (notJustFood) {
-                killers.forEach((instance) => {
-                    if (
-                        instance.master.type !== "food" &&
-                        instance.master.type !== "crasher"
-                    ) {
-                        killText +=
-                            instance.name == ""
-                                ? killText == ""
-                                    ? "An unnamed player"
-                                    : "an unnamed player"
-                                : instance.name;
+                for (let i = 0; i < killers.length; i++) {
+                    let instance = killers[i];
+                    if (instance.master.type !== "food" && instance.master.type !== "crasher") {
+                        killText += instance.name == "" ? killText == "" ? "An unnamed player" : "an unnamed player" : instance.name;
                         killText += " and ";
                     }
                     // Only if we give messages
                     if (dothISendAText) {
-                        instance.sendMessage(
-                            "You killed " +
-                                name +
-                                (killers.length > 1 ? " (with some help)." : ".")
-                        );
+                        instance.sendMessage("You killed " + name + (killers.length > 1 ? " (with some help)." : "."));
                     }
-                    if (this.settings.killMessage)
-                        instance.sendMessage(
-                            "You " +
-                                this.settings.killMessage +
-                                " " +
-                                name +
-                                (killers.length > 1 ? " (with some help)." : ".")
-                        );
-                });
+                    if (this.settings.killMessage) {
+                        instance.sendMessage("You " + this.settings.killMessage + " " + name + (killers.length > 1 ? " (with some help)." : "."));
+                    }
+                }
                 // Prepare the next part of the next
-                killText = killText.slice(0, -4);
-                killText += "killed you with ";
+                killText = killText.slice(0, -4) + "killed you with ";
             }
             // Broadcast
-            if (this.settings.broadcastMessage)
+            if (this.settings.broadcastMessage) {
                 sockets.broadcast(this.settings.broadcastMessage);
+            }
             if (this.settings.defeatMessage) {
                 let text = util.addArticle(this.label, true);
                 if (notJustFood) {
@@ -1614,27 +1583,26 @@ class Entity extends EventEmitter {
                 sockets.broadcast(text);
             }
             // Add the implements to the message
-            killTools.forEach((instance) => {
-                killText += util.addArticle(instance.label) + " and ";
-            });
+            for (let i = 0; i < killTools.length; i++) {
+                killText += util.addArticle(killTools[i].label) + " and ";
+            }
             // Prepare it and clear the collision array.
             killText = killText.slice(0, -5);
-            if (killText === "You have been kille")
+            if (killText === "You have been kille") {
                 killText = "You have died a stupid death";
+            }
             this.sendMessage(killText + ".");
             // If I'm the leader, broadcast it:
             if (this.id === room.topPlayerID) {
                 let usurptText = this.name === "" ? "The leader" : this.name;
                 if (notJustFood) {
                     usurptText += " has been usurped by";
-                    killers.forEach((instance) => {
+                    for (let i = 0; i < killers.length; i++) {
                         usurptText += " ";
-                        usurptText +=
-                            instance.name === "" ? "an unnamed player" : instance.name;
+                        usurptText += killers[i].name === "" ? "an unnamed player" : killers[i].name;
                         usurptText += " and";
-                    });
-                    usurptText = usurptText.slice(0, -4);
-                    usurptText += "!";
+                    }
+                    usurptText = usurptText.slice(0, -4) + "!";
                 } else {
                     usurptText += " fought a polygon... and the polygon won.";
                 }
@@ -1658,13 +1626,14 @@ class Entity extends EventEmitter {
     }
     destroy() {
         // Remove from the protected entities list
-        if (this.isProtected)
+        if (this.isProtected) {
             util.remove(entitiesToAvoid, entitiesToAvoid.indexOf(this));
+        }
         // Remove from minimap
-        let i = minimap.findIndex((entry) => {
-            return entry[0] === this.id;
-        });
-        if (i != -1) util.remove(minimap, i);
+        let i = minimap.findIndex(entry => entry[0] === this.id);
+        if (i != -1) {
+            util.remove(minimap, i);
+        }
         // Remove this from views
         for (let view of views) {
             view.remove(this);

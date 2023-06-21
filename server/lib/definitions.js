@@ -57,7 +57,7 @@ const skillSet = (args) => {
 };
 const g = {
     // Reload, recoil, shudder (speed variation), size, health, damage, penetration, speed, max speed, range, density, spray (accuracy variation), resist
-    
+
     // Generic
     blank: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     small: [1, 1, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -67,8 +67,15 @@ const g = {
     fake: [1, 1, 1, 1e-5, 1e-4, 1, 1, 1e-5, 2, 0, 1, 1, 1],
     op: [0.5, 1.3, 1, 1, 4, 4, 4, 3, 2, 1, 5, 2, 1],
     
+    // Bases
+    basic: [18, 1.4, 0.1, 1, 1, 0.75, 1, 4.5, 1, 1, 1, 15, 1],
+    drone: [50, 0.25, 0.1, 0.6, 1, 1, 1, 2, 1, 1, 1, 0.1, 1],
+    trap: [36, 1, 0.25, 0.6, 1, 0.75, 1, 5, 1, 1, 1, 15, 3],
+    swarm: [18, 0.25, 0.05, 0.4, 1, 0.75, 1, 4, 1, 1, 1, 5, 1],
+    factory: [60, 1, 0.1, 0.7, 1, 0.75, 1, 3, 1, 1, 1, 0.1, 1],
+    productionist: [75, 0.25, 0.05, 0.7, 1, 0.75, 1, 4, 1, 1.5, 1, 5, 1],
+
     // Standard Cannons
-    basic: [18.25, 1.4, 0.1, 1, 2, 0.2, 1, 4.5, 1, 1, 1, 15, 1],
     single: [1.05, 1, 1, 1, 1, 1, 1, 1.05, 1, 1, 1, 1, 1],
     twin: [1, 0.5, 0.9, 1, 0.9, 0.7, 1, 1, 1, 1, 1, 1.2, 1],
     double: [1, 1, 1, 1, 1, 0.9, 1, 1, 1, 1, 1, 1, 1],
@@ -121,12 +128,10 @@ const g = {
     autosnipe: [1, 1, 1, 1.4, 2, 1, 1, 1, 1, 1, 1, 1, 1],
     
     // Drone Deployers
-    drone: [66, 0.25, 0.1, 0.6, 5, 0.295, 1, 2.35, 1, 1, 1, 0.1, 1.1],
     over: [1.25, 1, 1, 0.85, 0.7, 0.8, 1, 1, 0.9, 1, 2, 1, 1],
     meta: [1.333, 1, 1, 1, 1, 0.667, 1, 1, 1, 1, 1, 1, 1],
     overdrive: [5, 1, 1, 1, 0.8, 0.8, 0.8, 0.9, 0.9, 0.9, 1, 1.2, 1],
     commander: [3, 1, 1, 0.7, 0.4, 0.7, 1, 1, 1, 0.1, 0.5, 1, 1],
-    swarm: [27, 0.25, 0.05, 0.4, 0.9, 0.235, 0.65, 3.5, 1, 1, 1.25, 5, 1.25],
     protectorswarm: [5, 1e-6, 1, 1, 100, 1, 1, 1, 1, 0.5, 5, 1, 10],
     battle: [1, 1, 1, 1, 1.25, 1.15, 1, 1, 0.85, 1, 1, 1, 1.1],
     carrier: [1.5, 1, 1, 1, 1, 0.8, 1, 1.3, 1.2, 1.2, 1, 1, 1],
@@ -136,8 +141,6 @@ const g = {
     summoner: [0.3, 1, 1, 1.125, 0.4, 0.345, 0.4, 1, 1, 1, 0.8, 1, 1],
     minion: [1, 1, 2, 1, 0.4, 0.4, 1.2, 1, 1, 0.75, 1, 2, 1],
     babyfactory: [1.5, 1, 1, 1, 1, 1, 1, 1, 1.35, 1, 1, 1, 1],
-    factory: [72, 1, 0.1, 0.7, 2, 0.2, 1, 3, 1, 1, 1, 0.1, 1],
-    productionist: [75,        0.25,    0.05,     0.7,        1,            0.75,     1,            4,            1,            1.5,        1,            5,            1],
     mehdrone: [1, 1, 1, 1.35, 1.75, 1, 1, 1.125, 1, 1, 1, 1, 1],
     bigdrone: [1, 1, 1, 1.8, 2.5, 1, 1, 1.25, 1, 1, 1, 1, 1],
     mothership: [1.25, 1, 1, 1, 1, 1, 1.1, 0.775, 0.8, 15, 1, 1, 1.15],
@@ -161,7 +164,6 @@ const g = {
     closer: [1.25, 0.25, 1, 1, 1e3, 1e3, 1e3, 2.5, 2.25, 1.4, 4, 0.25, 1],
     
     // Trap Launchers
-    trap: [39, 1, 0.25, 0.65, 1.025, 0.325, 1.1, 4.9, 1, 1.125, 1, 15, 3],
     block: [1.1, 2, 0.1, 1.5, 2, 1, 1.25, 1.5, 2.5, 1.25, 1, 1, 1.25],
     construct: [1.3, 1, 1, 0.9, 1, 1, 1, 1, 1.1, 1, 1, 1, 1],
     boomerang: [0.8, 1, 1, 1, 0.5, 0.5, 1, 0.75, 0.75, 1.333, 1, 1, 1],
@@ -241,10 +243,10 @@ const base = {
     DAMAGE: 3,
     RESIST: 1,
     PENETRATION: 1.05,
-    SHIELD: 3,
+    SHIELD: 8,
     REGEN: 0.025,
+    FOV: 1,
     DENSITY: 0.5,
-    FOV: 1.125,
 };
 
 // FUNCTIONS
@@ -814,6 +816,12 @@ function makeDeco(shapes, color = 16) {
         };
     }
     return exports["deco" + shapes + "_" + color];
+}
+
+function makeLabyrinthShape(type) {
+    let output = dereference(type);
+    let downscale = Math.max(output.SHAPE, 3);
+    return output;
 }
 
 // ENTITY BASES
@@ -11871,7 +11879,7 @@ exports.conqueror = {
         {
             POSITION: [21, 14, 1, 0, 0, 180, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy]),
                 TYPE: exports.bullet,
             },
         },
@@ -16350,23 +16358,20 @@ exports.godbasic = {
     ],
 };
 
-exports.levels   = { PARENT: [exports.testbedBase],        LABEL: "Levels"    };
-exports.level0   = { PARENT: [exports.levels], LEVEL:   0, LABEL: "Level 0"   };
-exports.level15  = { PARENT: [exports.levels], LEVEL:  15, LABEL: "Level 15"  };
-exports.level30  = { PARENT: [exports.levels], LEVEL:  30, LABEL: "Level 30"  };
-exports.level45  = { PARENT: [exports.levels], LEVEL:  45, LABEL: "Level 45"  };
-exports.level60  = { PARENT: [exports.levels], LEVEL:  60, LABEL: "Level 60"  };
-exports.level75  = { PARENT: [exports.levels], LEVEL:  75, LABEL: "Level 75"  };
-exports.level90  = { PARENT: [exports.levels], LEVEL:  90, LABEL: "Level 90"  };
-exports.level105 = { PARENT: [exports.levels], LEVEL: 105, LABEL: "Level 105" };
-exports.level120 = { PARENT: [exports.levels], LEVEL: 120, LABEL: "Level 120" };
-exports.level135 = { PARENT: [exports.levels], LEVEL: 135, LABEL: "Level 135" };
-exports.level150 = { PARENT: [exports.levels], LEVEL: 150, LABEL: "Level 150" };
-exports.level165 = { PARENT: [exports.levels], LEVEL: 165, LABEL: "Level 165" };
-exports.level180 = { PARENT: [exports.levels], LEVEL: 180, LABEL: "Level 180" };
-exports.level195 = { PARENT: [exports.levels], LEVEL: 195, LABEL: "Level 195" };
-exports.level210 = { PARENT: [exports.levels], LEVEL: 210, LABEL: "Level 210" };
-exports.levels.UPGRADES_TIER_0 = [exports.developer, exports.level0, exports.level15, exports.level30, exports.level45, exports.level60, exports.level75, exports.level90, exports.level105, exports.level120, exports.level135, exports.level150, exports.level165, exports.level180, exports.level195, exports.level210];
+exports.levels = {
+    PARENT: [exports.testbedBase],
+    LABEL: "Levels",
+    UPGRADES_TIER_0: [exports.developer]
+};
+for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
+    let LEVEL = i * c.TIER_MULTIPLIER;
+    exports["level" + LEVEL] = {
+        PARENT: [exports.levels],
+        LEVEL,
+        LABEL: "Level " + LEVEL
+    };
+    exports.levels.UPGRADES_TIER_0.push(exports["level" + LEVEL]);
+}
 
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];

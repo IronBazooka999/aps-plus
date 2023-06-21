@@ -731,7 +731,7 @@ const socketInit = port => {
             case 'w': // welcome to the game
                 if (m[0]) { // Ask to spawn
                     console.log('The server has welcomed us to the game room. Sending spawn request.');
-                    socket.talk('s', global.playerName, 1);
+                    socket.talk('s', global.playerName, 1, 1 * config.game.autoLevelUp);
                     global.message = '';
                 }
             break;
@@ -873,13 +873,14 @@ const socketInit = port => {
                 global.finalScore.set(m[0]);
                 global.finalLifetime = util.Smoothbar(0, 5);
                 global.finalLifetime.set(m[1]);
-                global.finalKills = [util.Smoothbar(0, 3), util.Smoothbar(0, 4.5), util.Smoothbar(0, 2.5)];
+                global.finalKills = [util.Smoothbar(0, 3), util.Smoothbar(0, 4.5), util.Smoothbar(0, 2.5), util.Smoothbar(0, 10)];
                 global.finalKills[0].set(m[2]);
                 global.finalKills[1].set(m[3]);
                 global.finalKills[2].set(m[4]);
+                global.finalKills[2].set(m[5]);
                 global.finalKillers = [];
-                for (let i = 0; i < m[5]; i++) {
-                    global.finalKillers.push(m[6 + i]);
+                for (let i = 0; i < m[6]; i++) {
+                    global.finalKillers.push(m[7 + i]);
                 }
                 window.animations.deathScreen.reset();
                 global.died = true;

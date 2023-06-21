@@ -10,18 +10,11 @@ let { socketInit, gui, leaderboard, minimap, moveCompensation, lag, getNow } = s
 fetch("changelog.md", { cache: "no-cache" })
 .then((response) => response.text())
 .then((response) => {
-    const changelogs = response
-        .split("\n\n")
-        .map((changelog) => changelog.split("\n"));
+    const changelogs = response.split("\n\n").map((changelog) => changelog.split("\n"));
     console.log(changelogs);
     changelogs.forEach((changelog) => {
         changelog[0] = changelog[0].split(":").map((line) => line.trim());
-        document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${
-            changelog[0].slice(1).join(":") || "Update lol"
-        }<ul>${changelog
-            .slice(1)
-            .map((line) => `<li>${line.slice(1).trim()}</li>`)
-            .join("")}</ul><hr></div>`;
+        document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${changelog[0].slice(1).join(":") || "Update lol"}<ul>${changelog.slice(1).map((line) => `<li>${line.slice(1).trim()}</li>`).join("")}</ul><hr></div>`;
     });
 });
 class Animation {
@@ -58,7 +51,7 @@ class Animation {
         return Math.abs(this.to - this.value) < val;
     }
 }
-let animations = {
+let animations = window.animations = {
     connecting: new Animation(1, 0),
     disconnected: new Animation(1, 0),
     deathScreen: new Animation(1, 0),
@@ -68,7 +61,6 @@ let animations = {
     minimap: new Animation(-1, 1, 0.025),
     leaderboard: new Animation(-1, 1, 0.025)
 };
-window.animations = animations;
 // Color functions
 /** https://gist.github.com/jedfoster/7939513 **/
 function decimal2hex(d) {
@@ -177,17 +169,9 @@ function getColor(colorNumber) {
         case 35:
             return "#ffd300";
         case 36:
-            return getRainbow(
-                "#ff1000 #ff9000 #ffd300 #00e00b #226ef6 #a913cf".split(" ")[Math.floor((Date.now() / 200) % 6)],
-                "#ff9000 #ffd300 #00e00b #226ef6 #a913cf #ff1000".split(" ")[Math.floor((Date.now() / 200) % 6)],
-                (Date.now() / 200) % 1
-            );
+            return getRainbow("#ff1000 #ff9000 #ffd300 #00e00b #226ef6 #a913cf".split(" ")[Math.floor((Date.now() / 200) % 6)], "#ff9000 #ffd300 #00e00b #226ef6 #a913cf #ff1000".split(" ")[Math.floor((Date.now() / 200) % 6)], (Date.now() / 200) % 1);
         case 37:
-            return getRainbow(
-                "#ffffff",
-                2e3 > Date.now() % 4e3 ? "#55cdfc" : "#f7a8b8",
-                5 * Math.sin(((Date.now() % 2e3) / 2e3) * Math.PI) - 2
-            );
+            return getRainbow("#ffffff", 2e3 > Date.now() % 4e3 ? "#55cdfc" : "#f7a8b8", 5 * Math.sin(((Date.now() % 2e3) / 2e3) * Math.PI) - 2);
         case 39:
             return "#654321";
         case 40:
@@ -282,9 +266,7 @@ global.player = {
 var upgradeSpin = 0,
     lastPing = 0,
     renderTimes = 0;
-global.clearUpgrades = () => {
-    gui.upgrades = [];
-};
+global.clearUpgrades = () => gui.upgrades = [];
 // Build the leaderboard object
 global.player = global.player;
 global.canUpgrade = false;
@@ -361,6 +343,8 @@ window.onload = async () => {
     util.retrieveFromLocalStorage("optColors");
     util.retrieveFromLocalStorage("optNoPointy");
     util.retrieveFromLocalStorage("optBorders");
+    util.retrieveFromLocalStorage("seperatedHealthbars");
+    util.retrieveFromLocalStorage("autoLevelUp");
     // Set default theme
     if (document.getElementById("optColors").value === "") {
         document.getElementById("optColors").value = "normal";
@@ -438,19 +422,23 @@ global.player = {
 // This starts the game and sets up the websocket
 function startGame() {
     // Get options
-    util.submitToLocalStorage("optScreenshotMode");
-    config.graphical.screenshotMode = document.getElementById("optScreenshotMode").checked;
     util.submitToLocalStorage("optFancy");
-    config.graphical.pointy = !document.getElementById("optNoPointy").checked;
-    util.submitToLocalStorage("optNoPointy");
-    config.graphical.fancyAnimations = !document.getElementById("optFancy").checked;
-    util.submitToLocalStorage("coloredHealthbars");
-    config.graphical.coloredHealthbars = document.getElementById("coloredHealthbars").checked;
     util.submitToLocalStorage("centerTank");
-    config.graphical.centerTank = document.getElementById("centerTank").checked;
-    util.submitToLocalStorage("optPredictive");
-    config.lag.unresponsive = document.getElementById("optPredictive").checked;
     util.submitToLocalStorage("optBorders");
+    util.submitToLocalStorage("optNoPointy");
+    util.submitToLocalStorage("autoLevelUp");
+    util.submitToLocalStorage("optPredictive");
+    util.submitToLocalStorage("optScreenshotMode");
+    util.submitToLocalStorage("coloredHealthbars");
+    util.submitToLocalStorage("seperatedHealthbars");
+    config.graphical.fancyAnimations = !document.getElementById("optFancy").checked;
+    config.graphical.centerTank = document.getElementById("centerTank").checked;
+    config.graphical.pointy = !document.getElementById("optNoPointy").checked;
+    config.game.autoLevelUp = document.getElementById("autoLevelUp").checked;
+    config.lag.unresponsive = document.getElementById("optPredictive").checked;
+    config.graphical.screenshotMode = document.getElementById("optScreenshotMode").checked;
+    config.graphical.coloredHealthbars = document.getElementById("coloredHealthbars").checked;
+    config.graphical.seperatedHealthbars = document.getElementById("seperatedHealthbars").checked;
     switch (document.getElementById("optBorders").value) {
         case "normal":
             config.graphical.darkBorders = config.graphical.neon = false;
@@ -711,25 +699,13 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
         let fillcolor = context.fillStyle;
         let strokecolor = context.strokeStyle;
         radius += context.lineWidth / 4;
-        context.arc(
-            centerX,
-            centerY,
-            radius + context.lineWidth / 4,
-            0,
-            2 * Math.PI
-        );
+        context.arc(centerX, centerY, radius + context.lineWidth / 4, 0, 2 * Math.PI);
         context.fillStyle = strokecolor;
         context.fill();
         context.closePath();
         context.beginPath();
-        context.arc(
-            centerX,
-            centerY,
-            radius - context.lineWidth / 4,
-            0,
-            2 * Math.PI
-        );
         context.fillStyle = fillcolor;
+        context.arc(centerX, centerY, radius - context.lineWidth / 4, 0, 2 * Math.PI);
         context.fill();
         context.closePath();
         return;
@@ -738,10 +714,7 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
         if (config.graphical.pointy) context.lineJoin = "miter";
         let dip = 1 - 6 / sides / sides;
         sides = -sides;
-        context.moveTo(
-            centerX + radius * Math.cos(angle),
-            centerY + radius * Math.sin(angle)
-        );
+        context.moveTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
         for (let i = 0; i < sides; i++) {
             var theta = ((i + 1) / sides) * 2 * Math.PI;
             var htheta = ((i + 0.5) / sides) * 2 * Math.PI;
@@ -758,12 +731,8 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
     } else if (sides === 600) {
         for (let i = 0; i < 6; i++) {
             let theta = (i / 6) * 2 * Math.PI,
-                x =
-                    centerX +
-                    radius * 1.1 * Math.cos(180 / 6 + theta + angle + 0.385),
-                y =
-                    centerY +
-                    radius * 1.1 * Math.sin(180 / 6 + theta + angle + 0.385);
+                x = centerX + radius * 1.1 * Math.cos(180 / 6 + theta + angle + 0.385),
+                y = centerY + radius * 1.1 * Math.sin(180 / 6 + theta + angle + 0.385);
             context.lineTo(x, y);
         }
     } else if (sides > 0) {
@@ -824,22 +793,11 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
         source = turretInfo === false ? instance : turretInfo;
     if (fade === 0 || alpha === 0) return;
     if (render.expandsWithDeath) drawSize *= 1 + 0.5 * (1 - fade);
-    if (
-        config.graphical.fancyAnimations &&
-        assignedContext != ctx2 &&
-        (fade !== 1 || alpha !== 1)
-    ) {
+    if (config.graphical.fancyAnimations && assignedContext != ctx2 && (fade !== 1 || alpha !== 1)) {
         context = ctx2;
-        context.canvas.width = context.canvas.height =
-            drawSize * m.position.axis + ratio * 20;
-        xx =
-            context.canvas.width / 2 -
-            (drawSize * m.position.axis * m.position.middle.x * Math.cos(rot)) /
-                4;
-        yy =
-            context.canvas.height / 2 -
-            (drawSize * m.position.axis * m.position.middle.x * Math.sin(rot)) /
-                4;
+        context.canvas.width = context.canvas.height = drawSize * m.position.axis + ratio * 20;
+        xx = context.canvas.width / 2 - (drawSize * m.position.axis * m.position.middle.x * Math.cos(rot)) / 4;
+        yy = context.canvas.height / 2 - (drawSize * m.position.axis * m.position.middle.x * Math.sin(rot)) / 4;
         context.translate(0.5, 0.5);
     } else {
         if (fade * alpha < 0.5) return;
@@ -852,28 +810,11 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
             let t = m.turrets[i];
             source.turrets[i].lerpedFacing == undefined
                 ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
-                : (source.turrets[i].lerpedFacing = util.lerpAngle(
-                        source.turrets[i].lerpedFacing,
-                        source.turrets[i].facing,
-                        0.1,
-                        true
-                    ));
+                : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
             if (t.layer === 0) {
                 let ang = t.direction + t.angle + rot,
                     len = t.offset * drawSize;
-                drawEntity(
-                    xx + len * Math.cos(ang),
-                    yy + len * Math.sin(ang),
-                    t,
-                    ratio,
-                    1,
-                    (drawSize / ratio / t.size) * t.sizeFactor,
-                    source.turrets[i].lerpedFacing + turretsObeyRot * rot,
-                    turretsObeyRot,
-                    context,
-                    source.turrets[i],
-                    render
-                );
+                drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, source.turrets[i].lerpedFacing + turretsObeyRot * rot, turretsObeyRot, context, source.turrets[i], render);
             }
         }
     } else {
@@ -890,44 +831,18 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
         for (let i = 0; i < m.guns.length; i++) {
             let g = m.guns[i],
                 position = positions[i] / (g.aspect === 1 ? 2 : 1),
-                gx =
-                    g.offset * Math.cos(g.direction + g.angle + rot) +
-                    (g.length / 2 - position) * Math.cos(g.angle + rot),
-                gy =
-                    g.offset * Math.sin(g.direction + g.angle + rot) +
-                    (g.length / 2 - position) * Math.sin(g.angle + rot),
+                gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
+                gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
                 gunColor = g.color == null ? color.grey : getColor(g.color);
-            setColor(
-                context,
-                mixColors(
-                    gunColor,
-                    render.status.getColor(),
-                    render.status.getBlend()
-                )
-            );
-            drawTrapezoid(
-                context,
-                xx + drawSize * gx,
-                yy + drawSize * gy,
-                drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)),
-                (drawSize * g.width) / 2,
-                g.aspect,
-                g.angle + rot
-            );
+            setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
+            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot);
         }
     } else {
         throw new Error("Mismatch gun number with mockup.");
     }
     // Draw body
     context.globalAlpha = 1;
-    setColor(
-        context,
-        mixColors(
-            getColor(instance.color),
-            render.status.getColor(),
-            render.status.getBlend()
-        )
-    );
+    setColor(context, mixColors(getColor(instance.color), render.status.getColor(), render.status.getBlend()));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot);
     // Draw turrets above us
     if (source.turrets.length === m.turrets.length) {
@@ -936,19 +851,7 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
             if (t.layer === 1) {
                 let ang = t.direction + t.angle + rot,
                     len = t.offset * drawSize;
-                drawEntity(
-                    xx + len * Math.cos(ang),
-                    yy + len * Math.sin(ang),
-                    t,
-                    ratio,
-                    1,
-                    (drawSize / ratio / t.size) * t.sizeFactor,
-                    source.turrets[i].lerpedFacing + turretsObeyRot * rot,
-                    turretsObeyRot,
-                    context,
-                    source.turrets[i],
-                    render
-                );
+                drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, source.turrets[i].lerpedFacing + turretsObeyRot * rot, turretsObeyRot, context, source.turrets[i], render);
             }
         }
     } else {
@@ -979,30 +882,17 @@ function drawHealth(x, y, instance, ratio, alpha) {
         let health = instance.render.health.get(),
             shield = instance.render.shield.get();
         if (health < 1 || shield < 1) {
-            const col = config.graphical.coloredHealthbars
-                ? mixColors(getColor(instance.color), color.guiwhite, 0.5)
-                : color.lgreen;
+            const col = config.graphical.coloredHealthbars ? mixColors(getColor(instance.color), color.guiwhite, 0.5) : color.lgreen;
             let yy = y + 1.1 * realSize + 15;
+            let barWidth = 5;
             ctx.globalAlpha = alpha * alpha * fade;
-            drawBar(
-                x - size,
-                x + size,
-                yy,
-                3 + config.graphical.barChunk,
-                color.black
-            );
-            drawBar(x - size, x - size + 2 * size * health, yy, 3, col);
-            if (shield) {
-                ctx.globalAlpha = (0.3 + shield * 0.3) * alpha * alpha * fade;
-                drawBar(
-                    x - size,
-                    x - size + 2 * size * shield,
-                    yy,
-                    3,
-                    config.graphical.coloredHealthbars
-                        ? mixColors(col, color.guiblack, 0.25)
-                        : color.teal
-                );
+            //TODO: seperate option for hp bars
+            // function drawBar(x1, x2, y, width, color) {
+            drawBar(x - size, x + size, yy + barWidth * config.graphical.seperatedHealthbars / 2, barWidth * (1 + config.graphical.seperatedHealthbars) + config.graphical.barChunk, color.black);
+            drawBar(x - size, x - size + 2 * size * health, yy + barWidth * config.graphical.seperatedHealthbars, barWidth, col);
+            if (shield || config.graphical.seperatedHealthbars) {
+                if (!config.graphical.seperatedHealthbars) ctx.globalAlpha = (0.3 + shield * 0.3) * alpha * alpha * fade;
+                drawBar(x - size, x - size + 2 * size * shield, yy, barWidth, config.graphical.coloredHealthbars ? mixColors(col, color.guiblack, 0.25) : color.teal);
                 ctx.globalAlpha = 1;
             }
         }
@@ -1014,22 +904,8 @@ function drawHealth(x, y, instance, ratio, alpha) {
             var name = instance.name.substring(7, instance.name.length + 1);
             var namecolor = instance.name.substring(0, 7);
             ctx.globalAlpha = alpha;
-            instance.render.textobjs[0].draw(
-                name,
-                x,
-                y - realSize - 30,
-                16,
-                namecolor,
-                "center"
-            );
-            instance.render.textobjs[1].draw(
-                util.handleLargeNumber(instance.score, 1),
-                x,
-                y - realSize - 16,
-                8,
-                namecolor,
-                "center"
-            );
+            instance.render.textobjs[0].draw(name, x, y - realSize - 30, 16, namecolor, "center");
+            instance.render.textobjs[1].draw(util.handleLargeNumber(instance.score, 1), x, y - realSize - 16, 8, namecolor, "center");
             ctx.globalAlpha = 1;
         }
     }
@@ -1359,535 +1235,564 @@ let tiles = [],
             }
         }
     },
-    full;
+    tankTree;
 function generateTankTree(rootLabel = "Basic") {
     let root = global.mockups.find((r) => r.name === rootLabel);
     if (!root) {
         console.log("No root tank");
         return;
     }
-    full = measureSize(0, 0, 0, { index: root.index });
+    tankTree = measureSize(0, 0, 0, { index: root.index });
+}
+
+function drawFloor(px, py, ratio) {
+    // Clear the background + draw grid
+    clearScreen(color.white, 1);
+    clearScreen(color.guiblack, 0.1);
+
+    //loop through the entire room setup
+    let W = global.roomSetup[0].length,
+        H = global.roomSetup.length;
+    for (let i = 0; i < H; i++) {
+
+        //skip if this row is not visible
+        let top = Math.max(0, (ratio * i * global.gameHeight) / H - py + global.screenHeight / 2),
+            bottom = Math.min(global.screenHeight, (ratio * (i + 1) * global.gameHeight) / H - py + global.screenHeight / 2);
+        if (top > global.screenHeight || bottom < 0) continue;
+
+        //loop through tiles in this row
+        let row = global.roomSetup[i];
+        for (let j = 0; j < W; j++) {
+
+            //skip if tile not visible
+            let left = Math.max(0, (ratio * j * global.gameWidth) / W - px + global.screenWidth / 2),
+                right = Math.min(global.screenWidth, (ratio * (j + 1) * global.gameWidth) / W - px + global.screenWidth / 2);
+            if (left > global.screenWidth || right < 0) continue;
+
+            //draw it
+            let tile = row[j];
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = config.graphical.screenshotMode ? color.guiwhite : color.white;
+            ctx.fillRect(left, top, right - left, bottom - top);
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = config.graphical.screenshotMode ? color.guiwhite : getZoneColor(tile, true);
+            ctx.fillRect(left, top, right - left, bottom - top);
+        }
+    }
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = config.graphical.screenshotMode ? color.guiwhite : color.guiblack;
+    ctx.globalAlpha = 0.04;
+    ctx.beginPath();
+    let gridsize = 30 * ratio;
+    for (let x = (global.screenWidth / 2 - px) % gridsize; x < global.screenWidth; x += gridsize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, global.screenHeight);
+    }
+    for (let y = (global.screenHeight / 2 - py) % gridsize; y < global.screenHeight; y += gridsize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(global.screenWidth, y);
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+}
+
+function drawEntities(px, py, ratio) {
+    // Draw things
+    for (let instance of global.entities) {
+        if (!instance.render.draws) {
+            continue;
+        }
+        let motion = compensation();
+        if (instance.render.status.getFade() === 1) {
+            motion.set();
+        } else {
+            motion.set(instance.render.lastRender, instance.render.interval);
+        }
+        instance.render.x = util.lerp(instance.render.x, Math.round(instance.x + instance.vx), 0.1, true);
+        instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
+        instance.render.f = instance.id === gui.playerid && !instance.twiggle && !global.died ? Math.atan2(global.target.y, global.target.x) : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
+        let x = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.x - px,
+            y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py;
+        x += global.screenWidth / 2;
+        y += global.screenHeight / 2;
+        drawEntity(x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.6 + 0.4 : 0.25 : instance.alpha, 1.1, instance.render.f);
+    }
+
+    //dont draw healthbars in screenshot mode
+    if (config.graphical.screenshotMode) return;
+
+    //draw health bars above entities
+    for (let instance of global.entities) {
+        let x = instance.id === gui.playerid ? 0 : ratio * instance.render.x - px,
+            y = instance.id === gui.playerid ? 0 : ratio * instance.render.y - py;
+        x += global.screenWidth / 2;
+        y += global.screenHeight / 2;
+        drawHealth(x, y, instance, ratio, instance.alpha);
+    }
+}
+
+function drawUpgradeTree() {
+    if (global.died) {
+        global.showTree = false;
+        global.scrollX = global.realScrollX = 0;
+    }
+    global.scrollX = util.lerp(global.scrollX, global.realScrollX, 0.1);
+    if (!tankTree) {
+        console.log('No tank tree rendered yet');
+        return;
+    }
+    let tileDiv = true ? 1 : 1.25,
+        tileSize = Math.min(((global.screenWidth * 0.9) / tankTree.width) * 55, (global.screenHeight * 0.9) / tankTree.height) / tileDiv,
+        size = tileSize - 4;
+    for (let [start, end] of branches) {
+        let sx = global.screenWidth / 2 + (start.x - tankTree.width * global.scrollX) * tileSize + 1 + 0.5 * size,
+            sy = global.screenHeight / 2 + (start.y - tankTree.height / 2) * tileSize + 1 + 0.5 * size,
+            ex = global.screenWidth / 2 + (end.x - tankTree.width * global.scrollX) * tileSize + 1 + 0.5 * size,
+            ey = global.screenHeight / 2 + (end.y - tankTree.height / 2) * tileSize + 1 + 0.5 * size;
+        ctx.strokeStyle = color.black;
+        ctx.lineWidth = 2;
+        drawGuiLine(sx, sy, ex, ey);
+    }
+    ctx.globalAlpha = 0.5;
+    ctx.fillStyle = color.guiwhite;
+    ctx.fillRect(0, 0, innerWidth, innerHeight);
+    let text = "Use the arrow keys to navigate the class tree. Press T again to close it.";
+    ctx.font = "20px Ubuntu";
+    let w = ctx.measureText(text).width;
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1;
+    ctx.fillStyle = color.red;
+    ctx.strokeStyle = color.black;
+    ctx.fillText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
+    ctx.strokeText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
+    ctx.globalAlpha = 1;
+
+    //draw the various tank icons
+    for (let { x, y, colorIndex, index } of tiles) {
+        let ax = global.screenWidth / 2 + (x - tankTree.width * global.scrollX) * tileSize,
+            ay = global.screenHeight / 2 + (y - tankTree.height / 2) * tileSize,
+            size = tileSize;
+        if (ax < -50 || ax + size - 50 > global.screenWidth) continue;
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = getColor(10);
+        drawGuiRect(ax, ay, size, size);
+        ctx.globalAlpha = 0.15;
+        ctx.fillStyle = getColor(0);
+        drawGuiRect(ax, ay, size, size * 0.6);
+        ctx.fillStyle = color.black;
+        drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
+        ctx.globalAlpha = 1;
+        let angle = -Math.PI / 4,
+            picture = util.getEntityImageFromMockup(index, 10),
+            position = global.mockups[index].position,
+            scale = (0.8 * size) / position.axis,
+            xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
+            yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle);
+        drawEntity(xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
+        ctx.strokeStyle = color.black;
+        ctx.globalAlpha = 1;
+        ctx.lineWidth = 2;
+        drawGuiRect(ax, ay, size, size, true);
+    }
+}
+
+function drawMessages(spacing) {
+    // Draw messages
+    let vspacing = 4;
+    let len = 0;
+    let height = 18;
+    let x = global.screenWidth / 2;
+    let y = spacing;
+    // Draw each message
+    for (let i = global.messages.length - 1; i >= 0; i--) {
+        let msg = global.messages[i],
+            txt = msg.text,
+            text = txt; //txt[0].toUpperCase() + txt.substring(1);
+        // Give it a textobj if it doesn't have one
+        if (msg.textobj == null) msg.textobj = TextObj();
+        if (msg.len == null) msg.len = measureText(text, height - 4);
+        // Draw the background
+        ctx.globalAlpha = 0.5 * msg.alpha;
+        drawBar(x - msg.len / 2, x + msg.len / 2, y + height / 2, height, color.black);
+        // Draw the text
+        ctx.globalAlpha = Math.min(1, msg.alpha);
+        msg.textobj.draw(text, x, y + height / 2, height - 4, color.guiwhite, "center", true);
+        // Iterate and move
+        y += vspacing + height;
+        if (msg.status > 1) {
+            y -= (vspacing + height) * (1 - Math.sqrt(msg.alpha));
+        }
+        if (msg.status > 1) {
+            msg.status -= 0.05;
+            msg.alpha += 0.05;
+        } else if (
+            i === 0 &&
+            (global.messages.length > 5 || Date.now() - msg.time > 10000)
+        ) {
+            msg.status -= 0.05;
+            msg.alpha -= 0.05;
+            // Remove
+            if (msg.alpha <= 0) {
+                global.messages[0].textobj.remove();
+                global.messages.splice(0, 1);
+            }
+        }
+    }
+    ctx.globalAlpha = 1;
+}
+
+function drawSkillBars(spacing, alcoveSize) {
+    // Draw skill bars
+    global.canSkill = !!gui.points;
+    statMenu.set(0 + (global.canSkill || global.died || global.statHover));
+    global.clickables.stat.hide();
+    let vspacing = 4;
+    let height = 15;
+    let gap = 35;
+    let len = alcoveSize; // * global.screenWidth; // The 30 is for the value modifiers
+    let save = len;
+    let x = -spacing - 2 * len + statMenu.get() * (2 * spacing + 2 * len);
+    let y = global.screenHeight - spacing - height;
+    let ticker = 11;
+    let namedata = gui.getStatNames(
+        global.mockups[gui.type].statnames || -1
+    );
+    for (let i = 0; i < gui.skills.length; i++) {
+        ticker--;
+        //information about the bar
+        let skill = gui.skills[i],
+            name = namedata[ticker - 1],
+            level = skill.amount,
+            col = color[skill.color],
+            cap = skill.softcap,
+            maxLevel = skill.cap;
+        if (!cap) return;
+        len = save;
+        let max = 0,
+            extension = cap > max,
+            blocking = cap < maxLevel;
+        if (extension) {
+            max = cap;
+        }
+
+        //bar fills
+        drawBar(x + height / 2, x - height / 2 + len * ska(cap), y + height / 2, height - 3 + config.graphical.barChunk, color.black);
+        drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(cap), y + height / 2, height - 3, color.grey);
+        drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(level), y + height / 2, height - 3.5, col);
+
+        // Blocked-off area
+        if (blocking) {
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = color.grey;
+            for (let j = cap + 1; j < max; j++) {
+                drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
+            }
+        }
+
+        // Vertical dividers
+        ctx.strokeStyle = color.black;
+        ctx.lineWidth = 1;
+        for (let j = 1; j < level + 1; j++) {
+            drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
+        }
+
+        // Skill name
+        len = save * ska(max);
+        let textcolor = level == maxLevel ? col : !gui.points || (cap !== maxLevel && level == cap) ? color.grey : color.guiwhite;
+        text.skillNames[ticker - 1].draw(name, Math.round(x + len / 2) + 0.5, y + height / 2, height - 5, textcolor, "center", true);
+
+        // Skill key
+        text.skillKeys[ticker - 1].draw("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
+        if (textcolor === color.guiwhite) {
+            // If it's active
+            global.clickables.stat.place(ticker - 1, x, y, len, height);
+        }
+
+        // Skill value
+        if (level) {
+            text.skillValues[ticker - 1].draw(textcolor === col ? "MAX" : "+" + level, Math.round(x + len + 4) + 0.5, y + height / 2, height - 5, col, "left", true);
+        }
+
+        // Move on
+        y -= height + vspacing;
+    }
+    global.clickables.hover.place(0, 0, y, 0.8 * len, 0.8 * (global.screenHeight - y));
+    if (gui.points !== 0) {
+        // Draw skillpoints to spend
+        text.skillPoints.draw("x" + gui.points, Math.round(x + len - 2) + 0.5, Math.round(y + height - 4) + 0.5, 20, color.guiwhite, "right");
+    }
+}
+
+function drawSelfInfo(spacing, alcoveSize, max) {
+    //rendering information
+    let vspacing = 4;
+    let len = 1.65 * alcoveSize; // * global.screenWidth;
+    let height = 25;
+    let x = (global.screenWidth - len) / 2;
+    let y = global.screenHeight - spacing - height;
+    ctx.lineWidth = 1;
+
+    // Draw the exp bar
+    drawBar(x, x + len, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
+    drawBar(x, x + len, y + height / 2, height - 3, color.grey);
+    drawBar(x, x + len * gui.__s.getProgress(), y + height / 2, height - 3.5, color.gold);
+
+    // Draw the class type
+    text.class.draw("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x + len / 2, y + height / 2, height - 4, color.guiwhite, "center", true);
+    height = 14;
+    y -= height + vspacing;
+
+    // Draw the %-of-leader bar
+    drawBar(x + len * 0.1, x + len * 0.9, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
+    drawBar(x + len * 0.1, x + len * 0.9, y + height / 2, height - 3, color.grey);
+    drawBar(x + len * 0.1, x + len * (0.1 + 0.8 * (max ? Math.min(1, gui.__s.getScore() / max) : 1)), y + height / 2, height - 3.5, color.green);
+
+    //write the score and name
+    text.score.draw("Score: " + util.handleLargeNumber(gui.__s.getScore()), x + len / 2, y + height / 2, height - 2, color.guiwhite, "center", true);
+    ctx.lineWidth = 4;
+    text.name.draw(global.player.name, Math.round(x + len / 2) + 0.5, Math.round(y - 10 - vspacing) + 0.5, 32, global.nameColor, "center");
+}
+
+function drawMinimapAndDebug(spacing, alcoveSize) {
+    // Draw minimap and FPS monitors
+    //minimap stuff stards here
+    let len = alcoveSize; // * global.screenWidth;
+    let height = (len / global.gameWidth) * global.gameHeight;
+    if (global.gameHeight > global.gameWidth || global.gameHeight < global.gameWidth) {
+        let ratio = [
+            global.gameWidth / global.gameHeight,
+            global.gameHeight / global.gameWidth,
+        ];
+        len /= ratio[1] * 1.5;
+        height /= ratio[1] * 1.5;
+        if (len > alcoveSize * 2) {
+            ratio = len / (alcoveSize * 2);
+        } else if (height > alcoveSize * 2) {
+            ratio = height / (alcoveSize * 2);
+        } else {
+            ratio = 1;
+        }
+        len /= ratio;
+        height /= ratio;
+    }
+    let x = global.screenWidth - spacing - len;
+    let y = global.screenHeight - height - spacing;
+    ctx.globalAlpha = 0.4;
+    let W = global.roomSetup[0].length,
+        H = global.roomSetup.length,
+        i = 0;
+    for (let ycell = 0; ycell < H; ycell++) {
+        let row = global.roomSetup[ycell];
+        let j = 0;
+        for (let xcell = 0; xcell < W; xcell++) {
+            let cell = global.roomSetup[ycell][xcell];
+            ctx.fillStyle = getZoneColor(cell);
+            if (getZoneColor(cell) !== color.white) {
+                drawGuiRect(x + (j * len) / W, y + (i * height) / H, len / W, height / H);
+            }
+            j++;
+        }
+        i++;
+    }
+    ctx.fillStyle = color.white;
+    drawGuiRect(x, y, len, height);
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 3;
+    ctx.fillStyle = color.black;
+    drawGuiRect(x, y, len, height, true); // Border
+    for (let entity of minimap.get()) {
+        ctx.fillStyle = mixColors(getColor(entity.color), color.black, 0.3);
+        ctx.globalAlpha = entity.alpha;
+        switch (entity.type) {
+            case 2:
+                drawGuiRect(x + ((entity.x - entity.size) / global.gameWidth) * len - 0.4, y + ((entity.y - entity.size) / global.gameHeight) * height - 1, ((2 * entity.size) / global.gameWidth) * len + 0.2, ((2 * entity.size) / global.gameWidth) * len + 0.2);
+                break;
+            case 1:
+                drawGuiCircle(x + (entity.x / global.gameWidth) * len, y + (entity.y / global.gameHeight) * height, (entity.size / global.gameWidth) * len + 0.2);
+                break;
+            case 0:
+                if (entity.id !== gui.playerid) drawGuiCircle(x + (entity.x / global.gameWidth) * len, y + (entity.y / global.gameHeight) * height, 2);
+                break;
+        }
+    }
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = color.black;
+    ctx.fillStyle = color.black;
+    drawGuiCircle(x + (global.player.cx / global.gameWidth) * len - 1, y + (global.player.cy / global.gameHeight) * height - 1, 2, false);
+    if (global.showDebug) {
+        drawGuiRect(x, y - 40, len, 30);
+        lagGraph(lag.get(), x, y - 40, len, 30, color.teal);
+        gapGraph(global.metrics.rendergap, x, y - 40, len, 30, color.pink);
+        timingGraph(GRAPHDATA, x, y - 40, len, 30, color.yellow);
+    }
+    //minimap stuff ends here
+    //debug stuff
+    if (!global.showDebug) y += 14 * 3;
+    // Text
+    if (global.showDebug) {
+        text.debug[5].draw("arras.io", x + len, y - 50 - 5 * 14 - 2, 15, "#B6E57C", "right");
+        text.debug[4].draw("Prediction: " + Math.round(GRAPHDATA) + "ms", x + len, y - 50 - 4 * 14, 10, color.guiwhite, "right");
+        text.debug[3].draw(`Bandwidth: ${gui.bandwidth.in} in, ${gui.bandwidth.out} out`, x + len, y - 50 - 3 * 14, 10, color.guiwhite, "right");
+        text.debug[2].draw("Update Rate: " + global.metrics.updatetime + "Hz", x + len, y - 50 - 2 * 14, 10, color.guiwhite, "right");
+        text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
+        text.debug[0].draw(global.metrics.latency + " ms - " + global.serverName, x + len, y - 50, 10, color.guiwhite, "right");
+    } else {
+        text.debug[2].draw("arras.io", x + len, y - 50 - 2 * 14 - 2, 15, "#B6E57C", "right");
+        text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
+        text.debug[0].draw(global.metrics.latency + " ms : " + global.metrics.updatetime + "Hz", x + len, y - 50, 10, color.guiwhite, "right");
+    }
+    global.fps = global.metrics.rendertime;
+}
+
+function drawLeaderboard(spacing, alcoveSize, max) {
+    // Draw leaderboard
+    let lb = leaderboard.get();
+    let vspacing = 4;
+    let len = alcoveSize; // * global.screenWidth;
+    let height = 14;
+    let x = global.screenWidth - len - spacing;
+    let y = spacing + height + 7;
+    text.lbtitle.draw("Leaderboard:", Math.round(x + len / 2) + 0.5, Math.round(y - 6) + 0.5, height + 4, color.guiwhite, "center");
+    for (let i = 0; i < lb.data.length; i++) {
+        let entry = lb.data[i];
+        drawBar(x, x + len, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
+        drawBar(x, x + len, y + height / 2, height - 3, color.grey);
+        let shift = Math.min(1, entry.score / max);
+        drawBar(x, x + len * shift, y + height / 2, height - 3.5, getColor(entry.barColor));
+        // Leadboard name + score
+        let nameColor = entry.nameColor || "#FFFFFF";
+        text.leaderboard[i].draw(entry.label + (": " + util.handleLargeNumber(Math.round(entry.score))), x + len / 2, y + height / 2, height - 5, nameColor, "center", true);
+        // Mini-image
+        let scale = height / entry.position.axis,
+            xx = x - 1.5 * height - scale * entry.position.middle.x * 0.707,
+            yy = y + 0.5 * height + scale * entry.position.middle.x * 0.707;
+        drawEntity(xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
+        // Move down
+        y += vspacing + height;
+    }
+}
+
+function drawAvailableUpgrades(spacing, alcoveSize) {
+    // Draw upgrade menu
+    upgradeMenu.set(0 + (global.canUpgrade || global.upgradeHover));
+    let glide = upgradeMenu.get();
+    global.clickables.upgrade.hide();
+    if (gui.upgrades.length > 0) {
+        global.canUpgrade = true;
+        let internalSpacing = 8;
+        let len = alcoveSize / 2; // * global.screenWidth / 2 * 1;
+        let height = len;
+        let x = glide * 2 * spacing - spacing;
+        let y = spacing;
+        let xStart = x;
+        let xo = x;
+        let xxx = 0;
+        let yo = y;
+        let ticker = 0;
+        let colorIndex = 10;
+        let columnCount = Math.max(3, Math.ceil(gui.upgrades.length / 4));
+        upgradeSpin += 0.01;
+        for (let i = 0; i < gui.upgrades.length; i++) {
+            let model = gui.upgrades[i];
+            if (y > yo) yo = y;
+            xxx = x;
+            global.clickables.upgrade.place(i, x, y, len, height);
+
+            // Draw box
+            ctx.globalAlpha = 0.5;
+            ctx.fillStyle = getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
+            drawGuiRect(x, y, len, height);
+            ctx.globalAlpha = 0.1;
+            ctx.fillStyle = getColor(-10 + colorIndex++);
+            drawGuiRect(x, y, len, height * 0.6);
+            ctx.fillStyle = color.black;
+            drawGuiRect(x, y + height * 0.6, len, height * 0.4);
+            ctx.globalAlpha = 1;
+
+            //draw tank
+            let picture = util.getEntityImageFromMockup(model, gui.color),
+                position = global.mockups[model].position,
+                scale = (0.6 * len) / position.axis,
+                xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
+                yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin);
+            drawEntity(xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
+            let upgradeKey = getClassUpgradeKey(ticker);
+
+            // Tank name
+            text.upgradeNames[i].draw(picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
+
+            // Upgrade key
+            if (upgradeKey) {
+                text.upgradeKeys[i].draw("[" + upgradeKey + "]", x + len - 4, y + height - 6, height / 8 - 3, color.guiwhite, "right");
+            }
+            ctx.strokeStyle = color.black;
+            ctx.globalAlpha = 1;
+            ctx.lineWidth = 3;
+            drawGuiRect(x, y, len, height, true); // Border
+
+            //draw either in the next row or next column
+            if (++ticker % columnCount === 0) {
+                x = xStart;
+                y += height + internalSpacing;
+            } else {
+                x += glide * (len + internalSpacing);
+            }
+        }
+
+        // Draw dont upgrade button
+        let h = 14,
+            msg = "Don't Upgrade",
+            m = measureText(msg, h - 3) + 10;
+        let xx = xo + (xxx + len + internalSpacing - xo) / 2,
+            yy = yo + height + internalSpacing;
+        drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h + config.graphical.barChunk, color.black);
+        drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h, color.white);
+        text.skipUpgrades.draw(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
+        global.clickables.skipUpgrades.place(0, xx - m / 2, yy, m, h);
+    } else {
+        global.canUpgrade = false;
+        global.clickables.upgrade.hide();
+        global.clickables.skipUpgrades.hide();
+    }
 }
 
 const gameDraw = (ratio, drawRatio) => {
     let GRAPHDATA = 0;
     // Prep stuff
     renderTimes++;
-    let px, py;
-    {
-        // Move the camera
-        let motion = compensation();
-        motion.set();
-        let smear = {
-            x: 0,
-            y: 0,
-        };
-        GRAPHDATA = motion.getPrediction();
-        // Don't move the camera if you're dead. This helps with jitter issues
-        global.player.renderx = util.lerp(global.player.renderx, global.player.cx, 0.1, true);
-        global.player.rendery = util.lerp(global.player.rendery, global.player.cy, 0.1, true);
-        px = ratio * global.player.renderx;
+    // Move the camera
+    let motion = compensation();
+    motion.set();
+    let smear = { x: 0, y: 0 };
+    GRAPHDATA = motion.getPrediction();
+    // Don't move the camera if you're dead. This helps with jitter issues
+    global.player.renderx = util.lerp(global.player.renderx, global.player.cx, 0.1, true);
+    global.player.rendery = util.lerp(global.player.rendery, global.player.cy, 0.1, true);
+    let px = ratio * global.player.renderx,
         py = ratio * global.player.rendery;
-    }
-    {
-        // Clear the background + draw grid
-        clearScreen(color.white, 1);
-        clearScreen(color.guiblack, 0.1);
-        let W = global.roomSetup[0].length,
-            H = global.roomSetup.length,
-            i = 0;
-        for (let row of global.roomSetup) {
-            let j = 0;
-            for (let cell of row) {
-                let left = Math.max(0, (ratio * j * global.gameWidth) / W - px + global.screenWidth / 2),
-                    top = Math.max(0, (ratio * i * global.gameHeight) / H - py + global.screenHeight / 2),
-                    right = Math.min(global.screenWidth, (ratio * (j + 1) * global.gameWidth) / W - px + global.screenWidth / 2),
-                    bottom = Math.min(global.screenHeight, (ratio * (i + 1) * global.gameHeight) / H - py + global.screenHeight / 2);
-                ctx.globalAlpha = 1;
-                ctx.fillStyle = config.graphical.screenshotMode ? color.guiwhite : color.white;
-                ctx.fillRect(left, top, right - left, bottom - top);
-                ctx.globalAlpha = 0.3;
-                ctx.fillStyle = config.graphical.screenshotMode ? color.guiwhite : getZoneColor(cell, true);
-                ctx.fillRect(left, top, right - left, bottom - top);
-                j++;
-            }
-            i++;
-        }
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = config.graphical.screenshotMode
-            ? color.guiwhite
-            : color.guiblack;
-        ctx.globalAlpha = 0.04;
-        ctx.beginPath();
-        let gridsize = 30 * ratio;
-        for (
-            let x = (global.screenWidth / 2 - px) % gridsize;
-            x < global.screenWidth;
-            x += gridsize
-        ) {
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, global.screenHeight);
-        }
-        for (
-            let y = (global.screenHeight / 2 - py) % gridsize;
-            y < global.screenHeight;
-            y += gridsize
-        ) {
-            ctx.moveTo(0, y);
-            ctx.lineTo(global.screenWidth, y);
-        }
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-    }
-    {
-        // Draw things
-        for (let instance of global.entities) {
-            if (!instance.render.draws) {
-                continue;
-            }
-            let motion = compensation();
-            if (instance.render.status.getFade() === 1) {
-                motion.set();
-            } else {
-                motion.set(instance.render.lastRender, instance.render.interval);
-            }
-            instance.render.x = util.lerp(instance.render.x, Math.round(instance.x + instance.vx), 0.1, true);
-            instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
-            instance.render.f =
-                instance.id === gui.playerid && !instance.twiggle && !global.died
-                    ? Math.atan2(global.target.y, global.target.x)
-                    : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
-            let x = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.x - px,
-                y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py;
-            x += global.screenWidth / 2;
-            y += global.screenHeight / 2;
-            drawEntity(x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.6 + 0.4 : 0.25 : instance.alpha, 1.1, instance.render.f);
-        }
-        if (!config.graphical.screenshotMode) {
-            for (let instance of global.entities) {
-                let x =
-                        instance.id === gui.playerid
-                            ? 0
-                            : ratio * instance.render.x - px,
-                    y =
-                        instance.id === gui.playerid
-                            ? 0
-                            : ratio * instance.render.y - py;
-                x += global.screenWidth / 2;
-                y += global.screenHeight / 2;
-                drawHealth(x, y, instance, ratio, instance.alpha);
-            }
-        }
-    }
+
+    //draw the in game stuff
+    drawFloor(px, py, ratio);
+    drawEntities(px, py, ratio);
     ratio = util.getScreenRatio();
     scaleScreenRatio(ratio, true);
-    // Draw GUI
+
+    //draw hud
     let alcoveSize = 200 / ratio; // / drawRatio * global.screenWidth;
     let spacing = 20;
     gui.__s.update();
     let lb = leaderboard.get();
     let max = lb.max;
-    exit: if (global.showTree) {
-        if (global.died) {
-            global.showTree = false;
-            global.scrollX = global.realScrollX = 0;
-        }
-        global.scrollX = util.lerp(global.scrollX, global.realScrollX, 0.1);
-        if (!full) {
-            console.log('No tank tree rendered yet');
-            break exit;
-        }
-        let tileDiv = true ? 1 : 1.25,
-            tileSize = Math.min(((global.screenWidth * 0.9) / full.width) * 55, (global.screenHeight * 0.9) / full.height) / tileDiv,
-            size = tileSize - 4;
-        for (let [start, end] of branches) {
-            let sx = global.screenWidth / 2 + (start.x - full.width * global.scrollX) * tileSize + 1 + 0.5 * size,
-                sy = global.screenHeight / 2 + (start.y - full.height / 2) * tileSize + 1 + 0.5 * size,
-                ex = global.screenWidth / 2 + (end.x - full.width * global.scrollX) * tileSize + 1 + 0.5 * size,
-                ey = global.screenHeight / 2 + (end.y - full.height / 2) * tileSize + 1 + 0.5 * size;
-            ctx.strokeStyle = color.black;
-            ctx.lineWidth = 2;
-            drawGuiLine(sx, sy, ex, ey);
-        }
-        ctx.globalAlpha = 0.5;
-        ctx.fillStyle = color.guiwhite;
-        ctx.fillRect(0, 0, innerWidth, innerHeight);
-        let text = "Use the arrow keys to navigate the class tree. Press T again to close it.";
-        ctx.font = "20px Ubuntu";
-        let w = ctx.measureText(text).width;
-        ctx.globalAlpha = 1;
-        ctx.lineWidth = 1;
-        ctx.fillStyle = color.red;
-        ctx.strokeStyle = color.black;
-        ctx.fillText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
-        ctx.strokeText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
-        ctx.globalAlpha = 1;
-        for (let { x, y, colorIndex, index } of tiles) {
-            let ax = global.screenWidth / 2 + (x - full.width * global.scrollX) * tileSize,
-                ay = global.screenHeight / 2 + (y - full.height / 2) * tileSize,
-                size = tileSize;
-            if (ax < -50 || ax + size - 50 > global.screenWidth) continue;
-            ctx.globalAlpha = 0.75;
-            ctx.fillStyle = getColor(10);
-            drawGuiRect(ax, ay, size, size);
-            ctx.globalAlpha = 0.15;
-            ctx.fillStyle = getColor(0);
-            drawGuiRect(ax, ay, size, size * 0.6);
-            ctx.fillStyle = color.black;
-            drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
-            ctx.globalAlpha = 1;
-            let angle = -Math.PI / 4,
-                picture = util.getEntityImageFromMockup(index, 10),
-                position = global.mockups[index].position,
-                scale = (0.8 * size) / position.axis,
-                xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
-                yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle);
-            drawEntity(xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
-            ctx.strokeStyle = color.black;
-            ctx.globalAlpha = 1;
-            ctx.lineWidth = 2;
-            drawGuiRect(ax, ay, size, size, true);
-        }
-    }
-    if (!global.showTree) {
-        // Draw messages
-        let vspacing = 4;
-        let len = 0;
-        let height = 18;
-        let x = global.screenWidth / 2;
-        let y = spacing;
-        // Draw each message
-        for (let i = global.messages.length - 1; i >= 0; i--) {
-            let msg = global.messages[i],
-                txt = msg.text,
-                text = txt; //txt[0].toUpperCase() + txt.substring(1);
-            // Give it a textobj if it doesn't have one
-            if (msg.textobj == null) msg.textobj = TextObj();
-            if (msg.len == null) msg.len = measureText(text, height - 4);
-            // Draw the background
-            ctx.globalAlpha = 0.5 * msg.alpha;
-            drawBar(x - msg.len / 2, x + msg.len / 2, y + height / 2, height, color.black);
-            // Draw the text
-            ctx.globalAlpha = Math.min(1, msg.alpha);
-            msg.textobj.draw(text, x, y + height / 2, height - 4, color.guiwhite, "center", true);
-            // Iterate and move
-            y += vspacing + height;
-            if (msg.status > 1) {
-                y -= (vspacing + height) * (1 - Math.sqrt(msg.alpha));
-            }
-            if (msg.status > 1) {
-                msg.status -= 0.05;
-                msg.alpha += 0.05;
-            } else if (
-                i === 0 &&
-                (global.messages.length > 5 || Date.now() - msg.time > 10000)
-            ) {
-                msg.status -= 0.05;
-                msg.alpha -= 0.05;
-                // Remove
-                if (msg.alpha <= 0) {
-                    global.messages[0].textobj.remove();
-                    global.messages.splice(0, 1);
-                }
-            }
-        }
-        ctx.globalAlpha = 1;
-    }
-    if (!global.showTree) {
-        // Draw skill bars
-        global.canSkill = !!gui.points;
-        statMenu.set(0 + (global.canSkill || global.died || global.statHover));
-        global.clickables.stat.hide();
-        let vspacing = 4;
-        let height = 15;
-        let gap = 35;
-        let len = alcoveSize; // * global.screenWidth; // The 30 is for the value modifiers
-        let save = len;
-        let x = -spacing - 2 * len + statMenu.get() * (2 * spacing + 2 * len);
-        let y = global.screenHeight - spacing - height;
-        let ticker = 11;
-        let namedata = gui.getStatNames(
-            global.mockups[gui.type].statnames || -1
-        );
-        gui.skills.forEach(function drawASkillBar(skill) {
-            // Individual skill bars
-            ticker--;
-            let name = namedata[ticker - 1],
-                level = skill.amount,
-                col = color[skill.color],
-                cap = skill.softcap,
-                maxLevel = skill.cap;
-            if (!cap) return;
-            len = save;
-            let max = 0,
-                extension = cap > max,
-                blocking = cap < maxLevel;
-            if (extension) {
-                max = cap;
-            }
-            drawBar(x + height / 2, x - height / 2 + len * ska(cap), y + height / 2, height - 3 + config.graphical.barChunk, color.black);
-            drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(cap), y + height / 2, height - 3, color.grey);
-            drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(level), y + height / 2, height - 3.5, col);
-            // Blocked-off area
-            if (blocking) {
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = color.grey;
-                for (let j = cap + 1; j < max; j++) {
-                    drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
-                }
-            }
-            // Vertical dividers
-            ctx.strokeStyle = color.black;
-            ctx.lineWidth = 1;
-            for (let j = 1; j < level + 1; j++) {
-                drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
-            }
-            // Skill name
-            len = save * ska(max);
-            let textcolor = level == maxLevel ? col : !gui.points || (cap !== maxLevel && level == cap) ? color.grey : color.guiwhite;
-            text.skillNames[ticker - 1].draw(name, Math.round(x + len / 2) + 0.5, y + height / 2, height - 5, textcolor, "center", true);
-            // Skill key
-            text.skillKeys[ticker - 1].draw("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
-            if (textcolor === color.guiwhite) {
-                // If it's active
-                global.clickables.stat.place(ticker - 1, x, y, len, height);
-            }
-            // Skill value
-            if (level) {
-                text.skillValues[ticker - 1].draw(textcolor === col ? "MAX" : "+" + level, Math.round(x + len + 4) + 0.5, y + height / 2, height - 5, col, "left", true);
-            }
-            // Move on
-            y -= height + vspacing;
-        });
-        global.clickables.hover.place(0, 0, y, 0.8 * len, 0.8 * (global.screenHeight - y));
-        if (gui.points !== 0) {
-            // Draw skillpoints to spend
-            text.skillPoints.draw("x" + gui.points, Math.round(x + len - 2) + 0.5, Math.round(y + height - 4) + 0.5, 20, color.guiwhite, "right");
-        }
-    }
-    if (!global.showTree) {
-        // Draw name, exp and score bar
-        let vspacing = 4;
-        let len = 1.65 * alcoveSize; // * global.screenWidth;
-        let height = 25;
-        let x = (global.screenWidth - len) / 2;
-        let y = global.screenHeight - spacing - height;
-        ctx.lineWidth = 1;
-        // Handle exp
-        // Draw the exp bar
-        drawBar(x, x + len, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
-        drawBar(x, x + len, y + height / 2, height - 3, color.grey);
-        drawBar(x, x + len * gui.__s.getProgress(), y + height / 2, height - 3.5, color.gold);
-        // Draw the class type
-        text.class.draw("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x + len / 2, y + height / 2, height - 4, color.guiwhite, "center", true);
-        height = 14;
-        y -= height + vspacing;
-        // Draw the %-of-leader bar
-        drawBar(x + len * 0.1, x + len * 0.9, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
-        drawBar(x + len * 0.1, x + len * 0.9, y + height / 2, height - 3, color.grey);
-        drawBar(x + len * 0.1, x + len * (0.1 + 0.8 * (max ? Math.min(1, gui.__s.getScore() / max) : 1)), y + height / 2, height - 3.5, color.green);
-        // Draw the score
-        text.score.draw("Score: " + util.handleLargeNumber(gui.__s.getScore()), x + len / 2, y + height / 2, height - 2, color.guiwhite, "center", true);
-        // Draw the name
-        ctx.lineWidth = 4;
-        text.name.draw(global.player.name, Math.round(x + len / 2) + 0.5, Math.round(y - 10 - vspacing) + 0.5, 32, global.nameColor, "center");
-    }
-    if (!global.showTree) {
-        // Draw minimap and FPS monitors
-        let len = alcoveSize; // * global.screenWidth;
-        let height = (len / global.gameWidth) * global.gameHeight;
-        if (
-            global.gameHeight > global.gameWidth ||
-            global.gameHeight < global.gameWidth
-        ) {
-            let ratio = [
-                global.gameWidth / global.gameHeight,
-                global.gameHeight / global.gameWidth,
-            ];
-            len /= ratio[1] * 1.5;
-            height /= ratio[1] * 1.5;
-            if (len > alcoveSize * 2) {
-                ratio = len / (alcoveSize * 2);
-            } else if (height > alcoveSize * 2) {
-                ratio = height / (alcoveSize * 2);
-            } else {
-                ratio = 1;
-            }
-            len /= ratio;
-            height /= ratio;
-        }
-        let x = global.screenWidth - spacing - len;
-        let y = global.screenHeight - height - spacing;
-        ctx.globalAlpha = 0.4;
-        let W = global.roomSetup[0].length,
-            H = global.roomSetup.length,
-            i = 0;
-        for (let ycell = 0; ycell < H; ycell++) {
-            let row = global.roomSetup[ycell];
-            let j = 0;
-            for (let xcell = 0; xcell < W; xcell++) {
-                let cell = global.roomSetup[ycell][xcell];
-                ctx.fillStyle = getZoneColor(cell);
-                if (getZoneColor(cell) !== color.white) {
-                    drawGuiRect(x + (j * len) / W, y + (i * height) / H, len / W, height / H);
-                }
-                j++;
-            }
-            i++;
-        }
-        ctx.fillStyle = color.white;
-        drawGuiRect(x, y, len, height);
-        for (let entity of minimap.get()) {
-            ctx.fillStyle = mixColors(getColor(entity.color), color.black, 0.3);
-            ctx.globalAlpha = entity.alpha;
-            switch (entity.type) {
-                case 2:
-                    drawGuiRect(x + ((entity.x - entity.size) / global.gameWidth) * len - 0.4, y + ((entity.y - entity.size) / global.gameHeight) * height - 1, ((2 * entity.size) / global.gameWidth) * len + 0.2, ((2 * entity.size) / global.gameWidth) * len + 0.2);
-                    break;
-                case 1:
-                    drawGuiCircle(x + (entity.x / global.gameWidth) * len, y + (entity.y / global.gameHeight) * height, (entity.size / global.gameWidth) * len + 0.2);
-                    break;
-                case 0:
-                    if (entity.id !== gui.playerid) drawGuiCircle(x + (entity.x / global.gameWidth) * len, y + (entity.y / global.gameHeight) * height, 2);
-                    break;
-            }
-        }
-        ctx.globalAlpha = 1;
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = color.black;
-        ctx.fillStyle = color.black;
-        drawGuiCircle(
-            x + (global.player.cx / global.gameWidth) * len - 1,
-            y + (global.player.cy / global.gameHeight) * height - 1,
-            2,
-            false
-        );
-        ctx.lineWidth = 3;
-        ctx.fillStyle = color.black;
-        drawGuiRect(x, y, len, height, true); // Border
-        if (global.showDebug) {
-            drawGuiRect(x, y - 40, len, 30);
-            lagGraph(lag.get(), x, y - 40, len, 30, color.teal);
-            gapGraph(global.metrics.rendergap, x, y - 40, len, 30, color.pink);
-            timingGraph(GRAPHDATA, x, y - 40, len, 30, color.yellow);
-        }
-        if (!global.showDebug) y += 14 * 3;
-        // Text
-        if (global.showDebug) {
-            text.debug[5].draw("arras.io", x + len, y - 50 - 5 * 14 - 2, 15, "#B6E57C", "right");
-            text.debug[4].draw("Prediction: " + Math.round(GRAPHDATA) + "ms", x + len, y - 50 - 4 * 14, 10, color.guiwhite, "right");
-            text.debug[3].draw(`Bandwidth: ${gui.bandwidth.in} in, ${gui.bandwidth.out} out`, x + len, y - 50 - 3 * 14, 10, color.guiwhite, "right");
-            text.debug[2].draw("Update Rate: " + global.metrics.updatetime + "Hz", x + len, y - 50 - 2 * 14, 10, color.guiwhite, "right");
-            text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
-            text.debug[0].draw(global.metrics.latency + " ms - " + global.serverName, x + len, y - 50, 10, color.guiwhite, "right");
-        } else {
-            text.debug[2].draw("arras.io", x + len, y - 50 - 2 * 14 - 2, 15, "#B6E57C", "right");
-            text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
-            text.debug[0].draw(global.metrics.latency + " ms : " + global.metrics.updatetime + "Hz", x + len, y - 50, 10, color.guiwhite, "right");
-        }
-        global.fps = global.metrics.rendertime;
-    }
-    if (!global.showTree) {
-        // Draw leaderboard
-        let lb = leaderboard.get();
-        let vspacing = 4;
-        let len = alcoveSize; // * global.screenWidth;
-        let height = 14;
-        let x = global.screenWidth - len - spacing;
-        let y = spacing + height + 7;
-        text.lbtitle.draw("Leaderboard:", Math.round(x + len / 2) + 0.5, Math.round(y - 6) + 0.5, height + 4, color.guiwhite, "center");
-        for (let i = 0; i < lb.data.length; i++) {
-            let entry = lb.data[i];
-            drawBar(x, x + len, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
-            drawBar(x, x + len, y + height / 2, height - 3, color.grey);
-            let shift = Math.min(1, entry.score / max);
-            drawBar(x, x + len * shift, y + height / 2, height - 3.5, getColor(entry.barColor));
-            // Leadboard name + score
-            let nameColor = entry.nameColor || "#FFFFFF";
-            text.leaderboard[i].draw(entry.label + (": " + util.handleLargeNumber(Math.round(entry.score))), x + len / 2, y + height / 2, height - 5, nameColor, "center", true);
-            // Mini-image
-            let scale = height / entry.position.axis,
-                xx = x - 1.5 * height - scale * entry.position.middle.x * 0.707,
-                yy = y + 0.5 * height + scale * entry.position.middle.x * 0.707;
-            drawEntity(xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
-            // Move down
-            y += vspacing + height;
-        }
-    }
-    if (!global.showTree) {
-        // Draw upgrade menu
-        upgradeMenu.set(0 + (global.canUpgrade || global.upgradeHover));
-        let glide = upgradeMenu.get();
-        global.clickables.upgrade.hide();
-        if (gui.upgrades.length > 0) {
-            global.canUpgrade = true;
-            let internalSpacing = 8;
-            let len = alcoveSize / 2; // * global.screenWidth / 2 * 1;
-            let height = len;
-            let x = glide * 2 * spacing - spacing;
-            let y = spacing;
-            let xStart = x;
-            let xo = x;
-            let xxx = 0;
-            let yo = y;
-            let ticker = 0;
-            upgradeSpin += 0.01;
-            let colorIndex = 10;
-            let i = 0;
-            gui.upgrades.forEach(function drawAnUpgrade(model) {
-                if (y > yo) yo = y;
-                xxx = x;
-                global.clickables.upgrade.place(i++, x, y, len, height);
-                // Draw box
-                ctx.globalAlpha = 0.5;
-                ctx.fillStyle = getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
-                drawGuiRect(x, y, len, height);
-                ctx.globalAlpha = 0.1;
-                ctx.fillStyle = getColor(-10 + colorIndex++);
-                drawGuiRect(x, y, len, height * 0.6);
-                ctx.fillStyle = color.black;
-                drawGuiRect(x, y + height * 0.6, len, height * 0.4);
-                ctx.globalAlpha = 1;
-                // Find offset location with rotation
-                let picture = util.getEntityImageFromMockup(model, gui.color),
-                    position = global.mockups[model].position,
-                    scale = (0.6 * len) / position.axis,
-                    xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
-                    yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin);
-                drawEntity(xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
-                let upgradeKey = getClassUpgradeKey(ticker);
-                // Tank name
-                text.upgradeNames[i - 1].draw(picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
-                // Upgrade key
-                if (upgradeKey) {
-                    text.upgradeKeys[i - 1].draw("[" + upgradeKey + "]", x + len - 4, y + height - 6, height / 8 - 3, color.guiwhite, "right");
-                }
-                ctx.strokeStyle = color.black;
-                ctx.globalAlpha = 1;
-                ctx.lineWidth = 3;
-                drawGuiRect(x, y, len, height, true); // Border
-                if (++ticker % Math.max(3, Math.ceil(gui.upgrades.length / 4)) === 0) {
-                    x = xStart;
-                    y += height + internalSpacing;
-                } else {
-                    x += glide * (len + internalSpacing);
-                }
-            });
-            // Draw box
-            let h = 14,
-                msg = "Don't Upgrade",
-                m = measureText(msg, h - 3) + 10;
-            let xx = xo + (xxx + len + internalSpacing - xo) / 2,
-                yy = yo + height + internalSpacing;
-            drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h + config.graphical.barChunk, color.black);
-            drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h, color.white);
-            text.skipUpgrades.draw(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
-            global.clickables.skipUpgrades.place(0, xx - m / 2, yy, m, h);
-        } else {
-            global.canUpgrade = false;
-            global.clickables.upgrade.hide();
-            global.clickables.skipUpgrades.hide();
-        }
+    if (global.showTree) {
+        drawUpgradeTree();
+    } else {
+        drawMessages(spacing);
+        drawSkillBars(spacing, alcoveSize);
+        drawSelfInfo(spacing, alcoveSize, max);
+        drawMinimapAndDebug(spacing, alcoveSize);
+        drawLeaderboard(spacing, alcoveSize, max, lb);
+        drawAvailableUpgrades(spacing, alcoveSize);
     }
     global.metrics.lastrender = getNow();
 };
@@ -1901,38 +1806,29 @@ let textDead = {
     playagain: TextObj(),
 };
 let getKills = () => {
-    let finalKills = [
-        Math.round(global.finalKills[0].get()),
-        Math.round(global.finalKills[1].get()),
-        Math.round(global.finalKills[2].get()),
-    ];
-    let b = finalKills[0] + 0.5 * finalKills[1] + 3 * finalKills[2];
+    let finalKills = {
+        " kills": [Math.round(global.finalKills[0].get()), 1],
+        " assists": [Math.round(global.finalKills[1].get()), 0.5],
+        " visitors defeated": [Math.round(global.finalKills[2].get()), 3],
+        " polygons destroyed": [Math.round(global.finalKills[2].get()), 0.05],
+    }, killCountTexts = [];
+    let destruction = 0;
+    for (let key in finalKills) {
+        destruction += finalKills[key][0] * finalKills[key][1];
+        killCountTexts.push(finalKills[key][0] + key);
+    }
     return (
-        (b === 0
-            ? "🌼"
-            : b < 4
-            ? "🎯"
-            : b < 8
-            ? "💥"
-            : b < 15
-            ? "💢"
-            : b < 25
-            ? "🔥"
-            : b < 50
-            ? "💣"
-            : b < 75
-            ? "👺"
-            : b < 100
-            ? "🌶️"
-            : "💯") +
-        (finalKills[0] || finalKills[1] || finalKills[2]
-            ? " " +
-                (finalKills[0] ? finalKills[0] + " kills" : "") +
-                (finalKills[0] && finalKills[1] ? " and " : "") +
-                (finalKills[1] ? finalKills[1] + " assists" : "") +
-                ((finalKills[0] || finalKills[1]) && finalKills[2] ? " and " : "") +
-                (finalKills[2] ? finalKills[2] + " visitors defeated" : "")
-            : " A true pacifist")
+        (destruction === 0 ? "🌼"
+        : destruction < 4 ? "🎯"
+        : destruction < 8 ? "💥"
+        : destruction < 15 ? "💢"
+        : destruction < 25 ? "🔥"
+        : destruction < 50 ? "💣"
+        : destruction < 75 ? "👺"
+        : destruction < 100 ? "🌶️" : "💯"
+        ) + " " + (!killCountTexts.length ? "A true pacifist" :
+                    killCountTexts.length == 1 ? killCountTexts.join(" and ") :
+                    killCountTexts.slice(0, -1).join(", ") + " and " + killCountTexts[killCountTexts.length - 1])
     );
 };
 let getDeath = () => {

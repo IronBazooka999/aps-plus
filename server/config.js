@@ -74,5 +74,5 @@ module.exports = {
     DEFAULT_FILE: 'index.html',
     WELCOME_MESSAGE: "You have spawned! Welcome to the game.\n"
                     +"You will be invulnerable until you move or shoot.\n"
-                    +"Please contact Taureon#5684 if there are issues to report."
+                    +"Please contact @taureon_ on discord if there are issues to report."
 }
