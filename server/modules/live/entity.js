@@ -291,7 +291,7 @@ class Gun {
     }
     bulletInit(o) {
         // Define it by its natural properties
-        this.bulletTypes.forEach((type) => o.define(type));
+        this.bulletTypes.forEach(type => o.define(type));
         // Pass the gun attributes
         o.define({
             BODY: this.interpret(),
@@ -299,7 +299,7 @@ class Gun {
             SIZE: (this.body.size * this.width * this.settings.size) / 2,
             LABEL: this.master.label + (this.label ? " " + this.label : "") + " " + o.label
         });
-        o.color = this.body.master.color;
+        o.color = o.color ?? this.body.master.color;
         // Keep track of it and give it the function it needs to deutil.log itself upon death
         if (this.countsOwnKids) {
             o.parent = this;

@@ -11884,16 +11884,84 @@ exports.conqueror = {
             },
         },
         {
-            POSITION: [18, 14, 1, 0, 0, 0, 0],
+            POSITION: [18, 12, 1, 0, 0, 0, 0],
         },
         {
-            POSITION: [2, 14, 1.1, 18, 0, 0, 0],
+            POSITION: [2, 12, 1.1, 18, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.block]),
                 TYPE: exports.setTrap,
             },
         },
     ],
+};
+exports.vanquisher = {
+    PARENT: [exports.genericTank],
+    DANGER: 8,
+    LABEL: "Vanquisher",
+    STAT_NAMES: statnames.generic,
+    BODY: {
+        SPEED: 0.8 * base.SPEED,
+    },
+    //destroyer
+    GUNS: [{
+        POSITION: [21, 14, 1, 0, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy]),
+            TYPE: exports.bullet
+        }
+
+    //builder
+    },{
+        POSITION: [18, 12, 1, 0, 0, 0, 0],
+    },{
+        POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap, g.block]),
+            TYPE: exports.setTrap
+        }
+
+    //launcher
+    },{
+        POSITION: [10, 9, 1, 9, 0, 90, 0],
+    },{
+        POSITION: [17, 13, 1, 0, 0, 90, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.arty]), TYPE: exports.minimissile, STAT_CALCULATOR: gunCalcNames.sustained }
+
+    //shotgun
+    },{
+        POSITION: [4, 3, 1, 11, -3, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [4, 3, 1, 11, 3, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [4, 4, 1, 13, 0, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    },{
+        POSITION: [1, 4, 1, 12, -1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    },{
+        POSITION: [1, 4, 1, 11, 1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    },{
+        POSITION: [1, 3, 1, 13, -1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [1, 3, 1, 13, 1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [1, 2, 1, 13, 2, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    }, {
+        POSITION: [1, 2, 1, 13, -2, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    }, {
+        POSITION: [15, 14, 1, 6, 0, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]), TYPE: exports.casing }
+    }, {
+        POSITION: [8, 14, -1.3, 4, 0, 270, 0],
+    }]
 };
 exports.bulwark = {
     PARENT: [exports.genericTank],
@@ -16376,6 +16444,7 @@ for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
@@ -16400,7 +16469,7 @@ exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.game
         exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
-exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser, exports.armyOfOne, exports.godbasic];
+exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser];
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS

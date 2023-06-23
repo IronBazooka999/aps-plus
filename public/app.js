@@ -822,10 +822,7 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
     }
     // Draw guns
     source.guns.update();
-    context.lineWidth = Math.max(
-        config.graphical.mininumBorderChunk,
-        ratio * config.graphical.borderChunk
-    );
+    context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
     if (source.guns.length === m.guns.length) {
         let positions = source.guns.getPositions();
         for (let i = 0; i < m.guns.length; i++) {
@@ -1866,16 +1863,7 @@ const gameDrawDead = () => {
         scale = len / position.axis,
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
         yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707;
-    drawEntity(
-        (xx - 190 - len / 2 + 0.5) | 0,
-        (yy - 10 + 0.5) | 0,
-        picture,
-        1.5,
-        1,
-        (0.5 * scale) / picture.realSize,
-        -Math.PI / 4,
-        true
-    );
+    drawEntity((xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
     textDead.taunt.draw("If you think you have a record, submit it using the link on the start menu. Make sure you have a screenshot.", x, y - 80, 8, color.guiwhite, "center");
     textDead.level.draw("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
     textDead.score.draw("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);

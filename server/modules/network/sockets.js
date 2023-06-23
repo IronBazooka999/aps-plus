@@ -772,64 +772,50 @@ const spawn = (socket, name) => {
     player.team = socket.rememberedTeam;
     switch (room.gameMode) {
         case "tdm":
-            {
-                /*// Count how many others there are
-                let census = [],
-                    scoreCensus = [];
-                for (let i = 0; i < c.TEAMS; i++) census.push(1), scoreCensus.push(1);
-                players.forEach(p => {
-                    census[p.team - 1]++;
-                    if (p.body != null) {
-                        scoreCensus[p.team - 1] += p.body.skill.score;
-                    }
-                });
-                let possiblities = [];
-                for (let i = 0, m = 0; i < c.TEAMS; i++) {
-                    let v = Math.round(1000000 * (room['bas' + (i + 1)].length + 1) / (census[i] + 1) / scoreCensus[i]);
-                    if (v > m) {
-                        m = v;
-                        possiblities = [i];
-                    }
-                    if (v == m) {
-                        possiblities.push(i);
-                    }
-                }*/
-                let team = getTeam(1);
-                // Choose from one of the least ones
-                if (
-                    player.team == null ||
-                    (player.team != null &&
-                        player.team !== team &&
-                        global.defeatedTeams.includes(-player.team))
-                )
-                    player.team = team;
-                if (socket.party) {
-                    let team = socket.party / room.partyHash;
-                    if (
-                        !c.TAG &&
-                        team > 0 &&
-                        team < c.TEAMS + 1 &&
-                        Number.isInteger(team) &&
-                        !global.defeatedTeams.includes(-team)
-                    ) {
-                        player.team = team;
-                        console.log(
-                            "Party Code with team:",
-                            team,
-                            "Party:",
-                            socket.party
-                        );
-                    }
+            /*// Count how many others there are
+            let census = [],
+                scoreCensus = [];
+            for (let i = 0; i < c.TEAMS; i++) census.push(1), scoreCensus.push(1);
+            players.forEach(p => {
+                census[p.team - 1]++;
+                if (p.body != null) {
+                    scoreCensus[p.team - 1] += p.body.skill.score;
                 }
-                // Make sure you're in a base
-                if (room["bas" + player.team].length)
-                    do {
-                        loc = room.randomType("bas" + player.team);
-                    } while (dirtyCheck(loc, 50));
-                else
-                    do {
-                        loc = room.gaussInverse(5);
-                    } while (dirtyCheck(loc, 50));
+            });
+            let possiblities = [];
+            for (let i = 0, m = 0; i < c.TEAMS; i++) {
+                let v = Math.round(1000000 * (room['bas' + (i + 1)].length + 1) / (census[i] + 1) / scoreCensus[i]);
+                if (v > m) {
+                    m = v;
+                    possiblities = [i];
+                }
+                if (v == m) {
+                    possiblities.push(i);
+                }
+            }*/
+            let team = getTeam(1);
+            // Choose from one of the least ones
+            if (player.team == null || (player.team != null && player.team !== team && global.defeatedTeams.includes(-player.team))
+            ) {
+                player.team = team;
+                player.color = [10, 11, 12, 15][-team - 1] || 3
+            }
+            if (socket.party) {
+                let team = socket.party / room.partyHash;
+                if (!c.TAG && team > 0 && team < c.TEAMS + 1 && Number.isInteger(team) && !global.defeatedTeams.includes(-team)) {
+                    player.team = team;
+                    console.log("Party Code with team:", team, "Party:", socket.party);
+                }
+            }
+            // Make sure you're in a base
+            if (room["bas" + player.team].length) {
+                do {
+                    loc = room.randomType("bas" + player.team);
+                } while (dirtyCheck(loc, 50));
+            } else {
+                do {
+                    loc = room.gaussInverse(5);
+                } while (dirtyCheck(loc, 50));
             }
             break;
         default:
@@ -841,9 +827,7 @@ const spawn = (socket, name) => {
     socket.rememberedTeam = player.team;
     // Create and bind a body for the player host
     let body;
-    const filter = disconnections.filter(
-        (r) => r.ip === socket.ip && r.body && !r.body.isDead()
-    );
+    const filter = disconnections.filter(r => r.ip === socket.ip && r.body && !r.body.isDead());
     if (filter.length) {
         let recover = filter[0];
         util.remove(disconnections, disconnections.indexOf(recover));
@@ -992,7 +976,7 @@ function perspective(e, player, data) {
         if (player.body.id === e.master.id) {
             data = data.slice(); // So we don't mess up references to the original
             // Set the proper color if it's on our team
-            data[12] = player.teamColor; //player.type === "tank" ? player.teamColor : player.body.color;
+            data[12] = player.body.color;
             // And make it force to our mouse if it ought to
             if (player.command.autospin) {
                 data[10] = 1;
@@ -1001,7 +985,7 @@ function perspective(e, player, data) {
         if (player.body.team === e.source.team && c.GROUPS) {
             // GROUPS
             data = data.slice();
-            data[12] = player.teamColor;
+            data[12] = player.body.color;
         }
     }
     return data;
@@ -1092,42 +1076,34 @@ const eyes = (socket) => {
             fov = camera.fov;
             // Find what the user can see.
             // Update which entities are nearby
-            if (
-                camera.lastUpdate - lastVisibleUpdate >
-                c.visibleListInterval
-            ) {
+            if (camera.lastUpdate - lastVisibleUpdate > c.visibleListInterval) {
                 // Update our timer
                 lastVisibleUpdate = camera.lastUpdate;
                 // And update the nearby list
-                nearby = entities
-                    .map((e) => {
-                        if (check(socket.camera, e)) return e;
-                    })
-                    .filter((e) => {
-                        return e;
-                    });
+                nearby = []
+                for (let i = 0; i < entities.length; i++) {
+                    if (check(socket.camera, entities[i])) {
+                        nearby.push(entities[i]);
+                    }
+                }
             }
             // Look at our list of nearby entities and get their updates
-            let visible = nearby
-                .map(function mapthevisiblerealm(e) {
-                    if (e.photo) {
-                        if (
-                            Math.abs(e.x - x) < fov / 2 + 1.5 * e.size &&
-                            Math.abs(e.y - y) < (fov / 2) * (9 / 16) + 1.5 * e.size
-                        ) {
-                            // Grab the photo
-                            if (!e.flattenedPhoto)
-                                e.flattenedPhoto = flatten(e.photo);
-                            return perspective(e, player, e.flattenedPhoto);
-                        }
+            let visible = [];
+            for (let i = 0; i < nearby.length; i++) {
+                let e = nearby[i];
+                if (e.photo &&
+                    Math.abs(e.x - x) < fov / 2 + 1.5 * e.size &&
+                    Math.abs(e.y - y) < (fov / 2) * (9 / 16) + 1.5 * e.size
+                ) {
+                    // Grab the photo
+                    if (!e.flattenedPhoto) {
+                        e.flattenedPhoto = flatten(e.photo);
                     }
-                })
-                .filter((e) => {
-                    return e;
-                });
+                    visible.push(perspective(e, player, e.flattenedPhoto));
+                }
+            }
             // Spread it for upload
-            let numberInView = visible.length,
-                view = [];
+            let view = [];
             for (let instance of visible) {
                 view.push(...instance);
             }
@@ -1144,7 +1120,7 @@ const eyes = (socket) => {
                 camera.vx,
                 camera.vy,
                 ...player.gui.publish(),
-                numberInView,
+                visible.length,
                 ...view
             );
             logs.network.mark();

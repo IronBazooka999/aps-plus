@@ -159,10 +159,7 @@ const Minimap = class {
     get() {
         let state = Math.min(1, (Date.now() - this.lastUpdate) / this.speed)
         let stateOld = 1 - state
-        return Object.values(this.map).map(({
-            old,
-            now
-        }) => {
+        return Object.values(this.map).map(({ old, now }) => {
             if (!now) return {
                 type: old.type,
                 id: old.id,
@@ -358,7 +355,7 @@ function Status() {
         },
         getBlend: () => {
             let o = (statState === 'normal' || statState === 'dying') ? 0 :
-                statState === 'invuln' ? 0.25 + Math.sin((getNow() - statTime) / 33) / 4 :
+                statState === 'invuln' ? 0.125 + Math.sin((getNow() - statTime) / 33) / 8 :
                 1 - Math.min(1, (getNow() - statTime) / 80);
             if (getNow() - statTime > 500 && statState === 'injured') {
                 statState = 'normal';
