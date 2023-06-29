@@ -215,6 +215,25 @@ const gamemodes = {
         ],
         BOTS: 16
     },
+    "8TDM": {
+        MODE: "tdm",
+        TEAMS: 8,
+        ROOM_SETUP: [
+            ["bas1", "bap1", "norm", "norm", "norm", "bap5", "bap5", "norm", "norm", "norm", "bap3", "bas3"],
+            ["bap1", "bas1", "norm", "norm", "norm", "bas5", "bas5", "norm", "norm", "norm", "bas3", "bap3"],
+            ["norm", "norm", "rock", "norm", "norm", "norm", "norm", "norm", "norm", "rock", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "roid", "nest", "nest", "norm", "roid", "norm", "norm", "norm"],
+            ["bap8", "bas8", "norm", "norm", "nest", "nest", "nest", "nest", "norm", "norm", "bas6", "bap6"],
+            ["bap8", "bas8", "norm", "norm", "nest", "nest", "nest", "nest", "norm", "norm", "bas6", "bap6"],
+            ["norm", "norm", "norm", "norm", "roid", "nest", "nest", "norm", "roid", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "rock", "norm", "norm", "norm", "norm", "norm", "norm", "rock", "norm", "norm"],
+            ["bap4", "bas4", "norm", "norm", "norm", "bas7", "bas7", "norm", "norm", "norm", "bas2", "bap2"],
+            ["bas4", "bap4", "norm", "norm", "norm", "bap7", "bap7", "norm", "norm", "norm", "bap2", "bas2"]
+        ],
+        BOTS: 32
+    },
     "Siege": {
         MODE: "tdm",
         TEAMS: 1,
