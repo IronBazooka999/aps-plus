@@ -389,7 +389,7 @@ let spawnCrasher = (census) => {
 };
 
 // Make base protectors if needed.
-for (let team = 1; team < 5; team++) {
+for (let team = 1; room.TEAMS + 1; team++) {
     room["bap" + team].forEach((loc) => {
         let o = new Entity(loc);
         o.define(Class.baseProtector);
