@@ -394,7 +394,7 @@ for (let team = 1; team < 5; team++) {
         let o = new Entity(loc);
         o.define(Class.baseProtector);
         o.team = -team;
-        o.color = [10, 11, 12, 15][team - 1];
+        o.color = [10, 11, 12, 15, 25, 26, 27, 28][team - 1];
     });
 }
 
@@ -456,7 +456,7 @@ let makenpcs = () => {
                 o.x = loc.x;
                 o.y = loc.y;
             }
-            color = [10, 11, 12, 15][team - 1];
+            color = [10, 11, 12, 15, 25, 26, 27, 28][team - 1];
             team = -team;
         }
         o.define(Class.bot);
