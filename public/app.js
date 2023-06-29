@@ -156,6 +156,14 @@ function getColor(colorNumber) {
             return 150 > Date.now() % 300 ? color.red : color.grey;
         case 24:
             return 150 > Date.now() % 300 ? color.grey : color.red;
+      case 25:
+        return "#C49608";
+      case 26:
+        return "#EC7B0F";
+      case 27:
+        return "#895918";
+      case 28:
+        return "#13808E";
         case 30:
             return "#a913cf";
         case 31:
