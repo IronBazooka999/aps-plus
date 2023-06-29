@@ -28,7 +28,7 @@ let mothershipLoop = (function() {
                 ACCEPTS_SCORE: false,
                 VALUE: 643890
             });
-            o.color = [10, 11, 12, 15][i];
+            o.color = [10, 11, 12, 15, 25, 26, 27, 28][i];
             o.team = -i - 1;
             o.name = "Mothership";
             o.isMothership = true;
@@ -40,7 +40,7 @@ let mothershipLoop = (function() {
     };
 
     function death(entry) {
-        let team = ["BLUE", "GREEN", "RED", "PURPLE"][entry[1]];
+        let team = ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][entry[1]];
         sockets.broadcast(team + "'s mothership has been killed!");
         global.defeatedTeams.push(-entry[1] - 1);
         for (let i = 0; i < entities.length; i++) {
@@ -54,7 +54,7 @@ let mothershipLoop = (function() {
     };
 
     function winner(teamId) {
-        let team = ["BLUE", "GREEN", "RED", "PURPLE"][teamId];
+        let team = ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][teamId];
         sockets.broadcast(team + " has won the game!");
         setTimeout(closeArena, 3e3);
     };
