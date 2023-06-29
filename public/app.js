@@ -214,22 +214,22 @@ function getZoneColor(cell, real) {
         case "bap4":
         case "dom4":
             return color.magenta;
-        case "bas5":
-        case "bap5":
-        case "dom5":
-            return color.yellow;
-        case "bas6":
-        case "bap6":
-        case "dom6":
-            return 33;
-        case "bas7":
-        case "bap7":
-        case "dom7":
-            return 39;
-        case "bas8":
-        case "bap8":
-        case "dom8":
-            return color.turquoise;
+      case "bas5":
+      case "bap5":
+      case "dom5":
+        return "#C49608";
+      case "bas6":
+      case "bap6":
+      case "dom6":
+        return "#EC7B0F";
+      case "bas7":
+      case "bap7":
+      case "dom7":
+        return "#895918";
+      case "bas8":
+      case "bap8":
+      case "dom8":
+        return "#13808E";
         case "port":
             return color.guiblack;
         case "nest":
