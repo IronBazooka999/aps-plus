@@ -798,7 +798,7 @@ const spawn = (socket, name) => {
             if (player.team == null || (player.team != null && player.team !== team && global.defeatedTeams.includes(-player.team))
             ) {
                 player.team = team;
-                player.color = [10, 11, 12, 15][-team - 1] || 3
+                player.color = [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3
             }
             if (socket.party) {
                 let team = socket.party / room.partyHash;
@@ -857,7 +857,7 @@ const spawn = (socket, name) => {
         case "tdm":
             {
                 body.team = -player.team;
-                body.color = [10, 11, 12, 15][player.team - 1];
+                body.color = [10, 11, 12, 15, 25, 26, 27, 28][player.team - 1];
             }
             break;
         default: {
@@ -1264,7 +1264,7 @@ let leaderboard = new Delta(6, () => {
     if (c.TAG)
         for (let i = 0; i < c.TEAMS; i++) {
             let teamNames = ["BLUE", "GREEN", "RED", "PURPLE"];
-            let teamColors = [10, 11, 12, 15];
+            let teamColors = [10, 11, 12, 15, 25, 26, 27, 28];
             list.push({
                 id: i,
                 skill: {
