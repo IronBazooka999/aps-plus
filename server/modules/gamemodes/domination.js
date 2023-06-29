@@ -8,7 +8,7 @@ let spawn = (loc, team, color, type = false) => {
     let o = new Entity(loc);
     o.define(type);
     o.team = team;
-    o.color = [10, 11, 12, 15][-team - 1] || 3;
+    o.color = [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3;
     o.skill.score = 111069;
     o.name = "Dominator";
     o.SIZE = c.WIDTH / c.X_GRID / 10;
@@ -26,7 +26,7 @@ let spawn = (loc, team, color, type = false) => {
                 newTeam = killer.team;
             spawn(loc, newTeam, killer.color, type);
             room.setType("dom" + ((killer.team < 0 && killer.team > 5) ? -killer.team : 0), loc);
-            sockets.broadcast("A dominator is now controlled by " + ["BLUE", "GREEN", "RED", "PURPLE"][-newTeam - 1] + "!");
+            sockets.broadcast("A dominator is now controlled by " + ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][-newTeam - 1] + "!");
             for (let player of sockets.players) {
                 if (player.body) {
                     if (player.body.team === newTeam) {
@@ -46,7 +46,7 @@ let spawn = (loc, team, color, type = false) => {
 function winner(teamId) {
     gameWon = true;
     setTimeout(function() {
-        let team = ["BLUE", "GREEN", "RED", "PURPLE"][teamId] || "An unknown team";
+        let team = ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][teamId] || "An unknown team";
         sockets.broadcast(team + " has won the game!");
         setTimeout(closeArena, 3000);
     }, 1500);
