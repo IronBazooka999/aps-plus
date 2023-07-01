@@ -6,7 +6,7 @@ Once you've created a Glitch (https://glitch.com) project using the template, fo
 
 In the server's `config.json`:
 1. Find the `host` property.
-2. Replace "`aps-template`" with your glitch project's name, it should be in the top-left corner above "Settings".
+2. Replace the contents with your glitch project's domain (`servername.glitch.me`), it should be in the top-left corner above "Settings".
 
 Then, give your new project a name. (Settings > Edit project details)
 
