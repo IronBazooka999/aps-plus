@@ -95,45 +95,48 @@ class io_moveInCircles extends IO {
 }
 class io_listenToPlayer extends IO {
     constructor(b, p) {
-        super(b)
-        this.player = p
-        this.acceptsFromTop = false
+        super(b);
+        this.player = p;
+        this.acceptsFromTop = false;
     }
     // THE PLAYER MUST HAVE A VALID COMMAND AND TARGET OBJECT
     think() {
-        let target = {
-            x: this.player.target.x,
-            y: this.player.target.y,
-        }
+        let fire = this.player.command.autofire || this.player.command.lmb,
+            alt = this.player.command.autoalt || this.player.command.rmb,
+            target = {
+                x: this.player.target.x,
+                y: this.player.target.y,
+            };
+        this.body.facingLocked = this.player.command.spinlock;
         if (this.player.command.autospin) {
-            let kk = Math.atan2(this.body.control.target.y, this.body.control.target.x) + (this.player.command.rmb ? 0.02 * -1 : 0.02)
+            let kk = Math.atan2(this.body.control.target.y, this.body.control.target.x) + (this.player.command.rmb ? 0.02 * -1 : 0.02);
             if (this.body.autospinBoost) {
-              let thing = (0.02 * (this.body.autospinBoost * ((this.body.skill.spd / 4) + 0.5)))
-              if (this.player.command.lmb) thing = thing * 1.5
-              if (this.player.command.rmb) thing = thing * -1
-              kk += thing
+                let thing = (0.02 * (this.body.autospinBoost * ((this.body.skill.spd / 4) + 0.5)));
+                if (this.player.command.lmb) thing = thing * 1.5;
+                if (this.player.command.rmb) thing = thing * -1;
+                kk += thing;
             }
             target = {
                 x: 100 * Math.cos(kk),
                 y: 100 * Math.sin(kk),
-            }
+            };
         }
         if (this.body.invuln) {
             if (this.player.command.right || this.player.command.left || this.player.command.up || this.player.command.down || this.player.command.lmb) {
-                this.body.invuln = false
+                this.body.invuln = false;
             }
         }
-        this.body.autoOverride = this.player.command.override
-        let fire = this.player.command.autofire || this.player.command.lmb,
-            alt = this.player.command.autoalt || this.player.command.rmb;
+        this.body.autoOverride = this.player.command.override;
         return {
-            target: target, fire, alt,
+            target,
+            fire,
+            alt,
             goal: {
                 x: this.body.x + this.player.command.right - this.player.command.left,
                 y: this.body.y + this.player.command.down - this.player.command.up,
             },
             main: fire || this.player.command.autospin
-        }
+        };
     }
 }
 class io_mapTargetToGoal extends IO {
@@ -612,11 +615,12 @@ class io_zoom extends IO {
     constructor(body, opts = {}) {
         super(body);
         this.distance = opts.distance || 225;
+        this.dynamic = opts.dynamic;
     }
 
     think(input) {
         if (input.alt && input.target) {
-            if (this.body.cameraOverrideX === null) {
+            if (this.dynamic || this.body.cameraOverrideX === null) {
                 let direction = Math.atan2(input.target.y, input.target.x);
                 this.body.cameraOverrideX = this.body.x + this.distance * Math.cos(direction);
                 this.body.cameraOverrideY = this.body.y + this.distance * Math.sin(direction);

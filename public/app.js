@@ -799,6 +799,13 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
         xx = x,
         yy = y,
         source = turretInfo === false ? instance : turretInfo;
+    source.guns.update();
+    if (source.guns.length !== m.guns.length) {
+        throw new Error("Mismatch gun number with mockup.");
+    }
+    if (source.turrets.length !== m.turrets.length) {
+        throw new Error("Mismatch turret number with mockup.");
+    }
     if (fade === 0 || alpha === 0) return;
     if (render.expandsWithDeath) drawSize *= 1 + 0.5 * (1 - fade);
     if (config.graphical.fancyAnimations && assignedContext != ctx2 && (fade !== 1 || alpha !== 1)) {
@@ -813,61 +820,45 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
     context.lineCap = "round";
     context.lineJoin = "round";
     // Draw turrets beneath us
-    if (source.turrets.length === m.turrets.length) {
-        for (let i = 0; i < m.turrets.length; i++) {
-            let t = m.turrets[i];
-            source.turrets[i].lerpedFacing == undefined
-                ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
-                : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
-            if (t.layer === 0) {
-                let ang = t.direction + t.angle + rot,
-                    len = t.offset * drawSize;
-                drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, source.turrets[i].lerpedFacing + turretsObeyRot * rot, turretsObeyRot, context, source.turrets[i], render);
-            }
+    for (let i = 0; i < m.turrets.length; i++) {
+        let t = m.turrets[i];
+        source.turrets[i].lerpedFacing == undefined
+            ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
+            : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
+        if (t.layer === 0) {
+            let ang = t.direction + t.angle + rot,
+                len = t.offset * drawSize,
+                facing =  source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
-    } else {
-        throw new Error("Mismatch turret number with mockup.");
     }
     // Draw guns
-    source.guns.update();
     context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
-    if (source.guns.length === m.guns.length) {
-        let positions = source.guns.getPositions();
-        for (let i = 0; i < m.guns.length; i++) {
-            let g = m.guns[i],
-                position = positions[i] / (g.aspect === 1 ? 2 : 1),
-                gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
-                gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
-                gunColor = g.color == null ? color.grey : getColor(g.color);
-            setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
-            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot);
-        }
-    } else {
-        throw new Error("Mismatch gun number with mockup.");
+    let positions = source.guns.getPositions();
+    for (let i = 0; i < m.guns.length; i++) {
+        let g = m.guns[i],
+            position = positions[i] / (g.aspect === 1 ? 2 : 1),
+            gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
+            gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
+            gunColor = g.color == null ? color.grey : getColor(g.color);
+        setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
+        drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot);
     }
     // Draw body
     context.globalAlpha = 1;
     setColor(context, mixColors(getColor(instance.color), render.status.getColor(), render.status.getBlend()));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot);
-    // Draw turrets above us
-    if (source.turrets.length === m.turrets.length) {
-        for (let i = 0; i < m.turrets.length; i++) {
-            let t = m.turrets[i];
-            if (t.layer === 1) {
-                let ang = t.direction + t.angle + rot,
-                    len = t.offset * drawSize;
-                drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, source.turrets[i].lerpedFacing + turretsObeyRot * rot, turretsObeyRot, context, source.turrets[i], render);
-            }
+    // Draw turrets abovus
+    for (let i = 0; i < m.turrets.length; i++) {
+        let t = m.turrets[i];
+        if (t.layer === 1) {
+            let ang = t.direction + t.angle + rot,
+                len = t.offset * drawSize,
+                facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
-    } else {
-        throw new Error("Mismatch turret number with mockup.");
     }
-    if (
-        assignedContext == false &&
-        context != ctx &&
-        context.canvas.width > 0 &&
-        context.canvas.height > 0
-    ) {
+    if (assignedContext == false && context != ctx && context.canvas.width > 0 && context.canvas.height > 0) {
         ctx.save();
         ctx.globalAlpha = alpha * fade;
         ctx.imageSmoothingEnabled = false;
@@ -1017,132 +1008,18 @@ for (let i = 0; i < 256; i++) { //if you want to have more skill levels than 255
 const ska = (x) => skas[x];
 // Text objects
 const text = {
-    skillNames: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
-    skillKeys: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
-    skillValues: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
+    skillNames: Array(10).fill().map(x => TextObj()),
+    skillKeys: Array(10).fill().map(x => TextObj()),
+    skillValues: Array(10).fill().map(x => TextObj()),
     skillPoints: TextObj(),
     score: TextObj(),
     name: TextObj(),
     class: TextObj(),
-    debug: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
+    debug: Array(7).fill().map(x => TextObj()),
     lbtitle: TextObj(),
-    leaderboard: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
-    upgradeNames: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
-    upgradeKeys: [
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-        TextObj(),
-    ],
+    leaderboard: Array(10).fill().map(x => TextObj()),
+    upgradeNames: Array(30).fill().map(x => TextObj()),
+    upgradeKeys: Array(30).fill().map(x => TextObj()),
     skipUpgrades: TextObj(),
 };
 let scaleScreenRatio = (by, unset) => {

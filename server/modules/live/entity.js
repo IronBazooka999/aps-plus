@@ -9,7 +9,6 @@ class Gun {
         this.body = body;
         this.master = body.source;
         this.label = "";
-        this.color = 16;
         this.controllers = [];
         this.children = [];
         this.control = {
@@ -70,7 +69,7 @@ class Gun {
             this.countsOwnKids = info.PROPERTIES.MAX_CHILDREN == null ? false : info.PROPERTIES.MAX_CHILDREN;
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
-            this.color = info.PROPERTIES.COLOR == null ? 16 : info.PROPERTIES.COLOR;
+            this.color = info.PROPERTIES.COLOR == null ? this.color : info.PROPERTIES.COLOR;
             this.destroyOldestChild = info.PROPERTIES.DESTROY_OLDEST_CHILD == null ? false : info.PROPERTIES.DESTROY_OLDEST_CHILD;
             this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
             if (info.PROPERTIES.COLOR != null && info.PROPERTIES != null) this.color = info.PROPERTIES.COLOR;
@@ -291,6 +290,7 @@ class Gun {
     }
     bulletInit(o) {
         // Define it by its natural properties
+        o.color = undefined;
         this.bulletTypes.forEach(type => o.define(type));
         // Pass the gun attributes
         o.define({
@@ -363,7 +363,7 @@ class Gun {
                     x: 3 * Math.cos(save.angle),
                     y: 3 * Math.sin(save.angle),
                 };
-                o.color = gun.body.master.color;
+                o.color = gun.body.master.master.color;
                 o.define(Class.hitScanExplosion);
                 // Pass the gun attributes
                 o.define({
@@ -396,7 +396,7 @@ class Gun {
                         this.body
                     );
                     o.facing = Math.atan2(target.y - y, target.x - x) + dir;
-                    o.color = this.body.master.color;
+                    o.color = this.body.master.master.color;
                     o.define(Class.hitScanBullet);
                     // Pass the gun attributes
                     o.define({
@@ -428,7 +428,7 @@ class Gun {
                 let y = save.y + s * Math.sin(save.angle) * i;
                 let e = new Entity({ x: x, y: y }, this.body);
                 e.facing = Math.atan2(target.y - y, target.x - x);
-                e.color = this.body.master.color;
+                e.color = this.body.master.master.color;
                 e.define(Class.hitScanBullet);
                 // Pass the gun attributes
                 e.define({
@@ -678,6 +678,7 @@ class Entity extends EventEmitter {
         this.define(Class.genericEntity);
         // Initalize physics and collision
         this.maxSpeed = 0;
+        this.facingLocked = false;
         this.facing = 0;
         this.vfacing = 0;
         this.range = 0;
@@ -691,6 +692,8 @@ class Entity extends EventEmitter {
         this.accel = new Vector(0, 0);
         this.damp = 0.05;
         this.collisionArray = [];
+        this.perceptionAngleIndependence = 1;
+        this.firingArc = [0, 0];
         this.invuln = false;
         this.alpha = 1;
         this.invisible = [0, 0];
@@ -990,15 +993,15 @@ class Entity extends EventEmitter {
         this.removeFromGrid();
         this.settings.drawShape = false;
         // Get my position.
-        this.bound = {};
-        this.bound.size = position[0] / 20;
         let _off = new Vector(position[1], position[2]);
-        this.bound.angle = (position[3] * Math.PI) / 180;
-        this.bound.direction = _off.direction;
-        this.bound.offset = _off.length / 10;
-        this.bound.arc = (position[4] * Math.PI) / 180;
-        // Figure out how we'll be drawn.
-        this.bound.layer = position[5];
+        this.bound = {
+            size: position[0] / 20,
+            angle: position[3] * Math.PI / 180,
+            direction: _off.direction,
+            offset: _off.length / 10,
+            arc: position[4] * Math.PI / 180,
+            layer: position[5]
+        };
         // Initalize.
         this.facing = this.bond.facing + this.bound.angle;
         this.facingType = "bound";
@@ -1022,11 +1025,7 @@ class Entity extends EventEmitter {
     }
     camera(tur = false) {
         return {
-            type:
-                0 +
-                tur * 0x01 +
-                this.settings.drawHealth * 0x02 +
-                (this.type === "tank") * 0x04,
+            type: 0 + tur * 0x01 + this.settings.drawHealth * 0x02 + (this.type === "tank") * 0x04,
             invuln: this.invuln,
             id: this.id,
             index: this.index,
@@ -1041,7 +1040,8 @@ class Entity extends EventEmitter {
             shield: this.shield.display(),
             alpha: this.alpha,
             facing: this.facing,
-            vfacing: this.vfacing,
+            perceptionAngleIndependence: this.perceptionAngleIndependence, //vfacing: this.vfacing,
+            defaultAngle: this.firingArc[0],
             twiggle: this.facingType === "autospin" || (this.facingType === "locksFacing" && this.control.alt),
             layer: this.layerID ? this.layerID : this.bond != null ? this.bound.layer : this.type === "wall" ? 11 : this.type === "food" ? 10 : this.type === "tank" ? 5 : this.type === "crasher" ? 1 : 0,
             color: this.color,
@@ -1223,7 +1223,8 @@ class Entity extends EventEmitter {
     face() {
         let t = this.control.target,
             tactive = t.x !== 0 || t.y !== 0,
-            oldFacing = this.facing;
+            oldFacing = this.facing,
+            oldVFacing = this.vfacing;
         switch (this.facingType) {
             case "autospin":
                 this.facing += 0.02 / roomSpeed;
@@ -1265,15 +1266,29 @@ class Entity extends EventEmitter {
                 );
                 break;
             case "bound":
-                let givenangle;
+                let givenangle,
+                    reduceIndependence = false;
                 if (this.control.main) {
                     givenangle = Math.atan2(t.y, t.x);
                     let diff = util.angleDifference(givenangle, this.firingArc[0]);
                     if (Math.abs(diff) >= this.firingArc[1]) {
-                        givenangle = this.firingArc[0]; // - util.clamp(Math.sign(diff), -this.firingArc[1], this.firingArc[1]);
+                        givenangle = this.firingArc[0];
+                        reduceIndependence = true;
                     }
                 } else {
                     givenangle = this.firingArc[0];
+                    reduceIndependence = true;
+                }
+                if (reduceIndependence) {
+                    this.perceptionAngleIndependence -= 0.3 / roomSpeed;
+                    if (this.perceptionAngleIndependence < 0) {
+                        this.perceptionAngleIndependence = 0;
+                    }
+                } else {
+                    this.perceptionAngleIndependence += 0.3 / roomSpeed;
+                    if (this.perceptionAngleIndependence > 1) {
+                        this.perceptionAngleIndependence = 1;
+                    }
                 }
                 this.facing += util.loopSmooth(this.facing, givenangle, 4 / roomSpeed);
                 break;
@@ -1281,8 +1296,13 @@ class Entity extends EventEmitter {
         this.facing += this.turnAngle;
         // Loop
         const TAU = 2 * Math.PI;
-        this.facing = ((this.facing % TAU) + TAU) % TAU;
-        this.vfacing = util.angleDifference(oldFacing, this.facing) * roomSpeed;
+        if (this.facingLocked) {
+            this.facing = oldFacing;
+            this.vfacing = oldVFacing;
+        } else {
+            this.facing = ((this.facing % TAU) + TAU) % TAU;
+            this.vfacing = util.angleDifference(oldFacing, this.facing) * roomSpeed;
+        }
     }
     takeSelfie() {
         this.flattenedPhoto = null;

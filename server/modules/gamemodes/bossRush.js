@@ -26,7 +26,6 @@ class BossRush {
     }
 
     spawnFriendlyBoss() {
-        sockets.broadcast('A Rogue Boss has spawned to help!')
         let o = new Entity(room.randomType('bas1'))
         o.define(ran.choose(this.friendlyBossChoices))
         o.define({ DANGER: 10 });
@@ -34,6 +33,7 @@ class BossRush {
         o.team = -1
         o.controllers.push(new ioTypes.nearestDifferentMaster(o))
         o.controllers.push(new ioTypes.botMovement(o))
+        sockets.broadcast(o.name + ' has arrived and joined your team!')
     }
 
     spawnDominator(loc, team, type = false) {
@@ -71,7 +71,7 @@ class BossRush {
 
     spawnEnemyWrapper(loc, type) {
         let thisWave = this, n = new Entity(loc);
-        n.define(ran.choose(type));
+        n.define(type);
         n.team = -100;
         n.FOV = 10;
         n.refreshBodyAttributes();
@@ -105,7 +105,7 @@ class BossRush {
         for (let i = 0; i < this.waveId / 2; i++) this.spawnEnemyWrapper(room.randomType('boss'), ran.choose(this.smallFodderChoices));
 
         //spawn a friendly boss every 20 waves
-        if (waveId % 20 == 19) setTimeout(this.spawnFriendlyBoss, 5000);
+        if (waveId % 20 == 19) setTimeout(() => this.spawnFriendlyBoss(), 5000);
     }
 
     //runs once when the server starts

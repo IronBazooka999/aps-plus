@@ -70,6 +70,7 @@ const global = {
     KEY_OVER_RIDE: 82,
     KEY_REVERSE_TANK: 86,
     KEY_REVERSE_MOUSE: 66,
+    KEY_SPIN_LOCK: 88,
 
     KEY_LEVEL_UP: 78,
     KEY_FUCK_YOU: 80,

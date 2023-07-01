@@ -20,6 +20,7 @@ class Canvas {
         this.cv.parent = self;
         this.reverseDirection = false;
         this.inverseMouse = false;
+        this.enableSpin = true;
         global.canvas = this;
     }
     keyboardDown(event) {
@@ -91,6 +92,10 @@ class Canvas {
                     break;
                 case global.KEY_AUTO_ALT:
                     this.parent.socket.talk('t', 5);
+                    break;
+                case global.KEY_SPIN_LOCK:
+                    this.enableSpin = !this.enableSpin;
+                    this.parent.socket.talk('t', 6);
                     break;
                 case global.KEY_CLASS_TREE:
                     global.showTree = !global.showTree;
@@ -208,15 +213,18 @@ class Canvas {
     }
     // Mouse location (we send target information in the heartbeat)
     gameInput(mouse) {
-        this.parent.target.x = (mouse.clientX * global.ratio) - this.width / 2;
-        this.parent.target.y = (mouse.clientY * global.ratio) - this.height / 2;
-        if (this.reverseDirection) this.parent.target.x *= -1;
-        if (this.reverseDirection) this.parent.target.y *= -1;
-        global.target = this.parent.target;
         global.statHover = global.clickables.hover.check({
             x: mouse.clientX * global.ratio,
             y: mouse.clientY * global.ratio,
         }) === 0;
+        if (this.enableSpin) return;
+        this.parent.target.x = (mouse.clientX * global.ratio) - this.width / 2;
+        this.parent.target.y = (mouse.clientY * global.ratio) - this.height / 2;
+        if (this.reverseDirection) {
+            this.parent.target.x *= -1;
+            this.parent.target.y *= -1;
+        }
+        global.target = this.parent.target;
     }
 }
 export { Canvas }

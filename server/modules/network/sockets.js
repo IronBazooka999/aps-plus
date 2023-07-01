@@ -1,8 +1,12 @@
-let permissionsDict = require("../../permissions.json"),
+let permissionsDict = {},
     net = require('net'),
     clients = [],
     players = [],
     disconnections = [];
+
+for (let entry of require("../../permissions.json")) {
+    permissionsDict[entry.key] = entry;
+}
 
 // Closing the socket
 function close(socket) {
@@ -283,7 +287,8 @@ function incoming(message, socket) {
                 "override",
                 "reverse mouse", //reverse mouse does nothing server-side, it's easier to make the client send swapped inputs
                 "reverse tank", //reverse tank does nothing server-side, it's easier to make the client turn around 180 degrees
-                "autoalt"
+                "autoalt",
+                "spinlock" //spinlock does something both in client and server side
             ][tog];
 
             // Kick if it sent us shit.
@@ -890,7 +895,8 @@ const spawn = (socket, name) => {
         autofire: false,
         autospin: false,
         override: false,
-        autoalt: false
+        autoalt: false,
+        spinlock: false
     };
     // Set up the recording commands
     let begin = util.time();
@@ -944,19 +950,20 @@ function flatten(data) {
             /*  6 */ data.vy,
             /*  7 */ data.size,
             /*  8 */ data.facing,
-            /*  9 */ data.vfacing,
-            /* 10 */ data.twiggle,
-            /* 11 */ data.layer,
-            /* 12 */ data.color,
-            /* 13 */ data.invuln,
-            /* 14 */ Math.ceil(255 * data.health),
-            /* 15 */ Math.round(255 * data.shield),
-            /* 16 */ Math.round(255 * data.alpha)
+            /*  9 */ Math.round(255 * data.perceptionAngleIndependence), //data.vfacing,
+            /* 10 */ data.defaultAngle,
+            /* 11 */ data.twiggle,
+            /* 12 */ data.layer,
+            /* 13 */ data.color,
+            /* 14 */ data.invuln,
+            /* 15 */ Math.ceil(255 * data.health),
+            /* 16 */ Math.round(255 * data.shield),
+            /* 17 */ Math.round(255 * data.alpha)
         );
         if (data.type & 0x04) {
             output.push(
-                /* 17 */ data.name,
-                /* 18 */ data.score
+                /* 18 */ data.name,
+                /* 19 */ data.score
             );
         }
     }

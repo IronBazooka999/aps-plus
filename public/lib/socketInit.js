@@ -2,6 +2,7 @@ import { global } from "./global.js";
 import { util } from "./util.js";
 import { config } from "./config.js";
 import { protocol } from "./protocol.js";
+window.fakeLagMS = 0;
 var sync = [];
 var clockDiff = 0;
 let truscore = 0;
@@ -402,7 +403,8 @@ const process = (z = {}) => {
         z.vy = get.next();
         z.size = get.next();
         z.facing = get.next();
-        z.vfacing = get.next();
+        z.perceptionAngleIndependence = get.next(); //z.vfacing = get.next();
+        z.defaultAngle = get.next();
         z.twiggle = get.next();
         z.layer = get.next();
         z.color = get.next();
@@ -698,7 +700,8 @@ const socketInit = port => {
         }),
     };
     // Learn how to talk
-    socket.talk = (...message) => {
+    socket.talk = async (...message) => {
+        await new Promise(Resolve => setTimeout(Resolve, window.fakeLagMS));
         // Make sure the socket is open before we do anything
         if (!socket.open) return 1;
         socket.send(protocol.encode(message));
@@ -717,7 +720,8 @@ const socketInit = port => {
         });
     };
     // Handle incoming messages
-    socket.onmessage = function socketMessage(message) {
+    socket.onmessage = async function socketMessage(message) {
+        await new Promise(Resolve => setTimeout(Resolve, window.fakeLagMS));
         // Make sure it looks legit.
         let m = protocol.decode(message.data);
         if (m === -1) {

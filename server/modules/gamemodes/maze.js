@@ -1,5 +1,5 @@
 let locsToAvoid = ["nest", "port"];
-for (let i = 1; i < 5; i++) {
+for (let i = 1; i < room.TEAMS + 1; i++) {
     locsToAvoid.push("bas" + i);
     locsToAvoid.push("bap" + i);
 }

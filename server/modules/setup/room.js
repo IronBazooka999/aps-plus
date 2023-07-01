@@ -24,10 +24,17 @@ const room = {
     topPlayerID: -1,
     cellTypes: (function() {
         let output = ["nest", "norm", "rock", "roid", "port", "wall"];
-        for (let i = 1; i < 5; i++) output.push("bas" + i), output.push("bap" + i);
-        for (let i = 0; i < c.ROOM_SETUP.length; i++)
-            for (let j = 0; j < c.ROOM_SETUP[i].length; j++)
-                if (!output.includes(c.ROOM_SETUP[i][j])) output.push(c.ROOM_SETUP[i][j]);
+        for (let i = 1; i < c.TEAMS + 1; i++) {
+            output.push("bas" + i);
+            output.push("bap" + i);
+        }
+        for (let i = 0; i < c.ROOM_SETUP.length; i++) {
+            for (let j = 0; j < c.ROOM_SETUP[i].length; j++) {
+                if (!output.includes(c.ROOM_SETUP[i][j])) {
+                    output.push(c.ROOM_SETUP[i][j]);
+                }
+            }
+        }
         return output;
     })(),
     partyHash: Number(((Math.random() * 1000000 | 0) + 1000000).toString().replace("0.", "")),
@@ -37,7 +44,7 @@ const room = {
 // Room functions. These functions must be defined after the room variable is created do to how they work.
 room.findType = function(type) {
     let output = [];
-    for (let i = 0; i < room.setup.length; i++)
+    for (let i = 0; i < room.setup.length; i++) {
         for (let j = 0; j < room.setup[i].length; j++) {
             let cell = room.setup[i][j];
             if (cell === type) output.push({
@@ -45,6 +52,7 @@ room.findType = function(type) {
                 y: (i + 0.5) * room.height / room.ygrid
             });
         }
+    }
     room[type] = output;
 };
 room.setType = function(type, location) {
