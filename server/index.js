@@ -1,5 +1,6 @@
+const path = require('path');
 const fs = require('fs');
-let enviroment = require('./lib/dotenv.js')(fs.readFileSync('../.env').toString());
+let enviroment = require('./lib/dotenv.js')(fs.readFileSync(path.join(__dirname, '../.env')).toString());
 for (let key in enviroment) {
     process.env[key] = enviroment[key];
 }

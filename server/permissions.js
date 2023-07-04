@@ -32,4 +32,3 @@ module.exports = [
         "note": "note here"
     },
 ]
-console.log(module.exports);
