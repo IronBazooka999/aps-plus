@@ -43,5 +43,5 @@ server = require('http').createServer((req, res) => {
     res.end(resStr);
 });
 server.on('upgrade', (req, socket, head) => wsServer.handleUpgrade(req, socket, head, ws => sockets.connect(ws, req)));
-server.listen(c.port, () => console.log("Express + WS server listening on port", c.port));
+server.listen(c.port, () => console.log("Server listening on port", c.port));
 module.exports = { server };

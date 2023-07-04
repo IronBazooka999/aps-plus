@@ -54,7 +54,7 @@ var serverStart = 0,
             },
             update: () => {
                 levelscore = Math.ceil(1.8 * Math.pow(level + 1, 1.8) - 2 * level + 1);
-                if (sscore.get() - deduction >= levelscore) {
+                if (sscore.get() - deduction >= levelscore - 0.001) {
                     deduction += levelscore;
                     level += 1;
                 }
