@@ -1,4 +1,10 @@
+const fs = require('fs');
+let enviroment = require('./lib/dotenv.js')(fs.readFileSync('../.env').toString());
+for (let key in enviroment) {
+    process.env[key] = enviroment[key];
+}
 const GLOBAL = require("./modules/global.js");
+
 console.log(`[${GLOBAL.creationDate}]: Server initialized.\nRoom Info:\n Dimensions: ${room.width} x ${room.height}\n Max Food / Nest Food: ${room.maxFood} / ${room.maxFood * room.nestFoodAmount}`);
 
 // Let's get a cheaper array removal thing

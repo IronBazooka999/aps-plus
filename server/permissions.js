@@ -1,6 +1,6 @@
-[
+module.exports = [
     {
-        "key": "ExampleBT1Token",
+        "key": process.env.TOKEN_1,
         "discordID": "0",
         "nameColor": "#ffffff",
         "class": "betaTesterMenu",
@@ -8,7 +8,7 @@
         "note": "note here"
     },
     {
-        "key": "ExampleBT2Token",
+        "key": process.env.TOKEN_2,
         "discordID": "0",
         "nameColor": "#ffffff",
         "class": "gameModMenu",
@@ -16,7 +16,7 @@
         "note": "note here"
     },
     {
-        "key": "ExampleBT3Token",
+        "key": process.env.TOKEN_3,
         "discordID": "0",
         "nameColor": "#ffffff",
         "class": "gameAdminMenu",
@@ -24,11 +24,12 @@
         "note": "note here"
     },
     {
-        "key": "ExampleBT4Token",
+        "key": process.env.TOKEN_4,
         "discordID": "0",
         "nameColor": "#ffffff",
         "class": "developer",
         "name": "unnamed#0000",
         "note": "note here"
-    }
+    },
 ]
+console.log(module.exports);

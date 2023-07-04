@@ -4,7 +4,7 @@ let permissionsDict = {},
     players = [],
     disconnections = [];
 
-for (let entry of require("../../permissions.json")) {
+for (let entry of require("../../permissions.js")) {
     permissionsDict[entry.key] = entry;
 }
 
