@@ -51,7 +51,7 @@ function getDimensions(entities) {
         x: 0,
         y: 0
     }, rot = 0) {
-        let s = Math.abs(model.shape);
+        let s = Math.floor(Math.abs(model.shape));
         let z = (Math.abs(s) > lazyRealSizes.length) ? 1 : lazyRealSizes[Math.abs(s)];
         if (z === 1) { // Body (octagon if circle)
             for (let i = 0; i < 2; i += 0.5) {

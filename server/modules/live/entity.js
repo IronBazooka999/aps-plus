@@ -136,72 +136,75 @@ class Gun {
     getLastShot() {
         return this.lastShot;
     }
-    live() {
-        // Do
-        this.recoil();
-        // Dummies ignore this
-        if (this.canShoot) {
-            // Find the proper skillset for shooting
-            let sk =
-                this.bulletStats === "master" ? this.body.skill : this.bulletStats;
-            // Decides what to do based on child-counting settings
-            let shootPermission = this.countsOwnKids
-                ? this.countsOwnKids >
-                    this.children.length * (this.calculator == "necro" ? sk.rld : 1)
-                : this.body.maxChildren
-                ? this.body.maxChildren >
-                    this.body.children.length * (this.calculator == "necro" ? sk.rld : 1)
+    spawnBullets(useWhile, shootPermission) {
+
+        //find out some intermediate values
+        let angle1 = this.direction + this.angle + this.body.facing,
+            angle2 = this.angle + this.body.facing,
+            gunlength = 1.5 * this.length - this.width * this.settings.size / 2,
+
+            //calculate offsets based on lengths and directions
+            offset_base_x = this.offset * Math.cos(angle1),
+            offset_base_y = this.offset * Math.sin(angle1),
+            offset_end_x = gunlength * Math.cos(angle2),
+            offset_end_y = gunlength * Math.sin(angle2),
+
+            //finally get the final bullet offset
+            offset_final_x = offset_base_x + offset_end_x,
+            offset_final_y = offset_base_y + offset_end_y,
+            skill = this.bulletStats === "master" ? this.body.skill : this.bulletStats;
+        
+        // Shoot, multiple times in a tick if needed
+        do {
+            this.fire(offset_final_x, offset_final_y, skill);
+
+            shootPermission =
+                  this.countsOwnKids    ? this.countsOwnKids    > this.children.length
+                : this.body.maxChildren ? this.body.maxChildren > this.body.children.length
                 : true;
-            if (this.destroyOldestChild) {
-                if (!shootPermission) {
-                    shootPermission = true;
-                    this.destroyOldest();
-                }
+
+        } while (useWhile && shootPermission && --this.cycle >= 1);
+    }
+    live() {
+        this.recoil();
+
+        if (!this.canShoot) return
+
+        // Find the proper skillset for shooting
+        let sk = this.bulletStats === "master" ? this.body.skill : this.bulletStats;
+        // Decides what to do based on child-counting settings
+        let shootPermission = this.countsOwnKids
+            ? this.countsOwnKids >
+                this.children.length * (this.calculator == "necro" ? sk.rld : 1)
+            : this.body.maxChildren
+            ? this.body.maxChildren >
+                this.body.children.length * (this.calculator == "necro" ? sk.rld : 1)
+            : true;
+        if (this.destroyOldestChild) {
+            if (!shootPermission) {
+                shootPermission = true;
+                this.destroyOldest();
             }
-            // Override in invuln
-            if (this.body.master.invuln) {
-                shootPermission = false;
+        }
+        // Override in invuln
+        if (this.body.master.invuln) {
+            shootPermission = false;
+        }
+        // Cycle up if we should
+        if (shootPermission || !this.waitToCycle) {
+            if (this.cycle < 1) {
+                this.cycle += 1 / (this.settings.reload * roomSpeed * (this.calculator == "necro" || this.calculator == "fixed reload" ? 1 : sk.rld));
             }
-            // Cycle up if we should
-            if (shootPermission || !this.waitToCycle) {
-                if (this.cycle < 1) {
-                    this.cycle += 1 / (this.settings.reload * roomSpeed * (this.calculator == "necro" || this.calculator == "fixed reload" ? 1 : sk.rld));
-                }
-            }
-            // Firing routines
-            if (
-                shootPermission &&
-                (this.autofire ||
-                    (this.altFire ? this.body.control.alt : this.body.control.fire))
-            ) {
-                if (this.cycle >= 1) {
-                    // Find the end of the gun barrel
-                    let gx =
-                        this.offset *
-                            Math.cos(this.direction + this.angle + this.body.facing) +
-                        (1.5 * this.length - (this.width * this.settings.size) / 2) *
-                            Math.cos(this.angle + this.body.facing);
-                    let gy =
-                        this.offset *
-                            Math.sin(this.direction + this.angle + this.body.facing) +
-                        (1.5 * this.length - (this.width * this.settings.size) / 2) *
-                            Math.sin(this.angle + this.body.facing);
-                    // Shoot, multiple times in a tick if needed
-                    while (shootPermission && this.cycle >= 1) {
-                        this.fire(gx, gy, sk);
-                        // Figure out if we may still shoot
-                        shootPermission = this.countsOwnKids
-                            ? this.countsOwnKids > this.children.length
-                            : this.body.maxChildren
-                            ? this.body.maxChildren > this.body.children.length
-                            : true;
-                        // Cycle down
-                        this.cycle -= 1;
-                    }
-                } // If we're not shooting, only cycle up to where we'll have the proper firing delay
-            } else if (this.cycle > !this.waitToCycle - this.delay) {
-                this.cycle = !this.waitToCycle - this.delay;
-            }
+        }
+        // Firing routines
+        if (shootPermission &&
+            (this.autofire || (this.altFire ? this.body.control.alt : this.body.control.fire))
+        ) {
+            if (this.cycle >= 1) {
+                this.spawnBullets(true, shootPermission);
+            } // If we're not shooting, only cycle up to where we'll have the proper firing delay
+        } else if (this.cycle > !this.waitToCycle - this.delay) {
+            this.cycle = !this.waitToCycle - this.delay;
         }
     }
     destroyOldest() {
@@ -245,20 +248,9 @@ class Gun {
         } while (Math.abs(sd) >= this.settings.spray / 2);
         sd *= Math.PI / 180;
         // Find speed
-        let s = new Vector(
-            (this.negRecoil ? -1 : 1) *
-                this.settings.speed *
-                c.runSpeed *
-                sk.spd *
-                (1 + ss) *
-                Math.cos(this.angle + this.body.facing + sd),
-            (this.negRecoil ? -1 : 1) *
-                this.settings.speed *
-                c.runSpeed *
-                sk.spd *
-                (1 + ss) *
-                Math.sin(this.angle + this.body.facing + sd)
-        );
+        let vecLength = (this.negRecoil ? -1 : 1) * this.settings.speed * c.runSpeed * sk.spd * (1 + ss),
+            vecAngle = this.angle + this.body.facing + sd,
+        s = new Vector(vecLength * Math.cos(vecAngle), vecLength * Math.sin(vecAngle));
         // Boost it if we shouldw
         if (this.body.velocity.length) {
             let extraBoost =
@@ -1015,7 +1007,7 @@ class Entity extends EventEmitter {
         return this.density * (this.size * this.size + 1);
     }
     get realSize() {
-        return this.size * (Math.abs(this.shape) > lazyRealSizes.length ? 1 : lazyRealSizes[Math.abs(this.shape)]);
+        return this.size * (Math.abs(this.shape) > lazyRealSizes.length ? 1 : lazyRealSizes[Math.floor(Math.abs(this.shape))]);
     }
     get m_x() {
         return (this.velocity.x + this.accel.x) / roomSpeed;
@@ -1510,16 +1502,8 @@ class Entity extends EventEmitter {
             //Shoot on death
             for (let i = 0; i < this.guns.length; i++) {
                 let gun = this.guns[i];
-                if (gun.shootOnDeath) {
-                    if (gun.body != null) {
-                        // Find the end of the gun
-                        let gx = gun.offset * Math.cos(gun.direction + gun.angle + gun.body.facing) + (1.5 * gun.length - (gun.width * gun.settings.size) / 2) * Math.cos(gun.angle + gun.body.facing);
-                        let gy = gun.offset * Math.sin(gun.direction + gun.angle + gun.body.facing) + (1.5 * gun.length - (gun.width * gun.settings.size) / 2) * Math.sin(gun.angle + gun.body.facing);
-                        // get Skills
-                        let sk = gun.bulletStats === "master" ? gun.body.skill : gun.bulletStats;
-                        // put bullet there
-                        gun.fire(gx, gy, sk);
-                    }
+                if (gun.shootOnDeath && gun.body != null) {
+                    gun.spawnBullets();
                 }
             }
 

@@ -104,6 +104,54 @@ function getRainbow(a, b, c = 0.5) {
             .padStart(6, "0")
     );
 }
+let animatedColor = {
+    lesbian: "",
+    gay: "",
+    bi: "",
+    trans: "",
+    blue_red: "",
+    blue_grey: "",
+    grey_blue: "",
+    red_grey: "",
+    grey_red: ""
+};
+function reanimateColors() {
+    let now = Date.now(),
+
+        mathy_6 = Math.floor((now / 200) % 6),
+        mathy_5 = Math.floor((now % 2000) / 400),
+        mathy_3 = Math.floor((now % 2000) * 3 / 2000),
+        blinker = 150 > now % 300,
+
+        lesbian_magenta = "#a50062",
+        lesbian_oredange = "#d62900",
+        lesbian_white = "#ffffff",
+        lesbian_useSecondSet = mathy_5 < 2,
+
+        gay_primary = ["#ff1000", "#ff9000", "#ffd300", "#00e00b", "#226ef6", "#a913cf"][mathy_6],
+        gay_secondary = ["#ff9000", "#ffd300", "#00e00b", "#226ef6", "#a913cf", "#ff1000"][mathy_6],
+
+        bi_pink = "#D70071",
+        bi_purple = "#9C4E97",
+        bi_blue = "#0035AA",
+
+        trans_pink = "#f7a8b8",
+        trans_blue = "#55cdfc",
+        trans_white = "#ffffff";
+
+    animatedColor.lesbian = getRainbow(lesbian_useSecondSet ? lesbian_oredange : lesbian_white, lesbian_useSecondSet ? lesbian_white : lesbian_magenta, (lesbian_useSecondSet ? mathy_5 : mathy_5 - 3) / 2);
+    animatedColor.gay = getRainbow(gay_primary, gay_secondary, (now / 200) % 1);
+    animatedColor.bi = [bi_pink, bi_purple, bi_blue][mathy_3];
+    animatedColor.trans = [trans_blue, trans_pink, trans_white, trans_pink, trans_blue][mathy_5];
+
+    animatedColor.blue_red = blinker ? color.blue : color.red;
+    animatedColor.blue_grey = blinker ? color.blue : color.grey;
+    animatedColor.grey_blue = blinker ? color.grey : color.blue;
+    animatedColor.red_grey = blinker ? color.red : color.grey;
+    animatedColor.grey_red = blinker ? color.grey : color.red;
+
+    console.log(animatedColor);
+}
 function getColor(colorNumber) {
     switch (colorNumber) {
         case 0:
@@ -147,23 +195,25 @@ function getColor(colorNumber) {
         case 19:
             return color.guiblack;
         case 20:
-            return 150 > Date.now() % 300 ? color.blue : color.red;
+            return animatedColor.blue_red;
         case 21:
-            return 150 > Date.now() % 300 ? color.blue : color.grey;
+            return animatedColor.blue_grey;
         case 22:
-            return 150 > Date.now() % 300 ? color.grey : color.blue;
+            return animatedColor.grey_blue;
         case 23:
-            return 150 > Date.now() % 300 ? color.red : color.grey;
+            return animatedColor.red_grey;
         case 24:
-            return 150 > Date.now() % 300 ? color.grey : color.red;
-      case 25:
-        return "#C49608";
-      case 26:
-        return "#EC7B0F";
-      case 27:
-        return "#895918";
-      case 28:
-        return "#13808E";
+            return animatedColor.grey_red;
+        case 25:
+            return "#C49608";
+        case 26:
+            return "#EC7B0F";
+        case 27:
+            return "#895918";
+        case 28:
+            return "#13808E";
+        case 29:
+            return animatedColor.lesbian;
         case 30:
             return "#a913cf";
         case 31:
@@ -177,9 +227,11 @@ function getColor(colorNumber) {
         case 35:
             return "#ffd300";
         case 36:
-            return getRainbow("#ff1000 #ff9000 #ffd300 #00e00b #226ef6 #a913cf".split(" ")[Math.floor((Date.now() / 200) % 6)], "#ff9000 #ffd300 #00e00b #226ef6 #a913cf #ff1000".split(" ")[Math.floor((Date.now() / 200) % 6)], (Date.now() / 200) % 1);
+            return animatedColor.gay;
         case 37:
-            return getRainbow("#ffffff", 2e3 > Date.now() % 4e3 ? "#55cdfc" : "#f7a8b8", 5 * Math.sin(((Date.now() % 2e3) / 2e3) * Math.PI) - 2);
+            return animatedColor.trans;
+        case 38:
+            return animatedColor.bi;
         case 39:
             return "#654321";
         case 40:
@@ -720,21 +772,25 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
     } else if (sides < 0) {
         // Star
         if (config.graphical.pointy) context.lineJoin = "miter";
-        let dip = 1 - 6 / sides / sides;
         sides = -sides;
+        angle += (sides % 1) * Math.PI * 2;
+        sides = Math.floor(sides);
+        let dip = 1 - 6 / (sides ** 2);
         context.moveTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
         for (let i = 0; i < sides; i++) {
-            var theta = ((i + 1) / sides) * 2 * Math.PI;
-            var htheta = ((i + 0.5) / sides) * 2 * Math.PI;
-            var c = {
-                x: centerX + radius * dip * Math.cos(htheta + angle),
-                y: centerY + radius * dip * Math.sin(htheta + angle),
-            };
-            var p = {
-                x: centerX + radius * Math.cos(theta + angle),
-                y: centerY + radius * Math.sin(theta + angle),
-            };
-            context.quadraticCurveTo(c.x, c.y, p.x, p.y);
+            let htheta = ((i + 0.5) / sides) * 2 * Math.PI + angle,
+                theta = ((i + 1) / sides) * 2 * Math.PI + angle,
+                cx = centerX + radius * dip * Math.cos(htheta),
+                cy = centerY + radius * dip * Math.sin(htheta),
+                px = centerX + radius * Math.cos(theta),
+                py = centerY + radius * Math.sin(theta);
+            /*if (curvyTraps) {
+                context.quadraticCurveTo(cx, cy, px, py);
+            } else {
+                context.lineTo(cx, cy);
+                context.lineTo(px, py);
+            }*/
+            context.quadraticCurveTo(cx, cy, px, py);
         }
     } else if (sides === 600) {
         for (let i = 0; i < 6; i++) {
@@ -745,12 +801,12 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
         }
     } else if (sides > 0) {
         // Polygon
+        angle += (sides % 1) * Math.PI * 2;
+        sides = Math.floor(sides);
         for (let i = 0; i < sides; i++) {
-            let theta = (i / sides) * 2 * Math.PI;
-            let x = centerX + radius * Math.cos(theta + angle);
-            let y = centerY + radius * Math.sin(theta + angle);
-            let dx = centerX + radius * Math.cos(theta + angle);
-            let dy = centerY + radius * Math.sin(theta + angle);
+            let theta = (i / sides) * 2 * Math.PI + angle,
+                x = centerX + radius * Math.cos(theta),
+                y = centerY + radius * Math.sin(theta);
             context.lineTo(x, y);
         }
     }
@@ -825,10 +881,11 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
             : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
-        if (t.layer === 0) {
+        if (!t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
-                facing =  source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+                facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            //console.log('instance.name: ', instance.name, '\nfacing: ', facing, '\nrot: ', rot, '\nt.defaultAngle: ', t.defaultAngle, '\nsource.turrets[i].lerpedFacing: ', source.turrets[i].lerpedFacing, '\nturretsObeyRot: ', turretsObeyRot, '\nt.perceptionAngleIndependence: ', t.perceptionAngleIndependence);
             drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
@@ -851,10 +908,11 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
     // Draw turrets abovus
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];
-        if (t.layer === 1) {
+        if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            //console.log('instance.name: ', instance.name, '\nfacing: ', facing, '\nrot: ', rot, '\nt.defaultAngle: ', t.defaultAngle, '\nsource.turrets[i].lerpedFacing: ', source.turrets[i].lerpedFacing, '\nturretsObeyRot: ', turretsObeyRot, '\nt.perceptionAngleIndependence: ', t.perceptionAngleIndependence);
             drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
@@ -1059,22 +1117,16 @@ let tiles = [],
         let { upgrades } = global.mockups[index];
         switch (tier) {
             case 3:
-                return {
-                    width: 1,
-                    height: 1,
-                };
+                return { width: 1, height: 1, };
             case 2:
                 upgrades.forEach((u, i) => measureSize(x, y + 2 + i, i, u));
-                branches.push([
-                    {
-                        x,
-                        y,
-                    },
-                    {
-                        x,
-                        y: y + 1 + upgrades.length,
-                    },
-                ]);
+                branches.push([{
+                    x,
+                    y,
+                }, {
+                    x,
+                    y: y + 1 + upgrades.length,
+                }]);
                 return {
                     width: 1,
                     height: 2 + upgrades.length,
@@ -1513,14 +1565,14 @@ function drawMinimapAndDebug(spacing, alcoveSize) {
     if (!global.showDebug) y += 14 * 3;
     // Text
     if (global.showDebug) {
-        text.debug[5].draw("arras.io", x + len, y - 50 - 5 * 14 - 2, 15, "#B6E57C", "right");
+        text.debug[5].draw("APS++", x + len, y - 50 - 5 * 14 - 2, 15, "#B6E57C", "right");
         text.debug[4].draw("Prediction: " + Math.round(GRAPHDATA) + "ms", x + len, y - 50 - 4 * 14, 10, color.guiwhite, "right");
         text.debug[3].draw(`Bandwidth: ${gui.bandwidth.in} in, ${gui.bandwidth.out} out`, x + len, y - 50 - 3 * 14, 10, color.guiwhite, "right");
         text.debug[2].draw("Update Rate: " + global.metrics.updatetime + "Hz", x + len, y - 50 - 2 * 14, 10, color.guiwhite, "right");
         text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
         text.debug[0].draw(global.metrics.latency + " ms - " + global.serverName, x + len, y - 50, 10, color.guiwhite, "right");
     } else {
-        text.debug[2].draw("arras.io", x + len, y - 50 - 2 * 14 - 2, 15, "#B6E57C", "right");
+        text.debug[2].draw("APS++", x + len, y - 50 - 2 * 14 - 2, 15, "#B6E57C", "right");
         text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
         text.debug[0].draw(global.metrics.latency + " ms : " + global.metrics.updatetime + "Hz", x + len, y - 50, 10, color.guiwhite, "right");
     }
@@ -1800,6 +1852,7 @@ const gameDrawDisconnected = () => {
 // The main function
 function animloop() {
     global.animLoopHandle = window.requestAnimFrame(animloop);
+    reanimateColors();
     global.player.renderv += (global.player.view - global.player.renderv) / 30;
     var ratio = config.graphical.screenshotMode ? 2 : util.getRatio();
     // Set the drawing style

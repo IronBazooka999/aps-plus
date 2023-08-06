@@ -12,9 +12,9 @@ class Canvas {
         this.cv = document.getElementById('gameCanvas');
         this.cv.width = innerWidth;
         this.cv.height = innerHeight;
-        this.cv.addEventListener('mousemove', this.gameInput, false);
         this.cv.addEventListener('keydown', this.keyboardDown, false);
         this.cv.addEventListener('keyup', this.keyboardUp, false);
+        this.cv.addEventListener('mousemove', this.mouseMove, false);
         this.cv.addEventListener("mousedown", this.mouseDown, false);
         this.cv.addEventListener("mouseup", this.mouseUp, false);
         this.cv.parent = self;
@@ -211,15 +211,14 @@ class Canvas {
                 break;
         }
     }
-    // Mouse location (we send target information in the heartbeat)
-    gameInput(mouse) {
+    mouseMove(mouse) {
         global.statHover = global.clickables.hover.check({
             x: mouse.clientX * global.ratio,
             y: mouse.clientY * global.ratio,
         }) === 0;
         if (this.enableSpin) return;
-        this.parent.target.x = (mouse.clientX * global.ratio) - this.width / 2;
-        this.parent.target.y = (mouse.clientY * global.ratio) - this.height / 2;
+        this.parent.target.x = (mouse.clientX * global.ratio) - (this.width / 2);
+        this.parent.target.y = (mouse.clientY * global.ratio) - (this.height / 2);
         if (this.reverseDirection) {
             this.parent.target.x *= -1;
             this.parent.target.y *= -1;

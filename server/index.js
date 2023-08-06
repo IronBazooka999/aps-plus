@@ -446,8 +446,8 @@ let makenpcs = () => {
         if (o.leftoverUpgrades && o.upgrade(ran.irandomRange(0, o.upgrades.length))) o.leftoverUpgrades--;
     }
 
-    // then add new bots
-    if (bots.length < c.BOTS) {
+    // then add new bots if arena is open
+    if (!global.arenaClosed && bots.length < c.BOTS) {
         let o = new Entity(room.randomType("norm")),
             color = 17,
             team = o.id;

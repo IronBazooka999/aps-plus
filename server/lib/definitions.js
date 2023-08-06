@@ -16259,6 +16259,98 @@ exports.crasherGenerator = {
     ],
 };
 
+exports.diamondShape = {
+    PARENT: [exports.basic],
+    LABEL: "Diamond Test Shape",
+    SHAPE: 4.5
+};
+
+exports.rotatedTrap = {
+    PARENT: [exports.basic],
+    LABEL: "Rotated Trap Test Shape",
+    SHAPE: -3.5
+};
+
+exports.mummyHat = {
+    SHAPE: 4.5,
+    COLOR: 10
+};
+exports.mummy = {
+    PARENT: [exports.drone],
+    SHAPE: 4,
+    TURRETS: [{
+        POSITION: [20 * Math.SQRT1_2, 0, 0, 180, 360, 1],
+        TYPE: [exports.mummyHat]
+    }]
+};
+exports.mummifier = {
+    PARENT: [exports.genericTank],
+    LABEL: "Mummifier",
+    DANGER: 6,
+    STAT_NAMES: statnames.drone,
+    BODY: {
+        SPEED: 0.8 * base.SPEED,
+    },
+    SHAPE: 4,
+    MAX_CHILDREN: 10,
+    GUNS: [{
+        POSITION: [5.5, 13, 1.1, 8, 0, 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
+            TYPE: exports.mummy,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro
+        }
+    },{
+        POSITION: [5.5, 13, 1.1, 8, 0, 270, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
+            TYPE: exports.mummy,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro
+        }
+    }],
+    TURRETS: [{
+        POSITION: [20 * Math.SQRT1_2, 0, 0, 180, 360, 1],
+        TYPE: [exports.mummyHat]
+    }]
+};
+
+exports.onlySquare = { SHAPE: 4 };
+exports.colorMan = {
+    PARENT: [exports.genericTank],
+    LABEL: "Testing Animated Colors",
+    SHAPE: 4,
+    COLOR: 36,
+    TURRETS: [{
+        POSITION: [20, -20, -20, 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 20 }]
+    },{
+        POSITION: [20,  0 , -20, 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 21 }]
+    },{
+        POSITION: [20,  20, -20, 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 22 }]
+    },{
+        POSITION: [20, -20,  0 , 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 23 }]
+    },{
+        POSITION: [20,  20,  0 , 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 29 }]
+    },{
+        POSITION: [20,  20,  20, 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 24 }]
+    },{
+        POSITION: [20,  0 ,  20, 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 37 }]
+    },{
+        POSITION: [20,  20,  20, 0, 0, 1],
+        TYPE: [exports.onlySquare, { COLOR: 38 }]
+    }]
+};
+
 // JOKE TANKS
 exports.wifeBeater = {
     PARENT: [exports.genericTank],
@@ -16442,7 +16534,7 @@ for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
