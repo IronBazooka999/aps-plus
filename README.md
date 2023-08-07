@@ -4,7 +4,7 @@
 
 Once you've created a Glitch (https://glitch.com) project using the template, follow these steps:
 
-In the server's `config.json`:
+In the server's `config.js`:
 1. Find the `host` property.
 2. Replace the contents with your glitch project's domain (`servername.glitch.me`), it should be in the top-left corner above "Settings".
 
