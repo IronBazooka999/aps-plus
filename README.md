@@ -1,6 +1,6 @@
 # APS++
 
-## Setting up your server
+## Setting up your server in Glitch
 
 Once you've created a Glitch (https://glitch.com) project using the template, follow these steps:
 
