@@ -17,7 +17,7 @@ Your private server will be at <https://servername.glitch.me> (replace `serverna
 ## Useful Tools
 
 - [Create a custom shape](https://arras.io/ext/custom-shape)
-- [Create a custom tank](https://dogeiscut.github.io/Arras-Tank-Builder)
+- [Create a custom tank](https://github.com/DogeisCut/Arras.io-Entity-Designer-v2)
 - [Create a custom theme](https://codepen.io/road-to-100k/full/GRpvMzb)
 
 ## Discord Servers
