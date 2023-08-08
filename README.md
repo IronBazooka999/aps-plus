@@ -1,8 +1,9 @@
-# APS++
+# Open Source Arras
+### Also known as APS++
 
 ## Setting up your server in Glitch (Not supported)
 
-**Please note that using APS++ on glitch and the original APS project built on Glitch are no longer supported. We are not responsible for issues that manifest if you use this method.**
+**Please note that using this repository on Glitch and the original APS project built on Glitch are no longer supported. We are not responsible for issues that manifest if you use this method.**
 
 Once you've created a Glitch (https://glitch.com) project using the template, follow these steps:
 
@@ -17,7 +18,7 @@ Your private server will be at <https://servername.glitch.me> (replace `serverna
 ## Useful Tools
 
 - [Create a custom shape](https://arras.io/ext/custom-shape)
-- [Create a custom tank](https://dogeiscut.github.io/Arras-Tank-Builder)
+- [Create a custom tank](https://github.com/DogeisCut/Arras.io-Entity-Designer-v2)
 - [Create a custom theme](https://codepen.io/road-to-100k/full/GRpvMzb)
 
 ## Discord Servers
