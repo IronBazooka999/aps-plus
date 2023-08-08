@@ -1,4 +1,4 @@
-# Open Source Arras Project
+# Open Source Arras
 
 ## Setting up your server in Glitch (Not supported)
 
