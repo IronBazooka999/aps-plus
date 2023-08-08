@@ -1,8 +1,9 @@
 # Open Source Arras
+### Also known as APS++
 
 ## Setting up your server in Glitch (Not supported)
 
-**Please note that using OSAP on glitch and the original APS project built on Glitch are no longer supported. We are not responsible for issues that manifest if you use this method.**
+**Please note that using this repository on Glitch and the original APS project built on Glitch are no longer supported. We are not responsible for issues that manifest if you use this method.**
 
 Once you've created a Glitch (https://glitch.com) project using the template, follow these steps:
 
