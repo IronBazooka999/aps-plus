@@ -68,7 +68,7 @@ module.exports = {
     SPACE_PHYSICS: false,
     SPACE_MODE: false,
     MAZE: false,
-    DOMINATOR_LOOP: true,
+    DOMINATOR_LOOP: false,
     secondaryGameMode: "z",
     GROUPS: false,
     TAG: false,

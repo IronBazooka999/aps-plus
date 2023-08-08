@@ -16544,7 +16544,6 @@ exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lanc
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
-    exports.healer.UPGRADES_TIER_0 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic, exports.physician, exports.doctor];
     exports.eggGenerator.UPGRADES_TIER_0 = [exports.basic, exports.squareGenerator, exports.crasherGenerator];
         exports.crasherGenerator.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.alphaPentagonGenerator, exports.eggGenerator];
     exports.bossesMenu.UPGRADES_TIER_0 = [exports.sentries, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.ironclad];
@@ -16618,7 +16617,7 @@ c.SPECIAL_BOSS_SPAWNS
                 exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
                 exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
 
-if (c.SPECIAL_BOSS_SPAWNS) exports.healer.UPGRADES_TIER_2 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic, exports.physician, exports.doctor];
+        exports.healer.UPGRADES_TIER_2 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic, exports.physician, exports.doctor];
 
 // To use the following branches, remove the /* and */ surrounding them.
 
