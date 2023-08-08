@@ -1687,6 +1687,7 @@ exports.developerBullet = {
 };
 exports.healerBullet = {
     PARENT: [exports.bullet],
+    HEALER: true,
     HITS_OWN_TYPE: "normal",
 };
 exports.casing = {
@@ -3465,8 +3466,12 @@ exports.betaTesterMenu = {
 exports.spectator = {
     PARENT: [exports.testbedBase],
     LABEL: "Spectator",
-    INVISIBLE: [0, 0],
+    ALPHA: 0,
     CAN_BE_ON_LEADERBOARD: false,
+    ACCEPTS_SCORE: false,
+    DRAW_HEALTH: false,
+    HITS_OWN_TYPE: "never",
+    ARENA_CLOSER: true,
     SKILL_CAP: [0, 0, 0, 0, 0, 0, 0, 0, 0, 255],
     BODY: {
         DAMAGE: 0,
@@ -16519,6 +16524,7 @@ exports.godbasic = {
 exports.levels = {
     PARENT: [exports.testbedBase],
     LABEL: "Levels",
+    MAX_LEVEL: c.TIER_MULTIPLIER * 14,
     UPGRADES_TIER_0: [exports.developer]
 };
 for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
@@ -16532,12 +16538,13 @@ for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
 }
 
 // TOKEN "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = [exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
+exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
         exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
+    exports.healer.UPGRADES_TIER_0 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic, exports.physician, exports.doctor];
     exports.eggGenerator.UPGRADES_TIER_0 = [exports.basic, exports.squareGenerator, exports.crasherGenerator];
         exports.crasherGenerator.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.alphaPentagonGenerator, exports.eggGenerator];
     exports.bossesMenu.UPGRADES_TIER_0 = [exports.sentries, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.ironclad];
@@ -16563,7 +16570,9 @@ exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtecto
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS
-exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
+c.SPECIAL_BOSS_SPAWNS
+    ? exports.basic.UPGRADES_TIER_1 = [exports.healer, exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper]
+    : exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
         exports.basic.UPGRADES_TIER_2 = [exports.smasher];
                 exports.basic.UPGRADES_TIER_3 = [exports.single];
                 exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine];
@@ -16608,6 +16617,8 @@ exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGu
                 exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror];
                 exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
                 exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
+
+if (c.SPECIAL_BOSS_SPAWNS) exports.healer.UPGRADES_TIER_2 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic, exports.physician, exports.doctor];
 
 // To use the following branches, remove the /* and */ surrounding them.
 

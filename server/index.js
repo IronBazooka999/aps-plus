@@ -98,7 +98,7 @@ function collide(collision) {
             (other.type === "crasher" && instance.type === "food"):
             firmcollide(instance, other);
             break;
-        case instance.team !== other.team:
+        case instance.team !== other.team || instance.team === other.team:
             advancedcollide(instance, other, true, true);
             break;
         case instance.settings.hitsOwnType == "never" ||
@@ -345,7 +345,8 @@ let spawnBosses = (census) => {
             setTimeout(sockets.broadcast, 2500, selection.message);
         }
         setTimeout(() => {
-            const names = ran.chooseBossName(selection.nameType, amount);
+            let names = ran.chooseBossName(selection.nameType, amount);
+            names = "string" == typeof names ? [names] : names;
             sockets.broadcast(amount > 1 ? util.listify(names) + " have arrived!" : names[0] + " has arrived!");
             names.forEach((name, i) => {
                 let spot,

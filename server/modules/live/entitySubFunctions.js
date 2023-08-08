@@ -35,6 +35,7 @@ class Skill {
         // Just skill stuff.
         this.raw = inital;
         this.caps = [];
+        this.skillCapAmount = c.SKILL_CAP;
         this.setCaps([ c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL ]);
         this.name = [
             "Reload",
@@ -128,7 +129,7 @@ class Skill {
         this.update();
     }
     maintain() {
-        if (this.level < c.SKILL_CAP) {
+        if (this.level < this.skillCapAmount) {
             if (this.score - this.deduction >= this.levelScore) {
                 this.deduction += this.levelScore;
                 this.level += 1;

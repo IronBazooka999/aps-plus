@@ -364,10 +364,12 @@ function incoming(message, socket) {
             // cheatingbois
             if (player.body == null) break;
             if (player.body.underControl) return;
-            if (player.body.skill.level < c.SKILL_CHEAT_CAP) {
-                player.body.skill.score += player.body.skill.levelScore;
-                player.body.skill.maintain();
-                player.body.refreshBodyAttributes();
+            if (player.body.skill.level < (socket.permissions && socket.permissions.class
+                ? 1000
+                : c.SKILL_CHEAT_CAP)) {
+                    player.body.skill.score += player.body.skill.levelScore;
+                    player.body.skill.maintain();
+                    player.body.refreshBodyAttributes();
             }
             break;
         case "0":
@@ -838,6 +840,7 @@ const spawn = (socket, name) => {
         util.remove(disconnections, disconnections.indexOf(recover));
         clearTimeout(recover.timeout);
         body = recover.body;
+        body.reset(false);
         body.become(player);
         player.team = -body.team;
     } else {

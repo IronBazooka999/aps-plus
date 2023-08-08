@@ -650,6 +650,7 @@ class Entity extends EventEmitter {
             };
         })();
         this.autoOverride = false;
+        this.healer = false;
         this.controllers = [];
         this.blend = {
             color: "#FFFFFF",
@@ -844,6 +845,7 @@ class Entity extends EventEmitter {
         if (set.AUTOSPIN_MULTIPLIER != null) this.autospinBoost = set.AUTOSPIN_MULTIPLIER;
         if (set.BROADCAST_MESSAGE != null) this.settings.broadcastMessage = set.BROADCAST_MESSAGE === "" ? undefined : set.BROADCAST_MESSAGE;
         if (set.DEFEAT_MESSAGE) this.settings.defeatMessage = true;
+        if (set.HEALER) this.healer = true;
         if (set.DAMAGE_CLASS != null) this.settings.damageClass = set.DAMAGE_CLASS;
         if (set.BUFF_VS_FOOD != null) this.settings.buffVsFood = set.BUFF_VS_FOOD;
         if (set.CAN_BE_ON_LEADERBOARD != null) this.settings.leaderboardable = set.CAN_BE_ON_LEADERBOARD;
@@ -855,12 +857,20 @@ class Entity extends EventEmitter {
         if (set.INVISIBLE != null) this.invisible = set.INVISIBLE;
         if (set.DANGER != null) this.dangerValue = set.DANGER;
         if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
+        if (set.MAX_LEVEL != null) this.skill.skillCapAmount = set.MAX_LEVEL;
         if (set.VARIES_IN_SIZE != null) {
             this.settings.variesInSize = set.VARIES_IN_SIZE;
             this.squiggle = this.settings.variesInSize ? ran.randomRange(0.8, 1.2) : 1;
         }
-        if (set.RESET_UPGRADES) this.upgrades = [];
-        if (set.ARENA_CLOSER != null) this.ac = set.ARENA_CLOSER;
+        if (set.RESET_UPGRADES) {
+            this.upgrades = [];
+            this.skill.reset();
+            this.reset();
+        }
+        if (set.ARENA_CLOSER != null) {
+            this.isArenaCloser = set.ARENA_CLOSER;
+            this.ac = set.ARENA_CLOSER;
+        }
         for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
             let tierProp = 'UPGRADES_TIER_' + i;
             if (set[tierProp] != null) {
@@ -885,7 +895,7 @@ class Entity extends EventEmitter {
             }
             this.skill.reset();
             while (
-                this.skill.level < c.SKILL_CHEAT_CAP &&
+                this.skill.level < this.skill.skillCapAmount &&
                 this.skill.level < set.LEVEL
             ) {
                 this.skill.score += this.skill.levelScore;
@@ -1211,6 +1221,10 @@ class Entity extends EventEmitter {
         }
         this.accel.x += engine.x * this.control.power;
         this.accel.y += engine.y * this.control.power;
+    }
+    reset(_con = true) {
+        this.controllers = this.controllers.filter(con => (con instanceof ioTypes.listenToPlayer) * _con);
+        if (this.controllers.length > 1 && _con) this.controllers = this.controllers[0];
     }
     face() {
         let t = this.control.target,

@@ -34,7 +34,6 @@ function closeArena() {
         });
         o.color = 3;
         o.team = -100;
-        o.isArenaCloser = true;
         o.name = "Arena Closer";
     }
     let ticks = 0;
