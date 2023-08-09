@@ -1,6 +1,15 @@
 # Open Source Arras
 ### Also known as APS++
 
+## Quick setup guide
+1. Install [node.js](https://nodejs.org/en) on your host machine
+2. Install [ws](https://www.npmjs.com/package/ws) after node.js is installed
+3. [Download the repository](https://github.com/Taureon/aps-plus-plus/archive/refs/heads/main.zip)
+4. Unzip the download
+5. Open run.bat
+6. Go to localhost:3000 in your favourite web browser while the command prompt is still open
+7. Play the game
+
 ## Setting up your server in Glitch (Not supported)
 
 **Please note that using this repository on Glitch and the original APS project built on Glitch are no longer supported. We are not responsible for issues that manifest if you use this method.**
