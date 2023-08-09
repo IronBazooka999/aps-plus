@@ -44,9 +44,10 @@ module.exports = {
         if (level < 2) return 0;
         if (level <= 40) return 1;
         if (level <= 45 && level & 1 == 1) return 1;
-        if (level % 3 == 1 && level < (90 - 42) * 3 + 42) return 1;
+        if (level % 3 == 1) return 1;
         return 0;
     },
+    SHINY_SCALE: 0,
     MAX_SKILL: 9,
     SOFT_MAX_SKILL: 0.59,
     MAX_UPGRADE_TIER: 9,

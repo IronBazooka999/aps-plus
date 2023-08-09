@@ -49,9 +49,11 @@ function collide(collision) {
         }
         return 0;
     }
-    if (!instance.activation.check() && !other.activation.check()) {
-        return 0;
-    }
+    if (
+        (!instance.activation.check() && !other.activation.check()) ||
+        instance.label == "Spectator" ||
+        other.label == "Spectator"
+    ) return 0;
     switch (true) {
         case instance.type === "wall" || other.type === "wall":
             if (instance.type === "wall" && other.type === "wall") return;
@@ -78,15 +80,15 @@ function collide(collision) {
             (instance.settings.hitsOwnType === "pushOnlyTeam" ||
                 other.settings.hitsOwnType === "pushOnlyTeam"):
             {
-                // Dominator / Mothership collisions
-                if (instance.settings.hitsOwnType === other.settings.hitsOwnType)
-                    return;
                 let pusher =
                     instance.settings.hitsOwnType === "pushOnlyTeam" ? instance : other;
                 let entity =
                     instance.settings.hitsOwnType === "pushOnlyTeam" ? other : instance;
-                if (entity.type !== "tank" || entity.settings.hitsOwnType === "never")
-                    return;
+                // Dominator / Mothership collisions
+                if (
+                    instance.settings.hitsOwnType === other.settings.hitsOwnType ||
+                    entity.settings.hitsOwnType === "never"
+                ) return;
                 let a =
                     1 +
                     10 /
@@ -397,7 +399,7 @@ let spawnCrasher = (census) => {
 };
 
 // Make base protectors if needed.
-for (let team = 1; room.TEAMS + 1; team++) {
+for (let team = 1; team < c.TEAMS + 1; team++) {
     room["bap" + team].forEach((loc) => {
         let o = new Entity(loc);
         o.define(Class.baseProtector);
@@ -513,8 +515,9 @@ if (c.SPACE_MODE) {
 
 class FoodType {
     constructor(groupName, types, chances, chance, isNestFood = false) {
+        let scale = 0;
         if (chances[0] === "scale") {
-            const scale = chances[1];
+            scale = chances[1];
             chances = [];
             for (let i = types.length; i > 0; i--) {
                 chances.push(i ** scale);
@@ -526,7 +529,7 @@ class FoodType {
         }
         this.types = types;
         this.chances = chances;
-        this.chance = chance;
+        this.chance = chance * (scale > 4 && c.SHINY_SCALE != 0 ? c.SHINY_SCALE * 20 : 1); // 20 = 2000 / 100
         this.isNestFood = isNestFood;
     }
     choose() {
@@ -544,22 +547,23 @@ const foodTypes = [
     ),
     new FoodType("Legendary Food",
         [Class.jewel, Class.legendarySquare, Class.legendaryTriangle, Class.legendaryPentagon, Class.legendaryBetaPentagon, Class.legendaryAlphaPentagon],
-        ["scale", 6], 0.02
+        ["scale", 6], 0.1
     ),
     new FoodType("Shadow Food",
-        [Class.egg, Class.shadowSquare, Class.shadowTriangle, Class.shadowPentagon, Class.shadowBetaPentagon, Class.shadowAlphaPentagon],
+        [Class.shadowSquare, Class.shadowTriangle, Class.shadowPentagon, Class.shadowBetaPentagon, Class.shadowAlphaPentagon],
         ["scale", 7], 0.005
     ),
     new FoodType("Rainbow Food",
-        [Class.egg, Class.rainbowSquare, Class.rainbowTriangle, Class.rainbowPentagon, Class.rainbowBetaPentagon, Class.rainbowAlphaPentagon],
+        [Class.rainbowSquare, Class.rainbowTriangle, Class.rainbowPentagon, Class.rainbowBetaPentagon, Class.rainbowAlphaPentagon],
         ["scale", 8], 0.001
     ),
-    new FoodType("Trans Food",
-        [Class.egg],
-        ["scale", 9], 0.0005
-    ),
+    // Commented out because stats aren't done yet.
+    // new FoodType("Trans Food",
+    //     [Class.egg],
+    //     ["scale", 9], 0.0005
+    // ),
     new FoodType("Extradimensional Food",
-        [Class.egg, Class.cube, Class.dodecahedron, Class.icosahedron],
+        [Class.cube, Class.dodecahedron, Class.icosahedron],
         ["scale", 10], 0.0001
     ),
     new FoodType("Nest Food", // Commented out because stats aren't done yet.
