@@ -64,6 +64,9 @@ class Canvas {
             case global.KEY_FUCK_YOU:
                 this.parent.socket.talk('0');
                 break;
+            case global.KEY_BECOME:
+                this.parent.socket.talk('H');
+                break;
             case global.KEY_MAX_STAT:
                 global.statMaxing = true;
                 break;

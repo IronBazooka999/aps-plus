@@ -93,6 +93,43 @@ class io_moveInCircles extends IO {
         }
     }
 }
+class io_listenToPlayerStatic extends IO {
+    constructor(b, opts = {}) {
+        super(b);
+        if ("object" != typeof opts.player) throw new Error('Required IO Option "player" is not an object');
+        this.player = opts.player;
+        this.acceptsFromTop = false;
+    }
+    // THE PLAYER MUST HAVE A VALID COMMAND AND TARGET OBJECT
+    think() {
+        let fire = this.player.command.autofire || this.player.command.lmb,
+            alt = this.player.command.autoalt || this.player.command.rmb,
+            target = {
+                x: this.player.target.x,
+                y: this.player.target.y,
+            };
+        this.body.facingLocked = this.player.command.spinlock;
+        if (this.player.command.autospin) {
+            let kk = Math.atan2(this.body.control.target.y, this.body.control.target.x) + (this.player.command.rmb ? 0.02 * -1 : 0.02);
+            if (this.body.autospinBoost) {
+                let thing = (0.02 * (this.body.autospinBoost * ((this.body.skill.spd / 4) + 0.5)));
+                if (this.player.command.lmb) thing = thing * 1.5;
+                if (this.player.command.rmb) thing = thing * -1;
+                kk += thing;
+            }
+            target = {
+                x: 100 * Math.cos(kk),
+                y: 100 * Math.sin(kk),
+            };
+        }
+        return {
+            target,
+            fire,
+            alt,
+            main: fire || this.player.command.autospin
+        };
+    }
+}
 class io_listenToPlayer extends IO {
     constructor(b, opts = {}) {
         super(b);
@@ -661,6 +698,7 @@ let ioTypes = {
     zoom: io_zoom,
     doNothing: io_doNothing,
     listenToPlayer: io_listenToPlayer,
+    listenToPlayerStatic: io_listenToPlayerStatic,
     alwaysFire: io_alwaysFire,
     mapAltToFire: io_mapAltToFire,
     mapFireToAlt: io_mapFireToAlt,

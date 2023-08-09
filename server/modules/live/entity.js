@@ -773,12 +773,12 @@ class Entity extends EventEmitter {
         if (!player.body.isMothership)
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
-                new ioTypes.spin(o, { onlyWhenIdle: true }),
+                new ioTypes.spin(player.body, { onlyWhenIdle: true }),
             ];
         else if (player.body.isMothership)
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
-                new ioTypes.botMovement(player.body),
+                new ioTypes.wanderAroundMap(player.body, { immitatePlayerMovement: false, lookAtGoal: true }),
                 new ioTypes.mapTargetToGoal(player.body),
             ];
         player.body.name = player.body.label;

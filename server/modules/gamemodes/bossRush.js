@@ -32,7 +32,7 @@ class BossRush {
         o.color = 10
         o.team = -1
         o.controllers.push(new ioTypes.nearestDifferentMaster(o))
-        o.controllers.push(new ioTypes.botMovement(o))
+        o.controllers.push(new ioTypes.wanderAroundMap(0, { immitatePlayerMovement: false, lookAtGoal: true }))
         sockets.broadcast(o.name + ' has arrived and joined your team!')
     }
 
@@ -87,7 +87,7 @@ class BossRush {
         return n;
     }
 
-        //yell at everyone
+    //yell at everyone
     spawnWave(waveId) {
         sockets.broadcast(`Wave ${waveId + 1} has arrived!`);
 
