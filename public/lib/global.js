@@ -110,6 +110,7 @@ const global = {
     yoffset: -0,
     gameStart: false,
     disconnected: false,
+    autoSpin: false,
     died: false,
     kicked: false,
     continuity: false,

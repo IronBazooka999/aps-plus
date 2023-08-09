@@ -77,6 +77,7 @@ class Canvas {
         if (!event.repeat) {
             switch (event.keyCode) {
                 case global.KEY_AUTO_SPIN:
+                    global.autoSpin = !global.autoSpin;
                     this.parent.socket.talk('t', 0);
                     break;
                 case global.KEY_AUTO_FIRE:
