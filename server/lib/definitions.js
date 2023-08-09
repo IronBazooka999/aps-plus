@@ -16530,11 +16530,11 @@ exports.godbasic = {
 exports.levels = {
     PARENT: [exports.testbedBase],
     LABEL: "Levels",
-    MAX_LEVEL: c.TIER_MULTIPLIER * 14,
+    MAX_LEVEL: (90 - 42) * 3 + 42,
     UPGRADES_TIER_0: [exports.developer]
 };
-for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
-    let LEVEL = i * c.TIER_MULTIPLIER;
+for (let i = 0; i < exports.levels.MAX_LEVEL; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrelevant
+    let LEVEL = i;
     exports["level" + LEVEL] = {
         PARENT: [exports.levels],
         LEVEL,
@@ -16543,8 +16543,31 @@ for (let i = 0; i < 15; i++) { //c.MAX_UPGRADE_TIER is irrelevant
     exports.levels.UPGRADES_TIER_0.push(exports["level" + LEVEL]);
 }
 
+exports.teams = {
+    PARENT: [exports.testbedBase],
+    LABEL: "Teams",
+    UPGRADES_TIER_0: [exports.developer]
+};
+for (let i = 1; i <= c.TEAMS; i++) { //c.MAX_UPGRADE_TIER is irrelevant
+    let TEAM = i;
+    exports["Team" + TEAM] = {
+        PARENT: [exports.teams],
+        TEAM: -TEAM,
+        COLOR: [10, 11, 12, 15, 25, 26, 27, 28][TEAM - 1],
+        LABEL: "Team " + TEAM
+    };
+    exports.teams.UPGRADES_TIER_0.push(exports["Team" + TEAM]);
+}
+exports.Team100 = {
+    PARENT: [exports.teams],
+    TEAM: -100,
+    COLOR: 3,
+    LABEL: "Boss Team"
+};
+exports.teams.UPGRADES_TIER_0.push(exports.Team100);
+
 // TOKEN "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels];
+exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
         exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];

@@ -51,6 +51,7 @@ const global = {
     // Keys and other mathematical constants
     KEY_ESC: 27,
     KEY_ENTER: 13,
+    KEY_BECOME: 72,
     KEY_CHAT: 13,
     KEY_FIREFOOD: 119,
     KEY_SPLIT: 32,
@@ -109,6 +110,7 @@ const global = {
     yoffset: -0,
     gameStart: false,
     disconnected: false,
+    autoSpin: false,
     died: false,
     kicked: false,
     continuity: false,

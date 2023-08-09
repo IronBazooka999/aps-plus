@@ -66,13 +66,13 @@ global.rotatePoint = function rotatePoint({
 const requires = [
     "./setup/room.js", // These are the basic room functions, set up by config.json
     "./physics/relative.js", // Some basic physics functions that are used across the game.
+    "./network/sockets.js", // The networking that helps players interact with the game.
+    "./network/webServer.js", // The networking that actually hosts the server.
     "./live/entitySubFunctions.js", // Skill, HealthType and other functions related to entities are here.
     "./live/controllers.js", // The AI of the game.
     "./live/entity.js", // The actual Entity constructor.
     "./setup/mockups.js", // This file loads the mockups.
     "./physics/collisionFunctions.js", // The actual collision functions that make the game work.
-    "./network/sockets.js", // The networking that helps players interact with the game.
-    "./network/webServer.js", // The networking that actually hosts the server.
     "./debug/logs.js", // The logging pattern for the game. Useful for pinpointing lag.
     "./debug/speedLoop.js", // The speed check loop lmao.
     "./gamemodes/bossRush.js", // Boss Rush

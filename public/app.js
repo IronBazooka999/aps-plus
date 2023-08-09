@@ -149,8 +149,6 @@ function reanimateColors() {
     animatedColor.grey_blue = blinker ? color.grey : color.blue;
     animatedColor.red_grey = blinker ? color.red : color.grey;
     animatedColor.grey_red = blinker ? color.grey : color.red;
-
-    console.log(animatedColor);
 }
 function getColor(colorNumber) {
     switch (colorNumber) {
@@ -266,22 +264,22 @@ function getZoneColor(cell, real) {
         case "bap4":
         case "dom4":
             return color.magenta;
-      case "bas5":
-      case "bap5":
-      case "dom5":
-        return "#C49608";
-      case "bas6":
-      case "bap6":
-      case "dom6":
-        return "#EC7B0F";
-      case "bas7":
-      case "bap7":
-      case "dom7":
-        return "#895918";
-      case "bas8":
-      case "bap8":
-      case "dom8":
-        return "#13808E";
+        case "bas5":
+        case "bap5":
+        case "dom5":
+            return "#C49608";
+        case "bas6":
+        case "bap6":
+        case "dom6":
+            return "#EC7B0F";
+        case "bas7":
+        case "bap7":
+        case "dom7":
+            return "#895918";
+        case "bas8":
+        case "bap8":
+        case "dom8":
+            return "#13808E";
         case "port":
             return color.guiblack;
         case "nest":
@@ -1244,7 +1242,7 @@ function drawEntities(px, py, ratio) {
         }
         instance.render.x = util.lerp(instance.render.x, Math.round(instance.x + instance.vx), 0.1, true);
         instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
-        instance.render.f = instance.id === gui.playerid && !instance.twiggle && !global.died ? Math.atan2(global.target.y, global.target.x) : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
+        instance.render.f = instance.id === gui.playerid && !global.autoSpin && !instance.twiggle && !global.died ? Math.atan2(global.target.y, global.target.x) : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
         let x = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.x - px,
             y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py;
         x += global.screenWidth / 2;

@@ -375,9 +375,12 @@ function reflectCollide(wall, bounce) {
     }
 
     if (intersected) {
-        bounce.collisionArray.push(wall);
-        if (bounce.type !== 'tank' && bounce.type !== 'miniboss')
+        if (bounce.type !== 'tank' && bounce.type !== 'miniboss') {
             bounce.kill();
+        } else {
+            bounce.collisionArray.push(wall);
+        }
+            
     }
 };
 

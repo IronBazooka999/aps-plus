@@ -554,7 +554,7 @@ let amNaN = me => [
 ].map((entry) => !!entry).some((entry) => entry);
 function antiNaN(me) {
     let nansInARow = 0;
-    let data = { x: 0, y: 0, vx: 0, vy: 0, ax: 0, ay: 0 };
+    let data = { x: 1, y: 1, vx: 0, vy: 0, ax: 0, ay: 0 };
 
     return function() {
         if (amNaN(me)) {
@@ -763,7 +763,7 @@ class Entity extends EventEmitter {
     become(player, dom = false) {
         this.addController(
             dom
-                ? new ioTypes.listenToPlayerStatic(this, { player })
+                ? new ioTypes.listenToPlayer(this, { player, static: true })
                 : new ioTypes.listenToPlayer(this, { player })
         );
         this.sendMessage = (content, color) => player.socket.talk("m", content);
@@ -773,12 +773,12 @@ class Entity extends EventEmitter {
         if (!player.body.isMothership)
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
-                new ioTypes.spin(o, { onlyWhenIdle: true }),
+                new ioTypes.spin(player.body, { onlyWhenIdle: true }),
             ];
         else if (player.body.isMothership)
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
-                new ioTypes.botMovement(player.body),
+                new ioTypes.wanderAroundMap(player.body, { immitatePlayerMovement: false, lookAtGoal: true }),
                 new ioTypes.mapTargetToGoal(player.body),
             ];
         player.body.name = player.body.label;
@@ -858,12 +858,22 @@ class Entity extends EventEmitter {
         if (set.DANGER != null) this.dangerValue = set.DANGER;
         if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
         if (set.MAX_LEVEL != null) this.skill.skillCapAmount = set.MAX_LEVEL;
+        if (set.TEAM != null) {
+            this.team = set.TEAM;
+            const _entity = this;
+            loopThrough(sockets.players, function (player) {
+                if (player.body.id == _entity.id) player.team = -_entity.team;
+            });
+        }
         if (set.VARIES_IN_SIZE != null) {
             this.settings.variesInSize = set.VARIES_IN_SIZE;
             this.squiggle = this.settings.variesInSize ? ran.randomRange(0.8, 1.2) : 1;
         }
         if (set.RESET_UPGRADES) {
             this.upgrades = [];
+            this.isArenaCloser = false;
+            this.ac = false;
+            this.alpha = 1;
             this.skill.reset();
             this.reset();
         }
@@ -1459,7 +1469,7 @@ class Entity extends EventEmitter {
         if (room.gameMode === "tdm" && this.type !== "food" && this.master.label !== "Arena Closer") {
             let loc = this;
             let inEnemyBase = false;
-            for (let i = 1; i < room.TEAMS + 1; i++) {
+            for (let i = 1; i < c.TEAMS + 1; i++) {
                 if (room["bas" + i].length) {
                     if (this.team !== -i && room.isIn("bas" + i, loc)) inEnemyBase = true;
                 }

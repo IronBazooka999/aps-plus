@@ -94,10 +94,11 @@ class io_moveInCircles extends IO {
     }
 }
 class io_listenToPlayer extends IO {
-    constructor(b, opts = {}) {
+    constructor(b, opts = { static: false }) {
         super(b);
         if ("object" != typeof opts.player) throw new Error('Required IO Option "player" is not an object');
         this.player = opts.player;
+        this.static = opts.static;
         this.acceptsFromTop = false;
     }
     // THE PLAYER MUST HAVE A VALID COMMAND AND TARGET OBJECT
@@ -132,7 +133,7 @@ class io_listenToPlayer extends IO {
             target,
             fire,
             alt,
-            goal: {
+            goal: this.static ? null : {
                 x: this.body.x + this.player.command.right - this.player.command.left,
                 y: this.body.y + this.player.command.down - this.player.command.up,
             },

@@ -111,7 +111,10 @@ var moveCompensation = {
 const Integrate = class {
     constructor(dataLength) {
         this.dataLength = dataLength;
-        this.elements = {}
+        this.elements = {};
+    }
+    reset() {
+        this.elements = {};
     }
     update(delta, index = 0) {
         let deletedLength = delta[index++]
@@ -606,6 +609,7 @@ const convert = {
     broadcast: () => {
         let all = get.all();
         let by = minimapAllInt.update(all);
+        minimapTeamInt.reset();
         by = minimapTeamInt.update(all, by);
         by = leaderboardInt.update(all, by);
         get.take(by);
