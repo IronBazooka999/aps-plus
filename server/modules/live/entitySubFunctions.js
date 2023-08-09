@@ -129,11 +129,11 @@ class Skill {
         this.update();
     }
     maintain() {
-        if (this.level < this.skillCapAmount) {
-            if (this.score - this.deduction >= this.levelScore) {
-                this.deduction += this.levelScore;
-                this.level += 1;
-                this.points += this.levelPoints;
+        if (this.score - this.deduction >= this.levelScore) {
+            this.deduction += this.levelScore;
+            this.level += 1;
+            this.points += this.levelPoints;
+            if (this.level < c.SKILL_CAP) {
                 if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER) {
                     this.canUpgrade = true;
                 }
@@ -328,10 +328,21 @@ var bringToLife = my => {
     if (my.skill.maintain()) my.refreshBodyAttributes();
 };
 
-const lazyRealSizes = [1, 1, 1];
+let lazyRealSizes = [1, 1, 1];
 for (var i = 3; i < 17; i++) {
     // We say that the real size of a 0-gon, 1-gon, 2-gon is one, then push the real sizes of triangles, squares, etc...
-    lazyRealSizes.push(Math.sqrt(((2 * Math.PI) / i) * (1 / Math.sin((2 * Math.PI) / i))));
+    let circum = (2 * Math.PI) / i;
+    lazyRealSizes.push(Math.sqrt(circum * (1 / Math.sin(circum))));
 }
+
+lazyRealSizes = new Proxy(lazyRealSizes, {
+    get: function(arr, i) {
+        if (!(i in arr) && !isNaN(i)) {
+            let circum = (2 * Math.PI) / i;
+            arr[i] = Math.sqrt(circum * (1 / Math.sin(circum)));
+        }
+        return arr[i];
+    }
+});
 
 module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, bringToLife, lazyRealSizes };

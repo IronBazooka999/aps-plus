@@ -20,6 +20,7 @@ server = require('http').createServer((req, res) => {
             resStr = JSON.stringify({
                 gameMode: c.gameModeName,
                 players: views.length,
+                //TODO: figure out what 'code' does on the client, if it does nothing, get rid of this and secondaryGameMode props in gamemode configs
                 code: [c.MODE, c.MODE === "ffa" ? "f" : c.TEAMS, c.secondaryGameMode].join("-"),
                 ip: c.host
             });

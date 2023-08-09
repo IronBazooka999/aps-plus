@@ -894,10 +894,7 @@ class Entity extends EventEmitter {
                 this.skill.reset();
             }
             this.skill.reset();
-            while (
-                this.skill.level < this.skill.skillCapAmount &&
-                this.skill.level < set.LEVEL
-            ) {
+            while (this.skill.level < set.LEVEL) {
                 this.skill.score += this.skill.levelScore;
                 this.skill.maintain();
             }
@@ -974,14 +971,14 @@ class Entity extends EventEmitter {
         if (this.settings.reloadToAcceleration) this.acceleration *= this.skill.acl;
         this.topSpeed = (c.runSpeed * this.SPEED * this.skill.mob) / speedReduce;
         if (this.settings.reloadToAcceleration) this.topSpeed /= Math.sqrt(this.skill.acl);
-        this.health.set(((this.settings.healthWithLevel ? 2 * this.skill.level : 0) + this.HEALTH) * this.skill.hlt);
+        this.health.set(((this.settings.healthWithLevel ? 2 * this.level : 0) + this.HEALTH) * this.skill.hlt);
         this.health.resist = 1 - 1 / Math.max(1, this.RESIST + this.skill.brst);
-        this.shield.set(((this.settings.healthWithLevel ? 0.6 * this.skill.level : 0) + this.SHIELD) * this.skill.shi, Math.max(0, ((this.settings.healthWithLevel ? 0.006 * this.skill.level : 0) + 1) * this.REGEN * this.skill.rgn));
+        this.shield.set(((this.settings.healthWithLevel ? 0.6 * this.level : 0) + this.SHIELD) * this.skill.shi, Math.max(0, ((this.settings.healthWithLevel ? 0.006 * this.level : 0) + 1) * this.REGEN * this.skill.rgn));
         this.damage = this.DAMAGE * this.skill.atk;
         this.penetration = this.PENETRATION + 1.5 * (this.skill.brst + 0.8 * (this.skill.atk - 1));
         if (!this.settings.dieAtRange || !this.range) this.range = this.RANGE;
-        this.fov = this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.skill.level);
-        this.density = (1 + 0.08 * this.skill.level) * this.DENSITY;
+        this.fov = this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.level);
+        this.density = (1 + 0.08 * this.level) * this.DENSITY;
         this.stealth = this.STEALTH;
         this.pushability = this.PUSHABILITY;
     }
@@ -1010,14 +1007,17 @@ class Entity extends EventEmitter {
         this.motionType = "bound";
         this.move();
     }
+    get level() {
+        return Math.min(c.SKILL_CAP, this.skill.level);
+    }
     get size() {
-        return this.bond == null ? (this.coreSize || this.SIZE) * (1 + this.skill.level / 45) : this.bond.size * this.bound.size;
+        return this.bond == null ? (this.coreSize || this.SIZE) * (1 + this.level / 45) : this.bond.size * this.bound.size;
     }
     get mass() {
-        return this.density * (this.size * this.size + 1);
+        return this.density * (this.size ** 2 + 1);
     }
     get realSize() {
-        return this.size * (Math.abs(this.shape) > lazyRealSizes.length ? 1 : lazyRealSizes[Math.floor(Math.abs(this.shape))]);
+        return this.size * lazyRealSizes[Math.floor(Math.abs(this.shape))];
     }
     get m_x() {
         return (this.velocity.x + this.accel.x) / roomSpeed;
@@ -1069,7 +1069,7 @@ class Entity extends EventEmitter {
     upgrade(number) {
         if (
             number < this.upgrades.length &&
-            this.skill.level >= this.upgrades[number].level
+            this.level >= this.upgrades[number].level
         ) {
             let upgrade = this.upgrades[number].class;
             this.upgrades = [];

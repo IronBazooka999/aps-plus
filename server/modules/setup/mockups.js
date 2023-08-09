@@ -52,7 +52,7 @@ function getDimensions(entities) {
         y: 0
     }, rot = 0) {
         let s = Math.floor(Math.abs(model.shape));
-        let z = (Math.abs(s) > lazyRealSizes.length) ? 1 : lazyRealSizes[Math.abs(s)];
+        let z = lazyRealSizes[Math.abs(s)];
         if (z === 1) { // Body (octagon if circle)
             for (let i = 0; i < 2; i += 0.5) {
                 endpoints.push({
@@ -272,10 +272,7 @@ for (let k in Class) {
         if (!Class.hasOwnProperty(k)) continue;
         let type = Class[k];
         // Create a reference entities which we'll then take an image of.
-        let temptank = new Entity({
-            x: 0,
-            y: 0
-        });
+        let temptank = new Entity({ x: 0, y: 0 });
         temptank.define(type);
         temptank.name = type.LABEL; // Rename it (for the upgrades menu).
         // Fetch the mockup.
