@@ -16533,7 +16533,7 @@ exports.levels = {
     LABEL: "Levels",
     UPGRADES_TIER_0: [exports.developer]
 };
-for (let i = 0; i < (90 - 42) * 3 + 42; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrelevant
+for (let i = 0; i < 186; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrelevant
     let LEVEL = i;
     exports["level" + LEVEL] = {
         PARENT: [exports.levels],
