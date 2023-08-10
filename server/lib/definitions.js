@@ -917,6 +917,7 @@ exports.genericTank = {
     SIZE: 12,
     MAX_CHILDREN: 0,
     DAMAGE_EFFECTS: false,
+    IGNORED_BY_AI: false,
     BODY: {
         ACCELERATION: base.ACCEL,
         SPEED: base.SPEED,
@@ -16530,10 +16531,9 @@ exports.godbasic = {
 exports.levels = {
     PARENT: [exports.testbedBase],
     LABEL: "Levels",
-    MAX_LEVEL: (90 - 42) * 3 + 42,
     UPGRADES_TIER_0: [exports.developer]
 };
-for (let i = 0; i < exports.levels.MAX_LEVEL; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrelevant
+for (let i = 0; i < (90 - 42) * 3 + 42; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrelevant
     let LEVEL = i;
     exports["level" + LEVEL] = {
         PARENT: [exports.levels],

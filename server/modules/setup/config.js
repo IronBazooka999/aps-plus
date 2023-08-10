@@ -1,9 +1,19 @@
 let output = require("../../config.js");
 
 const gamemodes = ["tdm", "domination"];
+function clearNest(mode) {
+    for (let y = 0; y < mode.Y_GRID; y++) {
+        for (let x = 0; x < mode.X_GRID; x++) {
+            if (mode.ROOM_SETUP[y][x] == "nest") {
+                mode.ROOM_SETUP[y][x] = "norm";
+            }
+        }
+    }
+}
 
 for (let gamemode of gamemodes) {
-    let mode = require(`./gamemodeconfigs/${gamemode}.js`)
+    let mode = require(`./gamemodeconfigs/${gamemode}.js`);
+    if (mode.CLEAR_NEST) clearNest(output);
     for (let key in mode) {
         if (key === "ROOM_SETUP") {
             for (let y = 0; y < mode.Y_GRID; y++) {
