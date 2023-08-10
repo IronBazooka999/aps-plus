@@ -3,6 +3,7 @@ for (let i = 1; i < c.TEAMS + 1; i++) {
     locsToAvoid.push("bas" + i);
     locsToAvoid.push("bap" + i);
 }
+if (c.DOMINATOR_LOOP) locsToAvoid.push("dom0");
 let activeLocsThatWeCantPlaceIn = 0;
 for (let loc of locsToAvoid) {
     if (room[loc].length) {
@@ -50,6 +51,7 @@ function generateMaze(size) {
     let eroded = 0;
     let toErode = cells * 0.55;
     toErode -= activeLocsThatWeCantPlaceIn * 10;
+    if (toErode < 0) generateMaze(size + 1);
     for (let i = 0; i < toErode; i++) {
         if (eroded >= toErode) {
             console.log("Done!");

@@ -3,7 +3,7 @@ let output = require("../../config.js");
 const gamemodes = ["tdm", "domination"];
 
 for (let gamemode of gamemodes) {
-    let mode = require(`./gamemodeconfigs/${gamemode}.js`)
+    let mode = require(`./gamemodeconfigs/${gamemode}.js`);
     for (let key in mode) {
         if (key === "ROOM_SETUP") {
             for (let y = 0; y < mode.Y_GRID; y++) {

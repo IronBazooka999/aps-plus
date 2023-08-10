@@ -100,7 +100,12 @@ function collide(collision) {
             (other.type === "crasher" && instance.type === "food"):
             firmcollide(instance, other);
             break;
-        case instance.team !== other.team || instance.team === other.team:
+        case instance.team !== other.team ||
+            (instance.team === other.team &&
+            (
+                instance.healer ||
+                other.healer
+            )):
             advancedcollide(instance, other, true, true);
             break;
         case instance.settings.hitsOwnType == "never" ||

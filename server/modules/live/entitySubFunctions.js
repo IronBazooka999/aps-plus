@@ -35,7 +35,6 @@ class Skill {
         // Just skill stuff.
         this.raw = inital;
         this.caps = [];
-        this.skillCapAmount = c.SKILL_CAP;
         this.setCaps([ c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL, c.MAX_SKILL ]);
         this.name = [
             "Reload",

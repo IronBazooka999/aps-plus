@@ -818,7 +818,7 @@ class Entity extends EventEmitter {
             }
             this.addController(toAdd);
         }
-        if (set.IGNORED_BY_AI) this.ignoredByAi = set.IGNORED_BY_AI;
+        if (set.IGNORED_BY_AI != null) this.ignoredByAi = set.IGNORED_BY_AI;
         if (set.MOTION_TYPE != null) this.motionType = set.MOTION_TYPE;
         if (set.FACING_TYPE != null) this.facingType = set.FACING_TYPE;
         if (set.DRAW_HEALTH != null) this.settings.drawHealth = set.DRAW_HEALTH;
@@ -857,7 +857,6 @@ class Entity extends EventEmitter {
         if (set.INVISIBLE != null) this.invisible = set.INVISIBLE;
         if (set.DANGER != null) this.dangerValue = set.DANGER;
         if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
-        if (set.MAX_LEVEL != null) this.skill.skillCapAmount = set.MAX_LEVEL;
         if (set.TEAM != null) {
             this.team = set.TEAM;
             const _entity = this;
@@ -900,9 +899,6 @@ class Entity extends EventEmitter {
             if (this.coreSize == null) this.coreSize = this.SIZE;
         }
         if (set.LEVEL != null) {
-            if (set.LEVEL === -1) {
-                this.skill.reset();
-            }
             this.skill.reset();
             while (this.skill.level < set.LEVEL) {
                 this.skill.score += this.skill.levelScore;
