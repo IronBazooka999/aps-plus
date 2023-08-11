@@ -1632,7 +1632,7 @@ exports.stone = {
 };
 exports.moon = {
     PARENT: [exports.rock],
-    LABEL: "Wall",
+    LABEL: "Moon",
     SIZE: 60,
     SHAPE: 0,
 };

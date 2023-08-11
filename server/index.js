@@ -51,8 +51,8 @@ function collide(collision) {
     }
     if (
         (!instance.activation.check() && !other.activation.check()) ||
-        instance.label == "Spectator" ||
-        other.label == "Spectator"
+        (instance.ac && !instance.alpha) ||
+        (other.ac && !other.alpha)
     ) return 0;
     switch (true) {
         case instance.type === "wall" || other.type === "wall":
@@ -689,38 +689,7 @@ const maintainloop = () => {
 };
 
 // Bring it to life
-// Thnaks to Damocles (Her discord - _damocles)
-if (c.TRAIN) {
-    setInterval(() => {
-        let teams = new Set(entities.filter(r => r.isPlayer || r.isBot).map(r => r.team));
-
-        for (let team of teams) {
-            let train = entities.filter(r => (r.isPlayer || r.isBot) && r.team === team && !r.invuln).sort((a, b) => b.skill.score - a.skill.score);
-
-            for (let [i, player] of train.entries()) {
-                if (i === 0) continue;
-
-                player.velocity.x = util.clamp(train[i - 1].x - player.x, -90, 90) * player.damp * 2;
-                player.velocity.y = util.clamp(train[i - 1].y - player.y, -90, 90) * player.damp * 2;
-            }
-        }
-    }, 33.33);
-}
-if (c.SPACE_MODE) {
-    setInterval(() => {
-        let tanks = entities.filter(r => r.isPlayer || r.isBot);
-
-        for (let entity of tanks) {
-            for (let hole of room.blackHoles) {
-                if (entity.id != hole.id && entity.label != "Spectator") {
-                    entity.velocity.x += util.clamp(hole.x - entity.x, -90, 90) * entity.damp * 0.02;
-                    entity.velocity.y += util.clamp(hole.y - entity.y, -90, 90) * entity.damp * 0.02;
-                }
-            }
-        }
-    }, 33.33);
-}
 setInterval(gameloop, room.cycleSpeed);
 setInterval(maintainloop, 1000);
 setInterval(speedcheckloop, 1000);
-setInterval(gamemodeLoop, 1000);
+setInterval(gamemodeLoop, 33.33);
