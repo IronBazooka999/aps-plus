@@ -793,7 +793,18 @@ class Entity extends EventEmitter {
         player.body = fakeBody;
         player.body.kill();
     }
+    ensureIsClass(str) {
+        if ("string" == typeof set) {
+            if (str in Class) {
+                return Class[str];
+            }
+            throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
+        }
+        return str
+    }
     define(set) {
+        set = this.ensureIsClass(set);
+
         if (set.PARENT != null) {
             for (let i = 0; i < set.PARENT.length; i++) {
                 this.define(set.PARENT[i]);
@@ -884,7 +895,7 @@ class Entity extends EventEmitter {
             let tierProp = 'UPGRADES_TIER_' + i;
             if (set[tierProp] != null) {
                 for (let j = 0; j < set[tierProp].length; j++) {
-                    let e = set[tierProp][j];
+                    let e = this.ensureIsClass(set[tierProp][j]);
                     this.upgrades.push({
                         class: e,
                         level: c.TIER_MULTIPLIER * i,
