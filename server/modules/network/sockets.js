@@ -238,19 +238,20 @@ function incoming(message, socket) {
                 socket.kick("Malformed command packet.");
                 return 1;
             }
-            if (c.SPACE_MODE && player.body) {
-                let spaceOffsetAngle = Math.atan2(
-                    room.width / 2 - player.body.x,
-                    room.height / 2 - player.body.y
-                );
-                target = rotatePoint(
-                    {
-                        x: m[0],
-                        y: m[1],
-                    },
-                    -spaceOffsetAngle
-                );
-            }
+            // Will not work out
+            // if (c.SPACE_MODE && player.body) {
+            //     let spaceOffsetAngle = Math.atan2(
+            //         room.width / 2 - player.body.x,
+            //         room.height / 2 - player.body.y
+            //     );
+            //     target = rotatePoint(
+            //         {
+            //             x: m[0],
+            //             y: m[1],
+            //         },
+            //         -spaceOffsetAngle
+            //     );
+            // }
             // Put the new target in
             player.target = target;
             // Process the commands
@@ -800,7 +801,7 @@ const spawn = (socket, name) => {
                     possiblities.push(i);
                 }
             }*/
-            let team = getTeam(1);
+            let team = c.HUNT ? 1 : getTeam(1);
             // Choose from one of the least ones
             if (player.team == null || (player.team != null && player.team !== team && global.defeatedTeams.includes(-player.team))
             ) {

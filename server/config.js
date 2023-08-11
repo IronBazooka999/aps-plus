@@ -71,6 +71,8 @@ module.exports = {
     SPACE_PHYSICS: false,
     SPACE_MODE: false,
     MAZE: false,
+    TRAIN: false,
+    HUNT: false,
     DOMINATOR_LOOP: false,
     secondaryGameMode: "z",
     GROUPS: false,

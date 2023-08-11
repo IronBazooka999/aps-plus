@@ -870,10 +870,12 @@ class Entity extends EventEmitter {
         if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
         if (set.TEAM != null) {
             this.team = set.TEAM;
-            const _entity = this;
-            loopThrough(sockets.players, function (player) {
-                if (player.body.id == _entity.id) player.team = -_entity.team;
-            });
+            if (!sockets.players.length) {
+                const _entity = this;
+                loopThrough(sockets.players, function (player) {
+                    if (player.body.id == _entity.id) player.team = -_entity.team;
+                });
+            }
         }
         if (set.VARIES_IN_SIZE != null) {
             this.settings.variesInSize = set.VARIES_IN_SIZE;

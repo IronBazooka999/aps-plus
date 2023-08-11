@@ -51,8 +51,8 @@ function collide(collision) {
     }
     if (
         (!instance.activation.check() && !other.activation.check()) ||
-        instance.label == "Spectator" ||
-        other.label == "Spectator"
+        (instance.ac && !instance.alpha) ||
+        (other.ac && !other.alpha)
     ) return 0;
     switch (true) {
         case instance.type === "wall" || other.type === "wall":
@@ -471,6 +471,7 @@ let makenpcs = () => {
                 o.x = loc.x;
                 o.y = loc.y;
             }
+            if (c.HUNT) team = 1;
             color = [10, 11, 12, 15, 25, 26, 27, 28][team - 1];
             team = -team;
         }
@@ -691,4 +692,4 @@ const maintainloop = () => {
 setInterval(gameloop, room.cycleSpeed);
 setInterval(maintainloop, 1000);
 setInterval(speedcheckloop, 1000);
-setInterval(gamemodeLoop, 1000);
+setInterval(gamemodeLoop, 33.33);

@@ -79,6 +79,9 @@ const requires = [
     "./gamemodes/maze.js", // Maze
     "./gamemodes/mothership.js", // The mothership mode
     "./gamemodes/domination.js", // The Domination mode
+    "./gamemodes/manhunt.js", // The Manhunt mode
+    "./gamemodes/trainwars.js", // The Train Wars mode
+    "./gamemodes/moon.js", // The Space mode
     "./gamemodes/gamemodeLoop.js", // The gamemode loop.
     "./gamemodes/groups.js", // Duos/Trios/Squads
     "./gamemodes/tag.js", // Tag
