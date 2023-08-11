@@ -1630,6 +1630,12 @@ exports.stone = {
     SIZE: 32,
     SHAPE: -7,
 };
+exports.moon = {
+    PARENT: [exports.rock],
+    LABEL: "Wall",
+    SIZE: 60,
+    SHAPE: 0,
+};
 exports.gravel = {
     PARENT: [exports.rock],
     LABEL: "Gravel",
@@ -15459,6 +15465,7 @@ exports.baseProtector = {
         HETERO: 0,
     },
     FACING_TYPE: "autospin",
+    HITS_OWN_TYPE: "pushOnlyTeam",
     TURRETS: [
         {
             POSITION: [25, 0, 0, 0, 360, 0],

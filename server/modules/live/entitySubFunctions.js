@@ -70,7 +70,7 @@ class Skill {
         this.deduction = 0;
         this.level = 0;
         this.canUpgrade = false;
-        this.update();
+        this.set([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         this.maintain();
     }
     update() {

@@ -4,11 +4,16 @@ if (c.MOTHERSHIP_LOOP) mothershipLoop.spawn();
 if (c.SPECIAL_BOSS_SPAWNS) bossRush.init();
 if (c.MAZE && typeof c.MAZE === "number") generateMaze(c.MAZE);
 if (c.DOMINATOR_LOOP) for (let loc of room.dom0) dominatorLoop.spawn(loc, -100, 3);
+
 let logger = new LagLogger();
+let checked = true;
 const gamemodeLoop = function() {
     logger.set();
     if (c.MOTHERSHIP_LOOP) mothershipLoop.loop();
     if (c.SPECIAL_BOSS_SPAWNS) bossRush.loop();
+    if (c.HUNT && checked) {
+        if (checkMan()) checked = false;
+    }
     logger.mark();
     if (logger.totalTime > 100) {
         console.log("Gamemode loop is taking a long time!");
