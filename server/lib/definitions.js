@@ -3340,6 +3340,7 @@ exports.surgeonPillbox = {
     BODY: {
         SPEED: 1,
         DENSITY: 5,
+        DAMAGE: 0
     },
     DIE_AT_RANGE: true,
     TURRETS: [

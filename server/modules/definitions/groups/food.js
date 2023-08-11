@@ -1,26 +1,8 @@
 const { basePolygonDamage, basePolygonHealth } = require('../constants.js');
 
-// POLYGONS
-exports.food = {
-    TYPE: "food",
-    DAMAGE_CLASS: 1,
-    CONTROLLERS: ["moveInCircles"],
-    HITS_OWN_TYPE: "repel",
-    MOTION_TYPE: "drift",
-    FACING_TYPE: "turnWithSpeed",
-    VARIES_IN_SIZE: true,
-    BODY: {
-        STEALTH: 30,
-        PUSHABILITY: 1,
-    },
-    DAMAGE_EFFECTS: false,
-    RATEFFECTS: false,
-    HEALTH_WITH_LEVEL: false,
-};
-
 // EGGS
 exports.egg = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Egg",
     FOOD: {
         LEVEL: 0,
@@ -39,7 +21,7 @@ exports.egg = {
     DRAW_HEALTH: false,
 };
 exports.gem = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Gem",
     FOOD: {
         LEVEL: 0,
@@ -60,7 +42,7 @@ exports.gem = {
     INTANGIBLE: false,
 };
 exports.jewel = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Jewel",
     FOOD: {
         LEVEL: 0,
@@ -84,7 +66,7 @@ exports.jewel = {
 
 // SQUARES
 exports.square = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Square",
     FOOD: {
         LEVEL: 1,
@@ -103,7 +85,7 @@ exports.square = {
     INTANGIBLE: false,
 };
 exports.shinySquare = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shiny Square",
     FOOD: {
         LEVEL: 1,
@@ -123,7 +105,7 @@ exports.shinySquare = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.legendarySquare = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Legendary Square",
     FOOD: {
         LEVEL: 1,
@@ -143,7 +125,7 @@ exports.legendarySquare = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shadowSquare = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shadow Square",
     FOOD: {
         LEVEL: 1,
@@ -164,7 +146,7 @@ exports.shadowSquare = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.rainbowSquare = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Rainbow Square",
     FOOD: {
         LEVEL: 1,
@@ -186,7 +168,7 @@ exports.rainbowSquare = {
 
 // TRIANGLES
 exports.triangle = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Triangle",
     FOOD: {
         LEVEL: 2,
@@ -205,7 +187,7 @@ exports.triangle = {
     DRAW_HEALTH: true,
 };
 exports.shinyTriangle = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shiny Triangle",
     FOOD: {
         LEVEL: 2,
@@ -225,7 +207,7 @@ exports.shinyTriangle = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.legendaryTriangle = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Legendary Triangle",
     FOOD: {
         LEVEL: 2,
@@ -245,7 +227,7 @@ exports.legendaryTriangle = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shadowTriangle = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shadow Triangle",
     FOOD: {
         LEVEL: 2,
@@ -266,7 +248,7 @@ exports.shadowTriangle = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.rainbowTriangle = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Rainbow Triangle",
     FOOD: {
         LEVEL: 2,
@@ -288,7 +270,7 @@ exports.rainbowTriangle = {
 
 // PENTAGONS
 exports.pentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Pentagon",
     FOOD: {
         LEVEL: 3,
@@ -307,7 +289,7 @@ exports.pentagon = {
     DRAW_HEALTH: true,
 };
 exports.shinyPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shiny Pentagon",
     FOOD: {
         LEVEL: 3,
@@ -327,7 +309,7 @@ exports.shinyPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.legendaryPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Legendary Pentagon",
     FOOD: {
         LEVEL: 3,
@@ -347,7 +329,7 @@ exports.legendaryPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shadowPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shadow Pentagon",
     FOOD: {
         LEVEL: 3,
@@ -368,7 +350,7 @@ exports.shadowPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.rainbowPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Rainbow Pentagon",
     FOOD: {
         LEVEL: 3,
@@ -390,7 +372,7 @@ exports.rainbowPentagon = {
 
 // BETA PENTAGONS
 exports.betaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Beta Pentagon",
     FOOD: {
         LEVEL: 4,
@@ -411,7 +393,7 @@ exports.betaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shinyBetaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shiny Beta Pentagon",
     FOOD: {
         LEVEL: 4,
@@ -432,7 +414,7 @@ exports.shinyBetaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.legendaryBetaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Legendary Beta Pentagon",
     FOOD: {
         LEVEL: 4,
@@ -452,7 +434,7 @@ exports.legendaryBetaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shadowBetaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shadow Beta Pentagon",
     FOOD: {
         LEVEL: 4,
@@ -473,7 +455,7 @@ exports.shadowBetaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.rainbowBetaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Rainbow Beta Pentagon",
     FOOD: {
         LEVEL: 4,
@@ -495,7 +477,7 @@ exports.rainbowBetaPentagon = {
 
 // ALPHA PENTAGONS
 exports.alphaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Alpha Pentagon",
     FOOD: {
         LEVEL: 5,
@@ -516,7 +498,7 @@ exports.alphaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shinyAlphaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shiny Alpha Pentagon",
     FOOD: {
         LEVEL: 5,
@@ -537,7 +519,7 @@ exports.shinyAlphaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.legendaryAlphaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Legendary Alpha Pentagon",
     FOOD: {
         LEVEL: 5,
@@ -557,7 +539,7 @@ exports.legendaryAlphaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.shadowAlphaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Shadow Alpha Pentagon",
     FOOD: {
         LEVEL: 5,
@@ -578,7 +560,7 @@ exports.shadowAlphaPentagon = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.rainbowAlphaPentagon = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "Rainbow Alpha Pentagon",
     FOOD: {
         LEVEL: 5,
@@ -600,7 +582,7 @@ exports.rainbowAlphaPentagon = {
 
 // 3D POLYGONS
 exports.cube = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "The Cube",
     FOOD: {
         LEVEL: 0,
@@ -622,7 +604,7 @@ exports.cube = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.dodecahedron = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "The Dodecahedron",
     FOOD: {
         LEVEL: 0,
@@ -643,7 +625,7 @@ exports.dodecahedron = {
     GIVE_KILL_MESSAGE: true,
 };
 exports.icosahedron = {
-    PARENT: [exports.food],
+    PARENT: ["food"],
     LABEL: "The Icosahedron",
     FOOD: {
         LEVEL: 0,

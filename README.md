@@ -30,8 +30,6 @@ Your private server will be at <https://servername.glitch.me> (replace `serverna
 - [Create a custom tank](https://github.com/DogeisCut/Arras.io-Entity-Designer-v2)
 - [Create a custom theme](https://codepen.io/road-to-100k/full/GRpvMzb)
 
-## Discord Servers
+## Other Links
 
 - [Our Discord server](https://discord.gg/kvCAZfUCjy)
-- [Arras.io Discord server](https://discord.gg/arras)
-- [Momentum Studios Discord server](https://discord.gg/RXwCacTrfT)
