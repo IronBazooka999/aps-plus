@@ -1,6 +1,6 @@
 let output = require("../../config.js");
 
-const gamemodes = ["opentdm", "space"];
+const gamemodes = ["tdm", "domination"];
 
 for (let gamemode of gamemodes) {
     let mode = require(`./gamemodeconfigs/${gamemode}.js`);
@@ -18,7 +18,7 @@ for (let gamemode of gamemodes) {
         }
     }
 }
-output.BOTS = 9;
+
 /*output.gameModeName = gamemode;
 if (["Tag", "Domination", "Mothership"].includes(gamemode)) {
     output.gameModeName = `${output.TEAMS} TDM ${gamemode}`;
