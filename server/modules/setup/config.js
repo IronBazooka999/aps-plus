@@ -19,7 +19,14 @@ for (let gamemode of gamemodes) {
     }
 }
 
-/*output.gameModeName = gamemode;
+const nameMap = {
+    tdm: "TDM",
+    ffa: "FFA",
+    clanwars: "Clan Wars",
+    train: "Train Wars"
+};
+output.gameModeName = gamemodes.map(x => nameMap[x] || (x[0].toUpperCase() + x.slice(1))).join(' ');
+/*
 if (["Tag", "Domination", "Mothership"].includes(gamemode)) {
     output.gameModeName = `${output.TEAMS} TDM ${gamemode}`;
 }
