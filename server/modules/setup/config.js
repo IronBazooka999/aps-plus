@@ -25,7 +25,7 @@ module.exports = { output };
 const nameMap = {
     tdm: "TDM",
     ffa: "FFA",
-    opentdm: "Open TDM"
+    opentdm: "Open TDM",
     //clanwars: "Clan Wars",
     trainwars: "Train Wars"
 };
