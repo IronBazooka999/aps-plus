@@ -22,8 +22,8 @@ for (let gamemode of gamemodes) {
 const nameMap = {
     tdm: "TDM",
     ffa: "FFA",
-    clanwars: "Clan Wars",
-    train: "Train Wars"
+    //clanwars: "Clan Wars",
+    trainwars: "Train Wars"
 };
 output.gameModeName = gamemodes.map(x => nameMap[x] || (x[0].toUpperCase() + x.slice(1))).join(' ');
 /*
