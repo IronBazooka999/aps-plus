@@ -4105,7 +4105,7 @@ exports.spike = {
   LABEL: "Spike",
   DANGER: 7,
   BODY: {
-    SPEED: base.SPEED * 0.9,
+    SPEED: base.speed * 0.9,
     DAMAGE: base.DAMAGE * 1.1,
     FOV: base.FOV * 1.05,
     DENSITY: base.DENSITY * 2,
