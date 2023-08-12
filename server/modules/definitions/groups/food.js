@@ -579,8 +579,32 @@ exports.rainbowAlphaPentagon = {
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
+let center = [0,0];
 
 // 3D POLYGONS
+exports.sphere = {
+    PARENT: ["food"],
+    LABEL: "The Sphere",
+    FOOD: {
+        LEVEL: 0,
+    },
+    VALUE: 1e7,
+    SHAPE: 0,
+    SIZE: 6,
+    COLOR: 18,
+    BODY: {
+        DAMAGE: 10,
+        DENSITY: 15,
+        HEALTH: 300,
+        PENETRATION: 15,
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true,
+    TURRET: [{
+        POSITION: [15, 2, 2, 0, 0, 1],
+        TYPE: { COLOR: 8, SHAPE: 0 }
+    }]
+};
 exports.cube = {
     PARENT: ["food"],
     LABEL: "The Cube",
@@ -588,11 +612,9 @@ exports.cube = {
         LEVEL: 0,
     },
     VALUE: 2e7,
-    SHAPE: 4,
     SIZE: 7,
     COLOR: 18,
-    SHAPE:
-        "M -0.355 -0.39 V 2 L 1.735 0.802 V -1.585 L -0.355 -0.39 Z M -0.647 -0.39 V 2 L -2.735 0.8 V -1.585 L -0.647 -0.39 Z M -0.5 -0.64 L 1.589 -1.827 L -0.5 -3.02 L -2.58 -1.828 L -0.5 -0.64",
+    SHAPE: "M -0.355 -0.39 V 2 L 1.735 0.802 V -1.585 L -0.355 -0.39 Z M -0.647 -0.39 V 2 L -2.735 0.8 V -1.585 L -0.647 -0.39 Z M -0.5 -0.64 L 1.589 -1.827 L -0.5 -3.02 L -2.58 -1.828 L -0.5 -0.64",
     BODY: {
         DAMAGE: 12,
         DENSITY: 20,
@@ -603,6 +625,44 @@ exports.cube = {
     INTANGIBLE: false,
     GIVE_KILL_MESSAGE: true,
 };
+exports.tetrahedron = {
+    PARENT: ["food"],
+    LABEL: "The Tetrahedron",
+    FOOD: {
+        LEVEL: 0,
+    },
+    VALUE: 3e7,
+    SIZE: 9,
+    COLOR: 18,
+    SHAPE: [[0,1],center,[0.866,-0.5],center,[-0.866,-0.5],center],
+    BODY: {
+        DAMAGE: 15,
+        DENSITY: 23,
+        HEALTH: 666,
+        PENETRATION: 22.5,
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
+exports.octahedron = {
+    PARENT: ["food"],
+    LABEL: "The Octahedron",
+    FOOD: {
+        LEVEL: 0,
+    },
+    VALUE: 4e7,
+    SIZE: 9,
+    COLOR: 18,
+    SHAPE: [[0,1],center,[1,0],center,[0,-1],center,[-1,0],center],
+    BODY: {
+        DAMAGE: 18,
+        DENSITY: 26,
+        HEALTH: 866,
+        PENETRATION: 30,
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};
 exports.dodecahedron = {
     PARENT: ["food"],
     LABEL: "The Dodecahedron",
@@ -612,8 +672,7 @@ exports.dodecahedron = {
     VALUE: 5e7,
     SIZE: 10,
     COLOR: 18,
-    SHAPE:
-        "M -1.22 -1.45 H 0.17 L 0.615 -0.12 L -0.52 0.7 L -1.65 -0.12 L -1.22 -1.45 Z M -1.835 0.09 L -0.67 0.94 V 1.61 L -1.81 1.255 L -2.51 0.28 L -1.835 0.09 Z M 0.8 0.09 L -0.385 0.95 V 1.62 L 0.77 1.25 L 1.47 0.28 L 0.8 0.09 Z M -1.93 -0.18 L -1.485 -1.56 L -1.89 -2.151 L -2.6 -1.2 V 0.01 L -1.93 -0.18 Z M 0.44 -1.565 L 0.89 -0.18 L 1.555 0.015 V -1.19 L 0.852 -2.17 L 0.44 -1.565 Z M -0.52 -2.7 L -1.67 -2.335 L -1.26 -1.734 H 0.21 L 0.635 -2.329 L -0.52 -2.7",
+    SHAPE: "M -1.22 -1.45 H 0.17 L 0.615 -0.12 L -0.52 0.7 L -1.65 -0.12 L -1.22 -1.45 Z M -1.835 0.09 L -0.67 0.94 V 1.61 L -1.81 1.255 L -2.51 0.28 L -1.835 0.09 Z M 0.8 0.09 L -0.385 0.95 V 1.62 L 0.77 1.25 L 1.47 0.28 L 0.8 0.09 Z M -1.93 -0.18 L -1.485 -1.56 L -1.89 -2.151 L -2.6 -1.2 V 0.01 L -1.93 -0.18 Z M 0.44 -1.565 L 0.89 -0.18 L 1.555 0.015 V -1.19 L 0.852 -2.17 L 0.44 -1.565 Z M -0.52 -2.7 L -1.67 -2.335 L -1.26 -1.734 H 0.21 L 0.635 -2.329 L -0.52 -2.7",
     BODY: {
         DAMAGE: 22.5,
         DENSITY: 30,
@@ -633,8 +692,7 @@ exports.icosahedron = {
     VALUE: 1e8,
     SIZE: 18,
     COLOR: 18,
-    SHAPE:
-        "M -0.39 -0.245 L 0.392 -0.245 L 0 0.47 L -0.39 -0.245 Z M -0.465 -0.2 L -0.893 0.475 L -0.073 0.51 L -0.465 -0.2 Z M 0.4636 -0.2 L 0.073 0.509 L 0.891 0.4736 L 0.4636 -0.2 Z M 0 -1 L -0.39 -0.33 L 0.389 -0.328 L 0 -1 Z M -0.142 -0.925 L -0.875 -0.506 L -0.48 -0.339 L -0.142 -0.925 Z M -0.925 0.366 L -0.925 -0.431 L -0.525 -0.266 L -0.925 0.366 Z M -0.042 0.595 L -0.808 0.562 L -0.042 1 L -0.042 0.595 Z M 0.042 0.595 L 0.808 0.562 L 0.042 1 L 0.042 0.595 Z M 0.142 -0.925 L 0.858 -0.516 L 0.48 -0.339 L 0.142 -0.925 Z M 0.925 0.366 L 0.925 -0.452 L 0.523 -0.269 L 0.925 0.366 Z",
+    SHAPE: "M -0.39 -0.245 L 0.392 -0.245 L 0 0.47 L -0.39 -0.245 Z M -0.465 -0.2 L -0.893 0.475 L -0.073 0.51 L -0.465 -0.2 Z M 0.4636 -0.2 L 0.073 0.509 L 0.891 0.4736 L 0.4636 -0.2 Z M 0 -1 L -0.39 -0.33 L 0.389 -0.328 L 0 -1 Z M -0.142 -0.925 L -0.875 -0.506 L -0.48 -0.339 L -0.142 -0.925 Z M -0.925 0.366 L -0.925 -0.431 L -0.525 -0.266 L -0.925 0.366 Z M -0.042 0.595 L -0.808 0.562 L -0.042 1 L -0.042 0.595 Z M 0.042 0.595 L 0.808 0.562 L 0.042 1 L 0.042 0.595 Z M 0.142 -0.925 L 0.858 -0.516 L 0.48 -0.339 L 0.142 -0.925 Z M 0.925 0.366 L 0.925 -0.452 L 0.523 -0.269 L 0.925 0.366 Z",
     BODY: {
         DAMAGE: 17.5,
         DENSITY: 25,

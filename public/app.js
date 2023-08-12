@@ -86,7 +86,32 @@ let mixColors = (color_2, color_1, weight = 0.5) => {
     }
     return col; // PROFIT!
 };
+function hslToRgb(h, s, l) {
+    let r, g, b;
 
+    if (s === 0) {
+        r = g = b = l; // achromatic
+    } else {
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hueToRgb(p, q, h + 1/3);
+        g = hueToRgb(p, q, h);
+        b = hueToRgb(p, q, h - 1/3);
+    }
+    return '#' +
+        Math.round(r * 255).toString(16).padStart(2, '0') +
+        Math.round(g * 255).toString(16).padStart(2, '0') +
+        Math.round(b * 255).toString(16).padStart(2, '0');
+}
+
+function hueToRgb(p, q, t) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 0.166) return p + (q - p) * 6 * t;
+    if (t < 0.5  ) return q;
+    if (t < 0.666) return p + (q - p) * (2/3 - t) * 6;
+    return p;
+}
 function getRainbow(a, b, c = 0.5) {
     if (0 >= c) return a;
     if (1 <= c) return b;
@@ -96,9 +121,9 @@ function getRainbow(a, b, c = 0.5) {
     return (
         "#" +
         (
-            (((a & 16711680) * f + (b & 16711680) * c) & 16711680) |
-            (((a & 65280) * f + (b & 65280) * c) & 65280) |
-            (((a & 255) * f + (b & 255) * c) & 255)
+            (((a & 0xff0000) * f + (b & 0xff0000) * c) & 0xff0000) |
+            (((a & 0x00ff00) * f + (b & 0x00ff00) * c) & 0x00ff00) |
+            (((a & 0x0000ff) * f + (b & 0x0000ff) * c) & 0x0000ff)
         )
             .toString(16)
             .padStart(6, "0")
@@ -118,31 +143,30 @@ let animatedColor = {
 function reanimateColors() {
     let now = Date.now(),
 
-        mathy_6 = Math.floor((now / 200) % 6),
-        mathy_5 = Math.floor((now % 2000) / 400),
-        mathy_3 = Math.floor((now % 2000) * 3 / 2000),
+        //six_gradient = Math.floor((now / 200) % 6),
+        five_bars = Math.floor((now % 2000) / 400),
+        three_bars = Math.floor((now % 2000) * 3 / 2000),
         blinker = 150 > now % 300,
 
-        lesbian_magenta = "#a50062",
+        lesbian_magenta  = "#a50062",
         lesbian_oredange = "#d62900",
-        lesbian_white = "#ffffff",
-        lesbian_useSecondSet = mathy_5 < 2,
+        lesbian_white    = "#ffffff",
+        lesbian_useSecondSet = five_bars < 2,
 
-        gay_primary = ["#ff1000", "#ff9000", "#ffd300", "#00e00b", "#226ef6", "#a913cf"][mathy_6],
-        gay_secondary = ["#ff9000", "#ffd300", "#00e00b", "#226ef6", "#a913cf", "#ff1000"][mathy_6],
+        gay_transition = (now / 2000) % 1,
 
-        bi_pink = "#D70071",
+        bi_pink   = "#D70071",
         bi_purple = "#9C4E97",
-        bi_blue = "#0035AA",
+        bi_blue   = "#0035AA",
 
-        trans_pink = "#f7a8b8",
-        trans_blue = "#55cdfc",
+        trans_pink  = "#f7a8b8",
+        trans_blue  = "#55cdfc",
         trans_white = "#ffffff";
 
-    animatedColor.lesbian = getRainbow(lesbian_useSecondSet ? lesbian_oredange : lesbian_white, lesbian_useSecondSet ? lesbian_white : lesbian_magenta, (lesbian_useSecondSet ? mathy_5 : mathy_5 - 3) / 2);
-    animatedColor.gay = getRainbow(gay_primary, gay_secondary, (now / 200) % 1);
-    animatedColor.bi = [bi_pink, bi_purple, bi_blue][mathy_3];
-    animatedColor.trans = [trans_blue, trans_pink, trans_white, trans_pink, trans_blue][mathy_5];
+    animatedColor.lesbian = getRainbow(lesbian_useSecondSet ? lesbian_oredange : lesbian_white, lesbian_useSecondSet ? lesbian_white : lesbian_magenta, (lesbian_useSecondSet ? five_bars : five_bars - 3) / 2);
+    animatedColor.gay = hslToRgb(gay_transition, 0.75, 0.5);
+    animatedColor.bi = [bi_pink, bi_purple, bi_blue][three_bars];
+    animatedColor.trans = [trans_blue, trans_pink, trans_white, trans_pink, trans_blue][five_bars];
 
     animatedColor.blue_red = blinker ? color.blue : color.red;
     animatedColor.blue_grey = blinker ? color.blue : color.grey;

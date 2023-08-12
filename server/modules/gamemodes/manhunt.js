@@ -1,34 +1,42 @@
 class ManHunt {
     constructor () {
-        this.checked = false;
+        this.leaderIDs = [];
     }
-    reset () {
-        return entities.filter(entity => entity.team == -1 && (entity.isPlayer || entity.isBot));
+
+    //calculate leader by going through each player/bot and getting the one with the highest score
+    getLeader() {
+        let highestScore = -Infinity,
+            leader;
+        for (let entity of entities) {
+            if (!entity.isPlayer && !entity.isBot) continue;
+            if (entity.skill.score <= highestScore) continue;
+            highestScore = entity.skill.score;
+            leader = entity;
+        }
+        return leader;
     }
-    checkTeam (team) {
-        if (entities.filter(entity => entity.team == -team).length) return true;
-        return false;
-    }
-    checkMan (instance = null, check = true) {
-        let condition = this.reset();
-        if (!condition.length || (this.checkTeam(2) && check)) return false;
-        let entity = instance == null
-            ? condition[0]
-            : instance;
-        entity.define({ LEVEL: 100, TEAM: -2 });
-        entity.color = [10, 11, 12, 15, 25, 26, 27, 28][-entity.team - 1];
-        entity.on('dead', () => {
-            let killers = [];
-            for (let instance of entity.collisionArray) {
-                if (instance.team == -1) killers.push(instance);
+
+    loop() {
+
+        // get new leader
+        let leader = this.getLeader();
+        if (this.leaderIDs.includes(leader.id)) return;
+
+        // apply buffs to them
+        leader.team = -2;
+        leader.color = [10, 11, 12, 15, 25, 26, 27, 28][-leader.team - 1];
+        leader.skill.points += 18;
+
+        // if this guy died then remove them from the leader ids
+        // prevents a memory leak
+        leader.on('dead', () => {
+            let i = this.leaderIDs.indexOf(leader.id);
+            if (i !== -1) {
+                this.leaderIDs.splice(i, 1);
             }
-            let killer = ran.choose(killers);
-            this.checkMan(killer.type == "tank" ? killer : killer.master, false);
         });
-        return true;
-    };
-    check() {
-        if (!this.checked) if (this.checkMan()) this.checked = true;
+
+        // NOTE: This implementation does not care about someone new becoming leader in a way that doesn't kill the previous one.
     }
 }
 

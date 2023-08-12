@@ -5,7 +5,7 @@ class Moon {
     reset () {
         this.players = entities.filter(r => r.isPlayer || r.isBot);
     }
-    check () {
+    loop () {
         this.reset();
         for (let entity of this.players) {
             for (let hole of room.blackHoles) {

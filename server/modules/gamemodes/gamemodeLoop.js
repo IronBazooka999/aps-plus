@@ -12,11 +12,11 @@ let logger = new LagLogger();
 const gamemodeLoop = function() {
     logger.set();
     // Thnaks to Damocles (Her discord - _damocles)
-    if (c.TRAIN) train.check();
-    if (c.SPACE_MODE) moon.check();
+    if (c.HUNT) hunt.loop();
+    if (c.TRAIN) train.loop();
+    if (c.SPACE_MODE) moon.loop();
     if (c.MOTHERSHIP_LOOP) mothershipLoop.loop();
     if (c.SPECIAL_BOSS_SPAWNS) bossRush.loop();
-    if (c.HUNT) hunt.check();
     logger.mark();
     if (logger.totalTime > 100) {
         console.log("Gamemode loop is taking a long time!");
