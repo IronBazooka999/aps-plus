@@ -579,6 +579,7 @@ exports.rainbowAlphaPentagon = {
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
+let center = [0,0];
 
 // 3D POLYGONS
 exports.sphere = {
@@ -589,7 +590,7 @@ exports.sphere = {
     },
     VALUE: 1e7,
     SHAPE: 0,
-    SIZE: 5,
+    SIZE: 6,
     COLOR: 18,
     BODY: {
         DAMAGE: 10,
@@ -624,7 +625,6 @@ exports.cube = {
     INTANGIBLE: false,
     GIVE_KILL_MESSAGE: true,
 };
-let center = [0.2,0.35];
 exports.tetrahedron = {
     PARENT: ["food"],
     LABEL: "The Tetrahedron",
