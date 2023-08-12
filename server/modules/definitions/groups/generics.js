@@ -128,7 +128,6 @@ exports.food = {
     HEALTH_WITH_LEVEL: false,
 };
 
-
 exports.bullet = {
     LABEL: "Bullet",
     TYPE: "bullet",

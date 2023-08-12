@@ -1,5 +1,5 @@
-let r = Array(15).fill(() => Array(15).fill()).map(x => x());
-r[7][2] = r[2][7] = r[12][7] = r[7][12] = r[7][7] = "dom0";
+let room = Array(15).fill(() => Array(15).fill()).map(x => x());
+room[7][2] = room[2][7] = room[12][7] = room[7][12] = room[7][7] = "dom0";
 
 module.exports = {
     DOMINATOR_LOOP: true,
@@ -7,5 +7,5 @@ module.exports = {
     Y_GRID: 15,
     WIDTH: 5000,
     HEIGHT: 5000,
-    ROOM_SETUP: r
+    ROOM_SETUP: room
 };
