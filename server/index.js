@@ -569,7 +569,7 @@ const foodTypes = [
     //     ["scale", 9], 0.0005
     // ),
     new FoodType("Extradimensional Food",
-        [Class.cube, Class.dodecahedron, Class.icosahedron],
+        [Class.sphere, Class.cube, Class.tetrahedron, Class.octahedron, Class.dodecahedron, Class.icosahedron],
         ["scale", 10], 0.0001
     ),
     new FoodType("Nest Food", // Commented out because stats aren't done yet.
