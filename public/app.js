@@ -1422,7 +1422,7 @@ function drawSkillBars(spacing, alcoveSize) {
             col = color[skill.color],
             cap = skill.softcap,
             maxLevel = skill.cap;
-        if (!cap) return;
+        if (!cap) continue;
         len = save;
         let max = 0,
             extension = cap > max,
