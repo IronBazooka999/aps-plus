@@ -1420,6 +1420,101 @@ exports.barricade = {
         },
     ],
 };
+exports.vulture = {
+    PARENT: [exports.genericTank],
+    LABEL: "Vulture",
+    DANGER: 7,
+    GUNS: [
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [20, 6, -2, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.trifront,
+                    g.mini,
+                ]),
+                TYPE: exports.bullet,
+                ALT_FIRE: true,
+                LABEL: "Minigun",
+            },
+        },
+        {
+            POSITION: [18, 6.5, -2, 0, 0, 0, 0.333],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.trifront,
+                    g.mini,
+                ]),
+                TYPE: exports.bullet,
+                ALT_FIRE: true,
+                LABEL: "Minigun",
+            },
+        },
+        {
+            POSITION: [16, 7, -2, 0, 0, 0, 0.667],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.trifront,
+                    g.mini,
+                ]),
+                TYPE: exports.bullet,
+                ALT_FIRE: true,
+                LABEL: "Minigun",
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.halfrecoil,
+                ]),
+                TYPE: exports.bullet,
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.halfrecoil,
+                ]),
+                TYPE: exports.bullet,
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [18, 8, 1, 0, 0, 180, 0.6],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.halfrecoil,
+                ]),
+                TYPE: exports.bullet,
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+    ],
+};
 
 // GUNNER UPGRADES
 exports.autoGunner = makeAuto("gunner");
