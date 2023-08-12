@@ -1,9 +1,8 @@
 class Train {
-    constructor () {
-    }
+    constructor () {}
     loop () {
         let teams = new Set(entities.filter(r => r.isPlayer || r.isBot).map(r => r.team));
-        for (let team of this.teams) {
+        for (let team of teams) {
             let train = entities.filter(r => (r.isPlayer || r.isBot) && r.team === team && !r.invuln).sort((a, b) => b.skill.score - a.skill.score);
 
             for (let [i, player] of train.entries()) {
