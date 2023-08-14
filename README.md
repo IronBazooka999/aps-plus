@@ -1,7 +1,7 @@
 # Open Source Arras
-### Also known as APS++
 
 ## Quick setup guide
+
 1. Install [node.js](https://nodejs.org/en) on your host machine
 2. Install [ws](https://www.npmjs.com/package/ws) after node.js is installed
 3. [Download the repository](https://github.com/Taureon/aps-plus-plus/archive/refs/heads/main.zip)
