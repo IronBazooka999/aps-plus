@@ -10,20 +10,6 @@
 6. Go to localhost:3000 in your favourite web browser while the command prompt is still open
 7. Play the game
 
-## Setting up your server in Glitch (Not supported)
-
-**Please note that using this repository on Glitch and the original APS project built on Glitch are no longer supported. We are not responsible for issues that manifest if you use this method.**
-
-Once you've created a Glitch (https://glitch.com) project using the template, follow these steps:
-
-In the server's `config.js`:
-1. Find the `host` property.
-2. Replace the contents with your glitch project's domain (`servername.glitch.me`), it should be in the top-left corner above "Settings".
-
-Then, give your new project a name. (Settings > Edit project details)
-
-Your private server will be at <https://servername.glitch.me> (replace `servername` with its new name, it should be in the top-left corner above "Settings")
-
 ## Useful Tools
 
 - [Create a custom shape](https://arras.io/ext/custom-shape)
