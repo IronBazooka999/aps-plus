@@ -14917,6 +14917,624 @@ exports.theia = {
     ],
 };
 
+// VIDAR
+exports.assassinTurret = {
+  PARENT: [exports.turretParent],
+  DANGER: 6,
+  LABEL: "Assassin",
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [27, 8, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [5, 8, -1.4, 8, 0, 0, 0],
+    },
+  ],
+};
+
+exports.hunterTurret = {
+  PARENT: [exports.turretParent],
+  LABEL: "Hunter",
+  DANGER: 6,
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [24, 8, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.hunter2]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [21, 12, 1, 0, 0, 0, 25],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
+
+exports.vidarLowerBody = {
+  LABEL: "",
+  CONTROLLERS: ["reverseceles"],
+  COLOR: 30,
+  SIZE: 100,
+  SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+  SHAPE: 7,
+  INDEPENDENT: true,
+  FACING_TYPE: "autospin",
+  TURRETS: [
+    {
+      //*********  SIZE     X       Y     ANGLE    ARC
+      POSITION: [8.5, 9, 0, 26, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 77, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 129, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 180, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 231, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 282, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 333, 180, 0],
+      TYPE: [exports.hunterTurret],
+    },
+  ],
+};
+
+exports.vidarUpperBody = {
+  LABEL: "",
+  CONTROLLERS: ["spinceles"],
+  COLOR: 30,
+  SIZE: 100,
+  SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+  SHAPE: 5,
+  INDEPENDENT: true,
+  TURRETS: [
+    {
+      //**   SIZE     X       Y     ANGLE    ARC
+      POSITION: [10.6, 7.5, 0, 35, 160, 0],
+      TYPE: [exports.assassinTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 110, 160, 0],
+      TYPE: [exports.assassinTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 180, 160, 0],
+      TYPE: [exports.assassinTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 252, 160, 0],
+      TYPE: [exports.assassinTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 325, 160, 0],
+      TYPE: [exports.assassinTurret],
+    },
+  ],
+};
+
+exports.vidar = {
+  PARENT: [exports.celestial],
+  NAME: "Vidar",
+  COLOR: 30,
+  TURRETS: [
+    {
+      /*********  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [6.5, 9, 0, 260, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 219, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 180, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 300, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 339, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 380, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 420, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 459, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 500, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [14.77, 0, 0, 0, 360, 1],
+      TYPE: [exports.vidarLowerBody],
+    },
+    {
+      POSITION: [8.7, 0, 0, 0, 360, 1],
+      TYPE: [exports.vidarUpperBody],
+    },
+  ],
+};
+
+// RHEA
+exports.crowbarTurret = {
+  PARENT: [exports.turretParent],
+  DANGER: 7,
+  LABEL: "Crowbar",
+  BODY: {
+    SPEED: base.SPEED * 0.85,
+    FOV: base.FOV * 1.4,
+  },
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [37, 6.5, 1, 0, 0, 0, 0],
+    },
+    {
+      POSITION: [5, 8.5, -1.5, 8, 0, 0, 0],
+    },
+  ],
+  TURRETS: [
+    {
+      /*  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [6, 38, 0, 0, 360, 1],
+      TYPE: [
+        exports.autoTankGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+    {
+      POSITION: [6, 28, 0, 0, 360, 1],
+      TYPE: [
+        exports.autoTankGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+    {
+      POSITION: [6, 18, 0, 0, 360, 1],
+      TYPE: [
+        exports.autoTankGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+  ],
+};
+
+exports.wrenchTurret = {
+  PARENT: [exports.turretParent],
+  DANGER: 7,
+  LABEL: "Wrench",
+  BODY: {
+    SPEED: base.SPEED * 0.85,
+    FOV: base.FOV * 1.4,
+  },
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [67, 6.5, 1, 0, 0, 0, 0],
+    },
+    {
+      POSITION: [5, 8.5, -1.5, 8, 0, 0, 0],
+    },
+  ],
+  TURRETS: [
+    {
+      /*  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [6, 68, 0, 0, 360, 1],
+      TYPE: [
+        exports.autoTankGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+    {
+      POSITION: [6, 58, 0, 0, 360, 1],
+      TYPE: [
+        exports.autoTankGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+    {
+      POSITION: [6, 48, 0, 0, 360, 1],
+      TYPE: [
+        exports.autoTankGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+  ],
+};
+
+exports.rheaLowerBody = {
+  LABEL: "",
+  CONTROLLERS: ["reverseceles"],
+  COLOR: 17,
+  SIZE: 100,
+  SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+  MAX_CHILDREN: 28,
+  SHAPE: 7,
+  INDEPENDENT: true,
+  FACING_TYPE: "autospin",
+  TURRETS: [
+    {
+      //*********  SIZE     X       Y     ANGLE    ARC
+      POSITION: [8.5, 9, 0, 26, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 77, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 129, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 180, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 231, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 282, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+    {
+      POSITION: [8.5, 9, 0, 333, 180, 0],
+      TYPE: [exports.wrenchTurret],
+    },
+  ],
+};
+
+exports.rheaUpperBody = {
+  LABEL: "",
+  CONTROLLERS: ["spinceles"],
+  COLOR: 17,
+  SIZE: 100,
+  SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+  MAX_CHILDREN: 28,
+  SHAPE: 5,
+  INDEPENDENT: true,
+  TURRETS: [
+    {
+      //**   SIZE     X       Y     ANGLE    ARC
+      POSITION: [10.6, 7.5, 0, 35, 160, 0],
+      TYPE: [exports.crowbarTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 110, 160, 0],
+      TYPE: [exports.crowbarTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 180, 160, 0],
+      TYPE: [exports.crowbarTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 252, 160, 0],
+      TYPE: [exports.crowbarTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 325, 160, 0],
+      TYPE: [exports.crowbarTurret],
+    },
+  ],
+};
+
+exports.rhea = {
+  PARENT: [exports.celestial],
+  NAME: "Rhea",
+  COLOR: 17,
+  TURRETS: [
+    {
+      /*********  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [6.5, 9, 0, 260, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 219, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 180, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 300, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 339, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 380, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 420, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 459, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 500, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [14.77, 0, 0, 0, 360, 1],
+      TYPE: [exports.rheaLowerBody],
+    },
+    {
+      POSITION: [8.7, 0, 0, 0, 360, 1],
+      TYPE: [exports.rheaUpperBody],
+    },
+  ],
+};
+
+// ATLAS
+exports.artilleryTurret = {
+  PARENT: [exports.turretParent],
+  DANGER: 6,
+  LABEL: "Artillery",
+  GUNS: [
+    {
+      POSITION: [17, 3, 1, 0, -6, -7, 0.25],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Secondary",
+      },
+    },
+    {
+      POSITION: [17, 3, 1, 0, 6, 7, 0.75],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Secondary",
+      },
+    },
+    {
+      POSITION: [19, 12, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Heavy",
+      },
+    },
+  ],
+};
+
+exports.nailgunTurret = {
+  PARENT: [exports.turretParent],
+  LABEL: "Nailgun",
+  DANGER: 7,
+  BODY: {
+    FOV: base.FOV * 1.1,
+    SPEED: base.SPEED * 0.9,
+  },
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [19, 2, 1, 0, -2.5, 0, 0.25],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.power,
+          g.twin,
+          g.nail,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [19, 2, 1, 0, 2.5, 0, 0.75],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.power,
+          g.twin,
+          g.nail,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [20, 2, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.power,
+          g.twin,
+          g.nail,
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [5.5, 7, -1.8, 6.5, 0, 0, 0],
+    },
+  ],
+};
+
+exports.atlasLowerBody = {
+  LABEL: "",
+  CONTROLLERS: ["reverseceles"],
+  COLOR: 4,
+  SIZE: 100,
+  SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+  MAX_CHILDREN: 28,
+  SHAPE: 7,
+  INDEPENDENT: true,
+  FACING_TYPE: "autospin",
+  TURRETS: [
+    {
+      //*********  SIZE     X       Y     ANGLE    ARC
+      POSITION: [7, 9, 0, 26, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+    {
+      POSITION: [7, 9, 0, 77, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+    {
+      POSITION: [7, 9, 0, 129, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+    {
+      POSITION: [7, 9, 0, 180, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+    {
+      POSITION: [7, 9, 0, 231, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+    {
+      POSITION: [7, 9, 0, 282, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+    {
+      POSITION: [7, 9, 0, 333, 180, 0],
+      TYPE: [exports.artilleryTurret],
+    },
+  ],
+};
+
+exports.atlasUpperBody = {
+  LABEL: "",
+  CONTROLLERS: ["spinceles"],
+  COLOR: 4,
+  SIZE: 100,
+  SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+  MAX_CHILDREN: 28,
+  SHAPE: 5,
+  INDEPENDENT: true,
+  TURRETS: [
+    {
+      //**   SIZE     X       Y     ANGLE    ARC
+      POSITION: [10.6, 7.5, 0, 35, 160, 0],
+      TYPE: [exports.nailgunTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 110, 160, 0],
+      TYPE: [exports.nailgunTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 180, 160, 0],
+      TYPE: [exports.nailgunTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 252, 160, 0],
+      TYPE: [exports.nailgunTurret],
+    },
+    {
+      POSITION: [10.6, 7.5, 0, 325, 160, 0],
+      TYPE: [exports.nailgunTurret],
+    },
+  ],
+};
+
+exports.atlas = {
+  PARENT: [exports.celestial],
+  NAME: "Atlas",
+  COLOR: 4,
+  TURRETS: [
+    {
+      /*********  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [6.5, 9, 0, 260, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 219, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 180, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 300, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 339, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 380, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 420, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 459, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [6.5, 9, 0, 500, 180, 0],
+      TYPE: [exports.trapTurret, { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [14.77, 0, 0, 0, 360, 1],
+      TYPE: [exports.atlasLowerBody],
+    },
+    {
+      POSITION: [8.7, 0, 0, 0, 360, 1],
+      TYPE: [exports.atlasUpperBody],
+    },
+  ],
+};
+
 // ALVISS
 exports.alvissDrone = {
     PARENT: [exports.eggchip],
