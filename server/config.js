@@ -1,5 +1,5 @@
 module.exports = {
-    // Server Configurations
+    // Server
     host: "localhost:3000",
     servesStatic: true,
     port: 3000,
