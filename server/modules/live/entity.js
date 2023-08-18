@@ -1038,10 +1038,10 @@ class Entity extends EventEmitter {
     get realSize() {
         return this.size * lazyRealSizes[Math.floor(Math.abs(this.shape))];
     }
-    get m_x() {
+    get xMotion() {
         return (this.velocity.x + this.accel.x) / roomSpeed;
     }
-    get m_y() {
+    get yMotion() {
         return (this.velocity.y + this.accel.y) / roomSpeed;
     }
     camera(tur = false) {
@@ -1197,13 +1197,7 @@ class Entity extends EventEmitter {
                 break;
             case "chase":
                 if (gactive) {
-                    let l = util.getDistance(
-                        {
-                            x: 0,
-                            y: 0,
-                        },
-                        g
-                    );
+                    let l = util.getDistance({ x: 0, y: 0, }, g);
                     if (l > this.size * 2) {
                         this.maxSpeed = this.topSpeed;
                         let desiredxspeed = (this.topSpeed * g.x) / l,
