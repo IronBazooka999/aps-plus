@@ -1072,15 +1072,20 @@ class Entity extends EventEmitter {
             turrets: this.turrets.map((turret) => turret.camera(true)),
         };
     }
+    syncTurrets() {
+        for (let i = 0; i < this.turrets.length; i++) {
+            this.turrets[i].skill = this.skill;
+            this.turrets[i].refreshBodyAttributes;
+            this.turrets[i].syncTurrets();
+        }
+    }
     skillUp(stat) {
         let suc = this.skill.upgrade(stat);
         if (suc) {
             this.refreshBodyAttributes();
             for (let i = 0; i < this.guns.length; i++) this.guns[i].syncChildren();
             for (let i = 0; i < this.turrets.length; i++) {
-                for (let j = 0; j < this.turrets[i].guns.length; j++) {
-                    this.turrets[i].guns[j].syncChildren();
-                }
+                this.turrets[i].skillUp(stat);
             }
         }
         return suc;
@@ -1106,6 +1111,7 @@ class Entity extends EventEmitter {
                 }
             }
             this.skill.update();
+            this.syncTurrets();
             this.refreshBodyAttributes();
         }
     }
