@@ -1,43 +1,4 @@
-const { basePolygonDamage, basePolygonHealth } = require('../constants.js'),
-    center = [0,0], // Centerpoint for SHAPE arrays
-
-// Thanks to Damocles
-// https://discord.com/channels/366661839620407297/508125275675164673/1090010998053818488
-makeRelic = (type, scale = 1) => {
-    let relicCasing = {
-        PARENT: ['genericEntity'],
-        LABEL: 'Relic Casing',
-        COLOR: type.COLOR,
-        SHAPE: [[-0.4,-1],[0.4,-0.25],[0.4,0.25],[-0.4,1]].map(r => r.map(s => s * scale)),
-    }, relicBody = {
-        PARENT: ['genericEntity'],
-        LABEL: 'Relic Mantle',
-        COLOR: type.COLOR,
-        SHAPE: type.SHAPE,
-    };
-    exports[Math.random().toString(36)] = relicCasing;
-    exports[Math.random().toString(36)] = relicBody;
-    let fraction = 180 / type.SHAPE,
-        width = 6 * scale,
-        y = 8.25 + ((scale % 1) * 5);
-    return {
-        PARENT: [type],
-        LABEL: type.LABEL + ' Relic',
-        COLOR: 18, // This is the color of the floor, this makes it look hollow.
-        CONTROLLERS: [],
-        VALUE: type.VALUE * 100_000,
-        // angle + (type.SHAPE % 2 === 0 ? 0 : fraction);
-        GUNS: Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [4, width, 2.5, 12, y, i * fraction, 0] }))
-        .concat(Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [4, width, 2.5, 12, -y, i * fraction, 0] }))),
-        TURRETS: [{
-            POSITION: [32.5, 0, 0, 0, 0, 0],
-            TYPE: relicBody,
-        },
-        ...Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [8, -15,  y, i * fraction, 0, 1], TYPE: relicCasing })),
-        ...Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [8, -15, -y, i * fraction, 0, 1], TYPE: relicCasing }))
-        ],
-    };
-};
+const { basePolygonDamage, basePolygonHealth } = require('../constants.js');
 
 // EGGS
 exports.egg = {
@@ -618,6 +579,7 @@ exports.rainbowAlphaPentagon = {
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
+let center = [0,0];
 
 // 3D POLYGONS
 exports.sphere = {
@@ -741,11 +703,3 @@ exports.icosahedron = {
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
-
-// RELICS
-//no egge lol
-exports.squareRelic = makeRelic(exports.square);
-exports.triangleRelic = makeRelic(exports.triangle, 1.45);
-exports.pentagonRelic = makeRelic(exports.pentagon, -0.6);
-exports.betaRelic = makeRelic(exports.betaPentagon, -0.6);
-exports.alphaRelic = makeRelic(exports.alphaPentagon, -0.6);

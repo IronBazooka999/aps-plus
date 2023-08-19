@@ -1499,28 +1499,9 @@ const sockets = {
         });
         
         //account for proxies
-        //very simplified reimplementation of what the forwarded-for npm package does
-        let store = req.headers['fastly-client-ip'] || req.headers['x-forwarded-for'] || req.headers['z-forwarded-for'] ||
-                    req.headers['forwarded']        || req.headers['x-real-ip']       || req.connection.remoteAddress,
-            ips = store.split(',');
-
-        if (!ips) {
-            return socket.kick("Missing IP: " + store);
-        }
-
-        for (let i = 0; i < ips.length; i++) {
-            if (net.isIPv6(ips[i])) {
-                ips[i] = ips[i].trim();
-            } else {
-                ips[i] = ips[i].split(':')[0].trim();
-            }
-            if (!net.isIP(ips[i])) {
-                return socket.kick("Invalid IP(s): " + store);
-            }
-        }
-
-        socket.ip = ips[0];
-
+        socket.ip = req.headers['fastly-client-ip'] || req.headers['x-forwarded-for'] || req.headers['z-forwarded-for'] ||
+                    req.headers['forwarded']        || req.headers['x-real-ip']       || req.connection.remoteAddress;
+        if (!net.isIP(socket.ip)) return socket.kick("Invalid IP: " + socket.ip);
         // Log it
         clients.push(socket);
         util.log("[INFO] New socket opened with ip " + socket.ip);

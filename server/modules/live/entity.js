@@ -794,13 +794,13 @@ class Entity extends EventEmitter {
         player.body.kill();
     }
     ensureIsClass(str) {
-        if ("string" == typeof str) {
+        if ("string" == typeof set) {
             if (str in Class) {
                 return Class[str];
             }
             throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
         }
-        return str;
+        return str
     }
     define(set) {
         set = this.ensureIsClass(set);
@@ -1038,10 +1038,10 @@ class Entity extends EventEmitter {
     get realSize() {
         return this.size * lazyRealSizes[Math.floor(Math.abs(this.shape))];
     }
-    get xMotion() {
+    get m_x() {
         return (this.velocity.x + this.accel.x) / roomSpeed;
     }
-    get yMotion() {
+    get m_y() {
         return (this.velocity.y + this.accel.y) / roomSpeed;
     }
     camera(tur = false) {
@@ -1203,7 +1203,13 @@ class Entity extends EventEmitter {
                 break;
             case "chase":
                 if (gactive) {
-                    let l = util.getDistance({ x: 0, y: 0, }, g);
+                    let l = util.getDistance(
+                        {
+                            x: 0,
+                            y: 0,
+                        },
+                        g
+                    );
                     if (l > this.size * 2) {
                         this.maxSpeed = this.topSpeed;
                         let desiredxspeed = (this.topSpeed * g.x) / l,
