@@ -68,10 +68,7 @@ function collide(collision) {
                     mooncollide(wall, entity);
                     break;
                 default:
-                    let a =
-                        entity.type === "bullet"
-                            ? 1 + 10 / (entity.velocity.length + 10)
-                            : 1;
+                    let a = entity.type === "bullet" ? 1 + 10 / (entity.velocity.length + 10) : 1;
                     advancedcollide(wall, entity, false, false, a);
                     break;
             }
@@ -80,19 +77,14 @@ function collide(collision) {
             (instance.settings.hitsOwnType === "pushOnlyTeam" ||
                 other.settings.hitsOwnType === "pushOnlyTeam"):
             {
-                let pusher =
-                    instance.settings.hitsOwnType === "pushOnlyTeam" ? instance : other;
-                let entity =
-                    instance.settings.hitsOwnType === "pushOnlyTeam" ? other : instance;
+                let pusher = instance.settings.hitsOwnType === "pushOnlyTeam" ? instance : other;
+                let entity = instance.settings.hitsOwnType === "pushOnlyTeam" ? other : instance;
                 // Dominator / Mothership collisions
                 if (
                     instance.settings.hitsOwnType === other.settings.hitsOwnType ||
                     entity.settings.hitsOwnType === "never"
                 ) return;
-                let a =
-                    1 +
-                    10 /
-                        (Math.max(entity.velocity.length, pusher.velocity.length) + 10);
+                let a = 1 + 10 / (Math.max(entity.velocity.length, pusher.velocity.length) + 10);
                 advancedcollide(pusher, entity, false, false, a);
             }
             break;
