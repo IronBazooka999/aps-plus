@@ -123,7 +123,7 @@ const g = {
     rocketeerMissileTrail: [0.5, 7, 1.5, 0.8, 0.8, 0.7, 1, 0.9, 0.8, 1, 1, 5, 1],
     
     // Automatic Cannons
-    auto: [1.8, 0.75, 0.5, 0.8, 0.9, 0.6, 1.2, 1.1, 1, 0.8, 1.3, 1, 1.25],
+    auto: [0.9, 0.75, 0.5, 0.8, 0.9, 0.6, 1.2, 1.1, 1, 0.8, 1.3, 1, 1.25],
     five: [1.15, 1, 1, 1, 1, 1, 1, 1.05, 1.05, 1.1, 2, 1, 1],
     autosnipe: [1, 1, 1, 1.4, 2, 1, 1, 1, 1, 1, 1, 1, 1],
     
@@ -6046,9 +6046,9 @@ exports.subverter = {
         },
     ],
 };
-exports.taser = {
+exports.vulture = {
     PARENT: [exports.genericTank],
-    LABEL: "Taser",
+    LABEL: "Vulture",
     DANGER: 7,
     SKILL_CAP: [
         dfltskl,
@@ -16597,7 +16597,7 @@ exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lanc
         exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.rogueArmada, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
         exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
         exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
-            exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.taser];
+            exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.vulture];
                 exports.productionist.UPGRADES_TIER_0 = [exports.bismarck];
         exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
@@ -16606,11 +16606,12 @@ exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtecto
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS
-c.SPECIAL_BOSS_SPAWNS
-    ? exports.basic.UPGRADES_TIER_1 = [exports.healer, exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper]
-    : exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
-        exports.basic.UPGRADES_TIER_2 = [exports.smasher];
+        exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
+        c.SPECIAL_BOSS_SPAWNS
+        ? exports.basic.UPGRADES_TIER_2 = [exports.healer]
+        : exports.basic.UPGRADES_TIER_2 = [exports.smasher];
                 exports.basic.UPGRADES_TIER_3 = [exports.single];
+                exports.healer.UPGRADES_TIER_3 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic];
                 exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine];
 
         exports.twin.UPGRADES_TIER_2 = [exports.doubleTwin, exports.tripleShot, exports.gunner, exports.hexaTank];
@@ -16625,7 +16626,7 @@ c.SPECIAL_BOSS_SPAWNS
                 exports.rifle.UPGRADES_TIER_3 = [exports.musket, exports.crossbow, exports.armsman];
 
         exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer];
-                exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade];
+                exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade, exports.vulture];
                 exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner];
                 exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.atomizer, exports.focal];
 
@@ -16635,7 +16636,9 @@ c.SPECIAL_BOSS_SPAWNS
                 exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.phoenix];
                 exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee];
 
-        exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner];
+        c.SPECIAL_BOSS_SPAWNS
+        ? exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.spawner]
+        : exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner];
                 exports.director.UPGRADES_TIER_3 = [exports.manager, exports.bigCheese];
                 exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrapper, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander];
                 exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander];
@@ -16653,8 +16656,6 @@ c.SPECIAL_BOSS_SPAWNS
                 exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror];
                 exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
                 exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
-
-        exports.healer.UPGRADES_TIER_2 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic, exports.physician, exports.doctor];
 
 // To use the following branches, remove the /* and */ surrounding them.
 
@@ -16706,7 +16707,7 @@ exports.basic.UPGRADES_TIER_1.push();
 
         exports.flankGuard.UPGRADES_TIER_2.push();
                 exports.hexaTank.UPGRADES_TIER_3.push(exports.deathStar, exports.combo);
-                exports.triAngle.UPGRADES_TIER_3.push(exports.taser, exports.integrator, exports.defect, exports.quadAngle);
+                exports.triAngle.UPGRADES_TIER_3.push(exports.vulture, exports.integrator, exports.defect, exports.quadAngle);
                 exports.auto3.UPGRADES_TIER_3.push(exports.sniper3, exports.crowbar, exports.autoAuto3, exports.combo);
 
         exports.director.UPGRADES_TIER_2.push(exports.directordrive, exports.honcho);

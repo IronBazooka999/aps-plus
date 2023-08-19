@@ -11,7 +11,6 @@ if (c.DOMINATOR_LOOP) for (let loc of room.dom0) dominatorLoop.spawn(loc, -100, 
 let logger = new LagLogger();
 const gamemodeLoop = function() {
     logger.set();
-    // Thnaks to Damocles (Her discord - _damocles)
     if (c.HUNT) hunt.loop();
     if (c.TRAIN) train.loop();
     if (c.SPACE_MODE) moon.loop();

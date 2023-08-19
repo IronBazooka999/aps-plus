@@ -323,7 +323,6 @@ var bringToLife = my => {
     my.face();
     // Handle guns and turrets if we've got them
     for (let i = 0; i < my.guns.length; i++) my.guns[i].live();
-    for (let i = 0; i < my.turrets.length; i++) my.turrets[i].life();
     if (my.skill.maintain()) my.refreshBodyAttributes();
 };
 

@@ -29,6 +29,9 @@ class Vector {
     isShorterThan(d) {
         return this.x * this.x + this.y * this.y <= d * d;
     }
+    get lengthSquared() {
+        return Math.pow(this.x, 2) + Math.pow(this.y, 2);
+    }
     get length() {
         return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
     }
