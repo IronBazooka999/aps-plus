@@ -794,13 +794,13 @@ class Entity extends EventEmitter {
         player.body.kill();
     }
     ensureIsClass(str) {
-        if ("string" == typeof set) {
+        if ("string" == typeof str) {
             if (str in Class) {
                 return Class[str];
             }
             throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
         }
-        return str
+        return str;
     }
     define(set) {
         set = this.ensureIsClass(set);
