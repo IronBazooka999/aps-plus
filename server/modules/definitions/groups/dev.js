@@ -157,10 +157,6 @@ exports.diepTanks = {
     PARENT: [exports.testbedBase],
     LABEL: "Diep Tanks",
 };
-exports.diep2Tanks = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Diep2 Tanks",
-};
 exports.digDig = {
     PARENT: [exports.testbedBase],
     LABEL: "DigDig",
