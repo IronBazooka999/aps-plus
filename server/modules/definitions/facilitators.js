@@ -58,12 +58,6 @@ exports.skillSet = (args) => {
 
 // FUNCTIONS
 exports.dereference = type => {
-    let now = current[i];
-    if ("string" == typeof now) {
-        if (!(now in Class)) throw Error(`Definition ${now} is attempted to be gotten but does not exist!`);
-        now = Class[now];
-    }
-
     let output = JSON.parse(JSON.stringify(type));
     if (type.GUNS) {
         for (let i = 0; i < type.GUNS.length; i++) {
