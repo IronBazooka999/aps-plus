@@ -1,5 +1,5 @@
 # Open Source Arras
-Formerly known as APS++
+Formerly (and sometimes still) known as APS++
 
 ## Quick setup guide
 
