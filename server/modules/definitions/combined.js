@@ -1,6 +1,7 @@
 let fs = require('fs'),
-	groups = fs.readdirSync('./groups'),
-	addons = fs.readdirSync('./addons'),
+	path = require('path'),
+	groups = fs.readdirSync(path.resolve(__dirname, './groups')),
+	addons = fs.readdirSync(path.resolve(__dirname, './addons')),
 	Class = {},
 	definitionCount = 0;
 

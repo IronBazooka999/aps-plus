@@ -437,7 +437,7 @@ exports.makeSwarming = (type, name = -1) => {
         POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
-            TYPE: exports."minion",
+            TYPE: "minion",
             STAT_CALCULATOR: gunCalcNames.swarm,
         },
     };
