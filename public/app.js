@@ -750,7 +750,7 @@ function drawBar(x1, x2, y, width, color) {
     ctx.stroke();
 }
 // Sub-drawing functions
-function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = true) {
+function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderless, fill = true) {
     // Start drawing
     context.beginPath();
     if (sides instanceof Array) {
@@ -769,7 +769,7 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
             context.scale(radius, radius);
             context.lineWidth /= radius;
             context.rotate(angle);
-            context.stroke(path);
+            if (!borderless) context.stroke(path);
             if (fill) context.fill(path);
             context.restore();
             return;
@@ -781,13 +781,13 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
         let fillcolor = context.fillStyle;
         let strokecolor = context.strokeStyle;
         radius += context.lineWidth / 4;
-        context.arc(centerX, centerY, radius + context.lineWidth / 4, 0, 2 * Math.PI);
+        context.arc(centerX, centerY, radius + context.lineWidth / 4 * (!borderless), 0, 2 * Math.PI);
         context.fillStyle = strokecolor;
         context.fill();
         context.closePath();
         context.beginPath();
         context.fillStyle = fillcolor;
-        context.arc(centerX, centerY, radius - context.lineWidth / 4, 0, 2 * Math.PI);
+        context.arc(centerX, centerY, radius - context.lineWidth / 4 * (!borderless), 0, 2 * Math.PI);
         context.fill();
         context.closePath();
         return;
@@ -833,13 +833,13 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, fill = tr
         }
     }
     context.closePath();
-    context.stroke();
+    if (!borderless) context.stroke();
     if (fill) {
         context.fill();
     }
     context.lineJoin = "round";
 }
-function drawTrapezoid(context, x, y, length, height, aspect, angle) {
+function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless = false) {
     let h = [];
     h = aspect > 0 ? [height * aspect, height] : [height, -height * aspect];
     let r = [Math.atan2(h[0], length), Math.atan2(h[1], length)];
@@ -865,7 +865,8 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle) {
         y + l[0] * Math.sin(angle - r[0])
     );
     context.closePath();
-    context.stroke();
+    if (borderless != true)
+        context.stroke();
     context.fill();
 }
 // Entity drawing (this is a function that makes a function)
@@ -919,14 +920,16 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
             position = positions[i] / (g.aspect === 1 ? 2 : 1),
             gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
             gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
-            gunColor = g.color == null ? color.grey : getColor(g.color);
+            gunColor = g.color == null ? color.grey : getColor(g.color),
+            borderless = g.borderless;
         setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
-        drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot);
+        drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless);
     }
     // Draw body
     context.globalAlpha = 1;
     setColor(context, mixColors(getColor(instance.color), render.status.getColor(), render.status.getBlend()));
-    drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot);
+    let borderless = m.borderless;
+    drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, borderless);
     // Draw turrets abovus
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];

@@ -4,12 +4,14 @@ function rounder(val) {
 }
 // Define mocking up functions
 function getMockup(e, positionInfo) {
+    console.log(e.borderless);
     return {
         index: e.index,
         name: e.label,
         x: rounder(e.x),
         y: rounder(e.y),
         color: e.color,
+        borderless: e.borderless,
         shape: e.shapeData,
         size: rounder(e.size),
         realSize: rounder(e.realSize),
@@ -30,6 +32,7 @@ function getMockup(e, positionInfo) {
                 aspect: rounder(gun.aspect),
                 angle: rounder(gun.angle),
                 color: rounder(gun.color),
+                borderless: gun.borderless,
             };
         }),
         turrets: e.turrets.map(function(t) {
