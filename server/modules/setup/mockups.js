@@ -4,7 +4,6 @@ function rounder(val) {
 }
 // Define mocking up functions
 function getMockup(e, positionInfo) {
-    console.log(e.borderless);
     return {
         index: e.index,
         name: e.label,
