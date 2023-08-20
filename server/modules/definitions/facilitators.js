@@ -34,7 +34,7 @@ exports.setBuild = (build) => {
         throw new RangeError("Build must be made up of 10 numbers");
     return [6, 4, 3, 5, 2, 9, 0, 1, 8, 7].map((r) => skills[r]);
 };
-let { MAX_SKILL } = require("../config.js");
+let { MAX_SKILL } = require("../../config.js");
 let skcnv = {
     atk: 6,
     spd: 4,

@@ -3,11 +3,11 @@ module.exports = {
 	basePolygonHealth: 2,
 
 	// SKILL DEFINITIONS
-	dfltskl = 9,
-	smshskl = 12,
+	dfltskl: 9,
+	smshskl: 12,
 
 	// NAMES
-	statnames = {
+	statnames: {
 	    smasher: 1,
 	    drone: 2,
 	    necro: 3,
@@ -16,7 +16,7 @@ module.exports = {
 	    generic: 6,
 	    lancer: 7,
 	},
-	gunCalcNames = {
+	gunCalcNames: {
 	    default: 0,
 	    bullet: 1,
 	    drone: 2,
@@ -27,7 +27,7 @@ module.exports = {
 	    necro: 7,
 	    trap: 8,
 	},
-	base = {
+	base: {
 	    ACCEL: 1.6,
 	    SPEED: 5.25,
 	    HEALTH: 20,

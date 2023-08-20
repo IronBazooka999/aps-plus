@@ -1,5 +1,5 @@
 const { combineStats, skillSet } = require('../facilitators.js');
-const { base, gunCalcNames } = require('../constants.js');
+const { base, gunCalcNames, basePolygonDamage, basePolygonHealth, dfltskl, statnames } = require('../constants.js');
 const g = require('../gunvals.js');
 
 // TESTBED TANKS
