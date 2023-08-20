@@ -58,6 +58,12 @@ exports.skillSet = (args) => {
 
 // FUNCTIONS
 exports.dereference = type => {
+    let now = current[i];
+    if ("string" == typeof now) {
+        if (!(now in Class)) throw Error(`Definition ${now} is attempted to be gotten but does not exist!`);
+        now = Class[now];
+    }
+
     let output = JSON.parse(JSON.stringify(type));
     if (type.GUNS) {
         for (let i = 0; i < type.GUNS.length; i++) {
@@ -577,7 +583,7 @@ exports.makeCeption = (type, name = -1, options = {}) => {
         independent: true,
     };
     if (options.type != null) {
-        type = options.type;
+        turret.type = options.type;
     }
     if (options.size != null) {
         turret.size = options.size;
@@ -614,16 +620,16 @@ exports.makeCeption = (type, name = -1, options = {}) => {
     return output;
 }
 
-exports.makeDeco = (shapes, color = 16) => {
-    if (exports["deco" + shapes + "_" + color] == null) {
-        exports["deco" + shapes + "_" + color] = {
+exports.makeDeco = (shape, color = 16) => {
+    if (exports["deco" + shape + "_" + color] == null) {
+        exports["deco" + shape + "_" + color] = {
             PARENT: ["genericEntity"],
-            SHAPE: shapes,
+            SHAPE: shape,
             COLOR: color,
             INDEPENDENT: true,
         };
     }
-    return exports["deco" + shapes + "_" + color];
+    return exports["deco" + shape + "_" + color];
 }
 
 //unfinished lolo

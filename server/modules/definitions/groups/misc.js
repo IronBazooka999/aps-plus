@@ -2,6 +2,53 @@ const { combineStats, skillSet } = require('../facilitators.js');
 const { base, gunCalcNames } = require('../constants.js');
 const g = require('../gunvals.js');
 
+// OBSTACLES
+exports.rock = {
+    TYPE: "wall",
+    DAMAGE_CLASS: 1,
+    LABEL: "Rock",
+    FACING_TYPE: "turnWithSpeed",
+    SHAPE: -9,
+    BODY: {
+        PUSHABILITY: 0,
+        HEALTH: 10000,
+        SHIELD: 10000,
+        REGEN: 1000,
+        DAMAGE: 1,
+        RESIST: 100,
+        STEALTH: 1,
+    },
+    VALUE: 0,
+    SIZE: 60,
+    COLOR: 16,
+    VARIES_IN_SIZE: true,
+    ACCEPTS_SCORE: false,
+};
+exports.stone = {
+    PARENT: ["rock"],
+    LABEL: "Stone",
+    SIZE: 32,
+    SHAPE: -7,
+};
+exports.moon = {
+    PARENT: ["rock"],
+    LABEL: "Moon",
+    SIZE: 60,
+    SHAPE: 0,
+};
+exports.gravel = {
+    PARENT: ["rock"],
+    LABEL: "Gravel",
+    SIZE: 16,
+    SHAPE: -7,
+};
+exports.wall = {
+    PARENT: ["rock"],
+    LABEL: "Wall",
+    SIZE: 25,
+    SHAPE: 4,
+};
+
 // DOMINATORS
 exports.dominationBody = {
     LABEL: "",
