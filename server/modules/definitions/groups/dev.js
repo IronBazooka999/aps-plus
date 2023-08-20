@@ -153,10 +153,6 @@ exports.retrograde = {
     PARENT: [exports.testbedBase],
     LABEL: "Retrograde",
 };
-exports.diepTanks = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Diep Tanks",
-};
 exports.digDig = {
     PARENT: [exports.testbedBase],
     LABEL: "DigDig",
@@ -712,8 +708,7 @@ exports.developer.UPGRADES_TIER_0 = ["healer", "basic", "lancer", "gameAdminMenu
         exports.crasherGenerator.UPGRADES_TIER_0 = ["basic", "gameAdminMenu", "alphaPentagonGenerator", "eggGenerator"];
     exports.bossesMenu.UPGRADES_TIER_0 = ["sentries", "celestialBosses", "eliteBosses", "strangeBosses", "ironclad"];
         exports.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap"];
-    exports.retrograde.UPGRADES_TIER_0 = ["diepTanks", "digDig", "celestialBosses", "eliteBosses", "strangeBosses", "nostalgiaMenu", "scrappedMenu", "miscRetrograde"];
-        exports.diepTanks.UPGRADES_TIER_0 = ["diepTank"];
+    exports.retrograde.UPGRADES_TIER_0 = ["digDig", "celestialBosses", "eliteBosses", "strangeBosses", "nostalgiaMenu", "scrappedMenu", "miscRetrograde"];
         exports.celestialBosses.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia", "alviss", "tyr"];
         exports.eliteBosses.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner"];
         exports.strangeBosses.UPGRADES_TIER_0 = ["roguePalisade", "rogueArmada", "nestKeeper", "eliteSkimmer", "summoner"];
