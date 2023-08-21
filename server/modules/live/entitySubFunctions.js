@@ -1,5 +1,6 @@
 let Class = (function () {
-    const def = require("../../lib/definitions.js");
+    //const def = require("../../lib/definitions.js");
+    const def = require("../definitions/combined.js");
     let i = 0;
     for (let key in def) {
         if (!def.hasOwnProperty(key)) continue;

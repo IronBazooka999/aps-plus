@@ -1,19 +1,32 @@
 let fs = require('fs'),
-	groups = fs.readdirSync('./groups');
+	path = require('path'),
+	groups = fs.readdirSync(path.resolve(__dirname, './groups')),
+	addons = fs.readdirSync(path.resolve(__dirname, './addons')),
+	Class = {},
+	definitionCount = 0;
 
-module.exports = {};
-
+console.log(`Loading ${groups.length} groups...`);
 for (let filename of groups) {
+	console.log(`Loading group: ${filename}`);
 	let group = require('./groups/' + filename);
 	for (let key in group) {
-		if (module.exports[key]) {
-			console.warn("WARNING: " + key + ' is present in multiple definition groups!');
+		if (key in Class) {
+			console.warn(`WARNING: ${key} is present in multiple definition groups!`);
+		} else {
+			definitionCount++;
 		}
-		module.exports[key] = group[key];
+		Class[key] = group[key];
 	}
 }
 
-let definitionCount = Object.keys(module.exports).length;
+console.log(`Loading ${addons.length} addons...`);
+for (let filename of addons) {
+	if (!filename.endsWith('.js')) continue;
+	
+	console.log(`Loading addon: ${filename}`);
+
+	require('./addons/' + filename)({ Class });
+}
 
 // "Flattening" refers to removing PARENT attributes and applying the parents' attributes to the definition themselves, if not overwritten later on.
 if (c.flattenDefintions) {
@@ -23,8 +36,8 @@ if (c.flattenDefintions) {
 
 			// Support for string definition references
 	        if ("string" == typeof definition) {
-	            if (definition in module.exports) {
-	                definition = module.exports[definition];
+	            if (definition in Class) {
+	                definition = Class[definition];
 	            } else {
 	            	throw Error(`Definition ${definition} is attempted to be gotten but does not exist!`);
 	            }
@@ -47,10 +60,12 @@ if (c.flattenDefintions) {
 			return output;
 		};
 
-	for (let key in module.exports) {
-		flattened[key] = flatten(module.exports[key]);
+	for (let key in Class) {
+		flattened[key] = flatten(Class[key]);
 	}
-	module.exports = flattened;
+	Class = flattened;
+	definitionCount = Object.keys(Class).length;
 }
 
-console.log(`Combined ${groups.length} definition groups into ${definitionCount} definitions${c.flattenDefintions ? ' with flattening enabled' : ''}!`);
+console.log(`Combined ${groups.length} definition groups and ${addons.length} addons into ${definitionCount} ${c.flattenDefintions ? 'flattened ' : ''}definitions!`);
+module.exports = Class;

@@ -34,7 +34,7 @@ exports.setBuild = (build) => {
         throw new RangeError("Build must be made up of 10 numbers");
     return [6, 4, 3, 5, 2, 9, 0, 1, 8, 7].map((r) => skills[r]);
 };
-let { MAX_SKILL } = require("../config.js");
+let { MAX_SKILL } = require("../../config.js");
 let skcnv = {
     atk: 6,
     spd: 4,
@@ -431,7 +431,7 @@ exports.makeSwarming = (type, name = -1) => {
         POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
-            TYPE: exports."minion",
+            TYPE: "minion",
             STAT_CALCULATOR: gunCalcNames.swarm,
         },
     };
@@ -577,7 +577,7 @@ exports.makeCeption = (type, name = -1, options = {}) => {
         independent: true,
     };
     if (options.type != null) {
-        type = options.type;
+        turret.type = options.type;
     }
     if (options.size != null) {
         turret.size = options.size;
@@ -614,16 +614,16 @@ exports.makeCeption = (type, name = -1, options = {}) => {
     return output;
 }
 
-exports.makeDeco = (shapes, color = 16) => {
-    if (exports["deco" + shapes + "_" + color] == null) {
-        exports["deco" + shapes + "_" + color] = {
+exports.makeDeco = (shape, color = 16) => {
+    if (exports["deco" + shape + "_" + color] == null) {
+        exports["deco" + shape + "_" + color] = {
             PARENT: ["genericEntity"],
-            SHAPE: shapes,
+            SHAPE: shape,
             COLOR: color,
             INDEPENDENT: true,
         };
     }
-    return exports["deco" + shapes + "_" + color];
+    return exports["deco" + shape + "_" + color];
 }
 
 //unfinished lolo

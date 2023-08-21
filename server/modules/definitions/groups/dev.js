@@ -1,5 +1,5 @@
 const { combineStats, skillSet } = require('../facilitators.js');
-const { base, gunCalcNames } = require('../constants.js');
+const { base, gunCalcNames, basePolygonDamage, basePolygonHealth, dfltskl, statnames } = require('../constants.js');
 const g = require('../gunvals.js');
 
 // TESTBED TANKS
@@ -152,14 +152,6 @@ exports.memes = {
 exports.retrograde = {
     PARENT: [exports.testbedBase],
     LABEL: "Retrograde",
-};
-exports.diepTanks = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Diep Tanks",
-};
-exports.diep2Tanks = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Diep2 Tanks",
 };
 exports.digDig = {
     PARENT: [exports.testbedBase],
@@ -716,20 +708,12 @@ exports.developer.UPGRADES_TIER_0 = ["healer", "basic", "lancer", "gameAdminMenu
         exports.crasherGenerator.UPGRADES_TIER_0 = ["basic", "gameAdminMenu", "alphaPentagonGenerator", "eggGenerator"];
     exports.bossesMenu.UPGRADES_TIER_0 = ["sentries", "celestialBosses", "eliteBosses", "strangeBosses", "ironclad"];
         exports.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap"];
-    exports.retrograde.UPGRADES_TIER_0 = ["diepTanks", "digDig", "celestialBosses", "eliteBosses", "strangeBosses", "nostalgiaMenu", "scrappedMenu", "miscRetrograde"];
-        exports.diepTanks.UPGRADES_TIER_0 = ["diep2Tanks", "diepTank"];
-            exports.diep2Tanks.UPGRADES_TIER_0 = ["blaster", "gatlingGun", "machineFlank", "retroRifle", "buttbuttin", "blower", "quadTwin", "tornado", "subverter", "battery", "deathStar", "bonker", "protector", "doubleTrapGuard"];
-                exports.blaster.UPGRADES_TIER_3 = ["triBlaster", "splasher"];
-                exports.gatlingGun.UPGRADES_TIER_3 = ["retroSprayer", "accurator", "halfNHalf"];
-                exports.machineFlank.UPGRADES_TIER_3 = ["machineTriple", "halfNHalf"];
-                exports.retroRifle.UPGRADES_TIER_3 = ["sniperRifle", "rifleGuard", "spreadRifle"];
+    exports.retrograde.UPGRADES_TIER_0 = ["digDig", "celestialBosses", "eliteBosses", "strangeBosses", "nostalgiaMenu", "scrappedMenu", "miscRetrograde"];
         exports.celestialBosses.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia", "alviss", "tyr"];
         exports.eliteBosses.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner"];
         exports.strangeBosses.UPGRADES_TIER_0 = ["roguePalisade", "rogueArmada", "nestKeeper", "eliteSkimmer", "summoner"];
         exports.nostalgiaMenu.UPGRADES_TIER_0 = ["oldSpreadshot", "bentBoomer", "quadBuilder", "quintuplet", "vulcan", "sniper3", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire", "ransacker"];
-        exports.scrappedMenu.UPGRADES_TIER_0 = ["scrappedMenu2", "rocketeer", "crowbar", "peashooter", "autoTrapper", "megaTrapper", "railgun", "megaSpawner", "badDreadnought", "mender"];
-            exports.scrappedMenu2.UPGRADES_TIER_0 = ["scrappedMenu", "overcheese", "prodigy", "spawnerdrive", "rimfire", "productionist", "taser"];
-                exports.productionist.UPGRADES_TIER_0 = ["bismarck"];
+        exports.scrappedMenu.UPGRADES_TIER_0 = ["rocketeer", "crowbar", "peashooter", "autoTrapper", "megaTrapper", "railgun", "megaSpawner", "badDreadnought", "mender", "overcheese", "prodigy", "spawnerdrive", "rimfire", "productionist"];
         exports.miscRetrograde.UPGRADES_TIER_0 = ["tracker3", "tetraGunner", "worstTank"];
 
 // MISCELLANEOUS

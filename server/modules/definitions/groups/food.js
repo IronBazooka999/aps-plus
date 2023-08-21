@@ -1,9 +1,7 @@
 const { basePolygonDamage, basePolygonHealth } = require('../constants.js'),
     center = [0,0], // Centerpoint for SHAPE arrays
 
-// Thanks to Damocles
-// https://discord.com/channels/366661839620407297/508125275675164673/1090010998053818488
-makeRelic = (type, scale = 1) => {
+makeRelic = (type, scale = 1) => { // Code by Damocles (https://discord.com/channels/366661839620407297/508125275675164673/1090010998053818488)
     let relicCasing = {
         PARENT: ['genericEntity'],
         LABEL: 'Relic Casing',
