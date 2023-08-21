@@ -7,7 +7,8 @@ let fs = require('fs'),
         "css": "text/css",
         "html": "text/html",
         "md": "text/markdown",
-        //"png": "image/png",
+        "png": "image/png",
+        "ico": "image/x-icon"
     },
 wsServer = new (require('ws').WebSocketServer)({ noServer: true });
 server = require('http').createServer((req, res) => {
