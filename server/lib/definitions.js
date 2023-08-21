@@ -2890,6 +2890,7 @@ exports.autoTankGun = {
     BODY: {
         FOV: 3,
     },
+    TURRET_FACES_CLIENT: true,
     CONTROLLERS: [
         "canRepel",
         "onlyAcceptInArc",
@@ -7991,6 +7992,7 @@ exports.quadAngle = {
 exports.auto5 = {
     PARENT: [exports.genericTank],
     LABEL: "Auto-5",
+    TURRET_FACES_CLIENT: true,
     DANGER: 7,
     FACING_TYPE: "autospin",
     TURRETS: [
@@ -16340,7 +16342,7 @@ exports.colorMan = {
     COLOR: 36,
     TURRETS: [{
         POSITION: [20, -20, -20, 0, 0, 1],
-        TYPE: [exports.onlySquare, { COLOR: 20 }]
+        TYPE: [exports.onlySquare, { COLOR: 20, TURRET_FACES_CLIENT: true, }]
     },{
         POSITION: [20,  0 , -20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 21 }]

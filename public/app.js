@@ -899,14 +899,24 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
     context.lineJoin = "round";
     // Draw turrets beneath us
     for (let i = 0; i < m.turrets.length; i++) {
+        let turretFacesClient = m.turrets[i].turretFacesClient
         let t = m.turrets[i];
+        let isAutospinning = global.autoSpin
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
             : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
         if (!t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
+                facing = 0
+            if (isAutospinning && turretFacesClient) {
+                facing = instance.render.f + turretsObeyRot * rot;
+            } else
+            if (turretFacesClient) {
+                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            }
             //console.log('instance.name: ', instance.name, '\nfacing: ', facing, '\nrot: ', rot, '\nt.defaultAngle: ', t.defaultAngle, '\nsource.turrets[i].lerpedFacing: ', source.turrets[i].lerpedFacing, '\nturretsObeyRot: ', turretsObeyRot, '\nt.perceptionAngleIndependence: ', t.perceptionAngleIndependence);
             drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
@@ -930,11 +940,20 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
     // Draw turrets abovus
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];
+        let turretFacesClient = m.turrets[i].turretFacesClient
+        let isAutospinning = global.autoSpin
         if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
+                facing = 0
+            if (isAutospinning && turretFacesClient) {
+                facing = instance.render.f + turretsObeyRot * rot;
+            } else
+            if (turretFacesClient) {
+                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
-            //console.log('instance.name: ', instance.name, '\nfacing: ', facing, '\nrot: ', rot, '\nt.defaultAngle: ', t.defaultAngle, '\nsource.turrets[i].lerpedFacing: ', source.turrets[i].lerpedFacing, '\nturretsObeyRot: ', turretsObeyRot, '\nt.perceptionAngleIndependence: ', t.perceptionAngleIndependence);
+            }
             drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }

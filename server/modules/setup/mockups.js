@@ -14,6 +14,7 @@ function getMockup(e, positionInfo) {
         size: rounder(e.size),
         realSize: rounder(e.realSize),
         facing: rounder(e.facing),
+        turretFacesClient: e.settings.turretFacesClient,
         layer: e.layer,
         statnames: e.settings.skillNames,
         position: positionInfo,
