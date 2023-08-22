@@ -1826,7 +1826,7 @@ const gameDrawDead = () => {
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
         yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707;
     drawEntity((xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
-    textDead.taunt.draw("If you think you have a record, submit it using the link on the start menu. Make sure you have a screenshot.", x, y - 80, 8, color.guiwhite, "center");
+    textDead.taunt.draw("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
     textDead.level.draw("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
     textDead.score.draw("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);
     textDead.time.draw("⌚ Survived for " + util.timeForHumans(Math.round(global.finalLifetime.get())), x - 170, y + 55, 16, color.guiwhite);
