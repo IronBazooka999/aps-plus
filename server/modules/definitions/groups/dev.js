@@ -698,7 +698,7 @@ exports.Team100 = {
 exports.teams.UPGRADES_TIER_0.push("Team100");
 
 // TOKEN "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = ["healer", "basic", "lancer", "gameAdminMenu", "spectator", "eggGenerator", "specialTanksMenu", "bossesMenu", "memes", "retrograde", "miscEntities", "dominators", "levels", "teams"];
+exports.developer.UPGRADES_TIER_0 = ["healer", "basic", "gameAdminMenu", "spectator", "eggGenerator", "specialTanksMenu", "bossesMenu", "memes", "retrograde", "miscEntities", "dominators", "levels", "teams"];
     exports.gameAdminMenu.UPGRADES_TIER_0 = ["basic", "gameModMenu", "spectator", "eggGenerator", "developer", "specialTanksMenu", "bossesMenu", "memes"];
         exports.memes.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "seventeenagon"];
         exports.gameModMenu.UPGRADES_TIER_0 = ["basic", "betaTesterMenu", "spectator", "tankChangesMenu", "retrograde"];
