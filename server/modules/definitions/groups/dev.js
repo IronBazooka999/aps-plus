@@ -84,30 +84,6 @@ exports.spectator = {
         REGEN: 1e100,
     },
 };
-exports.gameAdmin = {
-    PARENT: ["menu"],
-    LABEL: "Game Admin",
-};
-exports.gameMod = {
-    PARENT: ["menu"],
-    LABEL: "Game Mod",
-};
-exports.betaTester = {
-    PARENT: ["menu"],
-    LABEL: "Beta Tester",
-};
-exports.tankChanges = {
-    PARENT: ["menu"],
-    LABEL: "Tank Changes",
-};
-exports.btTanks = {
-    PARENT: ["menu"],
-    LABEL: "BT Tanks",
-};
-exports.healers = {
-    PARENT: ["menu"],
-    LABEL: "Healers",
-};
 exports.bosses = {
     PARENT: ["menu"],
     LABEL: "Bosses",
@@ -563,13 +539,9 @@ exports.Team100 = {
 exports.teams.UPGRADES_TIER_0.push("Team100");
 
 // DEV "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = ["basic", "gameAdmin", "spectator", "eggGenerator", "healers", "miscEntities", "bosses", "fun", "levels", "teams"];
-    exports.gameAdmin.UPGRADES_TIER_0 = ["basic", "gameMod", "spectator"/*, "guillotine", "banHammer"*/];
-        exports.gameMod.UPGRADES_TIER_0 = ["basic", "betaTester", "spectator"/*, "guillotine"*/];
-            exports.betaTester.UPGRADES_TIER_0 = ["basic", "tankChanges"];
+exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerator", "miscEntities", "bosses", "fun", "levels", "teams"];
     exports.eggGenerator.UPGRADES_TIER_0 = ["basic", "squareGenerator", "crasherGenerator"];
         exports.crasherGenerator.UPGRADES_TIER_0 = ["basic", "gameAdmin", "alphaPentagonGenerator", "eggGenerator"];
-    exports.healers.UPGRADES_TIER_0 = ["healer", "medic", "ambulance", "surgeon", "paramedic", "physician", "doctor"];
     exports.miscEntities.UPGRADES_TIER_0 = ["baseProtector", "dominators", "mothership", "arenaCloser"];
         exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals"];
