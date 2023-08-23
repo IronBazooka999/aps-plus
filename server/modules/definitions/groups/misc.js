@@ -412,6 +412,461 @@ exports.arenaCloser = {
     ],
 };
 
+// OTHER TANKS THAT AREN'T INGAME FOR SOME REASON
+exports.oldSpreadshot = {
+  PARENT: ["genericTank"],
+  LABEL: "Old Spreadshot",
+  DANGER: 7,
+  GUNS: [
+    {
+      POSITION: [13, 4, 1, 0, -0.8, -75, 5 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [14.5, 4, 1, 0, -1.0, -60, 4 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [16, 4, 1, 0, -1.6, -45, 3 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [17.5, 4, 1, 0, -2.4, -30, 2 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [19, 4, 1, 0, -3.0, -15, 1 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [13, 4, 1, 0, 0.8, 75, 5 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [14.5, 4, 1, 0, 1.0, 60, 4 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [16, 4, 1, 0, 1.6, 45, 3 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [17.5, 4, 1, 0, 2.4, 30, 2 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [19, 4, 1, 0, 3.0, 15, 1 / 6],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.gunner,
+          g.arty,
+          g.twin,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Spread",
+      },
+    },
+    {
+      POSITION: [13, 10, 1.3, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.pound,
+          g.spreadmain,
+          g.spread,
+        ]),
+        TYPE: exports.bullet,
+        LABEL: "Pounder",
+      },
+    },
+  ],
+};
+exports.oldBentBoomer = {
+  PARENT: ["genericTank"],
+  DANGER: 7,
+  LABEL: "Old Bent Boomer",
+  STAT_NAMES: statnames.trap,
+  BODY: {
+    SPEED: 0.8 * base.SPEED,
+    FOV: 1.15 * base.FOV,
+  },
+  GUNS: [
+    {
+      POSITION: [8, 10, 1, 8, -2, -35, 0],
+    },
+    {
+      POSITION: [8, 10, 1, 8, 2, 35, 0],
+    },
+    {
+      POSITION: [2, 10, 1.3, 16, -2, -35, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.fast, g.twin]),
+        TYPE: exports.boomerang,
+      },
+    },
+    {
+      POSITION: [2, 10, 1.3, 16, 2, 35, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.fast, g.twin]),
+        TYPE: exports.boomerang,
+      },
+    },
+  ],
+};
+exports.quadBuilder = {
+  PARENT: ["genericTank"],
+  DANGER: 7,
+  LABEL: "Quad Builder",
+  STAT_NAMES: statnames.trap,
+  BODY: {
+    SPEED: 0.8 * base.SPEED,
+    FOV: 1.15 * base.FOV,
+  },
+  GUNS: [
+    {
+      POSITION: [14, 6, 1, 0, 0, 45, 0],
+    },
+    {
+      POSITION: [2, 6, 1.1, 14, 0, 45, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.weak]),
+        TYPE: exports.setTrap,
+      },
+    },
+    {
+      POSITION: [14, 6, 1, 0, 0, 135, 0],
+    },
+    {
+      POSITION: [2, 6, 1.1, 14, 0, 135, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.weak]),
+        TYPE: exports.setTrap,
+      },
+    },
+    {
+      POSITION: [14, 6, 1, 0, 0, 225, 0],
+    },
+    {
+      POSITION: [2, 6, 1.1, 14, 0, 225, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.weak]),
+        TYPE: exports.setTrap,
+      },
+    },
+    {
+      POSITION: [14, 6, 1, 0, 0, 315, 0],
+    },
+    {
+      POSITION: [2, 6, 1.1, 14, 0, 315, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.block, g.weak]),
+        TYPE: exports.setTrap,
+      },
+    },
+  ],
+};
+exports.weirdSpike = {
+  PARENT: ["genericTank"],
+  LABEL: "Weird Spike",
+  DANGER: 7,
+  BODY: {
+    DAMAGE: 1.15 * base.DAMAGE,
+    FOV: 1.05 * base.FOV,
+    DENSITY: 1.5 * base.DENSITY,
+  },
+  IS_SMASHER: true,
+  SKILL_CAP: [smshskl, 0, 0, 0, 0, smshskl, smshskl, smshskl, smshskl, smshskl],
+  STAT_NAMES: statnames.smasher,
+  TURRETS: [
+    {
+      POSITION: [20.5, 0, 0, 0, 360, 0],
+      TYPE: exports.weirdSpikeBody1,
+    },
+    {
+      POSITION: [20.5, 0, 0, 180, 360, 0],
+      TYPE: exports.weirdSpikeBody2,
+    },
+  ],
+};
+exports.oldCommanderGun = {
+  PARENT: ["genericTank"],
+  LABEL: "",
+  BODY: {
+    FOV: 3,
+  },
+  CONTROLLERS: ["nearestDifferentMaster"],
+  COLOR: 16,
+  MAX_CHILDREN: 6,
+  AI: {
+    NO_LEAD: true,
+    SKYNET: true,
+    FULL_VIEW: true,
+  },
+  GUNS: [
+    {
+      POSITION: [8, 14, 1.3, 8, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.commander]),
+        TYPE: exports.drone,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+      },
+    },
+  ],
+};
+exports.oldCommander = {
+  PARENT: ["genericTank"],
+  LABEL: "Old Commander",
+  STAT_NAMES: statnames.drone,
+  DANGER: 7,
+  BODY: {
+    FOV: 1.15 * base.FOV,
+  },
+  FACING_TYPE: "autospin",
+  TURRETS: [
+    {
+      POSITION: [16, 1, 0, 0, 0, 0],
+      TYPE: exports.oldCommanderGun,
+    },
+    {
+      POSITION: [16, 1, 0, 120, 0, 0],
+      TYPE: [
+        exports.oldCommanderGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+    {
+      POSITION: [16, 1, 0, 240, 0, 0],
+      TYPE: [
+        exports.oldCommanderGun,
+        {
+          INDEPENDENT: true,
+        },
+      ],
+    },
+  ],
+};
+exports.blunderbuss = {
+  PARENT: ["genericTank"],
+  LABEL: "Blunderbuss",
+  DANGER: 7,
+  BODY: exports.rifle.BODY,
+  GUNS: [
+    {
+      POSITION: [13, 4, 1, 0, -3, -9, 0.3],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.rifle,
+          g.blunderbuss,
+        ]),
+      },
+    },
+    {
+      POSITION: [15, 4, 1, 0, -2.5, -6, 0.2],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.rifle,
+          g.blunderbuss,
+        ]),
+      },
+    },
+    {
+      POSITION: [16, 4, 1, 0, -2, -3, 0.1],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.rifle,
+          g.blunderbuss,
+        ]),
+      },
+    },
+    {
+      POSITION: [13, 4, 1, 0, 3, 9, 0.3],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.rifle,
+          g.blunderbuss,
+        ]),
+      },
+    },
+    {
+      POSITION: [15, 4, 1, 0, 2.5, 6, 0.2],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.rifle,
+          g.blunderbuss,
+        ]),
+      },
+    },
+    {
+      POSITION: [16, 4, 1, 0, 2, 3, 0.1],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.sniper,
+          g.rifle,
+          g.blunderbuss,
+        ]),
+      },
+    },
+    {
+      POSITION: [25, 7, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        TYPE: exports.bullet,
+        SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle]),
+      },
+    },
+    {
+      POSITION: [14, 10.5, 1, 0, 0, 0, 0],
+    },
+  ],
+};
+exports.oldRimfire = {
+  PARENT: ["genericTank"],
+  LABEL: "Old Rimfire",
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [12, 5, 1, 0, 7.25, 15, 0.8],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.gunner, g.fast]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [12, 5, 1, 0, -7.25, -15, 0.8],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.gunner, g.fast]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [16, 5, 1, 0, 3.75, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.gunner, g.fast]),
+        TYPE: exports.bullet,
+      },
+    },
+    {
+      POSITION: [16, 5, 1, 0, -3.75, -0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.gunner, g.fast]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
+
 // BOTS
 exports.bot = {
     FACING_TYPE: "looseToTarget",
