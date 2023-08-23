@@ -412,7 +412,7 @@ exports.arenaCloser = {
     ],
 };
 
-// OTHER TANKS THAT AREN'T INGAME FOR SOME REASON
+// OLD TANKS
 exports.oldSpreadshot = {
   PARENT: ["genericTank"],
   LABEL: "Old Spreadshot",
@@ -862,6 +862,192 @@ exports.oldRimfire = {
       PROPERTIES: {
         SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.gunner, g.fast]),
         TYPE: exports.bullet,
+      },
+    },
+  ],
+};
+
+// SCRAPPED TANKS
+exports.autoTrapper = makeAuto(exports.trapper);
+exports.oldDreadnought = {
+  PARENT: [exports.genericTank],
+  LABEL: "Old Dreadnought",
+  DANGER: 7,
+  FACING_TYPE: "locksFacing",
+  STAT_NAMES: statnames.swarm,
+  BODY: {
+    FOV: base.FOV * 1.2,
+  },
+  TURRETS: [
+    {
+      /*  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [20, -4, 0, 0, 0, 0],
+      TYPE: exports.genericEntity,
+    },
+  ],
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [18, 8, 1, 0, 0, 0, 0.5],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.swarm]),
+        TYPE: exports.swarm,
+        STAT_CALCULATOR: gunCalcNames.swarm,
+      },
+    },
+    {
+      POSITION: [6, 16, 1, 16, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.swarm, g.fake]),
+        TYPE: exports.swarm,
+        STAT_CALCULATOR: gunCalcNames.swarm,
+      },
+    },
+    {
+      POSITION: [1, 3, 1, 3, 0, 180, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.twin,
+          g.puregunner,
+          g.machgun,
+          g.thruster,
+          [0.1, 3, 1, 1, 1, 1, 1, 1, 1, 0.075, 1, 2, 1],
+        ]),
+        TYPE: exports.bullet,
+      },
+    },
+  ],
+};
+exports.mender = {
+  PARENT: [exports.genericTank],
+  LABEL: "Mender",
+  DANGER: 7,
+  TOOLTIP: "Right click to heal yourself (use sparingly, has a long cooldown once used!)",
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [17, 3, 1, 0, -6, -7, 0.25],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Secondary",
+      },
+    },
+    {
+      POSITION: [17, 3, 1, 0, 6, 7, 0.75],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Secondary",
+      },
+    },
+    {
+      POSITION: [19, 12, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
+        TYPE: exports.bullet,
+        LABEL: "Heavy",
+      },
+    },
+    { POSITION: [17, 10, 1, 0, 0, 180, 0] },
+    {
+      POSITION: [5, 18, 1, -19, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([
+          g.basic,
+          g.pound,
+          g.destroy,
+          [2, 0, 1, 1, 1, -1, 1, 1, 1, 0.1, 1, 1, 1],
+        ]),
+        TYPE: [exports.bullet, { HEAL_MYSELF: true }],
+        ALT_FIRE: true,
+      },
+    },
+  ],
+  TURRETS: [
+    {
+      POSITION: [7, 0, 0, 0, 0, 1],
+      TYPE: makeDeco(3),
+    },
+  ],
+};
+exports.prodigy = {
+  PARENT: [exports.genericTank],
+  LABEL: "Prodigy",
+  DANGER: 7,
+  STAT_NAMES: statnames.generic,
+  SHAPE: 6,
+  MAX_CHILDREN: 14,
+  BODY: {
+    FOV: base.FOV * 1.15,
+  },
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [8, 11, 1.3, 6, 0, 60, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
+        TYPE: exports.sunchip,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+      },
+    },
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [8, 11, 1.3, 6, 0, 180, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
+        TYPE: exports.sunchip,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+      },
+    },
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [8, 11, 1.3, 6, 0, 300, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
+        TYPE: exports.sunchip,
+        AUTOFIRE: true,
+        SYNCS_SKILLS: true,
+        STAT_CALCULATOR: gunCalcNames.drone,
+      },
+    },
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [14, 9, 1, 0, 0, 0, 0],
+    },
+    {
+      POSITION: [4, 9, 1.5, 14, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.halfrange, g.slow]),
+        TYPE: exports.trap,
+        STAT_CALCULATOR: gunCalcNames.trap,
+      },
+    },
+    {
+      POSITION: [14, 9, 1, 0, 0, 120, 0],
+    },
+    {
+      POSITION: [4, 9, 1.5, 14, 0, 120, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.halfrange, g.slow]),
+        TYPE: exports.trap,
+        STAT_CALCULATOR: gunCalcNames.trap,
+      },
+    },
+    {
+      POSITION: [14, 9, 1, 0, 0, 240, 0],
+    },
+    {
+      POSITION: [4, 9, 1.5, 14, 0, 240, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.trap, g.halfrange, g.slow]),
+        TYPE: exports.trap,
+        STAT_CALCULATOR: gunCalcNames.trap,
       },
     },
   ],
