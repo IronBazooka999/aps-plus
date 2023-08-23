@@ -5,15 +5,13 @@ This is an open beta build of an advanced private server template for Arras.io, 
 
 This is **not** representative of the final product. Some things may not either be present or work correctly.
 
-## Quick setup guide
+## Requirements
 
-1. Install [node.js](https://nodejs.org/en) on your host machine
-2. Install [ws](https://www.npmjs.com/package/ws) after node.js is installed
-3. [Download the repository](https://github.com/Taureon/aps-plus-plus/archive/refs/heads/main.zip)
-4. Unzip the download
-5. Open run.bat
-6. Go to localhost:3000 in your favourite web browser while the command prompt is still open
-7. Play the game
+In order to run your server via localhost, you will need to install these first:
+- [Node.js v16 or later](https://nodejs.org/en)
+- [ws](https://www.npmjs.com/package/ws)
+
+Once the required software is installed open run.bat, and assuming there aren't any errors, your server will start up. Go to localhost:3000 in your favourite web browser (keep the command prompt open, closing it will shut down the server) to play.
 
 ## Useful Tools
 
