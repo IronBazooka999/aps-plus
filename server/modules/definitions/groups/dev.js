@@ -3,8 +3,8 @@ const { base, gunCalcNames, basePolygonDamage, basePolygonHealth, dfltskl, statn
 const g = require('../gunvals.js');
 
 // TESTBED TANKS
-exports.testbedBase = {
-    PARENT: [exports.genericTank],
+exports.menu = {
+    PARENT: ["genericTank"],
     LABEL: "",
     RESET_UPGRADES: true,
     SKILL_CAP: [
@@ -33,7 +33,7 @@ exports.testbedBase = {
     ],
 };
 exports.developer = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Developer",
     BODY: {
         SHIELD: 1000,
@@ -65,53 +65,8 @@ exports.developer = {
         },
     ],
 };
-exports.developerB = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Developer B",
-    BODY: {
-        SHIELD: 1000,
-        REGEN: 10,
-        HEALTH: 100,
-        DAMAGE: 10,
-        DENSITY: 20,
-        FOV: 2,
-    },
-    SHAPE: [
-        [-1, -0.8],
-        [-0.8, -1],
-        [0.8, -1],
-        [1, -0.8],
-        [0.2, 0],
-        [1, 0.8],
-        [0.8, 1],
-        [-0.8, 1],
-        [-1, 0.8],
-    ],
-    GUNS: [
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [18, 10, -1.4, 0, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.op]),
-                TYPE: exports.developerBullet,
-            },
-        },
-    ],
-};
-exports.gameAdminMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Game Admin Menu",
-};
-exports.gameModMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Game Mod Menu",
-};
-exports.betaTesterMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Beta Tester Menu",
-};
 exports.spectator = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Spectator",
     ALPHA: 0,
     CAN_BE_ON_LEADERBOARD: false,
@@ -129,96 +84,92 @@ exports.spectator = {
         REGEN: 1e100,
     },
 };
-exports.tankChangesMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Tank Changes Menu",
+exports.gameAdmin = {
+    PARENT: ["menu"],
+    LABEL: "Game Admin",
 };
-exports.btTanksMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "BT Tanks Menu",
+exports.gameMod = {
+    PARENT: ["menu"],
+    LABEL: "Game Mod",
 };
-exports.specialTanksMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Special Tanks Menu",
+exports.betaTester = {
+    PARENT: ["menu"],
+    LABEL: "Beta Tester",
 };
-exports.bossesMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Bosses Menu",
+exports.tankChanges = {
+    PARENT: ["menu"],
+    LABEL: "Tank Changes",
 };
-exports.memes = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Memes",
+exports.btTanks = {
+    PARENT: ["menu"],
+    LABEL: "BT Tanks",
 };
-exports.retrograde = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Retrograde",
-};
-exports.digDig = {
-    PARENT: [exports.testbedBase],
-    LABEL: "DigDig",
+exports.healers = {
+    PARENT: ["menu"],
+    LABEL: "Healers",
 };
 exports.bosses = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Bosses",
 };
-exports.celestialBosses = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Celestial Bosses",
+exports.fun = {
+    PARENT: ["menu"],
+    LABEL: "Fun",
 };
-exports.eliteBosses = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Elite Bosses",
+exports.bosses = {
+    PARENT: ["menu"],
+    LABEL: "Bosses",
 };
-exports.strangeBosses = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Strange Bosses",
+exports.terrestrials = {
+    PARENT: ["menu"],
+    LABEL: "Terrestrials",
 };
-exports.diepBosses = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Diep Bosses",
+exports.celestials = {
+    PARENT: ["menu"],
+    LABEL: "Celestials",
 };
-exports.taleOfDiepBosses = {
-    PARENT: [exports.testbedBase],
-    LABEL: "ToD Bosses",
+exports.eternals = {
+    PARENT: ["menu"],
+    LABEL: "Eternals",
+};
+exports.elites = {
+    PARENT: ["menu"],
+    LABEL: "Elites",
+};
+exports.mysticals = {
+    PARENT: ["menu"],
+    LABEL: "Mysticals",
+};
+exports.nesters = {
+    PARENT: ["menu"],
+    LABEL: "Nesters",
+};
+exports.rogues = {
+    PARENT: ["menu"],
+    LABEL: "Rogues",
 };
 exports.otherTanks = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Tanks",
 };
-exports.nostalgiaMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Nostalgia Menu",
+exports.oldTanks = {
+    PARENT: ["menu"],
+    LABEL: "Old Tanks",
 };
-exports.scrappedMenu = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Scrapped Menu",
-};
-exports.scrappedMenu2 = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Scrapped Menu 2",
-};
-exports.miscRetrograde = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Misc Retrograde",
-};
-exports.finalBosses = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Final Bosses",
+exports.scrappedTanks = {
+    PARENT: ["menu"],
+    LABEL: "Scrapped Tanks",
 };
 exports.miscEntities = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Misc Entities",
 };
 exports.dominators = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Dominators",
 };
-exports.nostalgiaMenu2 = {
-    PARENT: [exports.testbedBase],
-    LABEL: "Nostalgia Menu 2",
-};
 exports.sentries = {
-    PARENT: [exports.testbedBase],
+    PARENT: ["menu"],
     LABEL: "Sentries",
 };
 
@@ -494,93 +445,7 @@ exports.seventeenagon = {
     SHAPE: 17
 };
 
-// JOKE TANKS
-exports.wifeBeater = {
-    PARENT: ["genericTank"],
-    LABEL: "Wife Beater",
-    DANGER: 8,
-    COLOR: 33,
-    STAT_NAMES: statnames.drone,
-    BODY: {
-        SPEED: 0.8 * base.SPEED,
-        FOV: 1.1 * base.FOV,
-    },
-    MAX_CHILDREN: 16,
-    GUNS: [
-        {
-            POSITION: [6, 12, 1.2, 8, 0, 90, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.over]),
-                TYPE: "drone",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.drone,
-                WAIT_TO_CYCLE: true,
-            },
-        },
-        {
-            POSITION: [6, 12, 1.2, 8, 0, 180, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.over]),
-                TYPE: "drone",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.drone,
-                WAIT_TO_CYCLE: true,
-            },
-        },
-        {
-            POSITION: [6, 12, 1.2, 8, 0, 270, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.over]),
-                TYPE: "drone",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.drone,
-                WAIT_TO_CYCLE: true,
-            },
-        },
-        {
-            POSITION: [6, 12, 1.2, 8, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.over]),
-                TYPE: "drone",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.drone,
-                WAIT_TO_CYCLE: true,
-            },
-        },
-    ],
-};
-exports.CONQ = {
-    PARENT: ["genericTank"],
-    LABEL: "CONQ!!!",
-    DANGER: 8,
-    COLOR: 25,
-    BODY: {
-        SPEED: 0.8 * base.SPEED,
-    },
-    GUNS: [
-        {
-            POSITION: [20.5, 19.5, 1, 0, 0, 180, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni]),
-                TYPE: "bullet",
-            },
-        },
-        {
-            POSITION: [18, 18, 1, 0, 0, 0, 0],
-        },
-        {
-            POSITION: [2, 18, 1.2, 18, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.trap, g.block, g.construct]),
-                TYPE: "setTrap",
-            },
-        },
-    ],
-};
+// FUN
 exports.armyOfOneBullet = {
     PARENT: ["bullet"],
     LABEL: "Unstoppable",
@@ -660,7 +525,7 @@ exports.godbasic = {
 };
 
 exports.levels = {
-    PARENT: ["testbedBase"],
+    PARENT: ["main"],
     LABEL: "Levels",
     UPGRADES_TIER_0: ["developer"]
 };
@@ -675,7 +540,7 @@ for (let i = 0; i < 186; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrel
 }
 
 exports.teams = {
-    PARENT: ["testbedBase"],
+    PARENT: ["menu"],
     LABEL: "Teams",
     UPGRADES_TIER_0: ["developer"]
 };
@@ -697,25 +562,25 @@ exports.Team100 = {
 };
 exports.teams.UPGRADES_TIER_0.push("Team100");
 
-// TOKEN "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = ["healer", "basic", "gameAdminMenu", "spectator", "eggGenerator", "specialTanksMenu", "bossesMenu", "memes", "retrograde", "miscEntities", "dominators", "levels", "teams"];
-    exports.gameAdminMenu.UPGRADES_TIER_0 = ["basic", "gameModMenu", "spectator", "eggGenerator", "developer", "specialTanksMenu", "bossesMenu", "memes"];
-        exports.memes.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "seventeenagon"];
-        exports.gameModMenu.UPGRADES_TIER_0 = ["basic", "betaTesterMenu", "spectator", "tankChangesMenu", "retrograde"];
-            exports.betaTesterMenu.UPGRADES_TIER_0 = ["basic", "tankChangesMenu", "retrograde"];
-                exports.tankChangesMenu.UPGRADES_TIER_0 = [];
+// DEV "UPGRADE PATHS"
+exports.developer.UPGRADES_TIER_0 = ["basic", "gameAdmin", "spectator", "eggGenerator", "healers", "miscEntities", "bosses", "fun", "levels", "teams"];
+    exports.gameAdmin.UPGRADES_TIER_0 = ["basic", "gameMod", "spectator"/*, "guillotine", "banHammer"*/];
+        exports.gameMod.UPGRADES_TIER_0 = ["basic", "betaTester", "spectator"/*, "guillotine"*/];
+            exports.betaTester.UPGRADES_TIER_0 = ["basic", "tankChanges"];
     exports.eggGenerator.UPGRADES_TIER_0 = ["basic", "squareGenerator", "crasherGenerator"];
-        exports.crasherGenerator.UPGRADES_TIER_0 = ["basic", "gameAdminMenu", "alphaPentagonGenerator", "eggGenerator"];
-    exports.bossesMenu.UPGRADES_TIER_0 = ["sentries", "celestialBosses", "eliteBosses", "strangeBosses", "ironclad"];
+        exports.crasherGenerator.UPGRADES_TIER_0 = ["basic", "gameAdmin", "alphaPentagonGenerator", "eggGenerator"];
+    exports.healers.UPGRADES_TIER_0 = ["healer", "medic", "ambulance", "surgeon", "paramedic", "physician", "doctor"];
+    exports.miscEntities.UPGRADES_TIER_0 = ["baseProtector", "dominators", "mothership", "arenaCloser"];
+        exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
+    exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals"];
         exports.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap"];
-    exports.retrograde.UPGRADES_TIER_0 = ["digDig", "celestialBosses", "eliteBosses", "strangeBosses", "nostalgiaMenu", "scrappedMenu", "miscRetrograde"];
-        exports.celestialBosses.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia", "alviss", "tyr"];
-        exports.eliteBosses.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner"];
-        exports.strangeBosses.UPGRADES_TIER_0 = ["roguePalisade", "rogueArmada", "nestKeeper", "eliteSkimmer", "summoner"];
-        exports.nostalgiaMenu.UPGRADES_TIER_0 = ["oldSpreadshot", "bentBoomer", "quadBuilder", "quintuplet", "vulcan", "sniper3", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire", "ransacker"];
-        exports.scrappedMenu.UPGRADES_TIER_0 = ["rocketeer", "crowbar", "peashooter", "autoTrapper", "megaTrapper", "railgun", "megaSpawner", "badDreadnought", "mender", "overcheese", "prodigy", "spawnerdrive", "rimfire", "productionist"];
-        exports.miscRetrograde.UPGRADES_TIER_0 = ["tracker3", "tetraGunner", "worstTank"];
-
-// MISCELLANEOUS
-exports.miscEntities.UPGRADES_TIER_0 = ["dominators", "baseProtector", "mothership", "arenaCloser"];
-exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
+        exports.elites.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner", "eliteSkimmer"];
+        exports.mysticals.UPGRADES_TIER_0 = [/*"sorcerer", */"summoner"/*, "enchantress", "exorcistor"*/];
+        exports.nesters.UPGRADES_TIER_0 = ["nestKeeper"/*, "nestWarden", "nestGuardian"*/];
+        exports.rogues.UPGRADES_TIER_0 = ["roguePalisade", "rogueArmada", "alviss", "tyr"/*, "fiolnir"*/];
+        exports.terrestrials.UPGRADES_TIER_0 = [/*"ares", "gersemi", "ezekiel", "eris", "selene"*/];
+        exports.celestials.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia"];
+        exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok", "kronos"*/];
+    exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
+    exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "badDreadnought", "mender", "prodigy"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "seventeenagon", "tracker3", "tetraGunner", "worstTank"];
