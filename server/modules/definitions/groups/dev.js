@@ -582,5 +582,5 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "gameAdmin", "spectator", "eggGene
         exports.celestials.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia"];
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok", "kronos"*/];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
-    exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "badDreadnought", "mender", "prodigy"];
+    exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
     exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "seventeenagon", "tracker3", "tetraGunner", "worstTank"];
