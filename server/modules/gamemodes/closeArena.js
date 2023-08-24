@@ -9,9 +9,11 @@ function closeArena() {
     if (arenaClosed) return;
     sockets.broadcast("Arena closed: No players may join!");
     global.arenaClosed = true;
-    loopThrough(entities, function killBots(entry) {
-        if (entry.isBot) entry.kill();
-    });
+    for (let i = 0; i < entities.length; i++) {
+        if (entities[i].isBot) {
+            entities[i].kill();
+        }
+    }
     for (let i = 0; i < 15; i++) {
         let angle = ((Math.PI * 2) / 15) * i;
         let o = new Entity({
@@ -37,18 +39,19 @@ function closeArena() {
         o.name = "Arena Closer";
     }
     let ticks = 0;
-    loop = setInterval(function checkSurvivors() {
+    loop = setInterval(() => {
         ticks++;
         if (ticks >= 240) return close();
         let alive = false;
-        loopThrough(entities, function amIAPlayer(instance, index) {
+        for (let i = 0; i < entities.length; i++) {
+            let instance = entities[i];
             if (
-                instance.isPlayer ||
-                (instance.isDominator && instance.team !== -100) ||
-                instance.isMothership
-            )
+                instance.isPlayer || instance.isMothership ||
+                (instance.isDominator && instance.team !== -101)
+            ) {
                 alive = true;
-        });
+            }
+        }
         if (!alive) close();
     }, 500);
 }

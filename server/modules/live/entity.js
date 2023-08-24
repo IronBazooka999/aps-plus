@@ -876,9 +876,11 @@ class Entity extends EventEmitter {
             this.team = set.TEAM;
             if (!sockets.players.length) {
                 const _entity = this;
-                loopThrough(sockets.players, function (player) {
-                    if (player.body.id == _entity.id) player.team = -_entity.team;
-                });
+                for (let i = 0; i < sockets.players.length; i++) {
+                    if (sockets.players[i].body.id == _entity.id) {
+                        sockets.players[i].team = -_entity.team;
+                    }
+                }
             }
         }
         if (set.VARIES_IN_SIZE != null) {
@@ -1555,7 +1557,7 @@ class Entity extends EventEmitter {
                     ? "a visiting " + this.label : util.addArticle(this.label)
                 : this.master.name + "'s " + this.label;
             // Calculate the jackpot
-            let jackpot = Math.ceil(util.getJackpot(this.skill.score) / this.collisionArray.length);
+            let jackpot = util.getJackpot(this.skill.score) / this.collisionArray.length;
             // Now for each of the things that kill me...
             for (let i = 0; i < this.collisionArray.length; i++) {
                 let instance = this.collisionArray[i];

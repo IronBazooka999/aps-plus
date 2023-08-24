@@ -244,13 +244,12 @@ function incoming(message, socket) {
             //         room.width / 2 - player.body.x,
             //         room.height / 2 - player.body.y
             //     );
-            //     target = rotatePoint(
-            //         {
-            //             x: m[0],
-            //             y: m[1],
-            //         },
-            //         -spaceOffsetAngle
-            //     );
+            //     let vecLength = Math.sqrt(Math.pow(m[0], 2) + Math.pow(m[1], 2));
+            //     vecAngle = Math.atan2(m[1], m[0]) - spaceOffsetAngle;
+            //     target = {
+            //         x: Math.cos(angle) * length,
+            //         y: Math.sin(angle) * length,
+            //     };
             // }
             // Put the new target in
             player.target = target;
@@ -801,12 +800,12 @@ const spawn = (socket, name) => {
                     possiblities.push(i);
                 }
             }*/
-            let team = c.HUNT ? 1 : getTeam(1);
+            let team = c.HUNT ? 1 : getWeakestTeam(1);
             // Choose from one of the least ones
             if (player.team == null || (player.team != null && player.team !== team && global.defeatedTeams.includes(-player.team))
             ) {
                 player.team = team;
-                player.color = [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3
+                player.color = getTeamColor(team);
             }
             if (socket.party) {
                 let team = socket.party / room.partyHash;
@@ -866,7 +865,7 @@ const spawn = (socket, name) => {
         case "tdm":
             {
                 body.team = -player.team;
-                body.color = [10, 11, 12, 15, 25, 26, 27, 28][player.team - 1];
+                body.color = getTeamColor(body.team);
             }
             break;
         default: {
@@ -1273,18 +1272,15 @@ let minimapTeams = teamIDs.map((team) =>
 let leaderboard = new Delta(6, () => {
     let list = [];
     if (c.TAG)
-        for (let i = 0; i < c.TEAMS; i++) {
-            let teamNames = ["BLUE", "GREEN", "RED", "PURPLE"];
-            let teamColors = [10, 11, 12, 15, 25, 26, 27, 28];
+        for (let id = 0; id < c.TEAMS; id++) {
+            let team = -id - 1;
             list.push({
-                id: i,
-                skill: {
-                    score: 0,
-                },
+                id,
+                skill: { score: 0 },
                 index: Class.tagMode.index,
-                name: teamNames[i],
-                color: teamColors[i],
-                team: -i - 1,
+                name: getTeamName(team),
+                color: getTeamColor(team),
+                team
             });
         }
     for (let instance of entities) {

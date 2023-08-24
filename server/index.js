@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+Error.stackTraceLimit = Infinity;
 let enviroment = require('./lib/dotenv.js')(fs.readFileSync(path.join(__dirname, '../.env')).toString());
 for (let key in enviroment) {
     process.env[key] = enviroment[key];
@@ -185,7 +186,9 @@ const gameloop = () => {
         grid.update();
         // Run collisions in each grid
         const pairs = grid.queryForCollisionPairs();
-        loopThrough(pairs, collide);
+        for (let i = 0; i < pairs.length; i++) {
+            collide(pairs[i]);
+        }
     }
     logs.collide.mark();
     // Do entities life
@@ -197,12 +200,11 @@ const gameloop = () => {
     purgeEntities();
     room.lastCycle = util.time();
     ticks++;
-    if (isEven(ticks)) {
-        loopThrough(sockets.players, function (instance) {
-            instance.socket.view.gazeUpon();
-            instance.socket.lastUptime = Infinity;
-        });
-        if (Math.min(1, (global.fps / roomSpeed / 1000) * 30) < 0.8) antiLagbot();
+    if (ticks & 1) {
+        for (let i = 0; i < sockets.players.length; i++) {
+            sockets.players[i].socket.view.gazeUpon();
+            sockets.players[i].socket.lastUptime = Infinity;
+        }
     }
 };
 
@@ -401,7 +403,7 @@ for (let team = 1; team < c.TEAMS + 1; team++) {
         let o = new Entity(loc);
         o.define(Class.baseProtector);
         o.team = -team;
-        o.color = [10, 11, 12, 15, 25, 26, 27, 28][team - 1];
+        o.color = getTeamColor(-team);
     });
 }
 
@@ -454,7 +456,7 @@ let makenpcs = () => {
         if (c.RANDOM_COLORS && room.gameMode === "ffa") {
             color = Math.floor(Math.random() * 20);
         } else if (room.gameMode === "tdm") {
-            team = getTeam(0);
+            team = getWeakestTeam(0);
             if (room["bas" + team].length) {
                 let loc;
                 do {
@@ -464,8 +466,8 @@ let makenpcs = () => {
                 o.y = loc.y;
             }
             if (c.HUNT) team = 1;
-            color = [10, 11, 12, 15, 25, 26, 27, 28][team - 1];
             team = -team;
+            color = getTeamColor(team);
         }
         o.define(Class.bot);
         o.define(Class.basic);
@@ -674,10 +676,15 @@ const maintainloop = () => {
     makenpcs();
     makefood();
     // Regen health and update the grid
-    loopThrough(entities, function (instance) {
-        if (instance.shield.max) instance.shield.regenerate();
-        if (instance.health.amount) instance.health.regenerate(instance.shield.max && instance.shield.max === instance.shield.amount);
-    });
+    for (let i = 0; i < entities.length; i++) {
+        let instance = entities[i];
+        if (instance.shield.max) {
+            instance.shield.regenerate();
+        }
+        if (instance.health.amount) {
+            instance.health.regenerate(instance.shield.max && instance.shield.max === instance.shield.amount);
+        }
+    }
 };
 
 // Bring it to life

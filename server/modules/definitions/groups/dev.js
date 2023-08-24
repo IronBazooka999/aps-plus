@@ -501,7 +501,7 @@ exports.godbasic = {
 };
 
 exports.levels = {
-    PARENT: ["main"],
+    PARENT: ["menu"],
     LABEL: "Levels",
     UPGRADES_TIER_0: ["developer"]
 };
@@ -525,18 +525,18 @@ for (let i = 1; i <= c.TEAMS; i++) {
     exports["Team" + TEAM] = {
         PARENT: ["teams"],
         TEAM: -TEAM,
-        COLOR: [10, 11, 12, 15, 25, 26, 27, 28][TEAM - 1],
+        COLOR: getTeamColor(-TEAM),
         LABEL: "Team " + TEAM
     };
     exports.teams.UPGRADES_TIER_0.push(exports["Team" + TEAM]);
 }
-exports.Team100 = {
+exports.Team101 = {
     PARENT: ["teams"],
-    TEAM: -100,
+    TEAM: -101,
     COLOR: 3,
     LABEL: "Boss Team"
 };
-exports.teams.UPGRADES_TIER_0.push("Team100");
+exports.teams.UPGRADES_TIER_0.push("Team101");
 
 // DEV "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerator", "miscEntities", "bosses", "fun", "levels", "teams"];

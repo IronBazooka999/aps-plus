@@ -1,3 +1,6 @@
+const { gunCalcNames } = require('./constants.js');
+const g = require('./gunvals.js');
+
 // GUN DEFINITIONS
 exports.combineStats = function (arr) {
     try {
@@ -532,7 +535,11 @@ exports.makeTriSwarming = (type, name = -1) => {
 
 // AUTO FUNCTIONS
 exports.makeAuto = (type, name = -1, options = {}) => {
-    let turret = { type: "autoTurret", size: 10, independent: true };
+    let turret = {
+        type: "autoTurret",
+        size: 10,
+        independent: true
+    };
     if (options.type != null) {
         turret.type = options.type;
     }
