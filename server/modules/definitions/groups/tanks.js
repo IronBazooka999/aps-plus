@@ -104,7 +104,7 @@ exports.auto4gun = {
     ],
 };
 exports.bigauto4gun = {
-    PARENT: [exports.genericTank],
+    PARENT: ["genericTank"],
     LABEL: "",
     CONTROLLERS: [
         "canRepel",
