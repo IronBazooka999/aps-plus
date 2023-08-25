@@ -2841,7 +2841,6 @@ exports.autoTankGun = {
     BODY: {
         FOV: 3,
     },
-    TURRET_FACES_CLIENT: true,
     CONTROLLERS: [
         "canRepel",
         "onlyAcceptInArc",
@@ -7945,7 +7944,6 @@ exports.quadAngle = {
 exports.auto5 = {
     PARENT: [exports.genericTank],
     LABEL: "Auto-5",
-    TURRET_FACES_CLIENT: true,
     DANGER: 7,
     FACING_TYPE: "autospin",
     TURRETS: [
@@ -16295,7 +16293,7 @@ exports.colorMan = {
     COLOR: 36,
     TURRETS: [{
         POSITION: [20, -20, -20, 0, 0, 1],
-        TYPE: [exports.onlySquare, { COLOR: 20, TURRET_FACES_CLIENT: true, }]
+        TYPE: [exports.onlySquare, { COLOR: 20 }]
     },{
         POSITION: [20,  0 , -20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 21 }]
@@ -16325,6 +16323,32 @@ exports.seventeenagon = {
     LABEL: "Seventeenagon",
     SHAPE: 17
 };
+
+exports.aimToCursorMan = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Turret Faces Client Test',
+    SHAPE: 4,
+    COLOR: 36,
+    TURRETS: [{
+        POSITION: [15, 0, 0, 0, 0, 1],
+        TYPE: [exports.onlySquare, {
+            COLOR: Math.floor(Math.random() * 38),
+            TURRET_FACES_CLIENT: true,
+        }]
+    }, {
+        POSITION: [15, 0, 20, 0, 0, 1],
+        TYPE: [exports.onlySquare, {
+            COLOR: Math.floor(Math.random() * 38),
+            TURRET_FACES_CLIENT: true,
+        }]
+    }, {
+        POSITION: [15, 0, -20, 0, 0, 1],
+        TYPE: [exports.onlySquare, {
+            COLOR: Math.floor(Math.random() * 38),
+            TURRET_FACES_CLIENT: true,
+        }]
+    }]
+}
 
 // JOKE TANKS
 exports.wifeBeater = {
@@ -16532,7 +16556,7 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team100);
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
