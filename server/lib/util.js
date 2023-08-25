@@ -69,7 +69,7 @@ exports.sumArray = arr => {
 
 exports.signedSqrt = x => Math.sign(x) * Math.sqrt(Math.abs(x))
 
-exports.getJackpot = x => x > 26300 * 1.5 ? Math.pow(x - 26300, 0.85) + 26300 : x / 1.5
+exports.getJackpot = x => x > 39450 ? Math.pow(x - 26300, 0.85) + 26300 : x / 1.5
 
 exports.serverStartTime = Date.now()
 
@@ -78,9 +78,7 @@ exports.time = () => Date.now() - exports.serverStartTime
 
 // create a custom timestamp format for log statements
 exports.log = text => console.log("[" + (exports.time() / 1000).toFixed(3) + "]: " + text)
-
 exports.warn = text => console.log("[" + (exports.time() / 1000).toFixed(3) + "]: " + "[WARNING] " + text)
-
 exports.error = text => console.log(text)
 
 exports.remove = (array, index) => {

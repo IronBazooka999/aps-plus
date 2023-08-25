@@ -23,8 +23,8 @@ class ManHunt {
         if (this.leaderIDs.includes(leader.id)) return;
 
         // apply buffs to them
-        leader.team = -2;
-        leader.color = [10, 11, 12, 15, 25, 26, 27, 28][-leader.team - 1];
+        leader.team = -9;
+        leader.color = getTeamColor(leader.team);
         leader.skill.points += 18;
 
         // if this guy died then remove them from the leader ids

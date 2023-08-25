@@ -18,49 +18,32 @@ global.entitiesToAvoid = [];
 global.grid = new hshg.HSHG();
 global.arenaClosed = false;
 global.mockupsLoaded = false;
-global.nextTagBotTeam = null;
-global.getTeam = function getTeam(type = 0) { // 0 - Bots only, 1 - Players only, 2 - all
-    const teamData = {};
-    for (let i = 0; i < c.TEAMS; i++) teamData[i + 1] = 0;
+global.getWeakestTeam = (type = 0) => { // 0 - Bots only, 1 - Players only, 2 - all
+    let teamcounts = {};
+    for (let i = 0; i < c.TEAMS; i++) {
+        teamcounts[i + 1] = 0;
+    }
     if (type !== 1) {
-        for (const o of entities) {
+        for (let o of entities) {
             if (o.isBot && -o.team > 0 && -o.team <= c.TEAMS) {
-                teamData[-o.team]++;
+                teamcounts[-o.team]++;
             }
         }
     }
     if (type !== 0) {
         for (let { socket } of sockets.players) {
             if (socket.rememberedTeam > 0 && socket.rememberedTeam <= c.TEAMS) {
-                teamData[socket.rememberedTeam]++;
+                teamcounts[socket.rememberedTeam]++;
             }
         }
     }
-    const toSort = Object.entries(teamData).filter(entry => !global.defeatedTeams.includes(-entry[0])).sort((a, b) => a[1] - b[1]);
-    return toSort.length === 0 ? ((Math.random() * c.TEAMS | 0) + 1) : toSort[0][0];
-}
-
-global.loopThrough = function(array, callback = () => {}) {
-    for (let index = 0, length = array.length; index < length; index++) callback(array[index], index);
+    const entries = Object.entries(teamcounts);
+    return entries.length === 0 ? Math.ceil(Math.random() * c.TEAMS) : entries.reduce((a, b) => Math.min(a[1], b[1]), Infinity)[0];
 };
 
-global.isEven = function isEven(number) {
-    let string = number.toString();
-    let last = string[string.length - 1];
-    return [0, 2, 4, 6, 8].includes(Number(last));
-};
-
-global.rotatePoint = function rotatePoint({
-    x,
-    y
-}, angle) {
-    const dist = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-    const rad = Math.atan2(y, x) + angle;
-    return {
-        x: Math.cos(rad) * dist,
-        y: Math.sin(rad) * dist,
-    };
-};
+global.getTeamName = team => ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][-team - 1] || "An unknown team";
+global.getTeamColor = team => [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3;
+global.isPlayerTeam = team => team < 0 && team > -9;
 
 // Now that we've set up the global variables, we import all the modules, then put them into global varialbles and then export something just so this file is run.
 const requires = [
@@ -86,7 +69,6 @@ const requires = [
     "./gamemodes/groups.js", // Duos/Trios/Squads
     "./gamemodes/tag.js", // Tag
     "./gamemodes/closeArena.js", // Arena Closing mechanics
-    "./debug/antibot.js" // Antibot :DDD
 ];
 
 for (let file of requires) {
@@ -97,7 +79,4 @@ for (let file of requires) {
     }
 }
 
-module.exports = {
-    creationDate: new Date(),
-    creationTime: new Date().getTime()
-};
+module.exports = { creationDate: new Date() };

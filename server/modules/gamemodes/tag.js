@@ -18,7 +18,7 @@ let won = false;
 function winner(teamId) {
     if (won) return;
     won = true;
-    let team = ["BLUE", "GREEN", "RED", "PURPLE"][teamId];
+    let team = getTeamName(-teamId - 1);
     sockets.broadcast(team + " has won the game!");
     setTimeout(closeArena, 3e3);
 };
@@ -37,7 +37,6 @@ function init(g) {
             if (!killers.length) return;
             let killer = ran.choose(killers);
             if (entity.socket) entity.socket.rememberedTeam = -killer.team;
-            if (entity.isBot) global.nextTagBotTeam = -killer.team;
             /*if (room.width > 1500) {
               room.width -= 10;
               room.height -= 10;
@@ -55,7 +54,6 @@ function tagDeathEvent(instance) {
     if (!killers.length) return;
     let killer = ran.choose(killers);
     if (instance.socket) instance.socket.rememberedTeam = -killer.team;
-    if (instance.isBot) global.nextTagBotTeam = -killer.team;
     /*if (room.width > 1500) {
       room.width -= 10;
       room.height -= 10;

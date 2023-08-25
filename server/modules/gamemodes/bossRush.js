@@ -42,7 +42,7 @@ class BossRush {
             o = new Entity(loc)
         o.define(type)
         o.team = team
-        o.color = [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3
+        o.color = getTeamColor(team)
         o.skill.score = 111069
         o.name = 'Dominator'
         o.SIZE = c.WIDTH / c.X_GRID / 10

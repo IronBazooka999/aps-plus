@@ -1,3 +1,5 @@
+const { base, dfltskl } = require('../constants.js');
+
 exports.genericEntity = {
     NAME: "",
     LABEL: "Unknown Entity",
@@ -46,18 +48,7 @@ exports.genericEntity = {
     UPGRADES_TIER_9: [],
     SKILL: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     LEVEL: 0,
-    SKILL_CAP: [
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-        dfltskl,
-    ],
+    SKILL_CAP: Array(10).fill(dfltskl),
     GUNS: [],
     MAX_CHILDREN: 0,
     BODY: {
@@ -198,4 +189,11 @@ exports.trap = {
         RESIST: 2.5,
         SPEED: 0,
     },
+};
+
+exports.healerSymbol = {
+    PARENT: [exports.genericEntity],
+    SHAPE: [[0.3, -0.3],[1,-0.3],[1,0.3],[0.3,0.3],[0.3,1],[-0.3,1],[-0.3,0.3],[-1,0.3],[-1,-0.3],[-0.3,-0.3],[-0.3,-1],[0.3,-1]],
+    SIZE: 13,
+    COLOR: 12,
 };
