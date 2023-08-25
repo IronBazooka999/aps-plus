@@ -602,8 +602,7 @@ exports.teams.UPGRADES_TIER_0.push("Team101");
 
 // DEV "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerator", "miscEntities", "bosses", "fun", "levels", "teams"];
-    exports.eggGenerator.UPGRADES_TIER_0 = ["basic", "squareGenerator", "crasherGenerator"];
-        exports.crasherGenerator.UPGRADES_TIER_0 = ["basic", "gameAdmin", "alphaPentagonGenerator", "eggGenerator"];
+    exports.eggGenerator.UPGRADES_TIER_0 = ["basic", "squareGenerator", "alphaPentagonGenerator", "crasherGenerator"];
     exports.miscEntities.UPGRADES_TIER_0 = ["baseProtector", "dominators", "mothership", "arenaCloser"];
         exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals"];
