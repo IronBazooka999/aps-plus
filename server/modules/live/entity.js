@@ -835,6 +835,7 @@ class Entity extends EventEmitter {
         if (set.IGNORED_BY_AI != null) this.ignoredByAi = set.IGNORED_BY_AI;
         if (set.MOTION_TYPE != null) this.motionType = set.MOTION_TYPE;
         if (set.FACING_TYPE != null) this.facingType = set.FACING_TYPE;
+        if (set.TURRET_FACES_CLIENT != null) this.settings.turretFacesClient = set.TURRET_FACES_CLIENT
         if (set.DRAW_HEALTH != null) this.settings.drawHealth = set.DRAW_HEALTH;
         if (set.DRAW_SELF != null) this.settings.drawShape = set.DRAW_SELF;
         if (set.DAMAGE_EFFECTS != null) this.settings.damageEffects = set.DAMAGE_EFFECTS;

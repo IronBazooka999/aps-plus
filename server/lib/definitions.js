@@ -16324,6 +16324,32 @@ exports.seventeenagon = {
     SHAPE: 17
 };
 
+exports.aimToCursorMan = {
+    PARENT: [exports.genericTank],
+    LABEL: 'Turret Faces Client Test',
+    SHAPE: 4,
+    COLOR: 36,
+    TURRETS: [{
+        POSITION: [15, 0, 0, 0, 0, 1],
+        TYPE: [exports.onlySquare, {
+            COLOR: Math.floor(Math.random() * 38),
+            TURRET_FACES_CLIENT: true,
+        }]
+    }, {
+        POSITION: [15, 0, 20, 0, 0, 1],
+        TYPE: [exports.onlySquare, {
+            COLOR: Math.floor(Math.random() * 38),
+            TURRET_FACES_CLIENT: true,
+        }]
+    }, {
+        POSITION: [15, 0, -20, 0, 0, 1],
+        TYPE: [exports.onlySquare, {
+            COLOR: Math.floor(Math.random() * 38),
+            TURRET_FACES_CLIENT: true,
+        }]
+    }]
+}
+
 // JOKE TANKS
 exports.wifeBeater = {
     PARENT: [exports.genericTank],
@@ -16530,7 +16556,7 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team100);
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
