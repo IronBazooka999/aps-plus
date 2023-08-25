@@ -415,13 +415,75 @@ exports.colorMan = {
     }]
 };
 
-exports.seventeenagon = {
-    PARENT: ["genericTank"],
-    LABEL: "Seventeenagon",
-    SHAPE: 17
-};
-
 // FUN
+exports.vanquisher = {
+    PARENT: ["genericTank"],
+    DANGER: 8,
+    LABEL: "Vanquisher",
+    STAT_NAMES: statnames.generic,
+    BODY: {
+        SPEED: 0.8 * base.SPEED,
+    },
+    //destroyer
+    GUNS: [{
+        POSITION: [21, 14, 1, 0, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy]),
+            TYPE: exports.bullet
+        }
+
+    //builder
+    },{
+        POSITION: [18, 12, 1, 0, 0, 0, 0],
+    },{
+        POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.trap, g.block]),
+            TYPE: exports.setTrap
+        }
+
+    //launcher
+    },{
+        POSITION: [10, 9, 1, 9, 0, 90, 0],
+    },{
+        POSITION: [17, 13, 1, 0, 0, 90, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.arty]), TYPE: exports.minimissile, STAT_CALCULATOR: gunCalcNames.sustained }
+
+    //shotgun
+    },{
+        POSITION: [4, 3, 1, 11, -3, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [4, 3, 1, 11, 3, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [4, 4, 1, 13, 0, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    },{
+        POSITION: [1, 4, 1, 12, -1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    },{
+        POSITION: [1, 4, 1, 11, 1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    },{
+        POSITION: [1, 3, 1, 13, -1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [1, 3, 1, 13, 1, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
+    },{
+        POSITION: [1, 2, 1, 13, 2, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    }, {
+        POSITION: [1, 2, 1, 13, -2, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
+    }, {
+        POSITION: [15, 14, 1, 6, 0, 270, 0],
+        PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]), TYPE: exports.casing }
+    }, {
+        POSITION: [8, 14, -1.3, 4, 0, 270, 0],
+    }]
+};
 exports.armyOfOneBullet = {
     PARENT: ["bullet"],
     LABEL: "Unstoppable",
@@ -555,4 +617,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerat
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok", "kronos"*/];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "seventeenagon", "tracker3", "tetraGunner", "worstTank"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "tracker3", "tetraGunner", "worstTank"];
