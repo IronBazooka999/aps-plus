@@ -103,6 +103,64 @@ exports.auto4gun = {
         },
     ],
 };
+exports.bigauto4gun = {
+    PARENT: ["genericTank"],
+    LABEL: "",
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [14, 5, 1, 0, -4.5, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.auto,
+                    g.gunner,
+                    g.twin,
+                    g.twin,
+                    g.power,
+                    g.halfreload,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [14, 5, 1, 0, 4.5, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.auto,
+                    g.gunner,
+                    g.twin,
+                    g.twin,
+                    g.power,
+                    g.halfreload,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [16, 5, 1, 0, 0, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.auto,
+                    g.gunner,
+                    g.twin,
+                    g.twin,
+                    g.power,
+                    g.halfreload,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
+};
 exports.megaAutoTankgun = {
     PARENT: ["genericTank"],
     LABEL: "",
@@ -158,6 +216,73 @@ exports.autoSmasherTurret = {
                 SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.fast, g.mach, g.pound, g.morereload, g.morereload]),
                 TYPE: "bullet",
                 STAT_CALCULATOR: gunCalcNames.fixedReload,
+            },
+        },
+    ],
+};
+exports.skimmerTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: "Skimmer",
+    BODY: {
+        FOV: 2 * base.FOV,
+    },
+    COLOR: 2,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 14, -0.5, 9, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                ]),
+                TYPE: exports.hypermissile,
+            },
+        },
+        {
+            POSITION: [17, 15, 1, 0, 0, 0, 0],
+        },
+    ],
+};
+exports.twisterTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: "Twister",
+    BODY: {
+        FOV: 2,
+    },
+    COLOR: 13,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 13, -0.5, 9, 0, 0, 0],
+        },
+        {
+            POSITION: [17, 14, -1.4, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                    g.morespeed,
+                    g.one_third_reload,
+                ]),
+                TYPE: exports.hyperspinmissile,
+                STAT_CALCULATOR: gunCalcNames.sustained,
             },
         },
     ],
