@@ -480,7 +480,7 @@ exports.summoner = {
     ],
 };
 exports.skimmerTurret = {
-    PARENT: [exports.genericTank],
+    PARENT: ["genericTank"],
     LABEL: "Skimmer",
     BODY: {
         FOV: 2 * base.FOV,
@@ -512,7 +512,7 @@ exports.skimmerTurret = {
     ],
 };
 exports.twisterTurret = {
-    PARENT: [exports.genericTank],
+    PARENT: ["genericTank"],
     LABEL: "Twister",
     BODY: {
         FOV: 2,
