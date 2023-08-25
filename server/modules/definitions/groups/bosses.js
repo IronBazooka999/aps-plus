@@ -479,6 +479,73 @@ exports.summoner = {
         },
     ],
 };
+exports.skimmerTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: "Skimmer",
+    BODY: {
+        FOV: 2 * base.FOV,
+    },
+    COLOR: 2,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 14, -0.5, 9, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                ]),
+                TYPE: exports.hypermissile,
+            },
+        },
+        {
+            POSITION: [17, 15, 1, 0, 0, 0, 0],
+        },
+    ],
+};
+exports.twisterTurret = {
+    PARENT: [exports.genericTank],
+    LABEL: "Twister",
+    BODY: {
+        FOV: 2,
+    },
+    COLOR: 13,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 13, -0.5, 9, 0, 0, 0],
+        },
+        {
+            POSITION: [17, 14, -1.4, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                    g.morespeed,
+                    g.one_third_reload,
+                ]),
+                TYPE: exports.hyperspinmissile,
+                STAT_CALCULATOR: gunCalcNames.sustained,
+            },
+        },
+    ],
+};
 exports.eliteSkimmer = {
     PARENT: ["elite"],
     LABEL: "Elite Skimmer",
