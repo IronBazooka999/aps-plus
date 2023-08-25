@@ -103,6 +103,64 @@ exports.auto4gun = {
         },
     ],
 };
+exports.bigauto4gun = {
+    PARENT: [exports.genericTank],
+    LABEL: "",
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [14, 5, 1, 0, -4.5, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.auto,
+                    g.gunner,
+                    g.twin,
+                    g.twin,
+                    g.power,
+                    g.halfreload,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [14, 5, 1, 0, 4.5, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.auto,
+                    g.gunner,
+                    g.twin,
+                    g.twin,
+                    g.power,
+                    g.halfreload,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [16, 5, 1, 0, 0, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.auto,
+                    g.gunner,
+                    g.twin,
+                    g.twin,
+                    g.power,
+                    g.halfreload,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
+};
 exports.megaAutoTankgun = {
     PARENT: ["genericTank"],
     LABEL: "",
