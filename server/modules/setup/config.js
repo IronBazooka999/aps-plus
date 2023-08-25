@@ -1,6 +1,6 @@
 let output = require("../../config.js");
 
-const gamemodes = ['tdm'];//["tdm", "domination"];
+const gamemodes = [''];//["tdm", "domination"];
 
 for (let gamemode of gamemodes) {
     let mode = require(`./gamemodeconfigs/${gamemode}.js`);
