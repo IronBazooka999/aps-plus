@@ -1,7 +1,6 @@
-they will be moved soon to `/server/modules/definitions`
+Everything in definitions.js is in the process of being migrated to server/lib/definitions.
 
-
-definition group guide:
+group guide (by taureon):
 bosses   : anything related to bosses
 dev      : developer tanks, beta tester tanks, admin/mod tanks
 food     : anything food related
