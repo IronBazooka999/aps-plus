@@ -13,6 +13,8 @@ In order to run your server via localhost, you will need to install these first:
 
 Once the required software is installed, open run.bat. If there aren't any errors, your server will start up. Go to localhost:3000 in your favourite web browser (keep the command prompt open, closing it will shut down the server) to play.
 
+You can optionally run your server using [Replit](https://replit.com), [Heroku](https://www.heroku.com/) or [Surge](https://surge.sh).
+
 ## Useful Tools
 
 - [Create a custom shape](https://arras.io/ext/custom-shape)
