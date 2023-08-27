@@ -3,11 +3,11 @@ const combineStats = function (arr) {
     try {
         // Build a blank array of the appropiate length
         let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        arr.forEach(function (component) {
+        for (let component of arr){
             for (let i = 0; i < data.length; i++) {
                 data[i] = data[i] * component[i];
             }
-        });
+        }
         return {
             reload: data[0],
             recoil: data[1],

@@ -100,48 +100,14 @@ function getDimensions(entities) {
                 y: y + l * Math.sin(gun.angle - r)
             });
         }
-        /*model.guns.forEach(function(gun) {
-          let h = gun.aspect > 0 ? ((scale * gun.width) / 2) * gun.aspect : (scale * gun.width) / 2;
-          let r = Math.atan2(h, scale * gun.length) + rot;
-          let l = Math.sqrt(scale * scale * gun.length * gun.length + h * h);
-          let x =
-            focus.x +
-            scale * gun.offset * Math.cos(gun.direction + gun.angle + rot);
-          let y =
-            focus.y +
-            scale * gun.offset * Math.sin(gun.direction + gun.angle + rot);
-          endpoints.push({
-            x: x + l * Math.cos(gun.angle + r),
-            y: y + l * Math.sin(gun.angle + r)
-          });
-          endpoints.push({
-            x: x + l * Math.cos(gun.angle - r),
-            y: y + l * Math.sin(gun.angle - r)
-          });
-          pointDisplay.push({
-            x: x + l * Math.cos(gun.angle + r),
-            y: y + l * Math.sin(gun.angle + r)
-          });
-          pointDisplay.push({
-            x: x + l * Math.cos(gun.angle - r),
-            y: y + l * Math.sin(gun.angle - r)
-          });
-        });*/
         for (let i = 0; i < model.turrets.length; i++) {
             let turret = model.turrets[i];
             pushEndpoints(turret, turret.bound.size, {
-                    x: turret.bound.offset * Math.cos(turret.bound.angle),
-                    y: turret.bound.offset * Math.sin(turret.bound.angle)
-                },
-                turret.bound.angle);
+                x: turret.bound.offset * Math.cos(turret.bound.angle),
+                y: turret.bound.offset * Math.sin(turret.bound.angle)
+            },
+            turret.bound.angle);
         }
-        /*model.turrets.forEach(function(turret) {
-          pushEndpoints(turret, turret.bound.size, {
-            x: turret.bound.offset * Math.cos(turret.bound.angle),
-            y: turret.bound.offset * Math.sin(turret.bound.angle)
-          },
-          turret.bound.angle);
-        });*/
     };
     pushEndpoints(entities, 1);
     // 2) Find their mass center

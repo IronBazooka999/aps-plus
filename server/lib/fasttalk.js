@@ -183,10 +183,8 @@ let encode = (message) => {
         index += 4;
         break;
       case 0b1001:
-        {
-          let byte = block.length === 0 ? 0 : block.charCodeAt(0);
-          output[index++] = byte;
-        }
+        let byte = block.length === 0 ? 0 : block.charCodeAt(0);
+        output[index++] = byte;
         break;
       case 0b1010:
         for (let i = 0; i < block.length; i++) {
@@ -259,6 +257,8 @@ let decode = (packet) => {
   }
 
   let output = [];
+  let string = "";
+  let byte = 0;
   for (let header of headers) {
     switch (header) {
       case 0b0000:
@@ -305,387 +305,26 @@ let decode = (packet) => {
         output.push(f32[0]);
         break;
       case 0b1001:
-        {
-          let byte = data[index++];
-          output.push(byte === 0 ? "" : String.fromCharCode(byte));
-        }
+        byte = data[index++];
+        output.push(byte === 0 ? "" : String.fromCharCode(byte));
         break;
       case 0b1010:
-        {
-          let string = "";
-          let byte = 0;
-          while ((byte = data[index++])) {
-            string += String.fromCharCode(byte);
-          }
-          output.push(string);
+        while ((byte = data[index++])) {
+          string += String.fromCharCode(byte);
         }
+        output.push(string);
         break;
       case 0b1011:
-        {
-          let string = "";
-          let byte = 0;
-          while ((byte = data[index++] | (data[index++] << 8))) {
-            string += String.fromCharCode(byte);
-          }
-          output.push(string);
+        while ((byte = data[index++] | (data[index++] << 8))) {
+          string += String.fromCharCode(byte);
         }
+        output.push(string);
         break;
     }
   }
 
   return output;
 };
-
-let encodeLegacy = (() => {
-  // unsigned 8-bit integer
-  let arrUint8 = new Uint8Array(1);
-  // unsigned 16-bit integer
-  let arrUint16 = new Uint16Array(1);
-  let charUint16 = new Uint8Array(arrUint16.buffer);
-  // unsigned 32-bit integer
-  let arrUint32 = new Uint32Array(1);
-  let charUint32 = new Uint8Array(arrUint32.buffer);
-  // 32-bit float
-  let arrFloat32 = new Float32Array(1);
-  let charFloat32 = new Uint8Array(arrFloat32.buffer);
-  // build a useful internal function
-  let typeEncoder = (type, number) => {
-    let output = "";
-    switch (type) {
-      case "RawUint8":
-        arrUint8[0] = number;
-        return String.fromCharCode(arrUint8[0]);
-      case "RawUint16":
-        arrUint16[0] = number;
-        return String.fromCharCode(charUint16[0], charUint16[1]);
-      case "Uint8":
-        arrUint8[0] = number;
-        return "0" + String.fromCharCode(arrUint8[0]);
-      case "Uint16":
-        arrUint16[0] = number;
-        return "1" + String.fromCharCode(charUint16[0], charUint16[1]);
-      case "Uint32":
-        arrUint32[0] = number;
-        return (
-          "2" +
-          String.fromCharCode(
-            charUint32[0],
-            charUint32[1],
-            charUint32[2],
-            charUint32[3]
-          )
-        );
-      case "Sint8":
-        arrUint8[0] = -1 - number;
-        return "3" + String.fromCharCode(arrUint8[0]);
-      case "Sint16":
-        arrUint16[0] = -1 - number;
-        return "4" + String.fromCharCode(charUint16[0], charUint16[1]);
-      case "Sint32":
-        arrUint32[0] = -1 - number;
-        return (
-          "5" +
-          String.fromCharCode(
-            charUint32[0],
-            charUint32[1],
-            charUint32[2],
-            charUint32[3]
-          )
-        );
-      case "Float32":
-        arrFloat32[0] = number;
-        return (
-          "6" +
-          String.fromCharCode(
-            charFloat32[0],
-            charFloat32[1],
-            charFloat32[2],
-            charFloat32[3]
-          )
-        );
-      case "String8":
-        return "7" + typeEncoder("RawUint16", number.length) + number;
-      case "String16":
-        for (let i = 0, strLen = number.length; i < strLen; i++) {
-          output += typeEncoder("RawUint16", number.charCodeAt(i));
-        }
-        return "8" + typeEncoder("RawUint16", output.length) + output;
-      default:
-        throw new Error("Unknown encoding type.");
-    }
-  };
-  let findType = (value) => {
-    if (typeof value === "string") {
-      for (let i = 0; i < value.length; i++) {
-        if (value.charCodeAt(i) > 255) return "String16";
-      }
-      return "String8";
-    }
-    if (typeof value === "boolean") return "Uint8";
-    if (typeof value !== "number") {
-      console.log(value);
-      throw new Error("Unencodable data type");
-    }
-    if (value !== Math.floor(value)) return "Float32";
-    if (value < 0) {
-      if (value >= -256) return "Sint8";
-      if (value >= -65535) return "Sint16";
-      if (value >= -4294967295) return "Sint32";
-    } else {
-      if (value < 256) return "Uint8";
-      if (value < 65535) return "Uint16";
-      if (value < 4294967295) return "Uint32";
-    }
-    return "Float32";
-  };
-  // build the function
-  return (arr, verbose = false) => {
-    let output = arr.shift();
-    if (typeof output !== "string") throw new Error("No identification code!");
-    arr.forEach((value) => (output += typeEncoder(findType(value), value)));
-    let len = output.length;
-    let buffer = new ArrayBuffer(len);
-    let integerView = new Uint8Array(buffer);
-    for (let i = 0; i < len; i++) {
-      integerView[i] = output.charCodeAt(i);
-    }
-    if (verbose) {
-      console.log("OUTPUT: " + integerView);
-      console.log("RAW OUTPUT: " + output);
-      console.log("SIZE: " + len);
-    }
-    return buffer;
-  };
-})();
-
-let decodeLegacy = (() => {
-  // unsigned 8-bit integer
-  let arrUint8 = new Uint8Array(1);
-  // unsigned 16-bit integer
-  let arrUint16 = new Uint16Array(1);
-  let charUint16 = new Uint8Array(arrUint16.buffer);
-  // unsigned 32-bit integer
-  let arrUint32 = new Uint32Array(1);
-  let charUint32 = new Uint8Array(arrUint32.buffer);
-  // 32-bit float
-  let arrFloat32 = new Float32Array(1);
-  let charFloat32 = new Uint8Array(arrFloat32.buffer);
-  // build a useful internal function
-  let typeDecoder = (str, type, offset) => {
-    switch (type) {
-      case "Uint8":
-        return str.charCodeAt(offset++);
-      case "Uint16":
-        for (let i = 0; i < 2; i++) {
-          charUint16[i] = str.charCodeAt(offset++);
-        }
-        return arrUint16[0];
-      case "Uint32":
-        for (let i = 0; i < 4; i++) {
-          charUint32[i] = str.charCodeAt(offset++);
-        }
-        return arrUint32[0];
-      case "Sint8":
-        return -1 - str.charCodeAt(offset++);
-      case "Sint16":
-        for (let i = 0; i < 2; i++) {
-          charUint16[i] = str.charCodeAt(offset++);
-        }
-        return -1 - arrUint16[0];
-      case "Sint32":
-        for (let i = 0; i < 4; i++) {
-          charUint32[i] = str.charCodeAt(offset++);
-        }
-        return -1 - arrUint32[0];
-      case "Float32":
-        for (let i = 0; i < 4; i++) {
-          charFloat32[i] = str.charCodeAt(offset++);
-        }
-        return arrFloat32[0];
-      default:
-        throw new Error("Unknown decoding type.");
-    }
-  };
-  // actually decode it
-  return (raw) => {
-    try {
-      let intView = new Uint8Array(raw);
-      let str = "";
-      for (let i = 0; i < intView.length; i++) {
-        str += String.fromCharCode(intView[i]);
-      }
-      let offset = 1;
-      let output = [str.charAt(0)];
-      while (offset < str.length) {
-        switch (str[offset++]) {
-          case "0":
-            output.push(typeDecoder(str, "Uint8", offset));
-            offset++;
-            break;
-          case "1":
-            output.push(typeDecoder(str, "Uint16", offset));
-            offset += 2;
-            break;
-          case "2":
-            output.push(typeDecoder(str, "Uint32", offset));
-            offset += 4;
-            break;
-          case "3":
-            output.push(typeDecoder(str, "Sint8", offset));
-            offset++;
-            break;
-          case "4":
-            output.push(typeDecoder(str, "Sint16", offset));
-            offset += 2;
-            break;
-          case "5":
-            output.push(typeDecoder(str, "Sint32", offset));
-            offset += 4;
-            break;
-          case "6":
-            output.push(typeDecoder(str, "Float32", offset));
-            offset += 4;
-            break;
-          case "7":
-            {
-              // String8
-              let len = typeDecoder(str, "Uint16", offset);
-              offset += 2;
-              output.push(str.slice(offset, offset + len));
-              offset += len;
-            }
-            break;
-          case "8":
-            {
-              // String16
-              let len = typeDecoder(str, "Uint16", offset);
-              offset += 2;
-              let arr = str.slice(offset, offset + len);
-              let buf = new Uint16Array(len / 2);
-              for (let i = 0; i < len; i += 2) {
-                buf[i / 2] = typeDecoder(arr, "Uint16", i);
-              }
-              output.push(String.fromCharCode.apply(null, buf));
-              offset += len;
-            }
-            break;
-          default:
-            offset = str.length;
-            throw new Error("Unknown decoding command. Decoding exited.");
-        }
-      }
-      return output;
-    } catch (err) {
-      console.log(err);
-      return -1;
-    }
-  };
-})();
-
-/*
-let testSuite = {
-  generateCase() {
-    let generator = [
-      () => 0,
-      () => 1,
-      () => Math.random(),
-      () => 1 / (Math.random() + .1),
-      () => Math.round(Math.random() * 1000 - 500),
-      () => Math.round(Math.random() * 100000 - 500000),
-      () => Infinity,
-      () => Math.random().toString().charAt(2),
-      () => Array(Math.floor(Math.random() * 10)).fill(0).map(() => String.fromCharCode(Math.floor(1 + Math.random() * 254))).join(''),
-      () => Array(Math.floor(Math.random() * 12)).fill(0).map(() => String.fromCharCode(Math.floor(1 + Math.random() * 65534))).join(''),
-    ]
-    let amount = Math.floor(Math.random() * 50)
-    let testCase = [String.fromCharCode(Math.floor(32 + Math.random() * 95))]
-    for (let i = 0; i < amount; i++) {
-      let repeat = Math.min(Math.floor(1 / Math.random()), 100)
-      let type = Math.floor(Math.random() * generator.length)
-      for (let i = 0; i < repeat; i++)
-        testCase.push(generator[type]())
-    }
-    return testCase
-  },
-  fuzzer() {
-    return Array(Math.ceil(100 + Math.random())).fill(0).map((r, i) => Math.floor(Math.random() * 256) | (i === 0 ? 0b11110000 : 0))
-  },
-  testEquivalency(original) {
-    let recoded = decode(encode(original))
-    if (recoded.length !== original.length) {
-      console.error(original, recoded)
-      throw new Error('Different length')
-    } else {
-      for (let i = 0; i < recoded.length; i++)
-        if (recoded[i] !== original[i] &&
-            !(typeof recoded[i] === 'number' &&
-              typeof original[i] === 'number' &&
-              Math.abs(recoded[i] - original[i]) < 0.0001)) {
-          console.error(original, recoded)
-          throw new Error('Different content at index ' + i)
-        }
-    }
-  },
-  now() {
-    let hrTimeNew = process.hrtime()
-    return hrTimeNew[0] * 1000 + hrTimeNew[1] / 1000000
-  },
-  run() {
-    for (let i = 0; i < 2000; i++)
-      this.testEquivalency(this.generateCase())
-    for (let i = 0; i < 2000; i++)
-      encode(this.fuzzer())
-    console.log('## Fasttalk Speed Test')
-    console.log('## Encoding')
-    let encodeNewTotal = 0
-    let encodeLegacyTotal = 0
-    let encodeNewTotalSize = 0
-    let encodeLegacyTotalSize = 0
-    for (let i = 0; i < 6; i++) {
-      let roundStart = this.now()
-      for (let i = 0; i < 10000; i++) {
-        encodeNewTotalSize += encode(this.generateCase()).length
-      }
-      let roundMid = this.now()
-      for (let i = 0; i < 10000; i++) {
-        encodeLegacyTotalSize += encodeLegacy(this.generateCase()).byteLength
-      }
-      let roundEnd = this.now()
-
-      let newSpeed = roundMid - roundStart
-      let legacySpeed = roundEnd - roundMid
-      encodeNewTotal += newSpeed
-      encodeLegacyTotal += legacySpeed
-      console.log(`Round ${ i } - New: ${ newSpeed.toFixed(4).padStart(9) }ms  |  Old: ${ legacySpeed.toFixed(4).padStart(9) }ms`)
-    }
-    console.log(`Total   - New: ${ encodeNewTotal.toFixed(4).padStart(9) }ms  |  Old: ${ encodeLegacyTotal.toFixed(4).padStart(9) }ms`)
-    console.log(`Size    - ${ encodeNewTotalSize } bytes vs. ${ encodeLegacyTotalSize } bytes`)
-    console.log('## Encoding + Decoding')
-    let decodeNewTotal = 0
-    let decodeLegacyTotal = 0
-    for (let i = 0; i < 6; i++) {
-      let roundStart = this.now()
-      for (let i = 0; i < 10000; i++) {
-        decode(encode(this.generateCase()))
-      }
-      let roundMid = this.now()
-      for (let i = 0; i < 10000; i++) {
-        decodeLegacy(encodeLegacy(this.generateCase()))
-      }
-      let roundEnd = this.now()
-
-      let newSpeed = roundMid - roundStart
-      let legacySpeed = roundEnd - roundMid
-      decodeNewTotal += newSpeed
-      decodeLegacyTotal += legacySpeed
-      console.log(`Round ${ i } - New: ${ newSpeed.toFixed(4).padStart(9) }ms  |  Old: ${ legacySpeed.toFixed(4).padStart(9) }ms`)
-    }
-    console.log(`Total   - New: ${ decodeNewTotal.toFixed(4).padStart(9) }ms  |  Old: ${ decodeLegacyTotal.toFixed(4).padStart(9) }ms`)
-    console.log('## Fasttalk Speed Test Ended')
-  },
-}
-testSuite.run()
-*/
 
 exports.encode = encode;
 exports.decode = decode;

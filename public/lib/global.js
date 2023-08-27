@@ -41,7 +41,7 @@ let Region = (size) => {
             data[index].set(...a);
         },
         hide: () => {
-            data.forEach(r => r.hide());
+            for (let region of data) region.hide();
         },
         check: x => data.findIndex(r => r.check(x))
     };

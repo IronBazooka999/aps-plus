@@ -11,11 +11,10 @@ fetch("changelog.md", { cache: "no-cache" })
 .then((response) => response.text())
 .then((response) => {
     const changelogs = response.split("\n\n").map((changelog) => changelog.split("\n"));
-    console.log(changelogs);
-    changelogs.forEach((changelog) => {
+    for (let changelog of changelogs) {
         changelog[0] = changelog[0].split(":").map((line) => line.trim());
         document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${changelog[0].slice(1).join(":") || "Update lol"}<ul>${changelog.slice(1).map((line) => `<li>${line.slice(1).trim()}</li>`).join("")}</ul><hr></div>`;
-    });
+    }
 });
 class Animation {
     constructor(start, to, smoothness = 0.05) {
@@ -384,7 +383,7 @@ window.onload = async () => {
                 contains: () => false,
             },
         };
-        servers.forEach(async (server) => {
+        for (let server of servers) {
             try {
                 const tr = document.createElement("tr");
                 const td = document.createElement("td");
@@ -404,7 +403,7 @@ window.onload = async () => {
             } catch (e) {
                 console.log(e);
             }
-        });
+        }
         if (Array.from(myServer.children)[0].onclick) {
             Array.from(myServer.children)[0].onclick();
         }
@@ -586,134 +585,53 @@ const measureText = (text, fontSize, twod = false) => {
     ctx.font = fontWidth + " " + fontSize + "px Ubuntu";
     return twod ? { width: ctx.measureText(text).width, height: fontSize } : ctx.measureText(text).width;
 };
-// A thing
-let floppy = (value = null) => {
-    let flagged = true;
-    // Methods
-    return {
-        update: (newValue) => {
-            let eh = false;
-            if (value == null) {
-                eh = true;
-            } else {
-                if (typeof newValue != typeof value) {
-                    eh = true;
-                }
-                // Decide what to do based on what type it is
-                switch (typeof newValue) {
-                    case "number":
-                    case "string":
-                        {
-                            if (newValue !== value) {
-                                eh = true;
-                            }
-                        }
-                        break;
-                    case "object": {
-                        if (Array.isArray(newValue)) {
-                            if (newValue.length !== value.length) {
-                                eh = true;
-                            } else {
-                                for (let i = 0, len = newValue.length; i < len; i++) {
-                                    if (newValue[i] !== value[i]) eh = true;
-                                }
-                            }
-                            break;
-                        }
-                    } // jshint ignore:line
-                    default:
-                    //logger.error("Unsupported type for a floppyvar: " + newValue);
-                    //throw new Error('Unsupported type for a floppyvar!');
-                }
-            }
-            // Update if neeeded
-            if (eh) {
-                flagged = true;
-                value = newValue;
-            }
-        },
-        publish: () => {
-            return value;
-        },
-        check: () => {
-            if (flagged) {
-                flagged = false;
-                return true;
-            }
-            return false;
-        },
-    };
-};
-// Init stuff
-const TextObj = () => {
-    let floppies = [floppy(""), floppy(0), floppy(0), floppy(1), floppy("#FF0000"), floppy("left")];
-    let vals = floppies.map((f) => f.publish());
-    let TextObjXX = 0;
-    let TextObjYY = 0;
-    return {
-        draw: (text, x, y, size, fill, align = "left", center = false, fade = 1, stroke = true, context = ctx) => {
-            size += config.graphical.fontSizeBoost;
-            // Update stuff
-            floppies[0].update(text);
-            floppies[1].update(x);
-            floppies[2].update(y);
-            floppies[3].update(size);
-            floppies[4].update(fill);
-            floppies[5].update(align);
-            // Get text dimensions and resize/reset the canvas
-            let offset = size / 5;
-            let ratio = 1;
-            let transform = null;
-            context.getTransform &&
-                ((transform = ctx.getTransform()),
-                (ratio = transform.d),
-                (offset *= ratio));
-            if (ratio !== 1) {
-                size *= ratio;
-            }
-            context.font = fontWidth + " " + size + "px Ubuntu";
-            let dim = ctx.measureText(text);
-            // Redraw it
-            switch (align) {
-                case "left":
-                    TextObjXX = offset;
-                    break;
-                case "center":
-                    TextObjXX = (dim.width + 2 * offset) / 2;
-                    break;
-                case "right":
-                    TextObjXX = dim.width + 2 * offset - offset;
-            }
-            TextObjYY = (size + 2 * offset) / 2;
-            // Draw it
-            context.lineWidth = (size + 1) / config.graphical.fontStrokeRatio;
-            context.font = fontWidth + " " + size + "px Ubuntu";
-            context.textAlign = align;
-            context.textBaseline = "middle";
-            context.strokeStyle = color.black;
-            context.fillStyle = fill;
-            context.save();
-            if (ratio !== 1) {
-                context.scale(1 / ratio, 1 / ratio);
-            }
-            context.lineCap = config.graphical.miterText ? "miter" : "round";
-            context.lineJoin = config.graphical.miterText ? "miter" : "round";
-            if (stroke)
-                context.strokeText(
-                    text,
-                    TextObjXX + Math.round(x * ratio - TextObjXX),
-                    TextObjYY + Math.round(y * ratio - TextObjYY * (center ? 1.05 : 1.5))
-                );
-            context.fillText(
-                text,
-                TextObjXX + Math.round(x * ratio - TextObjXX),
-                TextObjYY + Math.round(y * ratio - TextObjYY * (center ? 1.05 : 1.5))
-            );
-            context.restore();
-        },
-        remove: () => {},
-    };
-};
+function drawText(text, x, y, size, fill, align = "left", center = false, fade = 1, stroke = true, context = ctx) {
+    size += config.graphical.fontSizeBoost;
+    // Get text dimensions and resize/reset the canvas
+    let offset = size / 5,
+        ratio = 1,
+        transform = null;
+    if (context.getTransform) {
+        transform = ctx.getTransform();
+        ratio = transform.d;
+        offset *= ratio;
+    }
+    if (ratio !== 1) {
+        size *= ratio;
+    }
+    context.font = fontWidth + " " + size + "px Ubuntu";
+    let dim = ctx.measureText(text),
+        Xoffset = offset,
+        Yoffset = (size + 2 * offset) / 2;
+    switch (align) {
+        //case "left":
+        //    //do nothing
+        //    break;
+        case "center":
+            Xoffset += dim.width / 2;
+            break;
+        case "right":
+            Xoffset += dim.width;
+    }
+    // Draw it
+    context.lineWidth = (size + 1) / config.graphical.fontStrokeRatio;
+    context.font = fontWidth + " " + size + "px Ubuntu";
+    context.textAlign = align;
+    context.textBaseline = "middle";
+    context.strokeStyle = color.black;
+    context.fillStyle = fill;
+    context.save();
+    if (ratio !== 1) {
+        context.scale(1 / ratio, 1 / ratio);
+    }
+    context.lineCap = config.graphical.miterText ? "miter" : "round";
+    context.lineJoin = config.graphical.miterText ? "miter" : "round";
+    if (stroke) {
+        context.strokeText(text, Xoffset + Math.round(x * ratio - Xoffset), Yoffset + Math.round(y * ratio - Yoffset * (center ? 1.05 : 1.5)));
+    }
+    context.fillText(text, Xoffset + Math.round(x * ratio - Xoffset), Yoffset + Math.round(y * ratio - Yoffset * (center ? 1.05 : 1.5)));
+    context.restore();
+}
 // Gui drawing functions
 function drawGuiRect(x, y, length, height, stroke = false) {
     switch (stroke) {
@@ -814,22 +732,13 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
             }*/
             context.quadraticCurveTo(cx, cy, px, py);
         }
-    } else if (sides === 600) {
-        for (let i = 0; i < 6; i++) {
-            let theta = (i / 6) * 2 * Math.PI,
-                x = centerX + radius * 1.1 * Math.cos(180 / 6 + theta + angle + 0.385),
-                y = centerY + radius * 1.1 * Math.sin(180 / 6 + theta + angle + 0.385);
-            context.lineTo(x, y);
-        }
     } else if (sides > 0) {
         // Polygon
         angle += (sides % 1) * Math.PI * 2;
         sides = Math.floor(sides);
         for (let i = 0; i < sides; i++) {
-            let theta = (i / sides) * 2 * Math.PI + angle,
-                x = centerX + radius * Math.cos(theta),
-                y = centerY + radius * Math.sin(theta);
-            context.lineTo(x, y);
+            let theta = (i / sides) * 2 * Math.PI + angle;
+            context.lineTo(centerX + radius * Math.cos(theta), centerY + radius * Math.sin(theta));
         }
     }
     context.closePath();
@@ -997,13 +906,11 @@ function drawHealth(x, y, instance, ratio, alpha) {
     }
     if (instance.id !== gui.playerid) {
         if (instance.nameplate) {
-            if (instance.render.textobjs == null)
-                instance.render.textobjs = [TextObj(), TextObj()];
             var name = instance.name.substring(7, instance.name.length + 1);
             var namecolor = instance.name.substring(0, 7);
             ctx.globalAlpha = alpha;
-            instance.render.textobjs[0].draw(name, x, y - realSize - 30, 16, namecolor, "center");
-            instance.render.textobjs[1].draw(util.handleLargeNumber(instance.score, 1), x, y - realSize - 16, 8, namecolor, "center");
+            drawText(name, x, y - realSize - 30, 16, namecolor, "center");
+            drawText(util.handleLargeNumber(instance.score, 1), x, y - realSize - 16, 8, namecolor, "center");
             ctx.globalAlpha = 1;
         }
     }
@@ -1108,22 +1015,6 @@ for (let i = 0; i < 256; i++) { //if you want to have more skill levels than 255
     skas.push(Math.log(4 * (i / 9) + 1) / Math.log(5));
 }
 const ska = (x) => skas[x];
-// Text objects
-const text = {
-    skillNames: Array(10).fill().map(x => TextObj()),
-    skillKeys: Array(10).fill().map(x => TextObj()),
-    skillValues: Array(10).fill().map(x => TextObj()),
-    skillPoints: TextObj(),
-    score: TextObj(),
-    name: TextObj(),
-    class: TextObj(),
-    debug: Array(7).fill().map(x => TextObj()),
-    lbtitle: TextObj(),
-    leaderboard: Array(10).fill().map(x => TextObj()),
-    upgradeNames: Array(30).fill().map(x => TextObj()),
-    upgradeKeys: Array(30).fill().map(x => TextObj()),
-    skipUpgrades: TextObj(),
-};
 let scaleScreenRatio = (by, unset) => {
     global.screenWidth /= by;
     global.screenHeight /= by;
@@ -1163,7 +1054,9 @@ let tiles = [],
             case 3:
                 return { width: 1, height: 1, };
             case 2:
-                upgrades.forEach((u, i) => measureSize(x, y + 2 + i, i, u));
+                for (let i = 0; i < upgrades.length; i++) {
+                    measureSize(x, y + 2 + i, i, upgrades[i]);   
+                }
                 branches.push([{
                     x,
                     y,
@@ -1387,14 +1280,13 @@ function drawMessages(spacing) {
             txt = msg.text,
             text = txt; //txt[0].toUpperCase() + txt.substring(1);
         // Give it a textobj if it doesn't have one
-        if (msg.textobj == null) msg.textobj = TextObj();
         if (msg.len == null) msg.len = measureText(text, height - 4);
         // Draw the background
         ctx.globalAlpha = 0.5 * msg.alpha;
         drawBar(x - msg.len / 2, x + msg.len / 2, y + height / 2, height, color.black);
         // Draw the text
         ctx.globalAlpha = Math.min(1, msg.alpha);
-        msg.textobj.draw(text, x, y + height / 2, height - 4, color.guiwhite, "center", true);
+        drawText(text, x, y + height / 2, height - 4, color.guiwhite, "center", true);
         // Iterate and move
         y += vspacing + height;
         if (msg.status > 1) {
@@ -1411,7 +1303,6 @@ function drawMessages(spacing) {
             msg.alpha -= 0.05;
             // Remove
             if (msg.alpha <= 0) {
-                global.messages[0].textobj.remove();
                 global.messages.splice(0, 1);
             }
         }
@@ -1477,10 +1368,10 @@ function drawSkillBars(spacing, alcoveSize) {
         // Skill name
         len = save * ska(max);
         let textcolor = level == maxLevel ? col : !gui.points || (cap !== maxLevel && level == cap) ? color.grey : color.guiwhite;
-        text.skillNames[ticker - 1].draw(name, Math.round(x + len / 2) + 0.5, y + height / 2, height - 5, textcolor, "center", true);
+        drawText(name, Math.round(x + len / 2) + 0.5, y + height / 2, height - 5, textcolor, "center", true);
 
         // Skill key
-        text.skillKeys[ticker - 1].draw("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
+        drawText("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
         if (textcolor === color.guiwhite) {
             // If it's active
             global.clickables.stat.place(ticker - 1, x, y, len, height);
@@ -1488,7 +1379,7 @@ function drawSkillBars(spacing, alcoveSize) {
 
         // Skill value
         if (level) {
-            text.skillValues[ticker - 1].draw(textcolor === col ? "MAX" : "+" + level, Math.round(x + len + 4) + 0.5, y + height / 2, height - 5, col, "left", true);
+            drawText(textcolor === col ? "MAX" : "+" + level, Math.round(x + len + 4) + 0.5, y + height / 2, height - 5, col, "left", true);
         }
 
         // Move on
@@ -1497,7 +1388,7 @@ function drawSkillBars(spacing, alcoveSize) {
     global.clickables.hover.place(0, 0, y, 0.8 * len, 0.8 * (global.screenHeight - y));
     if (gui.points !== 0) {
         // Draw skillpoints to spend
-        text.skillPoints.draw("x" + gui.points, Math.round(x + len - 2) + 0.5, Math.round(y + height - 4) + 0.5, 20, color.guiwhite, "right");
+        drawText("x" + gui.points, Math.round(x + len - 2) + 0.5, Math.round(y + height - 4) + 0.5, 20, color.guiwhite, "right");
     }
 }
 
@@ -1516,7 +1407,7 @@ function drawSelfInfo(spacing, alcoveSize, max) {
     drawBar(x, x + len * gui.__s.getProgress(), y + height / 2, height - 3.5, color.gold);
 
     // Draw the class type
-    text.class.draw("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x + len / 2, y + height / 2, height - 4, color.guiwhite, "center", true);
+    drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x + len / 2, y + height / 2, height - 4, color.guiwhite, "center", true);
     height = 14;
     y -= height + vspacing;
 
@@ -1526,9 +1417,9 @@ function drawSelfInfo(spacing, alcoveSize, max) {
     drawBar(x + len * 0.1, x + len * (0.1 + 0.8 * (max ? Math.min(1, gui.__s.getScore() / max) : 1)), y + height / 2, height - 3.5, color.green);
 
     //write the score and name
-    text.score.draw("Score: " + util.handleLargeNumber(gui.__s.getScore()), x + len / 2, y + height / 2, height - 2, color.guiwhite, "center", true);
+    drawText("Score: " + util.handleLargeNumber(gui.__s.getScore()), x + len / 2, y + height / 2, height - 2, color.guiwhite, "center", true);
     ctx.lineWidth = 4;
-    text.name.draw(global.player.name, Math.round(x + len / 2) + 0.5, Math.round(y - 10 - vspacing) + 0.5, 32, global.nameColor, "center");
+    drawText(global.player.name, Math.round(x + len / 2) + 0.5, Math.round(y - 10 - vspacing) + 0.5, 32, global.nameColor, "center");
 }
 
 function drawMinimapAndDebug(spacing, alcoveSize) {
@@ -1609,16 +1500,16 @@ function drawMinimapAndDebug(spacing, alcoveSize) {
     if (!global.showDebug) y += 14 * 3;
     // Text
     if (global.showDebug) {
-        text.debug[5].draw("APS++", x + len, y - 50 - 5 * 14 - 2, 15, "#B6E57C", "right");
-        text.debug[4].draw("Prediction: " + Math.round(GRAPHDATA) + "ms", x + len, y - 50 - 4 * 14, 10, color.guiwhite, "right");
-        text.debug[3].draw(`Bandwidth: ${gui.bandwidth.in} in, ${gui.bandwidth.out} out`, x + len, y - 50 - 3 * 14, 10, color.guiwhite, "right");
-        text.debug[2].draw("Update Rate: " + global.metrics.updatetime + "Hz", x + len, y - 50 - 2 * 14, 10, color.guiwhite, "right");
-        text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
-        text.debug[0].draw(global.metrics.latency + " ms - " + global.serverName, x + len, y - 50, 10, color.guiwhite, "right");
+        drawText("APS++", x + len, y - 50 - 5 * 14 - 2, 15, "#B6E57C", "right");
+        drawText("Prediction: " + Math.round(GRAPHDATA) + "ms", x + len, y - 50 - 4 * 14, 10, color.guiwhite, "right");
+        drawText(`Bandwidth: ${gui.bandwidth.in} in, ${gui.bandwidth.out} out`, x + len, y - 50 - 3 * 14, 10, color.guiwhite, "right");
+        drawText("Update Rate: " + global.metrics.updatetime + "Hz", x + len, y - 50 - 2 * 14, 10, color.guiwhite, "right");
+        drawText((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
+        drawText(global.metrics.latency + " ms - " + global.serverName, x + len, y - 50, 10, color.guiwhite, "right");
     } else {
-        text.debug[2].draw("APS++", x + len, y - 50 - 2 * 14 - 2, 15, "#B6E57C", "right");
-        text.debug[1].draw((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
-        text.debug[0].draw(global.metrics.latency + " ms : " + global.metrics.updatetime + "Hz", x + len, y - 50, 10, color.guiwhite, "right");
+        drawText("APS++", x + len, y - 50 - 2 * 14 - 2, 15, "#B6E57C", "right");
+        drawText((100 * gui.fps).toFixed(2) + "% : " + global.metrics.rendertime + " FPS", x + len, y - 50 - 1 * 14, 10, global.metrics.rendertime > 10 ? color.guiwhite : color.orange, "right");
+        drawText(global.metrics.latency + " ms : " + global.metrics.updatetime + "Hz", x + len, y - 50, 10, color.guiwhite, "right");
     }
     global.fps = global.metrics.rendertime;
 }
@@ -1631,7 +1522,7 @@ function drawLeaderboard(spacing, alcoveSize, max) {
     let height = 14;
     let x = global.screenWidth - len - spacing;
     let y = spacing + height + 7;
-    text.lbtitle.draw("Leaderboard:", Math.round(x + len / 2) + 0.5, Math.round(y - 6) + 0.5, height + 4, color.guiwhite, "center");
+    drawText("Leaderboard:", Math.round(x + len / 2) + 0.5, Math.round(y - 6) + 0.5, height + 4, color.guiwhite, "center");
     for (let i = 0; i < lb.data.length; i++) {
         let entry = lb.data[i];
         drawBar(x, x + len, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
@@ -1640,7 +1531,7 @@ function drawLeaderboard(spacing, alcoveSize, max) {
         drawBar(x, x + len * shift, y + height / 2, height - 3.5, getColor(entry.barColor));
         // Leadboard name + score
         let nameColor = entry.nameColor || "#FFFFFF";
-        text.leaderboard[i].draw(entry.label + (": " + util.handleLargeNumber(Math.round(entry.score))), x + len / 2, y + height / 2, height - 5, nameColor, "center", true);
+        drawText(entry.label + (": " + util.handleLargeNumber(Math.round(entry.score))), x + len / 2, y + height / 2, height - 5, nameColor, "center", true);
         // Mini-image
         let scale = height / entry.position.axis,
             xx = x - 1.5 * height - scale * entry.position.middle.x * 0.707,
@@ -1698,11 +1589,11 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             let upgradeKey = getClassUpgradeKey(ticker);
 
             // Tank name
-            text.upgradeNames[i].draw(picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
+            drawText(picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
 
             // Upgrade key
             if (upgradeKey) {
-                text.upgradeKeys[i].draw("[" + upgradeKey + "]", x + len - 4, y + height - 6, height / 8 - 3, color.guiwhite, "right");
+                drawText("[" + upgradeKey + "]", x + len - 4, y + height - 6, height / 8 - 3, color.guiwhite, "right");
             }
             ctx.strokeStyle = color.black;
             ctx.globalAlpha = 1;
@@ -1726,7 +1617,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             yy = yo + height + internalSpacing;
         drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h + config.graphical.barChunk, color.black);
         drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h, color.white);
-        text.skipUpgrades.draw(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
+        drawText(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
         global.clickables.skipUpgrades.place(0, xx - m / 2, yy, m, h);
     } else {
         global.canUpgrade = false;
@@ -1774,15 +1665,6 @@ const gameDraw = (ratio, drawRatio) => {
     }
     global.metrics.lastrender = getNow();
 };
-let textDead = {
-    taunt: TextObj(),
-    level: TextObj(),
-    score: TextObj(),
-    time: TextObj(),
-    kills: TextObj(),
-    death: TextObj(),
-    playagain: TextObj(),
-};
 let getKills = () => {
     let finalKills = {
         " kills": [Math.round(global.finalKills[0].get()), 1],
@@ -1815,9 +1697,9 @@ let getDeath = () => {
     let txt = "";
     if (global.finalKillers.length) {
         txt = "🔪 Succumbed to";
-        global.finalKillers.forEach((e) => {
+        for (let e of global.finalKillers) {
             txt += " " + util.addArticle(global.mockups[e].name) + " and";
-        });
+        }
         txt = txt.slice(0, -4);
     } else {
         txt += "🤷 Well that was kinda dumb huh";
@@ -1845,17 +1727,14 @@ const gameDrawDead = () => {
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
         yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707;
     drawEntity((xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
-    textDead.taunt.draw("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
-    textDead.level.draw("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
-    textDead.score.draw("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);
-    textDead.time.draw("⌚ Survived for " + util.timeForHumans(Math.round(global.finalLifetime.get())), x - 170, y + 55, 16, color.guiwhite);
-    textDead.kills.draw(getKills(), x - 170, y + 77, 16, color.guiwhite);
-    textDead.death.draw(getDeath(), x - 170, y + 99, 16, color.guiwhite); textDead.playagain.draw( "(press enter to respawn)", x, y + 125, 16, color.guiwhite, "center");
+    drawText("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
+    drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
+    drawText("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);
+    drawText("⌚ Survived for " + util.timeForHumans(Math.round(global.finalLifetime.get())), x - 170, y + 55, 16, color.guiwhite);
+    drawText(getKills(), x - 170, y + 77, 16, color.guiwhite);
+    drawText(getDeath(), x - 170, y + 99, 16, color.guiwhite);
+    drawText("(press enter to respawn)", x, y + 125, 16, color.guiwhite, "center");
     ctx.translate(0, shift * global.screenHeight);
-};
-let textBeforeStart = {
-    connecting: TextObj(),
-    message: TextObj(),
 };
 const gameDrawBeforeStart = () => {
     let ratio = util.getScreenRatio();
@@ -1869,13 +1748,9 @@ const gameDrawBeforeStart = () => {
     clearScreen(color.white, 0.5);
     let shift = animations.connecting.get();
     ctx.translate(0, -shift * global.screenHeight);
-    textBeforeStart.connecting.draw("Connecting...", global.screenWidth / 2, global.screenHeight / 2, 30, color.guiwhite, "center");
-    textBeforeStart.message.draw(global.message, global.screenWidth / 2, global.screenHeight / 2 + 30, 15, color.lgreen, "center");
+    drawText("Connecting...", global.screenWidth / 2, global.screenHeight / 2, 30, color.guiwhite, "center");
+    drawText(global.message, global.screenWidth / 2, global.screenHeight / 2 + 30, 15, color.lgreen, "center");
     ctx.translate(0, shift * global.screenHeight);
-};
-let textDisconnected = {
-    disconnected: TextObj(),
-    message: TextObj(),
 };
 const gameDrawDisconnected = () => {
     let ratio = util.getScreenRatio();
@@ -1889,8 +1764,8 @@ const gameDrawDisconnected = () => {
     clearScreen(mixColors(color.red, color.guiblack, 0.3), 0.25);
     let shift = animations.disconnected.get();
     ctx.translate(0, -shift * global.screenHeight);
-    textDisconnected.disconnected.draw("Disconnected", global.screenWidth / 2, global.screenHeight / 2, 30, color.guiwhite, "center");
-    textDisconnected.message.draw(global.message, global.screenWidth / 2, global.screenHeight / 2 + 30, 15, color.orange, "center");
+    drawText("Disconnected", global.screenWidth / 2, global.screenHeight / 2, 30, color.guiwhite, "center");
+    drawText(global.message, global.screenWidth / 2, global.screenHeight / 2 + 30, 15, color.orange, "center");
     ctx.translate(0, shift * global.screenHeight);
 };
 // The main function

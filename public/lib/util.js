@@ -174,11 +174,7 @@ const util = {
             layer: mockup.layer,
             guns: {
                 length: mockup.guns.length,
-                getPositions: () => {
-                    let a = [];
-                    mockup.guns.forEach(() => a.push(0));
-                    return a;
-                },
+                getPositions: () => Array(mockup.guns.length).fill(0),
                 update: () => {},
             },
             turrets: mockup.turrets.map((t) => {

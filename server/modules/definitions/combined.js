@@ -25,7 +25,7 @@ for (let filename of addons) {
 	
 	console.log(`Loading addon: ${filename}`);
 
-	require('./addons/' + filename)({ Class });
+	require('./addons/' + filename)({ Config: c, Class });
 }
 
 // "Flattening" refers to removing PARENT attributes and applying the parents' attributes to the definition themselves, if not overwritten later on.

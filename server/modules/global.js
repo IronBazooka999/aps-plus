@@ -31,14 +31,14 @@ global.getWeakestTeam = (type = 0) => { // 0 - Bots only, 1 - Players only, 2 - 
         }
     }
     if (type !== 0) {
-        for (let { socket } of sockets.players) {
-            if (socket.rememberedTeam > 0 && socket.rememberedTeam <= c.TEAMS) {
-                teamcounts[socket.rememberedTeam]++;
+        for (let { socket: { rememberedTeam } } of sockets.players) {
+            if (rememberedTeam > 0 && rememberedTeam <= c.TEAMS) {
+                teamcounts[rememberedTeam]++;
             }
         }
     }
     const entries = Object.entries(teamcounts);
-    return entries.length === 0 ? Math.ceil(Math.random() * c.TEAMS) : entries.reduce((a, b) => Math.min(a[1], b[1]), Infinity)[0];
+    return entries.length === 0 ? Math.ceil(Math.random() * c.TEAMS) : entries.reduce((a, b) => a[1] < b[1] ? a : b, [undefined, Infinity])[0];
 };
 
 global.getTeamName = team => ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][-team - 1] || "An unknown team";

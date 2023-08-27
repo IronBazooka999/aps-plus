@@ -276,57 +276,6 @@ let remapTarget = (i, ref, self) => {
     };
 };
 
-var bringToLife = my => {
-    // Size
-    /*if (my.SIZE - my.coreSize) */my.coreSize = my.SIZE;
-    // Think
-    let faucet = my.settings.independent || my.source == null || my.source === my ? {} : my.source.control;
-    let b = {
-        target: remapTarget(faucet, my.source, my),
-        goal: undefined,
-        fire: faucet.fire,
-        main: faucet.main,
-        alt: faucet.alt,
-        power: undefined,
-    };
-    // Seek attention
-    if (my.settings.attentionCraver && !faucet.main && my.range) {
-        my.range -= 1;
-    }
-    // Invisibility
-    if (my.invisible[1]) {
-        my.alpha = Math.max(0, my.alpha - my.invisible[1]);
-        if (!my.velocity.isShorterThan(0.1) || my.damageReceived) {
-            my.alpha = Math.min(1, my.alpha + my.invisible[0]);
-        }
-    }
-    // So we start with my master's thoughts and then we filter them down through our control stack
-    for (let i = 0; i < my.controllers.length; i++) {
-        let AI = my.controllers[i];
-        let a = AI.think(b);
-        if (a != null) {
-            if (a.target != null && (b.target == null || AI.acceptsFromTop)) b.target = a.target;
-            if (a.goal   != null && (b.goal   == null || AI.acceptsFromTop)) b.goal   = a.goal  ;
-            if (a.fire   != null && (b.fire   == null || AI.acceptsFromTop)) b.fire   = a.fire  ;
-            if (a.main   != null && (b.main   == null || AI.acceptsFromTop)) b.main   = a.main  ;
-            if (a.alt    != null && (b.alt    == null || AI.acceptsFromTop)) b.alt    = a.alt   ;
-            if (a.power  != null && (b.power  == null || AI.acceptsFromTop)) b.power  = a.power ;
-        }
-    }
-    my.control.target = b.target == null ? my.control.target : b.target;
-    my.control.goal = b.goal ? b.goal : { x: my.x, y: my.y };
-    my.control.fire = b.fire;
-    my.control.main = b.main;
-    my.control.alt = b.alt;
-    my.control.power = b.power == null ? 1 : b.power;
-    // React
-    my.move();
-    my.face();
-    // Handle guns and turrets if we've got them
-    for (let i = 0; i < my.guns.length; i++) my.guns[i].live();
-    if (my.skill.maintain()) my.refreshBodyAttributes();
-};
-
 let lazyRealSizes = [1, 1, 1];
 for (var i = 3; i < 17; i++) {
     // We say that the real size of a 0-gon, 1-gon, 2-gon is one, then push the real sizes of triangles, squares, etc...
@@ -344,4 +293,4 @@ lazyRealSizes = new Proxy(lazyRealSizes, {
     }
 });
 
-module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, bringToLife, lazyRealSizes };
+module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, remapTarget, lazyRealSizes };

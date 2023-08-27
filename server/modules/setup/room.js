@@ -1,7 +1,3 @@
-// A quick Changelog for this: 
-// - It no longer uses ES6 Arrow Functions
-// - It no longer uses forEach loops
-
 const room = {
     lastCycle: undefined,
     cycleSpeed: 1000 / roomSpeed / 30,

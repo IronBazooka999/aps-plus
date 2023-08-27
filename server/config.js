@@ -89,6 +89,7 @@ module.exports = {
     // Miscellaneous
     BANNED_CHARACTER_REGEX: "/[\uFDFD\u200E\u0000]/gi",
     DEFAULT_FILE: 'index.html',
+    WINDOW_NAME: 'APS++ Game Server Instance',
     WELCOME_MESSAGE: "You have spawned! Welcome to the game.\n"
                     +"You will be invulnerable until you move or shoot.\n"
                     +"This is a beta release. Please join the official discord server to report any bugs you encounter!"

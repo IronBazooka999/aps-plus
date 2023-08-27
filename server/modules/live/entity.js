@@ -2,6 +2,18 @@ let EventEmitter = require('events'),
     events,
     init = g => events = g.events;
 
+function setNatural(natural, type) {
+    if (type.PARENT != null) {
+        for (let i = 0; i < type.PARENT.length; i++) {
+            setNatural(natural, type.PARENT[i]);
+        }
+    }
+    if (type.BODY != null) {
+        for (let index in type.BODY) {
+            natural[index] = type.BODY[index];
+        }
+    }
+}
 class Gun {
     constructor(body, info) {
         this.ac = false;
@@ -32,20 +44,7 @@ class Gun {
             }
             // Pre-load bullet definitions so we don't have to recalculate them every shot
             let natural = {};
-            this.bulletTypes.forEach(function setNatural(type) {
-                if (type.PARENT != null) {
-                    // Make sure we load from the parents first
-                    for (let i = 0; i < type.PARENT.length; i++) {
-                        setNatural(type.PARENT[i]);
-                    }
-                }
-                if (type.BODY != null) {
-                    // Get values if they exist
-                    for (let index in type.BODY) {
-                        natural[index] = type.BODY[index];
-                    }
-                }
-            });
+            for (let type of this.bulletTypes) setNatural(natural, type);
             this.natural = natural; // Save it
             if (info.PROPERTIES.GUN_CONTROLLERS != null) {
                 let toAdd = [];
@@ -285,7 +284,7 @@ class Gun {
     bulletInit(o) {
         // Define it by its natural properties
         o.color = undefined;
-        this.bulletTypes.forEach(type => o.define(type));
+        for (let type of this.bulletTypes) o.define(type);
         // Pass the gun attributes
         o.define({
             BODY: this.interpret(),
@@ -692,6 +691,7 @@ class Entity extends EventEmitter {
         this.invuln = false;
         this.alpha = 1;
         this.invisible = [0, 0];
+        this.alphaRange = [0, 1];
         this.borderless = false;
         this.autospinBoost = 0;
         this.antiNaN = antiNaN(this);
@@ -742,33 +742,70 @@ class Entity extends EventEmitter {
         })();
         this.updateAABB(true);
         entities.push(this);
-        views.forEach((v) => v.add(this));
+        for (let v of views) v.add(this);
         this.activation.update();
         events.emit('spawn', this);
     }
     life() {
-        bringToLife(this);
+        // Size
+        this.coreSize = this.SIZE;
+        // Invisibility
+        if (this.damageReceived || this.x ** 2 + this.y ** 2 <= 0.01) {
+            this.alpha = Math.min(this.alphaRange[0], this.alpha + this.invisible[0]);
+        } else {
+            this.alpha = Math.max(this.alphaRange[1], this.alpha - this.invisible[1]);
+        }
+        // Think
+        let faucet = this.settings.independent || this.source == null || this.source === this ? {} : this.source.control,
+        b = {
+            target: remapTarget(faucet, this.source, this),
+            goal: undefined,
+            fire: faucet.fire,
+            main: faucet.main,
+            alt: faucet.alt,
+            power: undefined,
+        };
+        // Seek attention
+        if (this.settings.attentionCraver && !faucet.main && this.range) {
+            this.range -= 1;
+        }
+        // So we start with my master's thoughts and then we filter them down through our control stack
+        for (let i = 0; i < this.controllers.length; i++) {
+            let AI = this.controllers[i],
+                a = AI.think(b);
+            if (a != null) {
+                if (a.target != null && (b.target == null || AI.acceptsFromTop)) b.target = a.target;
+                if (a.goal   != null && (b.goal   == null || AI.acceptsFromTop)) b.goal   = a.goal  ;
+                if (a.fire   != null && (b.fire   == null || AI.acceptsFromTop)) b.fire   = a.fire  ;
+                if (a.main   != null && (b.main   == null || AI.acceptsFromTop)) b.main   = a.main  ;
+                if (a.alt    != null && (b.alt    == null || AI.acceptsFromTop)) b.alt    = a.alt   ;
+                if (a.power  != null && (b.power  == null || AI.acceptsFromTop)) b.power  = a.power ;
+            }
+        }
+        this.control.target = b.target == null ? this.control.target : b.target;
+        this.control.goal = b.goal ? b.goal : { x: this.x, y: this.y };
+        this.control.fire = b.fire;
+        this.control.main = b.main;
+        this.control.alt = b.alt;
+        this.control.power = b.power == null ? 1 : b.power;
+        // React
+        this.move();
+        this.face();
+        // Handle guns and turrets if we've got them
+        for (let i = 0; i < this.guns.length; i++) this.guns[i].live();
+        if (this.skill.maintain()) this.refreshBodyAttributes();
     }
     addController(newIO) {
         let listenToPlayer;
-        if (
-            this.controllers.length &&
-            this.controllers[0] instanceof ioTypes.listenToPlayer
-        )
+        if (this.controllers && this.controllers[0] instanceof ioTypes.listenToPlayer) {
             listenToPlayer = this.controllers.shift();
-        if (Array.isArray(newIO)) {
-            this.controllers = newIO.concat(this.controllers);
-        } else {
-            this.controllers.unshift(newIO);
         }
+        if (!Array.isArray(newIO)) newIO = [newIO];
+        this.controllers = newIO.concat(this.controllers);
         if (listenToPlayer) this.controllers.unshift(listenToPlayer);
     }
     become(player, dom = false) {
-        this.addController(
-            dom
-                ? new ioTypes.listenToPlayer(this, { player, static: true })
-                : new ioTypes.listenToPlayer(this, { player })
-        );
+        this.addController(new ioTypes.listenToPlayer(this, { player, static: dom }));
         this.sendMessage = (content, color) => player.socket.talk("m", content);
         this.kick = (reason) => player.socket.kick(reason);
     }
@@ -786,24 +823,17 @@ class Entity extends EventEmitter {
             ];
         player.body.name = player.body.label;
         player.body.underControl = false;
-        player.body.sendMessage = (content) => {};
-        let fakeBody = new Entity({
-            x: player.body.x,
-            y: player.body.y,
-        });
+        player.body.sendMessage = () => {};
+        let fakeBody = new Entity({ x: player.body.x, y: player.body.y });
         fakeBody.passive = true;
         fakeBody.underControl = true;
         player.body = fakeBody;
         player.body.kill();
     }
     ensureIsClass(str) {
-        if ("string" == typeof str) {
-            if (str in Class) {
-                return Class[str];
-            }
-            throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
-        }
-        return str;
+        if ("object" == typeof str) return str;
+        if (str in Class) return Class[str];
+        throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
     }
     define(set) {
         set = this.ensureIsClass(set);
@@ -868,8 +898,14 @@ class Entity extends EventEmitter {
         if (set.IS_SMASHER != null) this.settings.reloadToAcceleration = set.IS_SMASHER;
         if (set.STAT_NAMES != null) this.settings.skillNames = set.STAT_NAMES;
         if (set.AI != null) this.aiSettings = set.AI;
-        if (set.ALPHA != null) this.alpha = set.ALPHA;
         if (set.INVISIBLE != null) this.invisible = set.INVISIBLE;
+        if (set.ALPHA != null) {
+            this.alpha = ("number" === typeof set.ALPHA) ? set.ALPHA : set.ALPHA[1];
+            this.alphaRange = [
+                set.ALPHA[0] || 0,
+                set.ALPHA[1] || 1
+            ];
+        }
         if (set.DANGER != null) this.dangerValue = set.DANGER;
         if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
         if (set.BORDERLESS != null) this.borderless = set.BORDERLESS;
@@ -1190,14 +1226,14 @@ class Entity extends EventEmitter {
                         g
                     ) + 1;
                 if (gactive && l > this.size) {
-                    let desiredxspeed = (this.topSpeed * g.x) / l,
-                        desiredyspeed = (this.topSpeed * g.y) / l,
+                    let XvelDesired = (this.topSpeed * g.x) / l,
+                        YvelDesired = (this.topSpeed * g.y) / l,
                         turning = Math.sqrt(
                             (this.topSpeed * Math.max(1, this.range) + 1) / a
                         );
                     engine = {
-                        x: (desiredxspeed - this.velocity.x) / Math.max(5, turning),
-                        y: (desiredyspeed - this.velocity.y) / Math.max(5, turning),
+                        x: (XvelDesired - this.velocity.x) / Math.max(5, turning),
+                        y: (YvelDesired - this.velocity.y) / Math.max(5, turning),
                     };
                 } else {
                     if (this.velocity.length < this.topSpeed) {
@@ -1213,11 +1249,11 @@ class Entity extends EventEmitter {
                     let l = util.getDistance({ x: 0, y: 0, }, g);
                     if (l > this.size * 2) {
                         this.maxSpeed = this.topSpeed;
-                        let desiredxspeed = (this.topSpeed * g.x) / l,
-                            desiredyspeed = (this.topSpeed * g.y) / l;
+                        let XvelDesired = (this.topSpeed * g.x) / l,
+                            YvelDesired = (this.topSpeed * g.y) / l;
                         engine = {
-                            x: (desiredxspeed - this.velocity.x) * a,
-                            y: (desiredyspeed - this.velocity.y) * a,
+                            x: (XvelDesired - this.velocity.x) * a,
+                            y: (YvelDesired - this.velocity.y) * a,
                         };
                     } else {
                         this.maxSpeed = 0;
@@ -1614,11 +1650,11 @@ class Entity extends EventEmitter {
                 let text = util.addArticle(this.label, true);
                 if (notJustFood) {
                     text += " has been defeated by";
-                    killers.forEach((instance) => {
+                    for (let { name } of killers) {
                         text += " ";
-                        text += instance.name === "" ? "an unnamed player" : instance.name;
+                        text += name === "" ? "an unnamed player" : name;
                         text += " and";
-                    });
+                    }
                     text = text.slice(0, -4);
                     text += "!";
                 } else {

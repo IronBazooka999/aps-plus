@@ -17,6 +17,10 @@ Array.prototype.remove = function (index) {
     return r;
 };
 
+//console window title
+// https://stackoverflow.com/questions/29548477/how-do-you-set-the-terminal-tab-title-from-node-js
+process.stdout.write(String.fromCharCode(27) + "]0;" + c.WINDOW_NAME + String.fromCharCode(7));
+
 util.log(room.width + " x " + room.height + " room initalized.  Max food: " + room.maxFood + ", max nest food: " + room.maxFood * room.nestFoodAmount + ".");
 
 // Collision stuff
@@ -349,7 +353,8 @@ let spawnBosses = (census) => {
             let names = ran.chooseBossName(selection.nameType, amount);
             names = ("string" == typeof names) ? [names] : names;
             sockets.broadcast(amount > 1 ? util.listify(names) + " have arrived!" : names[0] + " has arrived!");
-            names.forEach((name, i) => {
+            for (let i = 0; i < names.length; i++) {
+                let name = names[i];
                 let spot,
                     m = 0;
                 do {
@@ -360,7 +365,7 @@ let spawnBosses = (census) => {
                 boss.name = name;
                 boss.define(selection.bosses.sort(() => 0.5 - Math.random())[i % selection.bosses.length]);
                 boss.team = -100;
-            });
+            }
         }, 5000);
         timer = Math.round((c.bossSpawnInterval || 8) * 65); // 5 seconds due to spawning process
     }
@@ -398,13 +403,17 @@ let spawnCrasher = (census) => {
 };
 
 // Make base protectors if needed.
+let spawnPermanentBaseProtector = (loc, team) => {
+    let o = new Entity(loc);
+    o.define(Class.baseProtector);
+    o.team = team;
+    o.color = getTeamColor(team);
+    o.on('dead', () => spawnPermanentBaseProtector(loc, team));
+};
 for (let team = 1; team < c.TEAMS + 1; team++) {
-    room["bap" + team].forEach((loc) => {
-        let o = new Entity(loc);
-        o.define(Class.baseProtector);
-        o.team = -team;
-        o.color = getTeamColor(-team);
-    });
+    for (let loc of room["bap" + team]) {
+        spawnPermanentBaseProtector(loc, -team);
+    }
 }
 
 let bots = [];

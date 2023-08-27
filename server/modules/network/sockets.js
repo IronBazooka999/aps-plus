@@ -779,27 +779,6 @@ const spawn = (socket, name) => {
     player.team = socket.rememberedTeam;
     switch (room.gameMode) {
         case "tdm":
-            /*// Count how many others there are
-            let census = [],
-                scoreCensus = [];
-            for (let i = 0; i < c.TEAMS; i++) census.push(1), scoreCensus.push(1);
-            players.forEach(p => {
-                census[p.team - 1]++;
-                if (p.body != null) {
-                    scoreCensus[p.team - 1] += p.body.skill.score;
-                }
-            });
-            let possiblities = [];
-            for (let i = 0, m = 0; i < c.TEAMS; i++) {
-                let v = Math.round(1000000 * (room['bas' + (i + 1)].length + 1) / (census[i] + 1) / scoreCensus[i]);
-                if (v > m) {
-                    m = v;
-                    possiblities = [i];
-                }
-                if (v == m) {
-                    possiblities.push(i);
-                }
-            }*/
             let team = c.HUNT ? 1 : getWeakestTeam(1);
             // Choose from one of the least ones
             if (player.team == null || (player.team != null && player.team !== team && global.defeatedTeams.includes(-player.team))
