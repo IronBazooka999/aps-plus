@@ -415,6 +415,58 @@ exports.colorMan = {
     }]
 };
 
+let gNoRandom: [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1],
+
+exports.miscTestHelper2 = {
+    PARENT: ["genericTank"],
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+}
+exports.miscTestHelper = {
+    PARENT: ["genericTank"],
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+    TURRETS: [
+        {
+          POSITION: [20, 0, 0, 0, 0, 1],
+          TYPE: "miscTestHelper2",
+        }
+    ]
+}
+exports.miscTest = {
+    PARENT: ["genericTank"],
+    LABEL: "Turret Reload Test",
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+    TURRETS: [
+        {
+            POSITION: [20, 0, 20, 0, 0, 1],
+            TYPE: "miscTestHelper",
+        }
+    ]
+}
+
 // FUN
 exports.vanquisher = {
     PARENT: ["genericTank"],
@@ -616,4 +668,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerat
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok", "kronos"*/];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "tracker3", "tetraGunner", "worstTank"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "tracker3", "tetraGunner", "worstTank"];

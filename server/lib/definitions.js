@@ -207,6 +207,9 @@ const g = {
     lowpower: [1, 1, 2, 1, 0.5, 0.5, 0.7, 1, 1, 1, 1, 0.5, 0.7],
     notdense: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 1, 1],
     halfrange: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1],
+
+
+    noRandom: [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1],
 };
 
 // SKILL DEFINITIONS
@@ -16350,6 +16353,56 @@ exports.aimToCursorMan = {
     }]
 }
 
+exports.miscTestHelper2 = {
+    PARENT: [exports.genericTank],
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
+}
+exports.miscTestHelper = {
+    PARENT: [exports.genericTank],
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
+    TURRETS: [
+        {
+          POSITION: [20, 0, 20, 0, 0, 1],
+          TYPE: exports.miscTestHelper2,
+        }
+    ]
+}
+exports.miscTest = {
+    PARENT: [exports.genericTank],
+    LABEL: "Turret Reload Test",
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
+    TURRETS: [
+        {
+            POSITION: [20, 0, 20, 0, 0, 1],
+            TYPE: exports.miscTestHelper,
+        }
+    ]
+}
+
 // JOKE TANKS
 exports.wifeBeater = {
     PARENT: [exports.genericTank],
@@ -16556,7 +16609,7 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team100);
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];

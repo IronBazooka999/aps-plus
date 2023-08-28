@@ -625,7 +625,10 @@ class Entity extends EventEmitter {
             let timer = ran.irandom(15);
             return {
                 update: () => {
-                    if (this.skipLife || this.isDead()) {
+                    if (this.skipLife) {
+                        return active = false;
+                    }
+                    if (this.isDead()) {
                         return 0;
                     }
                     if (!active) {
