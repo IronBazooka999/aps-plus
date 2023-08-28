@@ -594,6 +594,7 @@ class Entity extends EventEmitter {
         };
         this.creationTime = new Date().getTime();
         // Inheritance
+        this.skipLife = false;
         this.master = master;
         this.source = this;
         this.parent = this;
@@ -624,7 +625,7 @@ class Entity extends EventEmitter {
             let timer = ran.irandom(15);
             return {
                 update: () => {
-                    if (this.isDead()) {
+                    if (this.skipLife || this.isDead()) {
                         return 0;
                     }
                     if (!active) {
@@ -638,11 +639,7 @@ class Entity extends EventEmitter {
                     } else {
                         this.addToGrid();
                         timer = 15;
-                        active =
-                            views.some((v) => v.check(this, 0.6)) ||
-                            this.alwaysActive ||
-                            this.isPlayer ||
-                            this.isBot;
+                        active = this.alwaysActive || this.isPlayer || this.isBot || views.some((v) => v.check(this, 0.6));
                     }
                 },
                 check: () => {
@@ -793,6 +790,7 @@ class Entity extends EventEmitter {
         this.face();
         // Handle guns and turrets if we've got them
         for (let i = 0; i < this.guns.length; i++) this.guns[i].live();
+        for (let i = 0; i < this.turrets.length; i++) this.turrets[i].life();
         if (this.skill.maintain()) this.refreshBodyAttributes();
     }
     addController(newIO) {
@@ -1050,9 +1048,10 @@ class Entity extends EventEmitter {
         this.bond.turrets.push(this);
         this.skill = this.bond.skill;
         this.label = this.bond.label + " " + this.label;
-        // It will not be in collision calculations any more nor shall it be seen.
+        // It will not be in collision calculations any more nor shall it be seen or continue to run independently.
         this.removeFromGrid();
         this.settings.drawShape = false;
+        this.skipLife = true;
         // Get my position.
         let _off = new Vector(position[1], position[2]);
         this.bound = {
@@ -1064,6 +1063,7 @@ class Entity extends EventEmitter {
             layer: position[5]
         };
         // Initalize.
+        this.activation.update();
         this.facing = this.bond.facing + this.bound.angle;
         this.facingType = "bound";
         this.motionType = "bound";

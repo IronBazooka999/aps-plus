@@ -138,14 +138,6 @@ function collide(collision) {
     }
 }
 
-// Living stuff
-function entitiesactivationloop(my) {
-    // Update collisions.
-    my.collisionArray = [];
-    // Activation
-    my.activation.update();
-    my.updateAABB(my.activation.check());
-}
 function entitiesliveloop(my) {
     // Consider death.
     if (my.contemplationOfMortality()) {
@@ -170,7 +162,11 @@ function entitiesliveloop(my) {
             my.takeSelfie();
             logs.selfie.mark();
         }
-        entitiesactivationloop(my);
+        // Update collisions.
+        my.collisionArray = [];
+        // Activation
+        my.activation.update();
+        my.updateAABB(my.activation.check());
     }
     // Update collisions.
     my.collisionArray = [];
