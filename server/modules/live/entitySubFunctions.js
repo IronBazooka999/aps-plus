@@ -179,16 +179,6 @@ class Skill {
     title(stat) {
         return this.name[skcnv[stat]];
     }
-    /*
-        let i = skcnv[skill] % 5,
-                j = (skcnv[skill] - i) / 5;
-        let roundvalue = Math.round(this.bleed(i, j) * 10);
-        let string = '';
-        if (roundvalue > 0) { string += '+' + roundvalue + '%'; }
-        if (roundvalue < 0) { string += '-' + roundvalue + '%'; }
-
-        return string;
-        */
     amount(skill) {
         return this.raw[skcnv[skill]];
     }

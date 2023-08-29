@@ -1280,7 +1280,7 @@ class Entity extends EventEmitter {
                 ref.velocity.x += bound.size * this.accel.x;
                 ref.velocity.y += bound.size * this.accel.y;
                 this.firingArc = [ref.facing + bound.angle, bound.arc / 2];
-                nullVector(this.accel);
+                this.accel.null();
                 this.blend = ref.blend;
                 break;
         }
@@ -1387,14 +1387,14 @@ class Entity extends EventEmitter {
             util.error(this.collisionArray);
             util.error(this.label);
             util.error(this);
-            nullVector(this.accel);
-            nullVector(this.velocity);
+            this.accel.null();
+            this.velocity.null();
         }
         // Apply acceleration
         this.velocity.x += this.accel.x;
         this.velocity.y += this.accel.y;
         // Reset acceleration
-        nullVector(this.accel);
+        this.accel.null();
         // Apply motion
         this.stepRemaining = 1;
         if (c.SPACE_PHYSICS) this.stepRemaining = 2;
@@ -1420,8 +1420,8 @@ class Entity extends EventEmitter {
             util.error(this.collisionArray);
             util.error(this.label);
             util.error(this);
-            nullVector(this.accel);
-            nullVector(this.velocity);
+            this.accel.null();
+            this.velocity.null();
             return 0;
         }
         if (room.port.length) {

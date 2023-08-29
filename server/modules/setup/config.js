@@ -21,7 +21,7 @@ for (let gamemode of gamemodes) {
 
 module.exports = { output };
 
-//everything past this handles 
+//everything past this handles the display name in the main menu
 const nameMap = {
     tdm: "TDM",
     ffa: "FFA",
@@ -31,7 +31,3 @@ const nameMap = {
 };
 
 output.gameModeName = gamemodes.map(x => nameMap[x] || (x[0].toUpperCase() + x.slice(1))).join(' ');
-
-/*if (["Tag", "Domination", "Mothership"].includes(gamemode)) {
-    output.gameModeName = `${output.TEAMS} TDM ${gamemode}`;
-}*/

@@ -381,7 +381,6 @@ function reflectCollide(wall, bounce) {
         } else {
             bounce.collisionArray.push(wall);
         }
-            
     }
 };
 
