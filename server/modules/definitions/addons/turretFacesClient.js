@@ -25,6 +25,6 @@ module.exports = ({ Class }) => {
             POSITION: [15, 0, 10, 0, 0, 1],
             TYPE: [{ SHAPE: 4, COLOR: 2 }]
         }]
-    }
-    Class.fun.UPGRADES_TIER_0.push('aimToCursor')
+    };
+    Class.fun.UPGRADES_TIER_0.push('aimToCursorMan');
 };

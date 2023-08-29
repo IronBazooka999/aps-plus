@@ -4,6 +4,24 @@ const generics = require('./generics.js');
 const g = require('../gunvals.js');
 
 // Whatever the hell is needed
+exports.sunchip = {
+    PARENT: ["drone"],
+    SHAPE: 4,
+    NECRO: true,
+    HITS_OWN_TYPE: "hard",
+    BODY: {
+        FOV: 0.5,
+    },
+    AI: {
+        BLIND: true,
+        FARMER: true,
+    },
+    DRAW_HEALTH: false,
+};
+exports.eggchip = {
+    PARENT: ["sunchip"],
+    SHAPE: 0,
+};
 exports.setTrap = {
     LABEL: "Set Trap",
     PARENT: ["trap"],
@@ -4027,7 +4045,7 @@ exports.trapGuard = {
 exports.overtrapper = makeOver(exports.weirdTrapper);
 
 // BUILDER UPGRADES
-exports.constructor = {
+exports.constr = {
     PARENT: ["genericTank"],
     LABEL: "Constructor",
     STAT_NAMES: statnames.trap,
@@ -4770,12 +4788,12 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
 
     exports.pounder.UPGRADES_TIER_2 = ["destroyer", "builder", "artillery", "launcher"];
         exports.pounder.UPGRADES_TIER_3 = ["shotgun", "eagle"];
-        exports.destroyer.UPGRADES_TIER_3 = ["conqueror", "annihilator", "hybrid", "constructor"];
+        exports.destroyer.UPGRADES_TIER_3 = ["conqueror", "annihilator", "hybrid", "constr"];
         exports.artillery.UPGRADES_TIER_3 = ["mortar", "ordnance", "beekeeper", "fieldGun"];
         exports.launcher.UPGRADES_TIER_3 = ["skimmer", "twister", "swarmer", "sidewinder", "fieldGun"];
 
     exports.trapper.UPGRADES_TIER_2 = ["builder", "triTrapper", "trapGuard"];
         exports.trapper.UPGRADES_TIER_3 = ["barricade", "overtrapper"];
-        exports.builder.UPGRADES_TIER_3 = ["constructor", "autoBuilder", "engineer", "boomer", /*assembler coming soonTM*/ "architect", "conqueror"];
+        exports.builder.UPGRADES_TIER_3 = ["constr", "autoBuilder", "engineer", "boomer", /*assembler coming soonTM*/ "architect", "conqueror"];
         exports.triTrapper.UPGRADES_TIER_3 = ["fortress", "hexaTrapper", "septaTrapper", "architect"];
         exports.trapGuard.UPGRADES_TIER_3 = ["bushwhacker", "gunnerTrapper", "bomber", "conqueror", "bulwark"];

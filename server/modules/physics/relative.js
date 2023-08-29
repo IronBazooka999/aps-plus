@@ -22,10 +22,6 @@ class Vector {
         this.X = 0;
         this.Y = 0;
     }
-    update() {
-        this.len = this.length;
-        this.dir = this.direction;
-    }
     isShorterThan(d) {
         return this.x * this.x + this.y * this.y <= d * d;
     }
@@ -59,7 +55,7 @@ function timeOfImpact(p, v, s) {
         c = p.x ** 2 + p.y ** 2,
         d = b ** 2 + a * c
     if (d < 0) return 0;
-    return Math.max(0, (b + Math.sqrt(d)) / a) * 0.9
+    return Math.max(0, (b + Math.sqrt(d)) / a) * 0.9;
 }
 
 module.exports = { Vector, nearest, timeOfImpact };

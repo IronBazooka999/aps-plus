@@ -545,8 +545,6 @@ function saveAN(me, data) {
     me.velocity.y = data.vy;
     me.accel.x = data.ax;
     me.accel.y = data.ay;
-    me.velocity.update();
-    me.accel.update();
 }
 let amNaN = me => [
     isNaN(me.x), isNaN(me.y),

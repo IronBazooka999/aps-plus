@@ -415,7 +415,7 @@ exports.colorMan = {
     }]
 };
 
-let gNoRandom: [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1],
+let gNoRandom = [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1];
 
 exports.miscTestHelper2 = {
     PARENT: ["genericTank"],
@@ -428,7 +428,7 @@ exports.miscTestHelper2 = {
             },
         },
     ],
-}
+};
 exports.miscTestHelper = {
     PARENT: ["genericTank"],
     GUNS: [
@@ -446,7 +446,7 @@ exports.miscTestHelper = {
           TYPE: "miscTestHelper2",
         }
     ]
-}
+};
 exports.miscTest = {
     PARENT: ["genericTank"],
     LABEL: "Turret Reload Test",
@@ -465,7 +465,7 @@ exports.miscTest = {
             TYPE: "miscTestHelper",
         }
     ]
-}
+};
 
 // FUN
 exports.vanquisher = {
@@ -668,4 +668,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerat
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok", "kronos"*/];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "tracker3", "tetraGunner", "worstTank"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest"];
