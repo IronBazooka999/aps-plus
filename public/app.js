@@ -668,7 +668,7 @@ function drawBar(x1, x2, y, width, color) {
     ctx.stroke();
 }
 // Sub-drawing functions
-function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderless, fill = true) {
+function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderless, fill) {
     // Start drawing
     context.beginPath();
     if (sides instanceof Array) {
@@ -698,15 +698,14 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
         // Circle
         let fillcolor = context.fillStyle;
         let strokecolor = context.strokeStyle;
-        radius += context.lineWidth / 4;
-        context.arc(centerX, centerY, radius + context.lineWidth / 4 * (!borderless), 0, 2 * Math.PI);
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         context.fillStyle = strokecolor;
-        context.fill();
+        if (!borderless) context.stroke();
         context.closePath();
         context.beginPath();
         context.fillStyle = fillcolor;
-        context.arc(centerX, centerY, radius - context.lineWidth / 4 * (!borderless), 0, 2 * Math.PI);
-        context.fill();
+        context.arc(centerX, centerY, radius * (!borderless), 0, 2 * Math.PI);
+        if (fill) context.fill();
         context.closePath();
         return;
     } else if (sides < 0) {
@@ -743,12 +742,10 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
     }
     context.closePath();
     if (!borderless) context.stroke();
-    if (fill) {
-        context.fill();
-    }
+    if (fill) context.fill();
     context.lineJoin = "round";
 }
-function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless = false) {
+function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless, fill) {
     let h = [];
     h = aspect > 0 ? [height * aspect, height] : [height, -height * aspect];
     let r = [Math.atan2(h[0], length), Math.atan2(h[1], length)];
@@ -774,9 +771,8 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless 
         y + l[0] * Math.sin(angle - r[0])
     );
     context.closePath();
-    if (borderless != true)
-        context.stroke();
-    context.fill();
+    if (!borderless) context.stroke();
+    if (fill) context.fill();
 }
 // Entity drawing (this is a function that makes a function)
 const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turretsObeyRot = false, assignedContext = false, turretInfo = false, render = instance.render) => {
@@ -831,25 +827,42 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
             drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
-    // Draw guns
+    // Draw guns below us
     context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
     let positions = source.guns.getPositions();
     for (let i = 0; i < m.guns.length; i++) {
-        let g = m.guns[i],
-            position = positions[i] / (g.aspect === 1 ? 2 : 1),
-            gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
-            gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
-            gunColor = g.color == null ? color.grey : getColor(g.color),
-            borderless = g.borderless;
-        setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
-        drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless);
+        let g = m.guns[i];
+        if (!g.drawAbove) {
+            let position = positions[i] / (g.aspect === 1 ? 2 : 1),
+                gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
+                gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
+                gunColor = g.color == null ? color.grey : getColor(g.color),
+                borderless = g.borderless,
+                fill = g.drawFill;
+            setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
+            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
+        }
     }
     // Draw body
     context.globalAlpha = 1;
     setColor(context, mixColors(getColor(instance.color), render.status.getColor(), render.status.getBlend()));
-    let borderless = m.borderless;
-    drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, borderless);
-    // Draw turrets abovus
+    drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
+    // Draw guns above us
+    context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
+    for (let i = 0; i < m.guns.length; i++) {
+        let g = m.guns[i];
+        if (g.drawAbove) {
+            let position = positions[i] / (g.aspect === 1 ? 2 : 1),
+                gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
+                gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
+                gunColor = g.color == null ? color.grey : getColor(g.color),
+                borderless = g.borderless,
+                fill = g.drawFill;
+            setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
+            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
+        }
+    }
+    // Draw turrets above us
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];
         let turretFacesClient = m.turrets[i].turretFacesClient

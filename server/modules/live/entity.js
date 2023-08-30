@@ -32,8 +32,10 @@ class Gun {
         };
         this.color = 16;
         this.canShoot = false;
-        if (info.PROPERTIES != null && info.PROPERTIES.TYPE != null) {
-            this.canShoot = true;
+        this.borderless = false;
+        this.drawFill = true;
+        if (info.PROPERTIES != null) {
+            if (info.PROPERTIES.TYPE != null) this.canShoot = true;
             this.label = info.PROPERTIES.LABEL == null ? "" : info.PROPERTIES.LABEL;
             if (Array.isArray(info.PROPERTIES.TYPE)) {
                 // This is to be nicer about our definitions
@@ -70,13 +72,12 @@ class Gun {
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
             this.color = info.PROPERTIES.COLOR == null ? this.color : info.PROPERTIES.COLOR;
             this.borderless = info.PROPERTIES.BORDERLESS == null ? false : info.PROPERTIES.BORDERLESS;
+            this.drawFill = info.PROPERTIES.DRAW_FILL == null ? true : info.PROPERTIES.drawFill;
             this.destroyOldestChild = info.PROPERTIES.DESTROY_OLDEST_CHILD == null ? false : info.PROPERTIES.DESTROY_OLDEST_CHILD;
             this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
+            this.drawAbove = (info.PROPERTIES.DRAW_ABOVE == null) ? false : info.PROPERTIES.DRAW_ABOVE;
             if (info.PROPERTIES.COLOR != null && info.PROPERTIES != null) this.color = info.PROPERTIES.COLOR;
         }
-        if (info.PROPERTIES != null && info.PROPERTIES.COLOR != null) this.color = info.PROPERTIES.COLOR;
-        if (info.PROPERTIES != null && info.PROPERTIES.BORDERLESS != null) this.borderless = info.PROPERTIES.BORDERLESS;
-        if (info.PROPERTIES != null && info.PROPERTIES.ON_SHOOT != null) this.onshoot = info.PROPERTIES.ON_SHOOT;
         let position = info.POSITION;
         this.length = position[0] / 10;
         this.width = position[1] / 10;
@@ -690,7 +691,6 @@ class Entity extends EventEmitter {
         this.alpha = 1;
         this.invisible = [0, 0];
         this.alphaRange = [0, 1];
-        this.borderless = false;
         this.autospinBoost = 0;
         this.antiNaN = antiNaN(this);
         // Get a new unique id
@@ -908,6 +908,7 @@ class Entity extends EventEmitter {
         if (set.DANGER != null) this.dangerValue = set.DANGER;
         if (set.SHOOT_ON_DEATH != null) this.shootOnDeath = set.SHOOT_ON_DEATH;
         if (set.BORDERLESS != null) this.borderless = set.BORDERLESS;
+        if (set.DRAW_FILL != null) this.drawFill = set.DRAW_FILL;
         if (set.TEAM != null) {
             this.team = set.TEAM;
             if (!sockets.players.length) {
