@@ -11,6 +11,7 @@ function getMockup(e, positionInfo) {
         y: rounder(e.y),
         color: e.color,
         borderless: e.borderless,
+        drawFill: e.drawFill,
         shape: e.shapeData,
         size: rounder(e.size),
         realSize: rounder(e.realSize),
@@ -33,6 +34,8 @@ function getMockup(e, positionInfo) {
                 angle: rounder(gun.angle),
                 color: rounder(gun.color),
                 borderless: gun.borderless,
+                drawFill: gun.drawFill,
+                drawAbove: gun.drawAbove,
             };
         }),
         turrets: e.turrets.map(function(t) {

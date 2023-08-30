@@ -876,6 +876,8 @@ exports.genericEntity = {
     UPGRADES_TIER_9: [],
     SKILL: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     LEVEL: 0,
+    BORDERLESS: false,
+    DRAW_FILL: true,
     SKILL_CAP: [
         dfltskl,
         dfltskl,
@@ -3563,6 +3565,7 @@ exports.basic = {
         HETERO: 3,
     },
     BORDERLESS: false,
+    DRAW_FILL: true,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],

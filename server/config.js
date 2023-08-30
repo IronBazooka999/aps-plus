@@ -8,7 +8,7 @@ module.exports = {
     networkFrontlog: 1,
     networkFallbackTime: 150,
     visibleListInterval: 250,
-    gameSpeed: 3,
+    gameSpeed: 1,
     runSpeed: 1.5,
     maxHeartbeatInterval: 300000,
     verbose: true,
