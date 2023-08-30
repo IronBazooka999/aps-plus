@@ -22,6 +22,48 @@ exports.eggchip = {
     PARENT: ["sunchip"],
     SHAPE: 0,
 };
+exports.minion = {
+    PARENT: ["genericTank"],
+    LABEL: "Minion",
+    TYPE: "minion",
+    DAMAGE_CLASS: 0,
+    HITS_OWN_TYPE: "hardWithBuffer",
+    FACING_TYPE: "smoothToTarget",
+    BODY: {
+        FOV: 0.5,
+        SPEED: 3,
+        ACCELERATION: 0.4,
+        HEALTH: 5,
+        SHIELD: 0,
+        DAMAGE: 1.2,
+        RESIST: 1,
+        PENETRATION: 1,
+        DENSITY: 0.4,
+    },
+    AI: {
+        BLIND: true,
+    },
+    DRAW_HEALTH: false,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    GIVE_KILL_MESSAGE: false,
+    CONTROLLERS: [
+        "nearestDifferentMaster",
+        "mapAltToFire",
+        "minion",
+        "canRepel",
+        "hangOutNearMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [17, 9, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.minion]),
+                WAIT_TO_CYCLE: true,
+                TYPE: "bullet",
+            },
+        },
+    ],
+};
 exports.setTrap = {
     LABEL: "Set Trap",
     PARENT: ["trap"],

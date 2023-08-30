@@ -237,8 +237,7 @@ class Gun {
     fire(gx, gy, sk) {
         // Recoil
         this.lastShot.time = util.time();
-        this.lastShot.power =
-            3 * Math.log(Math.sqrt(sk.spd) + this.trueRecoil + 1) + 1;
+        this.lastShot.power = 3 * Math.log(Math.sqrt(sk.spd) + this.trueRecoil + 1) + 1;
         this.motion += this.lastShot.power;
         // Find inaccuracy
         let ss, sd;
@@ -551,7 +550,7 @@ let amNaN = me => [
     isNaN(me.x), isNaN(me.y),
     isNaN(me.velocity.x), isNaN(me.velocity.y),
     isNaN(me.accel.x), isNaN(me.accel.x)
-].map((entry) => !!entry).some((entry) => entry);
+].some(x=>x);
 function antiNaN(me) {
     let nansInARow = 0;
     let data = { x: 1, y: 1, vx: 0, vy: 0, ax: 0, ay: 0 };
@@ -748,7 +747,7 @@ class Entity extends EventEmitter {
         // Size
         this.coreSize = this.SIZE;
         // Invisibility
-        if (this.damageReceived || this.x ** 2 + this.y ** 2 <= 0.01) {
+        if (this.damageRecieved || this.x ** 2 + this.y ** 2 <= 0.01) {
             this.alpha = Math.min(this.alphaRange[0], this.alpha + this.invisible[0]);
         } else {
             this.alpha = Math.max(this.alphaRange[1], this.alpha - this.invisible[1]);
@@ -1560,14 +1559,14 @@ class Entity extends EventEmitter {
         }
         // Shield regen and damage
         if (this.shield.max) {
-            if (this.damageRecieved !== 0) {
+            if (this.damageRecieved) {
                 let shieldDamage = this.shield.getDamage(this.damageRecieved);
                 this.damageRecieved -= shieldDamage;
                 this.shield.amount -= shieldDamage;
             }
         }
         // Health damage
-        if (this.damageRecieved !== 0) {
+        if (this.damageRecieved) {
             let healthDamage = this.health.getDamage(this.damageRecieved);
             this.blend.amount = 1;
             this.health.amount -= healthDamage;
