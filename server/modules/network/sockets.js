@@ -362,14 +362,11 @@ function incoming(message, socket) {
                 return 1;
             }
             // cheatingbois
-            if (player.body == null) break;
-            if (player.body.underControl) return;
-            if (player.body.skill.level < (socket.permissions && socket.permissions.class
-                ? 1000
-                : c.SKILL_CHEAT_CAP)) {
-                    player.body.skill.score += player.body.skill.levelScore;
-                    player.body.skill.maintain();
-                    player.body.refreshBodyAttributes();
+            if (player.body == null || player.body.underControl) return;
+            if (player.body.skill.level < c.SKILL_CHEAT_CAP || (socket.permissions && socket.permissions.infiniteLevelUp)) {
+                player.body.skill.score += player.body.skill.levelScore;
+                player.body.skill.maintain();
+                player.body.refreshBodyAttributes();
             }
             break;
         case "0":
@@ -420,10 +417,7 @@ function incoming(message, socket) {
             let body = player.body;
             if (body.underControl) {
                 body.giveUp(player, body.isDominator ? "" : undefined);
-                socket.talk(
-                    "m",
-                    "You are no longer controling the mothership."
-                );
+                socket.talk("m", "You are no longer controling the mothership.");
                 return 1;
             }
             if (c.MOTHERSHIP_LOOP) {
@@ -438,10 +432,7 @@ function incoming(message, socket) {
                     })
                     .filter((instance) => instance);
                 if (!motherships.length) {
-                    socket.talk(
-                        "m",
-                        "There are no motherships available that are on your team!"
-                    );
+                    socket.talk("m", "There are no motherships available that are on your team!");
                     return 1;
                 }
                 let mothership = motherships.shift();
@@ -453,28 +444,14 @@ function incoming(message, socket) {
                 player.body.FOV += 0.5;
                 player.body.refreshBodyAttributes();
                 player.body.name = body.name;
-                player.body.sendMessage(
-                    "You are now controlling the mothership!"
-                );
-                player.body.sendMessage(
-                    "Press H to relinquish control of the mothership!"
-                );
+                player.body.sendMessage("You are now controlling the mothership!");
+                player.body.sendMessage("Press H to relinquish control of the mothership!");
             } else if (c.DOMINATOR_LOOP) {
-                let dominators = entities
-                    .map((entry) => {
-                        if (
-                            entry.isDominator &&
-                            entry.team === player.body.team &&
-                            !entry.underControl
-                        )
-                            return entry;
-                    })
-                    .filter((instance) => instance);
+                let dominators = entities.map((entry) => {
+                    if (entry.isDominator && entry.team === player.body.team && !entry.underControl) return entry;
+                }).filter((instance) => instance);
                 if (!dominators.length) {
-                    socket.talk(
-                        "m",
-                        "There are no dominators available that are on your team!"
-                    );
+                    socket.talk("m", "There are no dominators available that are on your team!");
                     return 1;
                 }
                 let dominator = dominators.shift();
@@ -486,13 +463,11 @@ function incoming(message, socket) {
                 player.body.FOV += 0.5;
                 player.body.refreshBodyAttributes();
                 player.body.name = body.name;
-                player.body.sendMessage(
-                    "You are now controlling the dominator!"
-                );
-                player.body.sendMessage(
-                    "Press H to relinquish control of the dominator!"
-                );
-            } else socket.talk("m", "You cannot use this.");
+                player.body.sendMessage("You are now controlling the dominator!");
+                player.body.sendMessage("Press H to relinquish control of the dominator!");
+            } else {
+                socket.talk("m", "You cannot use this.");
+            }
             break;
     }
 }
