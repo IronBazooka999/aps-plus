@@ -8,7 +8,7 @@ let spawn = (loc, team, color, type = false) => {
     let o = new Entity(loc);
     o.define(type);
     o.team = team;
-    o.color = getTeamColor(team);
+    o.color = color ?? getTeamColor(team);
     o.skill.score = 111069;
     o.name = "Dominator";
     o.SIZE = c.WIDTH / c.X_GRID / 10;
@@ -46,7 +46,7 @@ let spawn = (loc, team, color, type = false) => {
 function tally() {
     if (gameWon) return;
     let dominators = {};
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < c.TEAMS; i++) {
         dominators[-(i + 1)] = 0;
     }
     for (let o of entities) {
@@ -61,10 +61,6 @@ function tally() {
             }, 1500);
         }
     }
-    if (dominators["-1"] === config.neededToWin) winner(0);
-    if (dominators["-2"] === config.neededToWin) winner(1);
-    if (dominators["-3"] === config.neededToWin) winner(2);
-    if (dominators["-4"] === config.neededToWin) winner(3);
 };
 const dominatorLoop = { spawn, tally };
 
