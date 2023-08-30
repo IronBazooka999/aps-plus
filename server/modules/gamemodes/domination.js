@@ -52,11 +52,11 @@ function tally() {
     for (let o of entities) {
         if (o.isDominator && o.team !== -101 && dominators[o.team] != null) dominators[o.team]++;
     }
-    for (let key in dominators) {
+    for (let key of dominators) {
         if (dominators[key] >= config.neededToWin) {
             gameWon = true;
             setTimeout(function() {
-                sockets.broadcast(getTeamName(key) + " has won the game!");
+                sockets.broadcast(getTeamName(teamId) + " has won the game!");
                 setTimeout(closeArena, 3000);
             }, 1500);
         }

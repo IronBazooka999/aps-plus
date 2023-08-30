@@ -237,7 +237,8 @@ class Gun {
     fire(gx, gy, sk) {
         // Recoil
         this.lastShot.time = util.time();
-        this.lastShot.power = 3 * Math.log(Math.sqrt(sk.spd) + this.trueRecoil + 1) + 1;
+        this.lastShot.power =
+            3 * Math.log(Math.sqrt(sk.spd) + this.trueRecoil + 1) + 1;
         this.motion += this.lastShot.power;
         // Find inaccuracy
         let ss, sd;
@@ -550,7 +551,7 @@ let amNaN = me => [
     isNaN(me.x), isNaN(me.y),
     isNaN(me.velocity.x), isNaN(me.velocity.y),
     isNaN(me.accel.x), isNaN(me.accel.x)
-].some(x=>x);
+].map((entry) => !!entry).some((entry) => entry);
 function antiNaN(me) {
     let nansInARow = 0;
     let data = { x: 1, y: 1, vx: 0, vy: 0, ax: 0, ay: 0 };
@@ -1038,7 +1039,6 @@ class Entity extends EventEmitter {
         this.damage = this.DAMAGE * this.skill.atk;
         this.penetration = this.PENETRATION + 1.5 * (this.skill.brst + 0.8 * (this.skill.atk - 1));
         if (!this.settings.dieAtRange || !this.range) this.range = this.RANGE;
-        if (this.master !== this && this.master.master.name == "Taureon") console.log(this.RANGE);
         this.fov = this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.level);
         this.density = (1 + 0.08 * this.level) * this.DENSITY;
         this.stealth = this.STEALTH;
@@ -1567,7 +1567,7 @@ class Entity extends EventEmitter {
             }
         }
         // Health damage
-        if (this.damageRecieved) {
+        if (this.damageRecieved !== 0) {
             let healthDamage = this.health.getDamage(this.damageRecieved);
             this.blend.amount = 1;
             this.health.amount -= healthDamage;
@@ -1705,7 +1705,7 @@ class Entity extends EventEmitter {
     kill() {
         this.invuln = false;
         this.health.amount = -100;
-    }c
+    }
     destroy() {
         // Remove from the protected entities list
         if (this.isProtected) {
