@@ -816,7 +816,7 @@ const spawn = (socket, name) => {
         case "tdm":
             {
                 body.team = -player.team;
-                body.color = getTeamColor(body.team);
+                body.color = body.color != '16 0 1 0 false' ? body.color : getTeamColor(body.team); // Allow custom starting colors
             }
             break;
         default: {

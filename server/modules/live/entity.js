@@ -30,7 +30,14 @@ class Gun {
             alt: false,
             fire: false,
         };
-        this.color = 16;
+        this.colorUnboxed = {
+            base: 16,
+            hueShift: 0,
+            saturationShift: 1,
+            brightnessShift: 0,
+            allowBrightnessInvert: false,
+        };
+        this.color = '16 0 1 0 false';
         this.canShoot = false;
         this.borderless = false;
         this.drawFill = true;
@@ -70,13 +77,24 @@ class Gun {
             this.countsOwnKids = info.PROPERTIES.MAX_CHILDREN == null ? false : info.PROPERTIES.MAX_CHILDREN;
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
-            this.color = info.PROPERTIES.COLOR == null ? this.color : info.PROPERTIES.COLOR;
+            if (info.PROPERTIES.COLOR != null) {
+                if (typeof info.PROPERTIES.COLOR === "number")
+                    this.colorUnboxed.base = info.PROPERTIES.COLOR;
+                else if (typeof info.PROPERTIES.COLOR === "object")
+                    this.colorUnboxed = {
+                        base: info.PROPERTIES.COLOR.BASE ?? 16,
+                        hueShift: info.PROPERTIES.COLOR.HUE_SHIFT ?? 0,
+                        saturationShift: info.PROPERTIES.COLOR.SATURATION_SHIFT ?? 1,
+                        brightnessShift: info.PROPERTIES.COLOR.BRIGHTNESS_SHIFT ?? 0,
+                        allowBrightnessInvert: info.PROPERTIES.COLOR.ALLOW_BRIGHTNESS_INVERT ?? false,
+                    };
+                this.color = this.colorUnboxed.base + " " + this.colorUnboxed.hueShift + " " + this.colorUnboxed.saturationShift + " " + this.colorUnboxed.brightnessShift + " " + this.colorUnboxed.allowBrightnessInvert;
+            }
             this.borderless = info.PROPERTIES.BORDERLESS == null ? false : info.PROPERTIES.BORDERLESS;
             this.drawFill = info.PROPERTIES.DRAW_FILL == null ? true : info.PROPERTIES.drawFill;
             this.destroyOldestChild = info.PROPERTIES.DESTROY_OLDEST_CHILD == null ? false : info.PROPERTIES.DESTROY_OLDEST_CHILD;
             this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
             this.drawAbove = (info.PROPERTIES.DRAW_ABOVE == null) ? false : info.PROPERTIES.DRAW_ABOVE;
-            if (info.PROPERTIES.COLOR != null && info.PROPERTIES != null) this.color = info.PROPERTIES.COLOR;
         }
         let position = info.POSITION;
         this.length = position[0] / 10;
@@ -688,6 +706,14 @@ class Entity extends EventEmitter {
         this.firingArc = [0, 360];
         this.invuln = false;
         this.alpha = 1;
+        this.colorUnboxed = {
+            base: 16,
+            hueShift: 0,
+            saturationShift: 1,
+            brightnessShift: 0,
+            allowBrightnessInvert: false,
+        };
+        this.color = '16 0 1 0 false';
         this.invisible = [0, 0];
         this.alphaRange = [0, 1];
         this.autospinBoost = 0;
@@ -850,7 +876,19 @@ class Entity extends EventEmitter {
             this.shape = typeof set.SHAPE === "number" ? set.SHAPE : 0;
             this.shapeData = set.SHAPE;
         }
-        if (set.COLOR != null) this.color = set.COLOR;
+        if (set.COLOR != null) {
+            if (typeof set.COLOR === "number")
+                this.colorUnboxed.base = set.COLOR;
+            else if (typeof set.COLOR === "object")
+                this.colorUnboxed = {
+                    base: set.COLOR.BASE ?? 16,
+                    hueShift: set.COLOR.HUE_SHIFT ?? 0,
+                    saturationShift: set.COLOR.SATURATION_SHIFT ?? 1,
+                    brightnessShift: set.COLOR.BRIGHTNESS_SHIFT ?? 0,
+                    allowBrightnessInvert: set.COLOR.ALLOW_BRIGHTNESS_INVERT ?? false,
+                };
+            this.color = this.colorUnboxed.base + " " + this.colorUnboxed.hueShift + " " + this.colorUnboxed.saturationShift + " " + this.colorUnboxed.brightnessShift + " " + this.colorUnboxed.allowBrightnessInvert;
+        }
         if (set.CONTROLLERS != null) {
             let toAdd = [];
             for (let i = 0; i < set.CONTROLLERS.length; i++) {

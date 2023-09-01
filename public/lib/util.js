@@ -133,6 +133,8 @@ const util = {
     },
     getEntityImageFromMockup: (index, color = global.mockups[index].color) => {
         let mockup = global.mockups[index];
+        let trueColor = global.mockups[index].color;
+        if (trueColor == '16 0 1 0 false') trueColor = color;
         return {
             time: 0,
             index: index,
@@ -142,7 +144,7 @@ const util = {
             vy: 0,
             size: mockup.size,
             realSize: mockup.realSize,
-            color: color,
+            color: trueColor,
             render: {
                 status: {
                     getFade: () => {

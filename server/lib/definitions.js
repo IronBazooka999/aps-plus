@@ -836,7 +836,13 @@ exports.genericEntity = {
     DANGER: 0,
     VALUE: 0,
     SHAPE: 0,
-    COLOR: 16,
+    COLOR: {
+        BASE: 16, // ID
+        HUE_SHIFT: 0, // Additive, degrees
+        SATURATION_SHIFT: 1, // Multiplicative
+        BRIGHTNESS_SHIFT: 0, // Additive, ranges from -100 to 100
+        ALLOW_BRIGHTNESS_INVERT: true, // Toggles offset invert if exceeding normal color bounds
+    },
     INDEPENDENT: false,
     CONTROLLERS: ["doNothing"],
     HAS_NO_MASTER: false,
@@ -16406,6 +16412,56 @@ exports.miscTest = {
     ]
 }
 
+exports.rainbowclone = {
+    PARENT: [exports.genericTank],
+    LABEL: "Rainbowclone",
+    COLOR: {
+        BASE: 0,
+        SATURATION_SHIFT: 1.5,
+    },
+    DANGER: 7,
+    LEVEL: 45,
+    GUNS: [],
+};
+for(let i = 0; i < 12; i++) {
+    let delay;
+    switch (i%4) {
+        case 0:
+            delay = 0;
+            break;
+        case 1:
+            delay = 0.5;
+            break;
+        case 2:
+            delay = 0.25;
+            break;
+        case 3:
+            delay = 0.75;
+            break;
+    }
+    exports.rainbowclone.GUNS.push(
+        {
+            POSITION: [15, 3.5, 1, 0, 0, 30*i, delay],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.twin,
+                    g.puregunner,
+                    g.hurricane,
+                ]),
+                TYPE: exports.bullet,
+                COLOR: {
+                    BASE: 0, // ID
+                    HUE_SHIFT: 20*i, // Additive, degrees
+                    SATURATION_SHIFT: 1, // Multiplicative
+                    BRIGHTNESS_SHIFT: 0, // Additive, ranges from -100 to 100
+                    ALLOW_BRIGHTNESS_INVERT: true, // Toggles offset invert if exceeding normal color bounds
+                },
+            },
+        },
+    )
+}
+
 // JOKE TANKS
 exports.wifeBeater = {
     PARENT: [exports.genericTank],
@@ -16612,7 +16668,7 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team100);
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
