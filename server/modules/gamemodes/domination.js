@@ -15,27 +15,24 @@ let spawn = (loc, team, color, type = false) => {
     o.isDominator = true;
     o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spin(o, { onlyWhenIdle: true })];
     o.on('dead', () => {
-        if (o.team === -101) {
+        if (o.team === TEAM_ENEMIES) {
             let killers = [];
             for (let instance of o.collisionArray) {
                 if (isPlayerTeam(instance.team) && o.team !== instance.team) {
                     killers.push(instance);
                 }
             }
-            let killer = ran.choose(killers),
-                newTeam = killer.team;
-            spawn(loc, newTeam, killer.color, type);
+            let killer = ran.choose(killers);
+            spawn(loc, killer.team, killer.color, type);
             room.setType("dom" + ((killer.team < 0 && killer.team > -9) ? -killer.team : 0), loc);
-            sockets.broadcast(`A dominator is now controlled by ${getTeamName(newTeam)}!`);
+            sockets.broadcast(`A dominator is now controlled by ${getTeamName(killer.team)}!`);
             for (let player of sockets.players) {
-                if (player.body) {
-                    if (player.body.team === newTeam) {
-                        player.body.sendMessage("Press H to take control of the dominator.");
-                    }
+                if (player.body && player.body.team === killer.team) {
+                    player.body.sendMessage("Press H to take control of the dominator.");
                 }
             }
         } else {
-            spawn(loc, -101, 3, type);
+            spawn(loc, TEAM_ENEMIES, 3, type);
             room.setType("dom0", loc);
             sockets.broadcast("A dominator is being contested!");
         }
@@ -50,7 +47,7 @@ function tally() {
         dominators[-(i + 1)] = 0;
     }
     for (let o of entities) {
-        if (o.isDominator && o.team !== -101 && dominators[o.team] != null) dominators[o.team]++;
+        if (o.isDominator && o.team !== TEAM_ENEMIES && dominators[o.team] != null) dominators[o.team]++;
     }
     for (let key in dominators) {
         if (dominators[key] >= config.neededToWin) {
@@ -62,6 +59,5 @@ function tally() {
         }
     }
 };
-const dominatorLoop = { spawn, tally };
 
-module.exports = { dominatorLoop };
+module.exports = { dominatorLoop: { spawn } };

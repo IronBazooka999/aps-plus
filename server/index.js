@@ -224,24 +224,15 @@ function placeRoids() {
         } while (dirtyCheck(position, 10 + entityClass.SIZE));
         let o = new Entity(position);
         o.define(entityClass);
-        o.team = -101;
+        o.team = TEAM_ROOM;
         o.facing = ran.randomAngle();
         o.protect();
         o.life();
     }
     // Start placing them
-    let roidcount =
-        (room.roid.length * room.width * room.height) /
-        room.xgrid /
-        room.ygrid /
-        50000 /
-        1.5;
-    let rockcount =
-        (room.rock.length * room.width * room.height) /
-        room.xgrid /
-        room.ygrid /
-        250000 /
-        1.5;
+    let factor = (room.width * room.height) / (room.xgrid * room.ygrid * 375000);
+    let roidcount = room.roid.length * factor;
+    let rockcount = room.rock.length * factor * 5;
     let count = 0;
     for (let i = Math.ceil(roidcount); i; i--) {
         count++;
@@ -265,7 +256,7 @@ function placeRoids() {
 function spawnWall(loc) {
     let o = new Entity(loc);
     o.define(Class.wall);
-    o.team = -101;
+    o.team = TEAM_ROOM;
     o.SIZE = room.width / room.xgrid / 2;
     o.protect();
     o.life();
@@ -360,7 +351,7 @@ let spawnBosses = (census) => {
                 let boss = new Entity(spot);
                 boss.name = name;
                 boss.define(selection.bosses.sort(() => 0.5 - Math.random())[i % selection.bosses.length]);
-                boss.team = -100;
+                boss.team = TEAM_ENEMIES;
             }
         }, 5000);
         timer = Math.round((c.bossSpawnInterval || 8) * 65); // 5 seconds due to spawning process
@@ -392,7 +383,7 @@ let spawnCrasher = (census) => {
                 } while (dirtyCheck(spot, 250));
                 let o = new Entity(spot);
                 o.define(getCrasherType());
-                o.team = -100;
+                o.team = TEAM_ENEMIES;
             }
         }
     }
@@ -511,7 +502,7 @@ if (c.SPACE_MODE) {
         y: room.height / 2,
     });
     o.define(Class.moon);
-    o.team = -101;
+    o.team = TEAM_ROOM;
     o.SIZE = room.width / 10;
     o.protect();
     o.life();
@@ -596,7 +587,7 @@ function spawnShape(location, type = 0) {
         },
     });
     o.facing = ran.randomAngle();
-    o.team = -100;
+    o.team = TEAM_ENEMIES;
     return o;
 }
 function spawnGroupedFood() {

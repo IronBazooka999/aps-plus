@@ -41,6 +41,16 @@ global.getWeakestTeam = (type = 0) => { // 0 - Bots only, 1 - Players only, 2 - 
     return entries.length === 0 ? Math.ceil(Math.random() * c.TEAMS) : entries.reduce((a, b) => a[1] < b[1] ? a : b, [undefined, Infinity])[0];
 };
 
+global.TEAM_BLUE = -1;
+global.TEAM_GREEN = -2;
+global.TEAM_RED = -3;
+global.TEAM_PURPLE = -4;
+global.TEAM_YELLOW = -5;
+global.TEAM_ORANGE = -6;
+global.TEAM_BROWN = -7;
+global.TEAM_CYAN = -8;
+global.TEAM_ROOM = -100;
+global.TEAM_ENEMIES = -101;
 global.getTeamName = team => ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][-team - 1] || "An unknown team";
 global.getTeamColor = team => [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3 + " 0 1 0 false";
 global.isPlayerTeam = team => team < 0 && team > -9;

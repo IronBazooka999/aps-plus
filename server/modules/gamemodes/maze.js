@@ -125,7 +125,7 @@ function generateMaze(size) {
                     });
                     o.define(Class.wall);
                     o.SIZE = (d.s * 0.5) + d.sS;
-                    o.team = -101;
+                    o.team = TEAM_ENEMIES;
                     o.protect();
                     o.life();
                     let validSpawn = true;

@@ -35,7 +35,7 @@ function closeArena() {
             VALUE: 100000,
         });
         o.color = 3;
-        o.team = -100;
+        o.team = TEAM_ROOM;
         o.name = "Arena Closer";
     }
     let ticks = 0;
