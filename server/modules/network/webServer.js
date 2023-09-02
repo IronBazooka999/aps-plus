@@ -11,6 +11,14 @@ let fs = require('fs'),
         "ico": "image/x-icon"
     },
 wsServer = new (require('ws').WebSocketServer)({ noServer: true });
+
+if (c.host === 'localhost') {
+    util.warn(`config.host is just "localhost", are you sure you don't mean "localhost:${c.port}"`);
+}
+if (c.host.match(/localhost:(\d)/) && c.host !== 'localhost:' + c.port) {
+    util.warn('config.host is a localhost domain but its port is different to config.port!');
+}
+
 server = require('http').createServer((req, res) => {
     let resStr = "";
     switch (req.url) {
@@ -18,16 +26,10 @@ server = require('http').createServer((req, res) => {
             resStr = mockupJsonData;
             break;
         case "/lib/json/gamemodeData.json":
-            resStr = JSON.stringify({
-                gameMode: c.gameModeName,
-                players: views.length,
-                //TODO: figure out what 'code' does on the client, if it does nothing, get rid of this and secondaryGameMode props in gamemode configs
-                code: [c.MODE, c.MODE === "ffa" ? "f" : c.TEAMS, c.secondaryGameMode].join("-"),
-                ip: c.host
-            });
+            resStr = JSON.stringify({ gameMode: c.gameModeName, players: views.length });
             break;
         case "/serverData.json":
-            resStr = JSON.stringify({ ok: true, ip: c.host });
+            resStr = JSON.stringify({ ip: c.host });
             break;
         default:
             let fileToGet = path.join(publicRoot, req.url);

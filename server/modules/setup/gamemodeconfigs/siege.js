@@ -27,6 +27,5 @@ module.exports = {
         ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "wall", "boss", "boss", "boss", "wall", "outb", "outb", "outb", "outb", "outb", "outb", "outb"],
         ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "wall", "wall", "wall", "wall", "wall", "outb", "outb", "outb", "outb", "outb", "outb", "outb"],
     ],
-    secondaryGameMode: "Siege",
     BOTS: 6
 };

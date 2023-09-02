@@ -83,7 +83,6 @@ module.exports = {
     DOMINATOR_LOOP: false,
     GROUPS: false,
     TAG: false,
-    secondaryGameMode: "z",
     MODE: "ffa",
 
     // Miscellaneous

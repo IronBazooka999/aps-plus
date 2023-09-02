@@ -9,5 +9,4 @@ module.exports = {
     HEIGHT: 5000,
     CLEAR_NEST: true,
     ROOM_SETUP: room,
-    secondaryGameMode: "Maze"
 };
