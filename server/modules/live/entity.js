@@ -774,10 +774,10 @@ class Entity extends EventEmitter {
         this.coreSize = this.SIZE;
         // Invisibility
         if (this.invisible[1]) {
-            this.alpha = Math.max(0, this.alpha - this.invisible[1]);
-            if ((this.velocity.x ** 2 + this.velocity.y ** 2 >= 0.3) || this.damageReceived)
-                this.alpha = Math.min(1, this.alpha + this.invisible[0]);
-          }
+            this.alpha = Math.max(this.alphaRange[0], this.alpha - this.invisible[1]);
+            if ((this.velocity.x ** 2 + this.velocity.y ** 2 >= 0.1) || this.damageReceived)
+                this.alpha = Math.min(this.alphaRange[1], this.alpha + this.invisible[0]);
+        }
         // Think
         let faucet = this.settings.independent || this.source == null || this.source === this ? {} : this.source.control,
         b = {
