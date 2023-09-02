@@ -57,6 +57,7 @@ global.isPlayerTeam = team => team < 0 && team > -9;
 
 // Now that we've set up the global variables, we import all the modules, then put them into global varialbles and then export something just so this file is run.
 const requires = [
+    "./live/class.js", // Class dictionary.
     "./setup/room.js", // These are the basic room functions, set up by config.json
     "./physics/relative.js", // Some basic physics functions that are used across the game.
     "./network/sockets.js", // The networking that helps players interact with the game.
