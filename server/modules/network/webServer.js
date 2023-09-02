@@ -13,7 +13,7 @@ let fs = require('fs'),
 wsServer = new (require('ws').WebSocketServer)({ noServer: true });
 
 if (c.host === 'localhost') {
-    util.warn(`config.host is just "localhost", are you sure you don't mean "localhost:${c.port}"`);
+    util.warn(`config.host is just "localhost", are you sure you don't mean "localhost:${c.port}"?`);
 }
 if (c.host.match(/localhost:(\d)/) && c.host !== 'localhost:' + c.port) {
     util.warn('config.host is a localhost domain but its port is different to config.port!');
