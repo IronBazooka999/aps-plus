@@ -841,7 +841,7 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless,
     if (fill) context.fill();
 }
 // Entity drawing (this is a function that makes a function)
-const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turretsObeyRot = false, assignedContext = false, turretInfo = false, render = instance.render) => {
+const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turretsObeyRot = false, assignedContext = false, turretInfo = false, render = instance.render) => {
     let context = assignedContext ? assignedContext : ctx;
     let fade = turretInfo ? 1 : render.status.getFade(),
         drawSize = scale * ratio * instance.size,
@@ -884,12 +884,12 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
             if (isAutospinning && turretFacesClient) {
                 facing = instance.render.f + turretsObeyRot * rot;
             } else
-            if (turretFacesClient) {
+            if (turretFacesClient && drawingEntities) {
                 facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
-            drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
+            drawEntity(drawingEntities, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
     // Draw guns below us
@@ -939,12 +939,12 @@ const drawEntity = (x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turret
             if (isAutospinning && turretFacesClient) {
                 facing = instance.render.f + turretsObeyRot * rot;
             } else
-            if (turretFacesClient) {
-                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+            if (turretFacesClient && drawingEntities) {
+                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;
             } else {
-                facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;//util.lerp(t.defaultAngle + rot, source.turrets[i].lerpedFacing + turretsObeyRot * rot, t.perceptionAngleIndependence);
+                facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
-            drawEntity(xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
+            drawEntity(drawingEntities, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
     if (assignedContext == false && context != ctx && context.canvas.width > 0 && context.canvas.height > 0) {
@@ -1264,7 +1264,7 @@ function drawEntities(px, py, ratio) {
             y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py;
         x += global.screenWidth / 2;
         y += global.screenHeight / 2;
-        drawEntity(x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.6 + 0.4 : 0.25 : instance.alpha, 1.1, instance.render.f);
+        drawEntity(true, x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.75 + 0.25 : 0.25 : instance.alpha, 1.1, instance.render.f);
     }
 
     //dont draw healthbars in screenshot mode
@@ -1337,7 +1337,7 @@ function drawUpgradeTree() {
             scale = (0.8 * size) / position.axis,
             xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
             yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle);
-        drawEntity(xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
+        drawEntity(false, xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
         ctx.strokeStyle = color.black;
         ctx.globalAlpha = 1;
         ctx.lineWidth = 2;
@@ -1614,7 +1614,7 @@ function drawLeaderboard(spacing, alcoveSize, max) {
         let scale = height / entry.position.axis,
             xx = x - 1.5 * height - scale * entry.position.middle.x * 0.707,
             yy = y + 0.5 * height + scale * entry.position.middle.x * 0.707;
-        drawEntity(xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
+        drawEntity(false, xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
         // Move down
         y += vspacing + height;
     }
@@ -1663,7 +1663,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
                 scale = (0.6 * len) / position.axis,
                 xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
                 yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin);
-            drawEntity(xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
+            drawEntity(false, xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
             let upgradeKey = getClassUpgradeKey(ticker);
 
             // Tank name
@@ -1804,7 +1804,7 @@ const gameDrawDead = () => {
         scale = len / position.axis,
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
         yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707;
-    drawEntity((xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
+    drawEntity(false, (xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
     drawText("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
     drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
     drawText("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);
