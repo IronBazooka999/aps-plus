@@ -25,7 +25,7 @@ let spawn = (loc, team, color, type = false) => {
             let killer = ran.choose(killers),
                 newTeam = killer.team;
             spawn(loc, newTeam, killer.color, type);
-            room.setType("dom" + ((killer.team < 0 && killer.team > 5) ? -killer.team : 0), loc);
+            room.setType("dom" + ((killer.team < 0 && killer.team > -9) ? -killer.team : 0), loc);
             sockets.broadcast(`A dominator is now controlled by ${getTeamName(newTeam)}!`);
             for (let player of sockets.players) {
                 if (player.body) {
