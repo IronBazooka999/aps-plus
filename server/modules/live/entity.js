@@ -177,13 +177,13 @@ class Gun {
         // Shoot, multiple times in a tick if needed
         do {
             this.fire(offset_final_x, offset_final_y, skill);
-
+            this.cycle--;
             shootPermission =
                   this.countsOwnKids    ? this.countsOwnKids    > this.children.length
                 : this.body.maxChildren ? this.body.maxChildren > this.body.children.length
                 : true;
 
-        } while (useWhile && shootPermission && --this.cycle >= 1);
+        } while (useWhile && shootPermission && this.cycle-1 >= 1);
     }
     live() {
         this.recoil();
