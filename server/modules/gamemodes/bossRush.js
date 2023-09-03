@@ -49,12 +49,12 @@ class BossRush {
         o.isDominator = true
         o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spin(o, { onlyWhenIdle: true })]
         o.on('dead', () => {
-            if (o.team === -100) {
+            if (o.team === TEAM_ENEMIES) {
                 bossRush.spawnDominator(loc, -1, type)
                 room.setType('dom1', loc)
                 sockets.broadcast('A dominator has been captured by BLUE!')
             } else {
-                bossRush.spawnDominator(loc, -100, type)
+                bossRush.spawnDominator(loc, TEAM_ENEMIES, type)
                 room.setType('dom0', loc)
                 sockets.broadcast('A dominator has been captured by the bosses!')
             }
@@ -72,7 +72,7 @@ class BossRush {
     spawnEnemyWrapper(loc, type) {
         let thisWave = this, n = new Entity(loc);
         n.define(type);
-        n.team = -100;
+        n.team = TEAM_ENEMIES;
         n.FOV = 10;
         n.refreshBodyAttributes();
         n.controllers.push(new ioTypes.bossRushAI(n));

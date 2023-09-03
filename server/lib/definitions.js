@@ -16652,18 +16652,24 @@ for (let i = 1; i <= c.TEAMS; i++) { //c.MAX_UPGRADE_TIER is irrelevant
     exports["Team" + TEAM] = {
         PARENT: [exports.teams],
         TEAM: -TEAM,
-        COLOR: [10, 11, 12, 15, 25, 26, 27, 28][TEAM - 1],
-        LABEL: "Team " + TEAM
+        COLOR: getTeamColor(-TEAM),
+        LABEL: "Team " + getTeamName(-TEAM)
     };
     exports.teams.UPGRADES_TIER_0.push(exports["Team" + TEAM]);
 }
 exports.Team100 = {
     PARENT: [exports.teams],
-    TEAM: -100,
+    TEAM: TEAM_ENEMIES,
     COLOR: 3,
     LABEL: "Boss Team"
 };
-exports.teams.UPGRADES_TIER_0.push(exports.Team100);
+exports.Team101 = {
+    PARENT: [exports.teams],
+    TEAM: TEAM_ROOM,
+    COLOR: 3,
+    LABEL: "Arena Closer Team"
+};
+exports.teams.UPGRADES_TIER_0.push(exports.Team101);
 
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];

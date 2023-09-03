@@ -1536,20 +1536,10 @@ class Entity extends EventEmitter {
                     this.y = lerp(this.y, room.height / 2, strength);
                 }
             } else {
-                this.accel.x -=
-                    (Math.min(this.x - this.realSize + 50, 0) * c.ROOM_BOUND_FORCE) /
-                    roomSpeed;
-                this.accel.x -=
-                    (Math.max(this.x + this.realSize - room.width - 50, 0) *
-                        c.ROOM_BOUND_FORCE) /
-                    roomSpeed;
-                this.accel.y -=
-                    (Math.min(this.y - this.realSize + 50, 0) * c.ROOM_BOUND_FORCE) /
-                    roomSpeed;
-                this.accel.y -=
-                    (Math.max(this.y + this.realSize - room.height - 50, 0) *
-                        c.ROOM_BOUND_FORCE) /
-                    roomSpeed;
+                this.accel.x -= (Math.min(this.x - this.realSize               + 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
+                this.accel.x -= (Math.max(this.x + this.realSize - room.width  - 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
+                this.accel.y -= (Math.min(this.y - this.realSize               + 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
+                this.accel.y -= (Math.max(this.y + this.realSize - room.height - 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
             }
         }
         if (c.SPECIAL_BOSS_SPAWNS && (this.type === "tank" || this.type === "food") && room.isIn("outb", this)) {
@@ -1570,7 +1560,7 @@ class Entity extends EventEmitter {
                 }
             }
             if (c.TEAMS === 1) inEnemyBase = false;
-            if (room.isIn("boss", loc) && this.team !== -100) inEnemyBase = true;
+            if (room.isIn("boss", loc) && !this.canEnterEnemyBases) inEnemyBase = true;
             if (inEnemyBase && !this.isArenaCloser && !this.master.isArenaCloser) {
                 this.kill();
             }

@@ -646,7 +646,13 @@ for (let i = 1; i <= c.TEAMS; i++) {
 }
 exports.Team101 = {
     PARENT: ["teams"],
-    TEAM: -101,
+    TEAM: TEAM_ROOM,
+    COLOR: 3,
+    LABEL: "Arena Closer Team"
+};
+exports.Team101 = {
+    PARENT: ["teams"],
+    TEAM: TEAM_ENEMIES,
     COLOR: 3,
     LABEL: "Boss Team"
 };

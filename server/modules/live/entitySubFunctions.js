@@ -1,14 +1,3 @@
-let Class = (function () {
-    const def = require("../../lib/definitions.js");
-    //const def = require("../definitions/combined.js");
-    let i = 0;
-    for (let key in def) {
-        if (!def.hasOwnProperty(key)) continue;
-        def[key].index = i++;
-    }
-    return def;
-})();
-
 const skcnv = {
     rld: 0,
     pen: 1,
@@ -283,4 +272,4 @@ lazyRealSizes = new Proxy(lazyRealSizes, {
     }
 });
 
-module.exports = { Class, skcnv, Skill, HealthType, dirtyCheck, purgeEntities, remapTarget, lazyRealSizes };
+module.exports = { skcnv, Skill, HealthType, dirtyCheck, purgeEntities, remapTarget, lazyRealSizes };

@@ -1095,7 +1095,7 @@ const eyes = (socket) => {
 let getBarColor = (entry) => {
     if (c.GROUPS) return 11;
     switch (entry.team) {
-        case -100:
+        case TEAM_ENEMIES:
             return entry.color;
         case -1:
             return 10;
