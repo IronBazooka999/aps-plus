@@ -4,6 +4,516 @@ const generics = require('./generics.js');
 const g = require('../gunvals.js');
 
 // Whatever the hell is needed
+exports.missile = {
+    PARENT: ["bullet"],
+    LABEL: "Missile",
+    INDEPENDENT: true,
+    BODY: {
+        RANGE: 120,
+    },
+    GUNS: [
+        {
+            POSITION: [14, 6, 1, 0, -2, 130, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.muchmorerecoil,
+                    g.morespeed,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 6, 1, 0, 2, 230, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.muchmorerecoil,
+                    g.morespeed,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+    ],
+};
+exports.hypermissile = {
+    PARENT: ["missile"],
+    GUNS: [
+        {
+            POSITION: [14, 6, 1, 0, -2, 150, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 6, 1, 0, 2, 210, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 6, 1, 0, -2, 90, 0.5],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+            },
+        },
+        {
+            POSITION: [14, 6, 1, 0, 2, 270, 0.5],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+            },
+        },
+    ],
+};
+exports.minimissile = {
+    PARENT: ["missile"],
+    GUNS: [
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [14, 6, 1, 0, 0, 180, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.muchmorerecoil,
+                    g.morespeed,
+                ]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+    ],
+};
+exports.spinmissile = {
+    PARENT: ["bullet"],
+    LABEL: "Missile",
+    INDEPENDENT: !0,
+    BODY: {
+        RANGE: 120,
+    },
+    FACING_TYPE: "fastspin",
+    GUNS: [
+        {
+            POSITION: [14, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                AUTOFIRE: !0,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.morereload,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: !0,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 8, 1, 0, 0, 180, 0],
+            PROPERTIES: {
+                AUTOFIRE: !0,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.morereload,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: !0,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+    ],
+};
+exports.hyperspinmissile = {
+    PARENT: ["bullet"],
+    LABEL: "Missile",
+    INDEPENDENT: !0,
+    BODY: {
+        RANGE: 120,
+    },
+    FACING_TYPE: "fastspin",
+    GUNS: [
+        {
+            POSITION: [14, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                AUTOFIRE: !0,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.morereload,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: !0,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 8, 1, 0, 0, 180, 0],
+            PROPERTIES: {
+                AUTOFIRE: !0,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.morereload,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: !0,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 8, 1, 0, 0, 90, 0],
+            PROPERTIES: {
+                AUTOFIRE: !0,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.morereload,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: !0,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 8, 1, 0, 0, 270, 0],
+            PROPERTIES: {
+                AUTOFIRE: !0,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.skim,
+                    g.doublereload,
+                    g.lowpower,
+                    g.morereload,
+                    g.morespeed,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: !0,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+    ],
+};
+exports.hive = {
+    PARENT: ["bullet"],
+    LABEL: "Hive",
+    BODY: {
+        RANGE: 90,
+        FOV: 0.5,
+    },
+    FACING_TYPE: "turnWithSpeed",
+    INDEPENDENT: true,
+    CONTROLLERS: ["alwaysFire", "nearestDifferentMaster", "targetSelf"],
+    AI: {
+        NO_LEAD: true,
+    },
+    GUNS: [
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 108, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 180, 0.2],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 252, 0.4],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 324, 0.6],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 36, 0.8],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+    ],
+};
+exports.snake = {
+    PARENT: ["bullet"],
+    LABEL: "Snake",
+    INDEPENDENT: true,
+    BODY: {
+        RANGE: 120,
+    },
+    GUNS: [
+        {
+            POSITION: [6, 12, 1.4, 8, 0, 180, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.sniper,
+                    g.hunter,
+                    g.hunter2,
+                    g.snake,
+                    g.snakeskin,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+            },
+        },
+        {
+            POSITION: [10, 12, 0.8, 8, 0, 180, 0.5],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                NEGATIVE_RECOIL: true,
+                STAT_CALCULATOR: gunCalcNames.thruster,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.sniper,
+                    g.hunter,
+                    g.hunter2,
+                    g.snake,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+            },
+        },
+    ],
+};
+exports.rocketeerMissile = {
+    PARENT: ["bullet"],
+    LABEL: "Missile",
+    BODY: {
+        RANGE: 120,
+    },
+    GUNS: [
+        {
+            POSITION: [16.5, 10, 1.5, 0, 0, 180, 7.5],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.missileTrail,
+                    g.rocketeerMissileTrail,
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+    ],
+};
+exports.surgeonPillboxTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "",
+    COLOR: 16,
+    BODY: {
+        FOV: 3,
+    },
+    HAS_NO_RECOIL: true,
+    CONTROLLERS: [["spin", { independent: true, speed: 0.08 }]],
+    TURRETS: [
+        {
+            POSITION: [13, 0, 0, 0, 360, 1],
+            TYPE: "healerSymbol",
+        },
+    ],
+    GUNS: [
+        {
+            POSITION: [17, 11, 1, 0, 0, 90, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+                TYPE: "healerBullet",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [14, 11, 1, 0, 0, 90, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+                TYPE: "healerBullet",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [17, 11, 1, 0, 0, 270, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+                TYPE: "healerBullet",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [14, 11, 1, 0, 0, 270, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.healer, g.turret]),
+                TYPE: "healerBullet",
+                AUTOFIRE: true,
+            },
+        },
+    ],
+};
+exports.surgeonPillbox = {
+    LABEL: "Pillbox",
+    PARENT: ["trap"],
+    SHAPE: -6,
+    MOTION_TYPE: "motor",
+    CONTROLLERS: ["goToMasterTarget", "nearestDifferentMaster"],
+    INDEPENDENT: true,
+    BODY: {
+        SPEED: 1,
+        DENSITY: 5,
+        DAMAGE: 0
+    },
+    DIE_AT_RANGE: true,
+    TURRETS: [
+        {
+            POSITION: [11, 0, 0, 0, 360, 1],
+            TYPE: "surgeonPillboxTurret",
+        },
+    ],
+};
+exports.doctorDrone = {
+    PARENT: ["drone"],
+    HITS_OWN_TYPE: "normal",
+    TURRETS: [
+        {
+            POSITION: [13, 0, 0, 0, 360, 1],
+            TYPE: "healerSymbol",
+        },
+    ],
+};
 exports.sunchip = {
     PARENT: ["drone"],
     SHAPE: 4,
@@ -21,6 +531,44 @@ exports.sunchip = {
 exports.eggchip = {
     PARENT: ["sunchip"],
     SHAPE: 0,
+};
+exports.autosunchip = {
+    PARENT: ["sunchip"],
+    AI: {
+        BLIND: true,
+        FARMER: true,
+    },
+    INDEPENDENT: true,
+};
+exports.autoeggchip = {
+    PARENT: ["eggchip"],
+    AI: {
+        BLIND: true,
+        FARMER: true,
+    },
+    INDEPENDENT: true,
+};
+exports.pentachip = {
+    PARENT: ["sunchip"],
+    SHAPE: 5,
+};
+exports.summonerDrone = {
+    PARENT: ["sunchip"],
+    NECRO: false,
+};
+exports.gunchip = {
+    PARENT: ["drone"],
+    SHAPE: -2,
+    NECRO: true,
+    HITS_OWN_TYPE: "hard",
+    BODY: {
+        FOV: 0.5,
+    },
+    AI: {
+        BLIND: true,
+        FARMER: true,
+    },
+    DRAW_HEALTH: false,
 };
 exports.minion = {
     PARENT: ["genericTank"],
@@ -64,6 +612,55 @@ exports.minion = {
         },
     ],
 };
+exports.megaMinion = {
+    PARENT: ["minion"],
+    LABEL: "Mega Minion",
+    BODY: {
+        ACCELERATION: base.ACCEL * 0.8,
+    },
+    GUNS: [
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [19.5, 13, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.minion]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+};
+exports.tinyMinion = {
+    PARENT: ["minion"],
+    LABEL: "Tiny Minion",
+    ACCEPTS_SCORE: false,
+    SHAPE: 0,
+    MOTION_TYPE: 'swarm',
+    CRAVES_ATTENTION: true,
+    BODY: {
+        ACCELERATION: 3,
+        PENETRATION: 1.5,
+        HEALTH: 0.35 * 0.5,
+        DAMAGE: 2.25,
+        RESIST: 1.6,
+        RANGE: 300,
+        DENSITY: 12,
+        PUSHABILITY: 0.5,
+        FOV: 1.5,
+    },
+    AI: {
+        BLIND: true,
+    },
+    GUNS: [ { /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+        POSITION: [    17,         9,            1,            0,            0,            0,            0,     ], 
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.minion, g.lowpower]),
+            WAIT_TO_CYCLE: true,
+            TYPE: "bullet",
+        }, }, 
+    ],
+    DIE_AT_RANGE: true,
+    BUFF_VS_FOOD: true,
+};
 exports.setTrap = {
     LABEL: "Set Trap",
     PARENT: ["trap"],
@@ -86,6 +683,94 @@ exports.boomerang = {
         SPEED: 1.25,
         RANGE: 120,
     },
+};
+exports.masterBullet = {
+    PARENT: ["trap"],
+    SHAPE: 0,
+    GUNS: [
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.trifront,
+                    g.tonsmorrecoil,
+                    g.minion,
+                    g.weak,
+                ]),
+                TYPE: "bullet",
+                LABEL: "Front",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [13, 8, 1, 0, -1, 140, 0.6],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.minion,
+                    g.weak,
+                ]),
+                TYPE: "bullet",
+                LABEL: "Thruster",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [13, 8, 1, 0, 1, 220, 0.6],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.minion,
+                    g.weak,
+                ]),
+                TYPE: "bullet",
+                LABEL: "Thruster",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.minion,
+                    g.weak,
+                ]),
+                TYPE: "bullet",
+                LABEL: "Thruster",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.flank,
+                    g.tri,
+                    g.thruster,
+                    g.minion,
+                    g.weak,
+                ]),
+                TYPE: "bullet",
+                LABEL: "Thruster",
+                AUTOFIRE: true,
+            },
+        },
+    ],
 };
 exports.autoTurret = {
     PARENT: ["genericTank"],
@@ -186,7 +871,7 @@ exports.bigauto4gun = {
                     g.power,
                     g.halfreload,
                 ]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
             },
         },
         {
@@ -201,7 +886,7 @@ exports.bigauto4gun = {
                     g.power,
                     g.halfreload,
                 ]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
             },
         },
         {
@@ -216,7 +901,7 @@ exports.bigauto4gun = {
                     g.power,
                     g.halfreload,
                 ]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
             },
         },
     ],
@@ -345,6 +1030,27 @@ exports.autoswarm = {
         FARMER: true,
     },
     INDEPENDENT: true,
+};
+exports.bee = {
+    PARENT: ["swarm"],
+    PERSISTS_AFTER_DEATH: true,
+    SHAPE: 4,
+    LABEL: "Drone",
+    HITS_OWN_TYPE: "hardWithBuffer",
+};
+exports.homingBullet = {
+    PARENT: ["autoswarm"],
+    SHAPE: 0,
+    BODY: {
+        PENETRATION: 1,
+        SPEED: 3.75,
+        RANGE: 90,
+        DENSITY: 1.25,
+        HEALTH: 0.165,
+        DAMAGE: 6,
+        PUSHABILITY: 0.3,
+    },
+    CAN_GO_OUTSIDE_ROOM: true,
 };
 exports.pillbox = {
     LABEL: "Pillbox",

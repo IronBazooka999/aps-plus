@@ -503,7 +503,7 @@ exports.skimmerTurret = {
                     g.arty,
                     g.skim,
                 ]),
-                TYPE: exports.hypermissile,
+                TYPE: "hypermissile",
             },
         },
         {
@@ -540,7 +540,7 @@ exports.twisterTurret = {
                     g.morespeed,
                     g.one_third_reload,
                 ]),
-                TYPE: exports.hyperspinmissile,
+                TYPE: "hyperspinmissile",
                 STAT_CALCULATOR: gunCalcNames.sustained,
             },
         },

@@ -1013,14 +1013,14 @@ exports.master = {
             POSITION: [18, 16, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic]),
-                TYPE: exports.masterBullet,
+                TYPE: "masterBullet",
             },
         },
         {
             POSITION: [13, 8, 1, 0, -1, 140, 0.6],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
                 LABEL: gunCalcNames.thruster,
             },
         },
@@ -1028,7 +1028,7 @@ exports.master = {
             POSITION: [13, 8, 1, 0, 1, 220, 0.6],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
                 LABEL: gunCalcNames.thruster,
             },
         },
@@ -1036,7 +1036,7 @@ exports.master = {
             POSITION: [16, 8, 1, 0, 0, 150, 0.1],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
                 LABEL: gunCalcNames.thruster,
             },
         },
@@ -1044,7 +1044,7 @@ exports.master = {
             POSITION: [16, 8, 1, 0, 0, 210, 0.1],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
-                TYPE: exports.bullet,
+                TYPE: "bullet",
                 LABEL: gunCalcNames.thruster,
             },
         },
