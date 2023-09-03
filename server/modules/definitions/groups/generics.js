@@ -8,7 +8,13 @@ exports.genericEntity = {
     DANGER: 0,
     VALUE: 0,
     SHAPE: 0,
-    COLOR: 16,
+    COLOR: {
+        BASE: 16, // ID
+        HUE_SHIFT: 0, // Additive, degrees
+        SATURATION_SHIFT: 1, // Multiplicative
+        BRIGHTNESS_SHIFT: 0, // Additive, ranges from -100 to 100
+        ALLOW_BRIGHTNESS_INVERT: true, // Toggles offset invert if exceeding normal color bounds
+    },
     INDEPENDENT: false,
     CONTROLLERS: ["doNothing"],
     HAS_NO_MASTER: false,
@@ -51,6 +57,8 @@ exports.genericEntity = {
     SKILL_CAP: Array(10).fill(dfltskl),
     GUNS: [],
     MAX_CHILDREN: 0,
+    BORDERLESS: false,
+    DRAW_FILL: true,
     BODY: {
         ACCELERATION: 1,
         SPEED: 0,
@@ -192,8 +200,63 @@ exports.trap = {
 };
 
 exports.healerSymbol = {
-    PARENT: [exports.genericEntity],
+    PARENT: ["genericEntity"],
     SHAPE: [[0.3, -0.3],[1,-0.3],[1,0.3],[0.3,0.3],[0.3,1],[-0.3,1],[-0.3,0.3],[-1,0.3],[-1,-0.3],[-0.3,-0.3],[-0.3,-1],[0.3,-1]],
     SIZE: 13,
     COLOR: 12,
+};
+
+exports.aura = {
+    LABEL: "Aura",
+    TYPE: "aura",
+    CONTROLLERS: ["teleportToMaster"],
+    ACCEPTS_SCORE: false,
+    FACING_TYPE: "smoothWithMotion",
+    CAN_GO_OUTSIDE_ROOM: true,
+    HITS_OWN_TYPE: "never",
+    DAMAGE_EFFECTS: false,
+    DIE_AT_RANGE: false,
+    ALPHA: 0.3,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    CAN_GO_OUTSIDE_ROOM: true,
+    COLOR: 0,
+    BODY: {
+        REGEN: 100000,
+        HEALTH: 1000000,
+        DENSITY: 0,
+        DAMAGE: 0.25,
+        SPEED: 0,
+        PUSHABILITY: 0,
+    },
+};
+exports.healAura = {
+    LABEL: "Heal Aura",
+    TYPE: "aura",
+    CONTROLLERS: ["teleportToMaster"],
+    ACCEPTS_SCORE: false,
+    FACING_TYPE: "smoothWithMotion",
+    CAN_GO_OUTSIDE_ROOM: true,
+    HITS_OWN_TYPE: "never",
+    DAMAGE_EFFECTS: false,
+    DIE_AT_RANGE: false,
+    ALPHA: 0.3,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    CAN_GO_OUTSIDE_ROOM: true,
+    HEALER: true,
+    COLOR: 12,
+    BODY: {
+        REGEN: 100000,
+        HEALTH: 1000000,
+        DENSITY: 0,
+        DAMAGE: 0.25/3,
+        SPEED: 0,
+        PUSHABILITY: 0,
+    },
+};
+exports.auraSymbol = {
+    PARENT: ["genericTank"],
+    CONTROLLERS: [["spin", {speed: -0.04}]],
+    INDEPENDENT: true,
+    COLOR: 0,
+    SHAPE: [[-0.598,-0.7796],[-0.3817,-0.9053],[0.9688,-0.1275],[0.97,0.125],[-0.3732,0.9116],[-0.593,0.785]]
 };
