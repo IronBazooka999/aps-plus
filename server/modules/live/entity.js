@@ -1088,7 +1088,7 @@ class Entity extends EventEmitter {
         this.source = bond;
         this.bond.turrets.push(this);
         this.skill = this.bond.skill;
-        this.label = this.bond.label + " " + this.label;
+        this.label = this.label.length ? this.bond.label + " " + this.label : this.bond.label;
         // It will not be in collision calculations any more nor shall it be seen or continue to run independently.
         this.removeFromGrid();
         this.settings.drawShape = false;
