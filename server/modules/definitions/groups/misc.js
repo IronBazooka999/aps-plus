@@ -1012,6 +1012,7 @@ exports.master = {
     MAX_CHILDREN: 6,
     GUNS: [
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [18, 16, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic]),
@@ -1170,6 +1171,7 @@ exports.oldRimfire = {
     LABEL: "Old Rimfire",
     GUNS: [
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [12, 5, 1, 0, 7.25, 15, 0.8],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.gunner, g.fast]),
@@ -1213,12 +1215,14 @@ exports.oldDreadnought = {
     },
     TURRETS: [
         {
+            /*  SIZE     X       Y     ANGLE    ARC */
             POSITION: [20, -4, 0, 0, 0, 0],
             TYPE: "genericEntity",
         },
     ],
     GUNS: [
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [18, 8, 1, 0, 0, 0, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.swarm]),
@@ -1257,6 +1261,7 @@ exports.mender = {
     TOOLTIP: "Right click to heal yourself (use sparingly, has a long cooldown once used!)",
     GUNS: [
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [17, 3, 1, 0, -6, -7, 0.25],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.arty]),
@@ -1314,6 +1319,7 @@ exports.prodigy = {
     },
     GUNS: [
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [8, 11, 1.3, 6, 0, 60, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
@@ -1324,6 +1330,7 @@ exports.prodigy = {
             },
         },
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [8, 11, 1.3, 6, 0, 180, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
@@ -1334,6 +1341,7 @@ exports.prodigy = {
             },
         },
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [8, 11, 1.3, 6, 0, 300, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
@@ -1344,6 +1352,7 @@ exports.prodigy = {
             },
         },
         {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
             POSITION: [14, 9, 1, 0, 0, 0, 0],
         },
         {

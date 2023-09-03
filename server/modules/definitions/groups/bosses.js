@@ -286,6 +286,7 @@ exports.eliteSprayer = {
     HAS_NO_RECOIL: true,
     TURRETS: [
         {
+            /*    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6, 0, 0, 0, 360, 1],
             TYPE: ["machineTripleTurret", { INDEPENDENT: true }],
         },
@@ -439,6 +440,7 @@ exports.eliteSpawner = {
             POSITION: [11, 16, 1, 0, 0, 300, 0],
         },
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [2, 18, 1, 11, 0, 60, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower]),
@@ -449,6 +451,7 @@ exports.eliteSpawner = {
             },
         },
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [2, 18, 1, 11, 0, 180, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower]),
@@ -459,6 +462,7 @@ exports.eliteSpawner = {
             },
         },
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [2, 18, 1, 11, 0, 300, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.weak, g.weak, g.celeslower]),
@@ -1050,6 +1054,7 @@ exports.paladinUpperBody = {
     INDEPENDENT: true,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [10, 7.5, 0, 35, 160, 0],
             TYPE: ["swarmerTurret"],
         },
@@ -1077,6 +1082,7 @@ exports.paladin = {
     COLOR: 14,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: ["trapTurret", { INDEPENDENT: true }],
         },
@@ -1168,6 +1174,7 @@ exports.freyjaLowerBody = {
     FACING_TYPE: "autospin",
     TURRETS: [
         {
+            //*********    SIZE         X             Y         ANGLE        ARC
             POSITION: [8.5, 9, 0, 26, 180, 0],
             TYPE: ["cruiserTurret"],
         },
@@ -1208,6 +1215,7 @@ exports.freyjaUpperBody = {
     INDEPENDENT: true,
     TURRETS: [
         {
+            //**     SIZE         X             Y         ANGLE        ARC
             POSITION: [10.6, 7.5, 0, 35, 160, 0],
             TYPE: ["auto4gun"],
         },
@@ -1235,6 +1243,7 @@ exports.freyja = {
     COLOR: 1,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: ["trapTurret", { INDEPENDENT: true }],
         },
@@ -1298,6 +1307,7 @@ exports.zaphkielLowerBody = {
     FACING_TYPE: "autospin",
     GUNS: [
         {
+            //*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY
             POSITION: [3.6, 6, 1.4, 8, 0, 26, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.over]),
@@ -1376,6 +1386,7 @@ exports.zaphkielUpperBody = {
     INDEPENDENT: true,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [10, 7.5, 0, 35, 160, 0],
             TYPE: ["zaphkielSkimmerTurret"],
         },
@@ -1403,6 +1414,7 @@ exports.zaphkiel = {
     COLOR: 2,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: ["trapTurret", { INDEPENDENT: true }],
         },
@@ -1570,6 +1582,7 @@ exports.nyxUpperBody = {
     INDEPENDENT: true,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [10, 7.5, 0, 35, 160, 0],
             TYPE: ["rocketeerTurret"],
         },
@@ -1597,6 +1610,7 @@ exports.nyx = {
     COLOR: 5,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: [
                 "trapTurret",
@@ -1788,6 +1802,7 @@ exports.theiaUpperBody = {
     INDEPENDENT: true,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [10, 7.5, 0, 35, 160, 0],
             TYPE: "theiaTwisterTurret",
         },
@@ -1815,6 +1830,7 @@ exports.theia = {
     COLOR: 3,
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: ["trapTurret", { INDEPENDENT: true }],
         },
@@ -1881,6 +1897,7 @@ exports.launcherTurret = {
     ],
     GUNS: [
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [10, 9, 1, 9, 0, 0, 0],
         },
         {
@@ -1909,6 +1926,7 @@ exports.alvissLowerTurret = {
     COLOR: 16,
     GUNS: [
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [8.5, 11, 0.6, 6, 0, 0, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.swarm, g.sunchip]),
@@ -1930,6 +1948,7 @@ exports.alvissLowerBody = {
     MAX_CHILDREN: 24,
     TURRETS: [
         {
+            //*********    SIZE         X             Y         ANGLE        ARC
             POSITION: [8.5, 9, 0, 26, 180, 0],
             TYPE: ["alvissLowerTurret"],
         },
@@ -1970,6 +1989,7 @@ exports.alvissUpperBody = {
     INDEPENDENT: true,
     TURRETS: [
         {
+            //**     SIZE         X             Y         ANGLE        ARC
             POSITION: [10.6, 7.5, 0, 35, 160, 0],
             TYPE: ["launcherTurret"],
         },
@@ -1996,6 +2016,7 @@ exports.alviss = {
     NAME: "Alviss",
     TURRETS: [
         {
+            /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: ["trapTurret", { INDEPENDENT: true }],
         },
@@ -2059,6 +2080,7 @@ exports.tyrLowerTurret = {
     COLOR: 16,
     GUNS: [
         {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [8.5, 11, 0.6, 6, 0, 0, 0.5],
         },
         {
@@ -2082,7 +2104,7 @@ exports.tyrLowerBody = {
     FOV: 1,
     FACING_TYPE: "autospin",
     MAX_CHILDREN: 23,
-    TURRETS: [{
+    TURRETS: [{ //*********    SIZE         X             Y         ANGLE        ARC
         POSITION: [8.5, 9, 0, 26, 180, 0],
         TYPE: ["tyrLowerTurret"],
     },{
@@ -2114,7 +2136,7 @@ exports.tyrUpperBody = {
     MAX_CHILDREN: 28,
     SHAPE: 5,
     INDEPENDENT: true,
-    TURRETS: [{
+    TURRETS: [{ //**     SIZE         X             Y         ANGLE        ARC
         POSITION: [10.6, 7.5, 0, 35, 160, 0],
         TYPE: ["auto4gun"],
     },{
@@ -2134,7 +2156,7 @@ exports.tyrUpperBody = {
 exports.tyr = {
     PARENT: ["rogueCelestial"],
     NAME: "Tyr",
-    TURRETS: [{
+    TURRETS: [{ /*********    SIZE         X             Y         ANGLE        ARC */
         POSITION: [6.5, 9, 0, 260, 180, 0],
         TYPE: ["trapTurret", { INDEPENDENT: true }],
     },{
