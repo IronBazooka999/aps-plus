@@ -634,6 +634,40 @@ exports.makeDeco = (shape, color = 16) => {
     return exports["deco" + shape + "_" + color];
 }
 
+exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
+    let name = "aura" + damageFactor + "_" + sizeFactor;
+    let isHeal = damageFactor < 0;
+    let auraType = isHeal ? "healAura" : "aura";
+    let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
+    auraColor = auraColor ?? (isHeal ? 12 : 0);
+    if (exports[name] == null) {
+        exports[name] = {
+            PARENT: ["genericTank"],
+            LABEL: "",
+            COLOR: 17,
+            GUNS: [
+                {
+                    POSITION: [0, 20, 1, 0, 0, 0, 0,],
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: exports.combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+                        TYPE: [auraType, {COLOR: auraColor}],
+                        MAX_CHILDREN: 1,
+                        AUTOFIRE: true,
+                        SYNCS_SKILLS: true,
+                    }, 
+                }, 
+            ],
+            /*TURRETS: [
+                {
+                    POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
+                    TYPE: [symbolType, {COLOR: auraColor}],
+                },
+            ]*/
+        };
+    }
+    return exports[name];
+}
+
 //unfinished lolo
 exports.makeLabyrinthShape = (type) => {
     let output = exports.dereference(type);
