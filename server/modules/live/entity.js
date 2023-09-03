@@ -42,27 +42,29 @@ class Gun {
         this.borderless = false;
         this.drawFill = true;
         if (info.PROPERTIES != null) {
-            if (info.PROPERTIES.TYPE != null) this.canShoot = true;
-            this.label = info.PROPERTIES.LABEL == null ? "" : info.PROPERTIES.LABEL;
-            if (Array.isArray(info.PROPERTIES.TYPE)) {
-                // This is to be nicer about our definitions
-                this.bulletTypes = info.PROPERTIES.TYPE;
-                this.natural = info.PROPERTIES.TYPE.BODY;
-            } else {
-                this.bulletTypes = [info.PROPERTIES.TYPE];
-            }
-            // Pre-load bullet definitions so we don't have to recalculate them every shot
-            let natural = {};
-            for (let type of this.bulletTypes) setNatural(natural, type);
-            this.natural = natural; // Save it
-            if (info.PROPERTIES.GUN_CONTROLLERS != null) {
-                let toAdd = [];
-                for (let i = 0; i < info.PROPERTIES.GUN_CONTROLLERS.length; i++) {
-                    let io = info.PROPERTIES.GUN_CONTROLLERS[i];
-                    if ("string" == typeof io) io = [io];
-                    toAdd.push(new ioTypes[io[0]](this, io[1]));
+            if (info.PROPERTIES.TYPE != null) {
+                this.canShoot = true;
+                this.label = info.PROPERTIES.LABEL == null ? "" : info.PROPERTIES.LABEL;
+                if (Array.isArray(info.PROPERTIES.TYPE)) {
+                    // This is to be nicer about our definitions
+                    this.bulletTypes = info.PROPERTIES.TYPE;
+                    this.natural = info.PROPERTIES.TYPE.BODY;
+                } else {
+                    this.bulletTypes = [info.PROPERTIES.TYPE];
                 }
-                this.controllers = toAdd.concat(this.controllers);
+                // Pre-load bullet definitions so we don't have to recalculate them every shot
+                let natural = {};
+                for (let type of this.bulletTypes) setNatural(natural, type);
+                this.natural = natural; // Save it
+                if (info.PROPERTIES.GUN_CONTROLLERS != null) {
+                    let toAdd = [];
+                    for (let i = 0; i < info.PROPERTIES.GUN_CONTROLLERS.length; i++) {
+                        let io = info.PROPERTIES.GUN_CONTROLLERS[i];
+                        if ("string" == typeof io) io = [io];
+                        toAdd.push(new ioTypes[io[0]](this, io[1]));
+                    }
+                    this.controllers = toAdd.concat(this.controllers);
+                }
             }
             this.onShoot = info.PROPERTIES.ON_SHOOT == null ? null : info.PROPERTIES.ON_SHOOT;
             this.autofire = info.PROPERTIES.AUTOFIRE == null ? false : info.PROPERTIES.AUTOFIRE;
