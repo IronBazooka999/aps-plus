@@ -159,7 +159,7 @@ const g = {
     snakeskin: [0.6, 1, 2, 1, 0.5, 0.5, 1, 1, 0.2, 0.4, 1, 5, 1],
     rocketeer: [1.4, 1, 0.9, 1.2, 1.5, 1.4, 1.4, 0.3, 1, 1.2, 1, 1, 1.4],
     shotgun: [8, 0.4, 1, 1.5, 1, 0.4, 0.8, 1.8, 0.6, 1, 1.2, 1.2, 1],
-    acc:                        [1,         1,         0.1,        1,            1,            1,            1,            1,            1,            1,            1,            1,            1],
+    acc: [1, 1, 0.1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     destroyerDominator: [6.5, 0, 1, 0.975, 6, 6, 6, 0.575, 0.475, 1, 1, 0.5, 1],
     closer: [1.25, 0.25, 1, 1, 1e3, 1e3, 1e3, 2.5, 2.25, 1.4, 4, 0.25, 1],
     
@@ -208,6 +208,8 @@ const g = {
     notdense: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 1, 1],
     halfrange: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1],
 
+    // Credit: DogeIsCool
+    aura: [0.001, 0.001, 0.001, 6, 1, 3, 1, 0.001, 0.001, 1, 1, 0.001, 1],
 
     noRandom: [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1],
 };
@@ -3325,6 +3327,141 @@ exports.doctorDrone = {
         },
     ],
 };
+
+// AURAS
+// Foundation credits: DogeisCut on Discord
+exports.aura = {
+    LABEL: "Aura",
+    TYPE: "aura",
+    CONTROLLERS: ["teleportToMaster"],
+    ACCEPTS_SCORE: false,
+    FACING_TYPE: "smoothWithMotion",
+    CAN_GO_OUTSIDE_ROOM: true,
+    HITS_OWN_TYPE: "never",
+    DAMAGE_EFFECTS: false,
+    DIE_AT_RANGE: false,
+    ALPHA: 0.3,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    CAN_GO_OUTSIDE_ROOM: true,
+    COLOR: 0,
+    BODY: {
+        REGEN: 100000,
+        HEALTH: 1000000,
+        DENSITY: 0,
+        DAMAGE: 0.25,
+        SPEED: 0,
+        PUSHABILITY: 0,
+    },
+    TURRETS: [
+        {
+            POSITION: [20, 0, 0, 0, 360, 1],
+            TYPE: [exports.genericTank, { COLOR: 0 }]
+        },
+    ],
+};
+exports.healAura = {
+    LABEL: "Heal Aura",
+    TYPE: "aura",
+    CONTROLLERS: ["teleportToMaster"],
+    ACCEPTS_SCORE: false,
+    FACING_TYPE: "smoothWithMotion",
+    CAN_GO_OUTSIDE_ROOM: true,
+    HITS_OWN_TYPE: "never",
+    DAMAGE_EFFECTS: false,
+    DIE_AT_RANGE: false,
+    ALPHA: 0.3,
+    CLEAR_ON_MASTER_UPGRADE: true,
+    CAN_GO_OUTSIDE_ROOM: true,
+    HEALER: true,
+    COLOR: 12,
+    BODY: {
+        REGEN: 100000,
+        HEALTH: 1000000,
+        DENSITY: 0,
+        DAMAGE: 0.25/3,
+        SPEED: 0,
+        PUSHABILITY: 0,
+    },
+    TURRETS: [
+        {
+            POSITION: [20, 0, 0, 0, 360, 1],
+            TYPE: [exports.genericTank, { COLOR: 12 }]
+        },
+    ],
+};
+exports.auraSymbol = {
+    PARENT: [exports.genericTank],
+    CONTROLLERS: [["spin", {speed: -0.04}]],
+    INDEPENDENT: true,
+    COLOR: 0,
+    SHAPE: [[-0.598,-0.7796],[-0.3817,-0.9053],[0.9688,-0.1275],[0.97,0.125],[-0.3732,0.9116],[-0.593,0.785]]
+};
+exports.auraGenerator = {
+    PARENT: [exports.genericTank],
+    COLOR: 17,
+    TURRETS: [
+        {
+            POSITION: [20, 0, 0, 0, 360, 1],
+            TYPE: exports.auraSymbol,
+        },
+    ]
+};
+exports.healAuraGenerator = {
+    PARENT: [exports.genericTank],
+    COLOR: 17,
+    TURRETS: [
+        {
+            POSITION: [15, 0, 0, 0, 360, 1],
+            TYPE: exports.healerSymbol,
+        },
+    ]
+};
+
+function addAura(isHeal = false, sizeFactor = 1, damageFactor = 1, auraShape = 0) {
+    if (!isHeal) { // Damage auras
+        let name = "aura" + sizeFactor + "_" + damageFactor;
+        if (exports[name] == null) {
+            exports[name] = {
+                PARENT: [exports.auraGenerator],
+                LABEL: "",
+                GUNS: [
+                    {
+                        POSITION: [0, 20, 1, 0, 0, 0, 0,],
+                        PROPERTIES: {
+                            SHOOT_SETTINGS: combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+                            TYPE: [exports.aura, {SHAPE: auraShape}],
+                            MAX_CHILDREN: 1,
+                            AUTOFIRE: true,
+                            SYNCS_SKILLS: true,
+                        }, 
+                    }, 
+                ],
+            };
+        }
+        return exports[name];
+    } else { // Heal auras
+        let name = "healAura" + sizeFactor + "_" + damageFactor;
+        if (exports[name] == null) {
+            exports[name] = {
+                PARENT: [exports.healAuraGenerator],
+                LABEL: "",
+                GUNS: [
+                    {
+                        POSITION: [0, 20, 1, 0, 0, 0, 0,],
+                        PROPERTIES: {
+                            SHOOT_SETTINGS: combineStats([g.aura, g.healer, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+                            TYPE: [exports.healAura, {SHAPE: auraShape}],
+                            MAX_CHILDREN: 1,
+                            AUTOFIRE: true,
+                            SYNCS_SKILLS: true,
+                        }, 
+                    }, 
+                ],
+            };
+        }
+        return exports[name];
+    }
+}
 
 // TESTBED TANKS
 exports.testbedBase = {
@@ -16463,6 +16600,27 @@ for(let i = 0; i < 12; i++) {
     )
 }
 
+exports.auraBasic = {
+    PARENT: [exports.genericTank],
+    LABEL: "Aura Basic",
+    LEVEL: 45,
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
+    TURRETS: [
+        {
+            POSITION: [14, 0, 0, 0, 0, 1],
+            TYPE: addAura(false, 1, 5),
+        }
+    ]
+}
+
 // JOKE TANKS
 exports.wifeBeater = {
     PARENT: [exports.genericTank],
@@ -16675,7 +16833,7 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team101);
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
     exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone, exports.auraBasic];
         exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
             exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
                 exports.tankChangesMenu.UPGRADES_TIER_0 = [];
