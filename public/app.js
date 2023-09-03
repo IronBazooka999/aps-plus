@@ -882,10 +882,10 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
                 len = t.offset * drawSize,
                 facing = 0
             if (isAutospinning && turretFacesClient) {
-                facing = instance.render.f + turretsObeyRot * rot;
+                facing = instance.render.f + turretsObeyRot * rot + t.angle;
             } else
             if (turretFacesClient && drawingEntities) {
-                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;
+                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot + t.angle;
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
@@ -937,10 +937,10 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
                 len = t.offset * drawSize,
                 facing = 0
             if (isAutospinning && turretFacesClient) {
-                facing = instance.render.f + turretsObeyRot * rot;
+                facing = instance.render.f + turretsObeyRot * rot + t.angle;
             } else
             if (turretFacesClient && drawingEntities) {
-                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot;
+                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot + t.angle;
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
