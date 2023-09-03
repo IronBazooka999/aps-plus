@@ -809,13 +809,14 @@ function makeCeption(type, name = -1, options = {}) {
     output.DANGER = type.DANGER + 1;
     return output;
 }
-function makeDeco(shapes, color = 16) {
+function makeDeco(shapes, color = 16, borderless = false) {
     if (exports["deco" + shapes + "_" + color] == null) {
         exports["deco" + shapes + "_" + color] = {
             PARENT: [exports.genericEntity],
             SHAPE: shapes,
             COLOR: color,
             INDEPENDENT: true,
+            BORDERLESS: borderless,
         };
     }
     return exports["deco" + shapes + "_" + color];
