@@ -3352,12 +3352,6 @@ exports.aura = {
         SPEED: 0,
         PUSHABILITY: 0,
     },
-    TURRETS: [
-        {
-            POSITION: [20, 0, 0, 0, 360, 1],
-            TYPE: [exports.genericTank, { COLOR: 0 }]
-        },
-    ],
 };
 exports.healAura = {
     LABEL: "Heal Aura",
@@ -3382,12 +3376,6 @@ exports.healAura = {
         SPEED: 0,
         PUSHABILITY: 0,
     },
-    TURRETS: [
-        {
-            POSITION: [20, 0, 0, 0, 360, 1],
-            TYPE: [exports.genericTank, { COLOR: 12 }]
-        },
-    ],
 };
 exports.auraSymbol = {
     PARENT: [exports.genericTank],
@@ -3396,71 +3384,39 @@ exports.auraSymbol = {
     COLOR: 0,
     SHAPE: [[-0.598,-0.7796],[-0.3817,-0.9053],[0.9688,-0.1275],[0.97,0.125],[-0.3732,0.9116],[-0.593,0.785]]
 };
-exports.auraGenerator = {
-    PARENT: [exports.genericTank],
-    COLOR: 17,
-    TURRETS: [
-        {
-            POSITION: [20, 0, 0, 0, 360, 1],
-            TYPE: exports.auraSymbol,
-        },
-    ]
-};
-exports.healAuraGenerator = {
-    PARENT: [exports.genericTank],
-    COLOR: 17,
-    TURRETS: [
-        {
-            POSITION: [15, 0, 0, 0, 360, 1],
-            TYPE: exports.healerSymbol,
-        },
-    ]
-};
 
-function addAura(isHeal = false, sizeFactor = 1, damageFactor = 1, auraShape = 0) {
-    if (!isHeal) { // Damage auras
-        let name = "aura" + sizeFactor + "_" + damageFactor;
-        if (exports[name] == null) {
-            exports[name] = {
-                PARENT: [exports.auraGenerator],
-                LABEL: "",
-                GUNS: [
-                    {
-                        POSITION: [0, 20, 1, 0, 0, 0, 0,],
-                        PROPERTIES: {
-                            SHOOT_SETTINGS: combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
-                            TYPE: [exports.aura, {SHAPE: auraShape}],
-                            MAX_CHILDREN: 1,
-                            AUTOFIRE: true,
-                            SYNCS_SKILLS: true,
-                        }, 
+function addAura(damageFactor = 1, sizeFactor = 1, auraColor) {
+    let name = "aura" + damageFactor + "_" + sizeFactor;
+    let isHeal = damageFactor < 0;
+    let auraType = isHeal ? "healAura" : "aura";
+    let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
+    auraColor = auraColor ?? (isHeal ? 12 : 0);
+    if (exports[name] == null) {
+        exports[name] = {
+            PARENT: [exports.genericTank],
+            LABEL: "",
+            COLOR: 17,
+            GUNS: [
+                {
+                    POSITION: [0, 20, 1, 0, 0, 0, 0,],
+                    PROPERTIES: {
+                        SHOOT_SETTINGS: combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+                        TYPE: [exports[auraType], {COLOR: auraColor}],
+                        MAX_CHILDREN: 1,
+                        AUTOFIRE: true,
+                        SYNCS_SKILLS: true,
                     }, 
-                ],
-            };
-        }
-        return exports[name];
-    } else { // Heal auras
-        let name = "healAura" + sizeFactor + "_" + damageFactor;
-        if (exports[name] == null) {
-            exports[name] = {
-                PARENT: [exports.healAuraGenerator],
-                LABEL: "",
-                GUNS: [
-                    {
-                        POSITION: [0, 20, 1, 0, 0, 0, 0,],
-                        PROPERTIES: {
-                            SHOOT_SETTINGS: combineStats([g.aura, g.healer, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
-                            TYPE: [exports.healAura, {SHAPE: auraShape}],
-                            MAX_CHILDREN: 1,
-                            AUTOFIRE: true,
-                            SYNCS_SKILLS: true,
-                        }, 
-                    }, 
-                ],
-            };
-        }
-        return exports[name];
+                }, 
+            ],
+            TURRETS: [
+                {
+                    POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
+                    TYPE: [exports[symbolType], {COLOR: auraColor}],
+                },
+            ]
+        };
     }
+    return exports[name];
 }
 
 // TESTBED TANKS
@@ -16616,7 +16572,7 @@ exports.auraBasic = {
     TURRETS: [
         {
             POSITION: [14, 0, 0, 0, 0, 1],
-            TYPE: addAura(false, 1, 5),
+            TYPE: addAura(-1, 1),
         }
     ]
 }
