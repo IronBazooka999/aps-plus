@@ -685,6 +685,9 @@ class Entity extends EventEmitter {
         this.settings = {};
         this.aiSettings = {};
         this.children = [];
+        // Define it
+        this.SIZE = 1;
+        this.define(Class.genericEntity);
         // Initalize physics and collision
         this.maxSpeed = 0;
         this.facingLocked = false;
@@ -717,9 +720,6 @@ class Entity extends EventEmitter {
         this.alphaRange = [0, 1];
         this.autospinBoost = 0;
         this.antiNaN = antiNaN(this);
-        // Define it
-        this.SIZE = 1;
-        this.define(Class.genericEntity);
         // Get a new unique id
         this.id = entitiesIdLog++;
         this.team = this.id;
