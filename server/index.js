@@ -62,6 +62,7 @@ function collide(collision) {
     switch (true) {
         case instance.type === "wall" || other.type === "wall":
             if (instance.type === "wall" && other.type === "wall") return;
+            if (instance.type === "aura" || other.type === "aura") return;
             let wall = instance.type === "wall" ? instance : other;
             let entity = instance.type === "wall" ? other : instance;
             if (entity.ac || entity.master.ac) return;
@@ -103,6 +104,10 @@ function collide(collision) {
                 instance.healer ||
                 other.healer
             )):
+            if ((instance.type === "aura" && other.type === "bullet") || 
+                (other.type === "aura" && instance.type === "bullet")) return;
+            if ((instance.type === "aura" && other.type === "crasher") || 
+                (other.type === "aura" && instance.type === "crasher")) return;
             advancedcollide(instance, other, true, true);
             break;
         case instance.settings.hitsOwnType == "never" ||
