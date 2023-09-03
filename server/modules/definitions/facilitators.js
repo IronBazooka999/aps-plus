@@ -1,10 +1,23 @@
 const { gunCalcNames } = require('./constants.js');
+const { MAX_SKILL } = require("../../config.js");
 const g = require('./gunvals.js');
+
+let skcnv = {
+    atk: 6,
+    spd: 4,
+    dam: 3,
+    shi: 5,
+    str: 2,
+    mob: 9,
+    rld: 0,
+    pen: 1,
+    rgn: 8,
+    hlt: 7,
+};
 
 // GUN DEFINITIONS
 exports.combineStats = function (arr) {
     try {
-        // Build a blank array of the appropiate length
         let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
         for (let component of arr) {
             for (let i = 0; i < data.length; i++) {
@@ -36,19 +49,6 @@ exports.setBuild = (build) => {
     if (skills.length !== 10)
         throw new RangeError("Build must be made up of 10 numbers");
     return [6, 4, 3, 5, 2, 9, 0, 1, 8, 7].map((r) => skills[r]);
-};
-let { MAX_SKILL } = require("../../config.js");
-let skcnv = {
-    atk: 6,
-    spd: 4,
-    dam: 3,
-    shi: 5,
-    str: 2,
-    mob: 9,
-    rld: 0,
-    pen: 1,
-    rgn: 8,
-    hlt: 7,
 };
 exports.skillSet = (args) => {
     let skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -155,7 +155,6 @@ exports.addBackGunner = (type, name = -1) => {
 exports.makeHybrid = (type, name = -1) => {
     let output = exports.dereference(type);
     let spawner = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [6, 12, 1.2, 8, 0, 180, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.drone, g.weak]),
@@ -281,7 +280,6 @@ exports.makeBattle = (type, name = -1) => {
 exports.makeCap = (type, name = -1) => {
     let output = exports.dereference(type);
     let spawner1 = {
-        /**** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [4.5, 10, 1, 10.5, 0, 125, 0],
     };
     let spawner2 = {
@@ -299,7 +297,6 @@ exports.makeCap = (type, name = -1) => {
         POSITION: [11.5, 12, 1, 0, 0, 125, 0],
     };
     let spawner4 = {
-        /**** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [4.5, 10, 1, 10.5, 0, 235, 0],
     };
     let spawner5 = {
@@ -395,7 +392,6 @@ exports.makeCross = (type, name = -1) => {
 exports.makeZipper = (type, name = -1) => {
     let output = exports.dereference(type);
     let spawner1 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 2.5, 20, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -404,7 +400,6 @@ exports.makeZipper = (type, name = -1) => {
         },
     };
     let spawner2 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, -2.5, -20, 0.5],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -430,7 +425,6 @@ exports.makeZipper = (type, name = -1) => {
 exports.makeSwarming = (type, name = -1) => {
     let output = exports.dereference(type);
     let spawner = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -456,7 +450,6 @@ exports.makeSwarming = (type, name = -1) => {
 exports.makeBiSwarming = (type, name = -1) => {
     let output = exports.dereference(type);
     let spawner1 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 0, 25, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -465,7 +458,6 @@ exports.makeBiSwarming = (type, name = -1) => {
         },
     };
     let spawner2 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 0, -25, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -491,7 +483,6 @@ exports.makeBiSwarming = (type, name = -1) => {
 exports.makeTriSwarming = (type, name = -1) => {
     let output = exports.dereference(type);
     let spawner1 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 0, 45, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -500,7 +491,6 @@ exports.makeTriSwarming = (type, name = -1) => {
         },
     };
     let spawner2 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 0, -45, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -509,7 +499,6 @@ exports.makeTriSwarming = (type, name = -1) => {
         },
     };
     let spawner3 = {
-        /********* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
         POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: exports.combineStats([g.swarm]),
@@ -551,7 +540,6 @@ exports.makeAuto = (type, name = -1, options = {}) => {
     }
     let output = exports.dereference(type);
     let autogun = {
-        /*********    SIZE                             X             Y         ANGLE        ARC */
         POSITION: [turret.size, 0, 0, 180, 360, 1],
         TYPE: [
             turret.type,
@@ -594,7 +582,6 @@ exports.makeCeption = (type, name = -1, options = {}) => {
     }
     let output = exports.dereference(type);
     let autogun = {
-        /********* SIZE X Y ANGLE ARC */
         POSITION: [turret.size, 0, 0, 180, 360, 1],
         TYPE: [
             type,

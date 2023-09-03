@@ -1,4 +1,4 @@
-const { combineStats, skillSet } = require('../facilitators.js');
+const { combineStats } = require('../facilitators.js');
 const { base, gunCalcNames, basePolygonDamage, basePolygonHealth, dfltskl, statnames } = require('../constants.js');
 const g = require('../gunvals.js');
 
@@ -23,7 +23,6 @@ exports.menu = {
     TURRETS: [],
     GUNS: [
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [18, 10, -1.4, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic]),
@@ -56,7 +55,6 @@ exports.developer = {
     ],
     GUNS: [
         {
-            /*** LENGTH WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [18, 10, -1.4, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.op]),
@@ -218,18 +216,15 @@ exports.eggGenerator = {
     COLOR: 6,
     TURRETS: [
         {
-            /*    SIZE         X             Y         ANGLE        ARC */
             POSITION: [5, 0, 0, 0, 0, 1],
             TYPE: ["egg", { COLOR: 6 }],
         },
     ],
     GUNS: [
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [14, 12, 1, 4, 0, 0, 0],
         },
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [12, 12, 1.4, 4, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.micro]),
@@ -246,18 +241,15 @@ exports.squareGenerator = {
     SHAPE: 4,
     TURRETS: [
         {
-            /*    SIZE         X             Y         ANGLE        ARC */
             POSITION: [8, 0, 0, 0, 0, 1],
             TYPE: ["square", { COLOR: 13 }],
         },
     ],
     GUNS: [
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [14, 12, 1, 4, 0, 0, 0],
         },
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [12, 12, 1.4, 4, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.small]),
@@ -274,18 +266,15 @@ exports.alphaPentagonGenerator = {
     SHAPE: 5,
     TURRETS: [
         {
-            /*    SIZE         X             Y         ANGLE        ARC */
             POSITION: [14, 0, 0, 0, 0, 1],
             TYPE: ["alphaPentagon", { COLOR: 14 }],
         },
     ],
     GUNS: [
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [14, 12, 1, 4, 0, 0, 0],
         },
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [12, 12, 1.4, 4, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.small]),
@@ -302,18 +291,15 @@ exports.crasherGenerator = {
     SHAPE: 3,
     TURRETS: [
         {
-            /*    SIZE         X             Y         ANGLE        ARC */
             POSITION: [5, 0, 0, 0, 0, 1],
             TYPE: ["crasher", { COLOR: 5 }],
         },
     ],
     GUNS: [
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [14, 12, 1, 4, 0, 0, 0],
         },
         {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
             POSITION: [12, 12, 1.4, 4, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.micro]),
@@ -541,7 +527,6 @@ exports.armyOfOneBullet = {
     LABEL: "Unstoppable",
     TURRETS: [
         {
-            /** SIZE         X             Y         ANGLE        ARC */
             POSITION: [18.5, 0, 0, 0, 360, 0],
             TYPE: ["spikeBody", { COLOR: null }],
         },
