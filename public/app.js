@@ -7,15 +7,38 @@ import * as socketStuff from "./lib/socketInit.js";
 (async function (util, global, config, Canvas, color, socketStuff) {
 
 let { socketInit, gui, leaderboard, minimap, moveCompensation, lag, getNow } = socketStuff;
-fetch("changelog.md", { cache: "no-cache" })
-.then((response) => response.text())
-.then((response) => {
-    const changelogs = response.split("\n\n").map((changelog) => changelog.split("\n"));
-    for (let changelog of changelogs) {
-        changelog[0] = changelog[0].split(":").map((line) => line.trim());
-        document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${changelog[0].slice(1).join(":") || "Update lol"}<ul>${changelog.slice(1).map((line) => `<li>${line.slice(1).trim()}</li>`).join("")}</ul><hr></div>`;
-    }
-});
+// fetch("changelog.md", { cache: "no-cache" })
+// .then((response) => response.text())
+// .then((response) => {
+//     const changelogs = response.split("\n\n").map((changelog) => changelog.split("\n"));
+//     for (let changelog of changelogs) {
+//         changelog[0] = changelog[0].split(":").map((line) => line.trim());
+//         document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${changelog[0].slice(1).join(":") || "Update lol"}<ul>${changelog.slice(1).map((line) => `<li>${line.slice(1).trim()}</li>`).join("")}</ul><hr></div>`;
+//     }
+// });
+    (async function getChangelogs() {
+        const patchNotes = document.querySelector("#patchNotes")
+        try {
+            const parser = new DOMParser()
+
+            const ChangelogsHTMLFile = await fetch("changelog.html", { cache: "no-cache" })
+            const RawHTMLString = await ChangelogsHTMLFile.text()
+            const ParsedHTML = parser.parseFromString(RawHTMLString, "text/html")
+
+            let titles = ParsedHTML.documentElement.getElementsByTagName('h1')
+            for (const title of titles) {
+                title.classList.add('title')
+            }
+            
+            patchNotes.innerHTML += ParsedHTML.documentElement.innerHTML
+        } catch (error) {
+            patchNotes.innerHTML = ""
+            patchNotes.innerHTML += "<p>An error occured while trying to fetch 'changelogs.html'</p>"
+            patchNotes.innerHTML += `<p>${error}</p>`
+            console.error(error)
+        }
+    })()  
+
 class Animation {
     constructor(start, to, smoothness = 0.05) {
         this.start = start;
