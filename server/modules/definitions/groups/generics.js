@@ -164,11 +164,6 @@ exports.developerBullet = {
     PARENT: ["bullet"],
     SHAPE: [[-1, -1], [1, -1], [2, 0], [1, 1], [-1, 1]],
 };
-exports.healerBullet = {
-    PARENT: ["bullet"],
-    HEALER: true,
-    HITS_OWN_TYPE: "normal",
-};
 exports.casing = {
     PARENT: ["bullet"],
     LABEL: "Shell",
