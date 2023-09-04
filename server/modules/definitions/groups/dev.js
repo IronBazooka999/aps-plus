@@ -431,18 +431,23 @@ exports.miscTestHelper2 = {
 };
 exports.miscTestHelper = {
     PARENT: ["genericTank"],
+    COLOR: {
+        BASE: -1,
+        BRIGHTNESS_SHIFT: 15,
+    },
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
                 TYPE: "bullet",
+                COLOR: -1,
             },
         },
     ],
     TURRETS: [
         {
-          POSITION: [20, 0, 0, 0, 0, 1],
+          POSITION: [20, 0, 20, 0, 0, 1],
           TYPE: "miscTestHelper2",
         }
     ]

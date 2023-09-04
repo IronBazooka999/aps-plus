@@ -172,13 +172,21 @@ function hueToRgb(p, q, t) {
 function clamp(n, lower, upper) {
     return Math.min(upper, Math.max(lower, n));
 }
-function modifyColor(color) {
+function modifyColor(color, base = "16 0 1 0 false") {
     // Edge cases because spaghetti
     if (typeof color == 'number')
         color = color + " 0 1 0 false";
+    if (typeof base == 'number')
+        base = base + " 0 1 0 false";
     // Split into array
     let colorDetails = color.split(" ");
-    
+    let baseDetails = base.split(" ");
+
+    // Color mirroring
+    if (colorDetails[0] == "-1") {
+        colorDetails[0] = baseDetails[0];
+    }
+
     // Get HSL values
     let baseColor = rgbToHsl(getColor(parseInt(colorDetails[0])));
     
@@ -864,7 +872,7 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless,
     if (fill) context.fill();
 }
 // Entity drawing (this is a function that makes a function)
-const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turretsObeyRot = false, assignedContext = false, turretInfo = false, render = instance.render) => {
+const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot = 0, turretsObeyRot = false, assignedContext = false, turretInfo = false, render = instance.render) => {
     let context = assignedContext ? assignedContext : ctx;
     let fade = turretInfo ? 1 : render.status.getFade(),
         drawSize = scale * ratio * instance.size,
@@ -912,7 +920,7 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
-            drawEntity(drawingEntities, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
+            drawEntity(drawingEntities, baseColor, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
     // Draw guns below us
@@ -924,7 +932,7 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
             let position = positions[i] / (g.aspect === 1 ? 2 : 1),
                 gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
                 gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
-                gunColor = g.color == null ? color.grey : modifyColor(g.color),
+                gunColor = g.color == null ? color.grey : modifyColor(g.color, baseColor),
                 borderless = g.borderless,
                 fill = g.drawFill;
             setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
@@ -933,7 +941,7 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
     }
     // Draw body
     context.globalAlpha = 1;
-    setColor(context, mixColors(modifyColor(instance.color), render.status.getColor(), render.status.getBlend()));
+    setColor(context, mixColors(modifyColor(instance.color, baseColor), render.status.getColor(), render.status.getBlend()));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
     // Draw guns above us
     context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
@@ -943,7 +951,7 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
             let position = positions[i] / (g.aspect === 1 ? 2 : 1),
                 gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
                 gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
-                gunColor = g.color == null ? color.grey : modifyColor(g.color),
+                gunColor = g.color == null ? color.grey : modifyColor(g.color, baseColor),
                 borderless = g.borderless,
                 fill = g.drawFill;
             setColor(context, mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
@@ -967,7 +975,7 @@ const drawEntity = (drawingEntities, x, y, instance, ratio, alpha = 1, scale = 1
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
-            drawEntity(drawingEntities, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
+            drawEntity(drawingEntities, baseColor, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
     if (assignedContext == false && context != ctx && context.canvas.width > 0 && context.canvas.height > 0) {
@@ -1284,10 +1292,11 @@ function drawEntities(px, py, ratio) {
         instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
         instance.render.f = instance.id === gui.playerid && !global.autoSpin && !instance.twiggle && !global.died ? Math.atan2(global.target.y, global.target.x) : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
         let x = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.x - px,
-            y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py;
+            y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py,
+            baseColor = instance.color;
         x += global.screenWidth / 2;
         y += global.screenHeight / 2;
-        drawEntity(true, x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.75 + 0.25 : 0.25 : instance.alpha, 1.1, instance.render.f);
+        drawEntity(true, baseColor, x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.75 + 0.25 : 0.25 : instance.alpha, 1.1, instance.render.f);
     }
 
     //dont draw healthbars in screenshot mode
@@ -1355,12 +1364,13 @@ function drawUpgradeTree() {
         drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
         ctx.globalAlpha = 1;
         let angle = -Math.PI / 4,
-            picture = util.getEntityImageFromMockup(index, 10),
             position = global.mockups[index].position,
             scale = (0.8 * size) / position.axis,
             xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
-            yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle);
-        drawEntity(false, xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
+            yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle),
+            baseColor = gui.color,
+            picture = util.getEntityImageFromMockup(index, baseColor, baseColor);
+        drawEntity(false, baseColor, xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
         ctx.strokeStyle = color.black;
         ctx.globalAlpha = 1;
         ctx.lineWidth = 2;
@@ -1636,8 +1646,9 @@ function drawLeaderboard(spacing, alcoveSize, max) {
         // Mini-image
         let scale = height / entry.position.axis,
             xx = x - 1.5 * height - scale * entry.position.middle.x * 0.707,
-            yy = y + 0.5 * height + scale * entry.position.middle.x * 0.707;
-        drawEntity(false, xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
+            yy = y + 0.5 * height + scale * entry.position.middle.x * 0.707,
+            baseColor = entry.barColor;
+        drawEntity(false, baseColor, xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
         // Move down
         y += vspacing + height;
     }
@@ -1681,12 +1692,13 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             ctx.globalAlpha = 1;
 
             // Draw Tank
-            let picture = util.getEntityImageFromMockup(model, gui.color),
-                position = global.mockups[model].position,
+            let position = global.mockups[model].position,
                 scale = (0.6 * len) / position.axis,
                 xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
-                yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin);
-            drawEntity(false, xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
+                yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
+                baseColor = gui.color,
+                picture = util.getEntityImageFromMockup(model, baseColor, baseColor);
+            drawEntity(false, baseColor, xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
             let upgradeKey = getClassUpgradeKey(ticker);
 
             // Tank name
@@ -1821,13 +1833,14 @@ const gameDrawDead = () => {
     ctx.translate(0, -shift * global.screenHeight);
     let x = global.screenWidth / 2,
         y = global.screenHeight / 2 - 50;
-    let picture = util.getEntityImageFromMockup(gui.type, gui.color),
-        len = 140,
+    let len = 140,
         position = global.mockups[gui.type].position,
         scale = len / position.axis,
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
-        yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707;
-    drawEntity(false, (xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
+        yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707,
+        baseColor = gui.color,
+        picture = util.getEntityImageFromMockup(gui.type, baseColor, baseColor);
+    drawEntity(false, baseColor, (xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
     drawText("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
     drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
     drawText("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);
