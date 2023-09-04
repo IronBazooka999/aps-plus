@@ -690,6 +690,7 @@ class Entity extends EventEmitter {
         this.SIZE = 1;
         this.define(Class.genericEntity);
         // Initalize physics and collision
+        this.alwaysShowOnMinimap = true;
         this.maxSpeed = 0;
         this.facingLocked = false;
         this.facing = 0;
