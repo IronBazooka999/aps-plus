@@ -2,7 +2,13 @@ let EventEmitter = require('events'),
     events,
     init = g => events = g.events;
 
+function ensureIsClass(str) {
+    if ("object" == typeof str) return str;
+    if (str in Class) return Class[str];
+    throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
+}
 function setNatural(natural, type) {
+    type = ensureIsClass(type);
     if (type.PARENT != null) {
         for (let i = 0; i < type.PARENT.length; i++) {
             setNatural(natural, type.PARENT[i]);
@@ -48,7 +54,7 @@ class Gun {
                 if (Array.isArray(info.PROPERTIES.TYPE)) {
                     // This is to be nicer about our definitions
                     this.bulletTypes = info.PROPERTIES.TYPE;
-                    this.natural = info.PROPERTIES.TYPE.BODY;
+                    //this.natural = info.PROPERTIES.TYPE.BODY;
                 } else {
                     this.bulletTypes = [info.PROPERTIES.TYPE];
                 }
@@ -855,13 +861,8 @@ class Entity extends EventEmitter {
         player.body = fakeBody;
         player.body.kill();
     }
-    ensureIsClass(str) {
-        if ("object" == typeof str) return str;
-        if (str in Class) return Class[str];
-        throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
-    }
     define(set) {
-        set = this.ensureIsClass(set);
+        set = ensureIsClass(set);
 
         if (set.PARENT != null) {
             for (let i = 0; i < set.PARENT.length; i++) {
@@ -978,7 +979,7 @@ class Entity extends EventEmitter {
             let tierProp = 'UPGRADES_TIER_' + i;
             if (set[tierProp] != null) {
                 for (let j = 0; j < set[tierProp].length; j++) {
-                    let e = this.ensureIsClass(set[tierProp][j]);
+                    let e = ensureIsClass(set[tierProp][j]);
                     this.upgrades.push({
                         class: e,
                         level: c.TIER_MULTIPLIER * i,

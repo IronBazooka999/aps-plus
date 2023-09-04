@@ -1,5 +1,19 @@
 const { gunCalcNames } = require('./constants.js');
+const { MAX_SKILL } = require("../../config.js");
 const g = require('./gunvals.js');
+
+let skcnv = {
+    atk: 6,
+    spd: 4,
+    dam: 3,
+    shi: 5,
+    str: 2,
+    mob: 9,
+    rld: 0,
+    pen: 1,
+    rgn: 8,
+    hlt: 7,
+};
 
 // GUN DEFINITIONS
 exports.combineStats = function (array_of_objects) {
@@ -48,19 +62,6 @@ exports.setBuild = (build) => {
     if (skills.length !== 10)
         throw new RangeError("Build must be made up of 10 numbers");
     return [6, 4, 3, 5, 2, 9, 0, 1, 8, 7].map((r) => skills[r]);
-};
-let { MAX_SKILL } = require("../../config.js");
-let skcnv = {
-    atk: 6,
-    spd: 4,
-    dam: 3,
-    shi: 5,
-    str: 2,
-    mob: 9,
-    rld: 0,
-    pen: 1,
-    rgn: 8,
-    hlt: 7,
 };
 exports.skillSet = (args) => {
     let skills = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -656,24 +657,25 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
             PARENT: ["genericTank"],
             LABEL: "",
             COLOR: 17,
-            GUNS: [
-                {
-                    POSITION: [0, 20, 1, 0, 0, 0, 0,],
-                    PROPERTIES: {
-                        SHOOT_SETTINGS: exports.combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
-                        TYPE: [auraType, {COLOR: auraColor}],
-                        MAX_CHILDREN: 1,
-                        AUTOFIRE: true,
-                        SYNCS_SKILLS: true,
-                    }, 
-                }, 
-            ],
-            /*TURRETS: [
-                {
-                    POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
-                    TYPE: [symbolType, {COLOR: auraColor}],
-                },
-            ]*/
+            // GUNS: [
+            //     {
+            //         POSITION: [0, 20, 1, 0, 0, 0, 0,],
+            //         PROPERTIES: {
+            //             SHOOT_SETTINGS: exports.combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+            //             TYPE: [auraType, {COLOR: auraColor}],
+            //             MAX_CHILDREN: 1,
+            //             AUTOFIRE: true,
+            //             SYNCS_SKILLS: true,
+            //             TYPE: auraType,
+            //         },
+            //     },
+            // ],
+            // TURRETS: [
+            //     {
+            //         POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
+            //         TYPE: [symbolType, {COLOR: auraColor}],
+            //     },
+            // ]
         };
     }
     return exports[name];

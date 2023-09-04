@@ -28,6 +28,148 @@ exports.miniboss = {
     BROADCAST_MESSAGE: "A visitor has left!",
 };
 
+// GUNS
+exports.machineTripleTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Machine Gun",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 5,
+    GUNS: [
+        {
+            POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
+                TYPE: "bullet",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [12, 10, 1.4, 8, 0, 120, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
+                TYPE: "bullet",
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [12, 10, 1.4, 8, 0, 240, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
+                TYPE: "bullet",
+                AUTOFIRE: true,
+            },
+        },
+    ],
+};
+exports.skimmerTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Skimmer",
+    BODY: {
+        FOV: 2 * base.FOV,
+    },
+    COLOR: 2,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 14, -0.5, 9, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                ]),
+                TYPE: "hypermissile",
+            },
+        },
+        {
+            POSITION: [17, 15, 1, 0, 0, 0, 0],
+        },
+    ],
+};
+exports.twisterTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Twister",
+    BODY: {
+        FOV: 2,
+    },
+    COLOR: 13,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 13, -0.5, 9, 0, 0, 0],
+        },
+        {
+            POSITION: [17, 14, -1.4, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                    g.morespeed,
+                    g.one_third_reload,
+                ]),
+                TYPE: "hyperspinmissile",
+                STAT_CALCULATOR: gunCalcNames.sustained,
+            },
+        },
+    ],
+};
+exports.boomerTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Boomer",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 14,
+    GUNS: [
+        {
+            POSITION: [7.75, 10, 1, 12, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.block, g.boomerang, g.fake]),
+                TYPE: "boomerang",
+            },
+        },
+        {
+            POSITION: [6, 10, -1.5, 7, 0, 0, 0],
+        },
+        {
+            POSITION: [2, 10, 1.3, 18, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.block, g.boomerang]),
+                TYPE: "boomerang",
+            },
+        },
+    ],
+};
+
 // ELITE CRASHERS
 exports.elite = {
     PARENT: ["miniboss"],
@@ -137,47 +279,6 @@ exports.eliteGunner = {
         },
     ],
 };
-exports.machineTripleTurret = {
-    PARENT: ["genericTank"],
-    LABEL: "Machine Gun",
-    BODY: {
-        FOV: 2,
-    },
-    CONTROLLERS: [
-        "canRepel",
-        "onlyAcceptInArc",
-        "mapAltToFire",
-        "nearestDifferentMaster",
-    ],
-    COLOR: 5,
-    GUNS: [
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [12, 10, 1.4, 8, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
-                TYPE: "bullet",
-                AUTOFIRE: true,
-            },
-        },
-        {
-            POSITION: [12, 10, 1.4, 8, 0, 120, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
-                TYPE: "bullet",
-                AUTOFIRE: true,
-            },
-        },
-        {
-            POSITION: [12, 10, 1.4, 8, 0, 240, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.flank]),
-                TYPE: "bullet",
-                AUTOFIRE: true,
-            },
-        },
-    ],
-};
 exports.eliteSprayer = {
     PARENT: ["elite"],
     SKILL: [0, 9, 3, 9, 2, 9, 9, 9, 9, 0],
@@ -212,41 +313,6 @@ exports.eliteSprayer = {
         {
             POSITION: [9, 6, -5, -60, 130, 0],
             TYPE: ["sprayer", { COLOR: 16 }],
-        },
-    ],
-};
-exports.oldEliteSprayer = {
-    PARENT: ["elite"],
-    AI: {
-        NO_LEAD: false,
-    },
-    TURRETS: [
-        {
-            POSITION: [14, 6, 0, 180, 190, 0],
-            TYPE: [
-                "sprayer",
-                {
-                    COLOR: 5,
-                },
-            ],
-        },
-        {
-            POSITION: [14, 6, 0, 60, 190, 0],
-            TYPE: [
-                "sprayer",
-                {
-                    COLOR: 5,
-                },
-            ],
-        },
-        {
-            POSITION: [14, 6, 0, -60, 190, 0],
-            TYPE: [
-                "sprayer",
-                {
-                    COLOR: 5,
-                },
-            ],
         },
     ],
 };
@@ -415,6 +481,43 @@ exports.eliteSpawner = {
     ],
 };
 
+// OLD ELITE
+exports.oldEliteSprayer = {
+    PARENT: ["elite"],
+    AI: {
+        NO_LEAD: false,
+    },
+    TURRETS: [
+        {
+            POSITION: [14, 6, 0, 180, 190, 0],
+            TYPE: [
+                "sprayer",
+                {
+                    COLOR: 5,
+                },
+            ],
+        },
+        {
+            POSITION: [14, 6, 0, 60, 190, 0],
+            TYPE: [
+                "sprayer",
+                {
+                    COLOR: 5,
+                },
+            ],
+        },
+        {
+            POSITION: [14, 6, 0, -60, 190, 0],
+            TYPE: [
+                "sprayer",
+                {
+                    COLOR: 5,
+                },
+            ],
+        },
+    ],
+};
+
 // STRANGE BOSSES
 exports.summoner = {
     PARENT: ["miniboss"],
@@ -479,73 +582,6 @@ exports.summoner = {
         },
     ],
 };
-exports.skimmerTurret = {
-    PARENT: ["genericTank"],
-    LABEL: "Skimmer",
-    BODY: {
-        FOV: 2 * base.FOV,
-    },
-    COLOR: 2,
-    CONTROLLERS: [
-        "canRepel",
-        "onlyAcceptInArc",
-        "mapAltToFire",
-        "nearestDifferentMaster",
-    ],
-    GUNS: [
-        {
-            POSITION: [10, 14, -0.5, 9, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.pound,
-                    g.arty,
-                    g.arty,
-                    g.skim,
-                ]),
-                TYPE: exports.hypermissile,
-            },
-        },
-        {
-            POSITION: [17, 15, 1, 0, 0, 0, 0],
-        },
-    ],
-};
-exports.twisterTurret = {
-    PARENT: ["genericTank"],
-    LABEL: "Twister",
-    BODY: {
-        FOV: 2,
-    },
-    COLOR: 13,
-    CONTROLLERS: [
-        "canRepel",
-        "onlyAcceptInArc",
-        "mapAltToFire",
-        "nearestDifferentMaster",
-    ],
-    GUNS: [
-        {
-            POSITION: [10, 13, -0.5, 9, 0, 0, 0],
-        },
-        {
-            POSITION: [17, 14, -1.4, 0, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.pound,
-                    g.arty,
-                    g.arty,
-                    g.skim,
-                    g.morespeed,
-                    g.one_third_reload,
-                ]),
-                TYPE: exports.hyperspinmissile,
-                STAT_CALCULATOR: gunCalcNames.sustained,
-            },
-        },
-    ],
-};
 exports.eliteSkimmer = {
     PARENT: ["elite"],
     LABEL: "Elite Skimmer",
@@ -562,39 +598,6 @@ exports.eliteSkimmer = {
         {
             POSITION: [15, 5, 0, 300, 170, 0],
             TYPE: "skimmerTurret",
-        },
-    ],
-};
-exports.boomerTurret = {
-    PARENT: ["genericTank"],
-    LABEL: "Boomer",
-    BODY: {
-        FOV: 2,
-    },
-    CONTROLLERS: [
-        "canRepel",
-        "onlyAcceptInArc",
-        "mapAltToFire",
-        "nearestDifferentMaster",
-    ],
-    COLOR: 14,
-    GUNS: [
-        {
-            POSITION: [7.75, 10, 1, 12, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.trap, g.block, g.boomerang, g.fake]),
-                TYPE: "boomerang",
-            },
-        },
-        {
-            POSITION: [6, 10, -1.5, 7, 0, 0, 0],
-        },
-        {
-            POSITION: [2, 10, 1.3, 18, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.trap, g.block, g.boomerang]),
-                TYPE: "boomerang",
-            },
         },
     ],
 };
@@ -723,40 +726,38 @@ exports.nestKeeper = {
         },
     ],
 };
-exports.roguePalisade = (() => {
-    return {
-        PARENT: ["miniboss"],
-        LABEL: "Rogue Palisade",
-        COLOR: 17,
-        SHAPE: 6,
-        SIZE: 30,
-        VALUE: 5e5,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
-        BODY: {
-            FOV: 1.4,
-            SPEED: 0.05 * base.SPEED,
-            HEALTH: 16 * base.HEALTH,
-            SHIELD: 3 * base.SHIELD,
-            DAMAGE: 3 * base.DAMAGE,
-        },
-        GUNS: [
-            { POSITION: [4, 6, -1.6, 8, 0, 0, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
-            { POSITION: [4, 6, -1.6, 8, 0, 60, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
-            { POSITION: [4, 6, -1.6, 8, 0, 120, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
-            { POSITION: [4, 6, -1.6, 8, 0, 180, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
-            { POSITION: [4, 6, -1.6, 8, 0, 240, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
-            { POSITION: [4, 6, -1.6, 8, 0, 300, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
-        ],
-        TURRETS: [
-            { POSITION: [5, 10, 0, 30, 110, 0], TYPE: "trapTurret" },
-            { POSITION: [5, 10, 0, 90, 110, 0], TYPE: "trapTurret" },
-            { POSITION: [5, 10, 0, 150, 110, 0], TYPE: "trapTurret" },
-            { POSITION: [5, 10, 0, 210, 110, 0], TYPE: "trapTurret" },
-            { POSITION: [5, 10, 0, 270, 110, 0], TYPE: "trapTurret" },
-            { POSITION: [5, 10, 0, 330, 110, 0], TYPE: "trapTurret" },
-        ],
-    };
-})();
+exports.roguePalisade = {
+    PARENT: ["miniboss"],
+    LABEL: "Rogue Palisade",
+    COLOR: 17,
+    SHAPE: 6,
+    SIZE: 30,
+    VALUE: 5e5,
+    CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
+    BODY: {
+        FOV: 1.4,
+        SPEED: 0.05 * base.SPEED,
+        HEALTH: 16 * base.HEALTH,
+        SHIELD: 3 * base.SHIELD,
+        DAMAGE: 3 * base.DAMAGE,
+    },
+    GUNS: [
+        { POSITION: [4, 6, -1.6, 8, 0, 0, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
+        { POSITION: [4, 6, -1.6, 8, 0, 60, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
+        { POSITION: [4, 6, -1.6, 8, 0, 120, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
+        { POSITION: [4, 6, -1.6, 8, 0, 180, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
+        { POSITION: [4, 6, -1.6, 8, 0, 240, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
+        { POSITION: [4, 6, -1.6, 8, 0, 300, 0], PROPERTIES: { SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]), TYPE: "minion", STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true }},
+    ],
+    TURRETS: [
+        { POSITION: [5, 10, 0, 30, 110, 0], TYPE: "trapTurret" },
+        { POSITION: [5, 10, 0, 90, 110, 0], TYPE: "trapTurret" },
+        { POSITION: [5, 10, 0, 150, 110, 0], TYPE: "trapTurret" },
+        { POSITION: [5, 10, 0, 210, 110, 0], TYPE: "trapTurret" },
+        { POSITION: [5, 10, 0, 270, 110, 0], TYPE: "trapTurret" },
+        { POSITION: [5, 10, 0, 330, 110, 0], TYPE: "trapTurret" },
+    ],
+};
 exports.rogueArmada = (() => {
     let SHAPE = 7,
         GUNS = [],

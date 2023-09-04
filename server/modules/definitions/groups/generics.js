@@ -54,6 +54,8 @@ exports.genericEntity = {
     UPGRADES_TIER_9: [],
     SKILL: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     LEVEL: 0,
+    BORDERLESS: false,
+    DRAW_FILL: true,
     SKILL_CAP: Array(10).fill(dfltskl),
     GUNS: [],
     MAX_CHILDREN: 0,
@@ -145,6 +147,34 @@ exports.bullet = {
     HITS_OWN_TYPE: "never",
     DIE_AT_RANGE: true,
 };
+exports.speedBullet = {
+    PARENT: ["bullet"],
+    MOTION_TYPE: "accel",
+};
+exports.growBullet = {
+    PARENT: ["bullet"],
+    MOTION_TYPE: "grow",
+};
+exports.flare = {
+    PARENT: ["growBullet"],
+    LABEL: "Flare",
+    SHAPE: 4,
+};
+exports.developerBullet = {
+    PARENT: ["bullet"],
+    SHAPE: [[-1, -1], [1, -1], [2, 0], [1, 1], [-1, 1]],
+};
+exports.healerBullet = {
+    PARENT: ["bullet"],
+    HEALER: true,
+    HITS_OWN_TYPE: "normal",
+};
+exports.casing = {
+    PARENT: ["bullet"],
+    LABEL: "Shell",
+    TYPE: "swarm",
+};
+
 exports.drone = {
     LABEL: "Drone",
     TYPE: "drone",
@@ -180,6 +210,7 @@ exports.drone = {
     CLEAR_ON_MASTER_UPGRADE: true,
     BUFF_VS_FOOD: true,
 };
+
 exports.trap = {
     LABEL: "Thrown Trap",
     TYPE: "trap",
@@ -199,6 +230,12 @@ exports.trap = {
     },
 };
 
+exports.mendersymbol = {
+    PARENT: ["genericTank"],
+    COLOR: 16,
+    LABEL: "",
+    SHAPE: 3,
+};
 exports.healerSymbol = {
     PARENT: ["genericEntity"],
     SHAPE: [[0.3, -0.3],[1,-0.3],[1,0.3],[0.3,0.3],[0.3,1],[-0.3,1],[-0.3,0.3],[-1,0.3],[-1,-0.3],[-0.3,-0.3],[-0.3,-1],[0.3,-1]],
