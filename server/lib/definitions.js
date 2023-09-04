@@ -1,31 +1,43 @@
 // GUN DEFINITIONS
-const combineStats = function (arr) {
+const combineStats = function (array_of_objects) {
     try {
         // Build a blank array of the appropiate length
-        let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        for (let component of arr){
-            for (let i = 0; i < data.length; i++) {
-                data[i] = data[i] * component[i];
-            }
-        }
-        return {
-            reload: data[0],
-            recoil: data[1],
-            shudder: data[2],
-            size: data[3],
-            health: data[4],
-            damage: data[5],
-            pen: data[6],
-            speed: data[7],
-            maxSpeed: data[8],
-            range: data[9],
-            density: data[10],
-            spray: data[11],
-            resist: data[12],
+        let data = {
+            reload: 1,
+            recoil: 1,
+            shudder: 1,
+            size: 1,
+            health: 1,
+            damage: 1,
+            pen: 1,
+            speed: 1,
+            maxSpeed: 1,
+            range: 1,
+            density: 1,
+            spray: 1,
+            resist: 1
         };
+
+        for (let object = 0; object < array_of_objects.length; object++) {
+            let gStat = array_of_objects[object];
+            data.reload *= gStat.reload ?? 1;
+            data.recoil *= gStat.recoil ?? 1;
+            data.shudder *= gStat.shudder ?? 1;
+            data.size *= gStat.size ?? 1;
+            data.health *= gStat.health ?? 1;
+            data.damage *= gStat.damage ?? 1;
+            data.pen *= gStat.pen ?? 1;
+            data.speed *= gStat.speed ?? 1;
+            data.maxSpeed *= gStat.maxSpeed ?? 1;
+            data.range *= gStat.range ?? 1;
+            data.density *= gStat.density ?? 1;
+            data.spray *= gStat.spray ?? 1;
+            data.resist *= gStat.resist ?? 1;
+        }
+        return data;
     } catch (err) {
         console.log(err);
-        console.log(JSON.stringify(arr));
+        console.log(JSON.stringify(array_of_objects));
     }
 };
 const setBuild = (build) => {
@@ -56,163 +68,1747 @@ const skillSet = (args) => {
     return skills;
 };
 const g = {
-    // Reload, recoil, shudder (speed variation), size, health, damage, penetration, speed, max speed, range, density, spray (accuracy variation), resist
-
-    // Generic
-    blank: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    small: [1, 1, 1, 0.8, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    micro: [1, 1, 1, 0.4, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    weak: [2, 1, 1, 1, 0.6, 0.6, 0.8, 0.5, 0.7, 0.25, 0.3, 1, 1],
-    power: [1, 1, 0.6, 1.2, 1, 1, 1.25, 2, 1.7, 1, 2, 0.5, 1.5],
-    fake: [1, 1, 1, 1e-5, 1e-4, 1, 1, 1e-5, 2, 0, 1, 1, 1],
-    op: [0.5, 1.3, 1, 1, 4, 4, 4, 3, 2, 1, 5, 2, 1],
-    
-    // Bases
-    basic: [18, 1.4, 0.1, 1, 1, 0.75, 1, 4.5, 1, 1, 1, 15, 1],
-    drone: [50, 0.25, 0.1, 0.6, 1, 1, 1, 2, 1, 1, 1, 0.1, 1],
-    trap: [36, 1, 0.25, 0.6, 1, 0.75, 1, 5, 1, 1, 1, 15, 3],
-    swarm: [18, 0.25, 0.05, 0.4, 1, 0.75, 1, 4, 1, 1, 1, 5, 1],
-    factory: [60, 1, 0.1, 0.7, 1, 0.75, 1, 3, 1, 1, 1, 0.1, 1],
-    productionist: [75, 0.25, 0.05, 0.7, 1, 0.75, 1, 4, 1, 1.5, 1, 5, 1],
-
-    // Standard Cannons
-    single: [1.05, 1, 1, 1, 1, 1, 1, 1.05, 1, 1, 1, 1, 1],
-    twin: [1, 0.5, 0.9, 1, 0.9, 0.7, 1, 1, 1, 1, 1, 1.2, 1],
-    double: [1, 1, 1, 1, 1, 0.9, 1, 1, 1, 1, 1, 1, 1],
-    hewn: [1.25, 1.5, 1, 1, 0.9, 0.85, 1, 1, 0.9, 1, 1, 1, 1],
-    bent: [1.1, 1, 0.8, 1, 0.9, 1, 0.8, 1, 1, 1, 0.8, 0.5, 1],
-    spreadmain: [0.781, 0.25, 0.5, 1, 0.5, 1, 1, 1.923, 2.436, 1, 1, 1, 1],
-    spread: [1.5, 1, 0.25, 1, 1, 1, 1, 0.7, 0.7, 1, 1, 0.25, 1],
-    triple: [1.2, 0.667, 0.9, 1, 0.85, 0.85, 0.9, 1, 1, 1, 1.1, 0.9, 0.95],
-    quint: [1.5, 0.667, 0.9, 1, 1, 1, 0.9, 1, 1, 1, 1.1, 0.9, 0.95],
-    turret: [2, 1, 1, 1, 0.8, 0.6, 0.7, 1, 1, 1, 0.1, 1, 1],
-    
-    // Sniper Cannons
-    sniper: [1.35, 1, 0.25, 1, 1, 0.8, 1.1, 1.5, 1.5, 1, 1.5, 0.2, 1.15],
-    assass: [1.65, 1, 0.25, 1, 1.15, 1, 1.1, 1.18, 1.18, 1, 3, 1, 1.3],
-    hunter: [1.5, 0.7, 1, 0.95, 1, 0.9, 1, 1.1, 0.8, 1, 1.2, 1, 1.15],
-    hunter2: [1, 1, 1, 0.9, 2, 0.5, 1.5, 1, 1, 1, 1.2, 1, 1.1],
-    preda: [1.4, 1, 1, 0.8, 1.5, 0.9, 1.2, 0.9, 0.9, 1, 1, 1, 1],
-    dual: [2, 1, 0.8, 1, 1.5, 1, 1, 1.3, 1.1, 1, 1, 1, 1.25],
-    rifle: [0.8, 0.8, 1.5, 1, 0.8, 0.8, 0.9, 1, 1, 1, 1, 2, 1],
-    blunderbuss: [1, 0.1, 0.5, 1, 0.4, 0.2, 0.4, 1, 1, 1, 1, 0.5, 1],
-    
-    // Machine Cannons
-    mach: [0.5, 0.8, 1.7, 1, 0.7, 0.7, 1, 1, 0.8, 1, 1, 2.5, 1],
-    mini: [1.25, 0.6, 1, 0.8, 0.55, 0.45, 1.25, 1.33, 1, 1, 1.25, 0.5, 1.1],
-    stream: [1.1, 0.6, 1, 1, 1, 0.65, 1, 1.24, 1, 1, 1, 1, 1],
-    nail: [0.85, 2.5, 1, 0.8, 1, 0.7, 1, 1, 1, 1, 2, 1, 1],
-    gunner: [1.25, 0.25, 1.5, 1.1, 1, 0.35, 1.35, 0.9, 0.8, 1, 1.5, 1.5, 1.2],
-    puregunner: [1, 0.25, 1.5, 1.2, 1.35, 0.25, 1.25, 0.8, 0.65, 1, 1.5, 1.5, 1.2],
-    machgun: [0.66, 0.8, 2, 1, 1, 0.75, 1, 1.2, 0.8, 1, 1, 2.5, 1],
-    blaster: [1, 1.2, 1.25, 1.1, 1.5, 1, 0.6, 0.8, 0.33, 0.6, 0.5, 1.5, 0.8],
-    chain: [1.25, 1.33, 0.8, 1, 0.8, 1, 1.1, 1.25, 1.25, 1.1, 1.25, 0.5, 1.1],
-    atomizer: [0.3, 0.8, 1, 0.5, 1, 0.75, 1, 1.2, 0.8, 1, 1, 2.25, 1], 
-    spam: [1.1, 1, 1, 1.05, 1, 1.1, 1, 0.9, 0.7, 1, 1, 1, 1.05],
-    gunnerDominator: [1.1, 0, 1.1, 0.5, 0.5, 0.5, 1, 1.1, 1, 1, 0.9, 1.2, 0.8],
-    
-    // Flank Cannons
-    flank: [1, 1.2, 1, 1, 1.02, 0.81, 0.9, 1, 0.85, 1, 1.2, 1, 1],
-    hurricane: [1, 1, 1, 1, 1.3, 1.3, 1.1, 1.5, 1.15, 1, 1, 1, 1],
-    tri: [1, 0.9, 1, 1, 0.9, 1, 1, 0.8, 0.8, 0.6, 1, 1, 1],
-    trifront: [1, 0.2, 1, 1, 1, 1, 1, 1.3, 1.1, 1.5, 1, 1, 1],
-    
-    // Thrusters
-    thruster: [1, 1.5, 2, 1, 0.5, 0.5, 0.7, 1, 1, 1, 1, 0.5, 0.7],
-    missileTrail: [0.6, 0.25, 2, 1, 1, 0.9, 0.7, 0.4, 1, 0.5, 1, 1, 1],
-    rocketeerMissileTrail: [0.5, 7, 1.5, 0.8, 0.8, 0.7, 1, 0.9, 0.8, 1, 1, 5, 1],
-    
-    // Automatic Cannons
-    auto: [0.9, 0.75, 0.5, 0.8, 0.9, 0.6, 1.2, 1.1, 1, 0.8, 1.3, 1, 1.25],
-    five: [1.15, 1, 1, 1, 1, 1, 1, 1.05, 1.05, 1.1, 2, 1, 1],
-    autosnipe: [1, 1, 1, 1.4, 2, 1, 1, 1, 1, 1, 1, 1, 1],
-    
-    // Drone Deployers
-    over: [1.25, 1, 1, 0.85, 0.7, 0.8, 1, 1, 0.9, 1, 2, 1, 1],
-    meta: [1.333, 1, 1, 1, 1, 0.667, 1, 1, 1, 1, 1, 1, 1],
-    overdrive: [5, 1, 1, 1, 0.8, 0.8, 0.8, 0.9, 0.9, 0.9, 1, 1.2, 1],
-    commander: [3, 1, 1, 0.7, 0.4, 0.7, 1, 1, 1, 0.1, 0.5, 1, 1],
-    protectorswarm: [5, 1e-6, 1, 1, 100, 1, 1, 1, 1, 0.5, 5, 1, 10],
-    battle: [1, 1, 1, 1, 1.25, 1.15, 1, 1, 0.85, 1, 1, 1, 1.1],
-    carrier: [1.5, 1, 1, 1, 1, 0.8, 1, 1.3, 1.2, 1.2, 1, 1, 1],
-    bees: [1.3, 1, 1, 1.4, 1, 1.5, 0.5, 3, 1.5, 1, 0.25, 1, 1],
-    sunchip: [5, 1, 1, 1.4, 0.5, 0.4, 0.6, 1, 1, 1, 0.8, 1, 1],
-    maleficitor: [0.5, 1, 1, 1.05, 1.15, 1.15, 1.15, 0.8, 0.8, 1, 1.15, 1, 1],
-    summoner: [0.3, 1, 1, 1.125, 0.4, 0.345, 0.4, 1, 1, 1, 0.8, 1, 1],
-    minion: [1, 1, 2, 1, 0.4, 0.4, 1.2, 1, 1, 0.75, 1, 2, 1],
-    babyfactory: [1.5, 1, 1, 1, 1, 1, 1, 1, 1.35, 1, 1, 1, 1],
-    mehdrone: [1, 1, 1, 1.35, 1.75, 1, 1, 1.125, 1, 1, 1, 1, 1],
-    bigdrone: [1, 1, 1, 1.8, 2.5, 1, 1, 1.25, 1, 1, 1, 1, 1],
-    mothership: [1.25, 1, 1, 1, 1, 1, 1.1, 0.775, 0.8, 15, 1, 1, 1.15],
-    
-    // Heavy Cannons
-    pound: [2, 1.6, 1, 1, 1, 2, 1, 0.85, 0.8, 1, 1.5, 1, 1.15],
-    destroy: [2.2, 1.8, 0.5, 1, 2, 2, 1.2, 0.65, 0.5, 1, 2, 1, 3],
-    anni: [0.8, 1.25, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    hive: [1.5, 0.8, 1, 0.8, 0.7, 0.3, 1, 1, 0.6, 1, 1, 1, 1],
-    arty: [1.2, 0.7, 1, 0.9, 1, 1, 1, 1.15, 1.1, 1, 1.5, 1, 1],
-    mortar: [1.2, 1, 1, 1, 1.1, 1, 1, 0.8, 0.8, 1, 1, 1, 1],
-    launcher: [1.5, 1.5, 0.1, 0.72, 1.05, 0.925, 1, 0.9, 1.2, 1.1, 1, 1, 1.5],
-    skim: [1, 0.8, 0.8, 0.9, 1.35, 0.8, 2, 0.3, 0.3, 1, 1, 1, 1.1],
-    snake: [0.4, 1, 4, 1, 1.5, 0.9, 1.2, 0.2, 0.35, 1, 3, 6, 0.5],
-    sidewind: [1.5, 2, 1, 1, 1.5, 0.9, 1, 0.15, 0.5, 1, 1, 1, 1],
-    snakeskin: [0.6, 1, 2, 1, 0.5, 0.5, 1, 1, 0.2, 0.4, 1, 5, 1],
-    rocketeer: [1.4, 1, 0.9, 1.2, 1.5, 1.4, 1.4, 0.3, 1, 1.2, 1, 1, 1.4],
-    shotgun: [8, 0.4, 1, 1.5, 1, 0.4, 0.8, 1.8, 0.6, 1, 1.2, 1.2, 1],
-    acc: [1, 1, 0.1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    destroyerDominator: [6.5, 0, 1, 0.975, 6, 6, 6, 0.575, 0.475, 1, 1, 0.5, 1],
-    closer: [1.25, 0.25, 1, 1, 1e3, 1e3, 1e3, 2.5, 2.25, 1.4, 4, 0.25, 1],
-    
-    // Trap Launchers
-    block: [1.1, 2, 0.1, 1.5, 2, 1, 1.25, 1.5, 2.5, 1.25, 1, 1, 1.25],
-    construct: [1.3, 1, 1, 0.9, 1, 1, 1, 1, 1.1, 1, 1, 1, 1],
-    boomerang: [0.8, 1, 1, 1, 0.5, 0.5, 1, 0.75, 0.75, 1.333, 1, 1, 1],
-    nest_keeper: [3, 1, 1, 0.75, 1.05, 1.05, 1.1, 0.5, 0.5, 0.5, 1.1, 1, 1],
-    hexatrap: [1.3, 1, 1.25, 1, 1, 1, 1, 0.8, 1, 0.5, 1, 1, 1],
-    megatrap: [2, 1.5, 0.75, 1.8, 1.52, 1.52, 1.52, 0.9, 0.8, 1.4, 1, 1, 2.5],
-    trapperDominator: [1.26, 0, 0.25, 1, 1.25, 1.45, 1.6, 0.5, 2, 0.7, 1, 0.5, 1],
-    
-    // Healer Cannons
-    healer: [1, 1, 1, 1, 1, -1, 1, 1, 1, 1, 1, 1, 1],
-    
-    // Lances
-    lancer: [0.4, 1, 1, 1, 1, 1, 1, 0.1, 0.1, 0.1, 1, 1, 1],
-    
-    // Mixed
-    celeslower: [1, 1, 1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    
-    // Recoil Modifiers
-    tonsmorrecoil: [1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    lotsmorrecoil: [1, 1.8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    muchmorerecoil: [1, 1.35, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    morerecoil: [1, 1.15, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    halfrecoil: [1, 0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    
-    // Reload Modifiers
-    halfreload: [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    lessreload: [1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    one_third_reload: [1.333, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    morereload: [0.75, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    doublereload: [0.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    
-    // Speed Modifiers
-    fast: [1, 1, 1, 1, 1, 1, 1, 1.2, 1, 1, 1, 1, 1],
-    veryfast: [1, 1, 1, 1, 1, 1, 1, 2.5, 1, 1, 1, 1, 1],
-    morespeed: [1, 1, 1, 1, 1, 1, 1, 1.3, 1.3, 1, 1, 1, 1],
-    bitlessspeed: [1, 1, 1, 1, 1, 1, 1, 0.93, 0.93, 1, 1, 1, 1],
-    slow: [1, 1, 1, 1, 1, 1, 1, 0.7, 0.7, 1, 1, 1, 1],
-    halfspeed: [1, 1, 1, 1, 1, 1, 1, 0.5, 0.5, 1, 1, 1, 1],
-    
-    // Other
-    lowpower: [1, 1, 2, 1, 0.5, 0.5, 0.7, 1, 1, 1, 1, 0.5, 0.7],
-    notdense: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.1, 1, 1],
-    halfrange: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.5, 1, 1, 1],
-
-    // Credit: DogeIsCool
-    aura: [0.001, 0.001, 0.001, 6, 1, 3, 1, 0.001, 0.001, 1, 1, 0.001, 1],
-
-    noRandom: [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1],
-};
+    blank: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    small: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 0.8,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    micro: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 0.4,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    weak: {
+        reload: 2,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 0.6,
+        damage: 0.6,
+        pen: 0.8,
+        speed: 0.5,
+        maxSpeed: 0.7,
+        range: 0.25,
+        density: 0.3,
+        spray: 1,
+        resist: 1
+    },
+    power: {
+        reload: 1,
+        recoil: 1,
+        shudder: 0.6,
+        size: 1.2,
+        health: 1,
+        damage: 1,
+        pen: 1.25,
+        speed: 2,
+        maxSpeed: 1.7,
+        range: 1,
+        density: 2,
+        spray: 0.5,
+        resist: 1.5
+    },
+    fake: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 0.00001,
+        health: 0.0001,
+        damage: 1,
+        pen: 1,
+        speed: 0.00001,
+        maxSpeed: 2,
+        range: 0,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    op: {
+        reload: 0.5,
+        recoil: 1.3,
+        shudder: 1,
+        size: 1,
+        health: 4,
+        damage: 4,
+        pen: 4,
+        speed: 3,
+        maxSpeed: 2,
+        range: 1,
+        density: 5,
+        spray: 2,
+        resist: 1
+    },
+    basic: {
+        reload: 18,
+        recoil: 1.4,
+        shudder: 0.1,
+        size: 1,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 4.5,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 15,
+        resist: 1
+    },
+    drone: {
+        reload: 50,
+        recoil: 0.25,
+        shudder: 0.1,
+        size: 0.6,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 2,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 0.1,
+        resist: 1
+    },
+    trap: {
+        reload: 36,
+        recoil: 1,
+        shudder: 0.25,
+        size: 0.6,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 5,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 15,
+        resist: 3
+    },
+    swarm: {
+        reload: 18,
+        recoil: 0.25,
+        shudder: 0.05,
+        size: 0.4,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 4,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 5,
+        resist: 1
+    },
+    factory: {
+        reload: 60,
+        recoil: 1,
+        shudder: 0.1,
+        size: 0.7,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 3,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 0.1,
+        resist: 1
+    },
+    productionist: {
+        reload: 75,
+        recoil: 0.25,
+        shudder: 0.05,
+        size: 0.7,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 4,
+        maxSpeed: 1,
+        range: 1.5,
+        density: 1,
+        spray: 5,
+        resist: 1
+    },
+    single: {
+        reload: 1.05,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1.05,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    twin: {
+        reload: 1,
+        recoil: 0.5,
+        shudder: 0.9,
+        size: 1,
+        health: 0.9,
+        damage: 0.7,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1.2,
+        resist: 1
+    },
+    double: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 0.9,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    hewn: {
+        reload: 1.25,
+        recoil: 1.5,
+        shudder: 1,
+        size: 1,
+        health: 0.9,
+        damage: 0.85,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 0.9,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    bent: {
+        reload: 1.1,
+        recoil: 1,
+        shudder: 0.8,
+        size: 1,
+        health: 0.9,
+        damage: 1,
+        pen: 0.8,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 0.8,
+        spray: 0.5,
+        resist: 1
+    },
+    spreadmain: {
+        reload: 0.781,
+        recoil: 0.25,
+        shudder: 0.5,
+        size: 1,
+        health: 0.5,
+        damage: 1,
+        pen: 1,
+        speed: 1.923,
+        maxSpeed: 2.436,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    spread: {
+        reload: 1.5,
+        recoil: 1,
+        shudder: 0.25,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 0.7,
+        maxSpeed: 0.7,
+        range: 1,
+        density: 1,
+        spray: 0.25,
+        resist: 1
+    },
+    triple: {
+        reload: 1.2,
+        recoil: 0.667,
+        shudder: 0.9,
+        size: 1,
+        health: 0.85,
+        damage: 0.85,
+        pen: 0.9,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1.1,
+        spray: 0.9,
+        resist: 0.95
+    },
+    quint: {
+        reload: 1.5,
+        recoil: 0.667,
+        shudder: 0.9,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 0.9,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1.1,
+        spray: 0.9,
+        resist: 0.95
+    },
+    turret: {
+        reload: 2,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 0.8,
+        damage: 0.6,
+        pen: 0.7,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 0.1,
+        spray: 1,
+        resist: 1
+    },
+    sniper: {
+        reload: 1.35,
+        recoil: 1,
+        shudder: 0.25,
+        size: 1,
+        health: 1,
+        damage: 0.8,
+        pen: 1.1,
+        speed: 1.5,
+        maxSpeed: 1.5,
+        range: 1,
+        density: 1.5,
+        spray: 0.2,
+        resist: 1.15
+    },
+    assass: {
+        reload: 1.65,
+        recoil: 1,
+        shudder: 0.25,
+        size: 1,
+        health: 1.15,
+        damage: 1,
+        pen: 1.1,
+        speed: 1.18,
+        maxSpeed: 1.18,
+        range: 1,
+        density: 3,
+        spray: 1,
+        resist: 1.3
+    },
+    hunter: {
+        reload: 1.5,
+        recoil: 0.7,
+        shudder: 1,
+        size: 0.95,
+        health: 1,
+        damage: 0.9,
+        pen: 1,
+        speed: 1.1,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1.2,
+        spray: 1,
+        resist: 1.15
+    },
+    hunter2: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 0.9,
+        health: 2,
+        damage: 0.5,
+        pen: 1.5,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1.2,
+        spray: 1,
+        resist: 1.1
+    },
+    preda: {
+        reload: 1.4,
+        recoil: 1,
+        shudder: 1,
+        size: 0.8,
+        health: 1.5,
+        damage: 0.9,
+        pen: 1.2,
+        speed: 0.9,
+        maxSpeed: 0.9,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    dual: {
+        reload: 2,
+        recoil: 1,
+        shudder: 0.8,
+        size: 1,
+        health: 1.5,
+        damage: 1,
+        pen: 1,
+        speed: 1.3,
+        maxSpeed: 1.1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1.25
+    },
+    rifle: {
+        reload: 0.8,
+        recoil: 0.8,
+        shudder: 1.5,
+        size: 1,
+        health: 0.8,
+        damage: 0.8,
+        pen: 0.9,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 2,
+        resist: 1
+    },
+    blunderbuss: {
+        reload: 1,
+        recoil: 0.1,
+        shudder: 0.5,
+        size: 1,
+        health: 0.4,
+        damage: 0.2,
+        pen: 0.4,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 0.5,
+        resist: 1
+    },
+    mach: {
+        reload: 0.5,
+        recoil: 0.8,
+        shudder: 1.7,
+        size: 1,
+        health: 0.7,
+        damage: 0.7,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1,
+        spray: 2.5,
+        resist: 1
+    },
+    mini: {
+        reload: 1.25,
+        recoil: 0.6,
+        shudder: 1,
+        size: 0.8,
+        health: 0.55,
+        damage: 0.45,
+        pen: 1.25,
+        speed: 1.33,
+        maxSpeed: 1,
+        range: 1,
+        density: 1.25,
+        spray: 0.5,
+        resist: 1.1
+    },
+    stream: {
+        reload: 1.1,
+        recoil: 0.6,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 0.65,
+        pen: 1,
+        speed: 1.24,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    nail: {
+        reload: 0.85,
+        recoil: 2.5,
+        shudder: 1,
+        size: 0.8,
+        health: 1,
+        damage: 0.7,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 2,
+        spray: 1,
+        resist: 1
+    },
+    gunner: {
+        reload: 1.25,
+        recoil: 0.25,
+        shudder: 1.5,
+        size: 1.1,
+        health: 1,
+        damage: 0.35,
+        pen: 1.35,
+        speed: 0.9,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1.5,
+        spray: 1.5,
+        resist: 1.2
+    },
+    puregunner: {
+        reload: 1,
+        recoil: 0.25,
+        shudder: 1.5,
+        size: 1.2,
+        health: 1.35,
+        damage: 0.25,
+        pen: 1.25,
+        speed: 0.8,
+        maxSpeed: 0.65,
+        range: 1,
+        density: 1.5,
+        spray: 1.5,
+        resist: 1.2
+    },
+    machgun: {
+        reload: 0.66,
+        recoil: 0.8,
+        shudder: 2,
+        size: 1,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 1.2,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1,
+        spray: 2.5,
+        resist: 1
+    },
+    blaster: {
+        reload: 1,
+        recoil: 1.2,
+        shudder: 1.25,
+        size: 1.1,
+        health: 1.5,
+        damage: 1,
+        pen: 0.6,
+        speed: 0.8,
+        maxSpeed: 0.33,
+        range: 0.6,
+        density: 0.5,
+        spray: 1.5,
+        resist: 0.8
+    },
+    chain: {
+        reload: 1.25,
+        recoil: 1.33,
+        shudder: 0.8,
+        size: 1,
+        health: 0.8,
+        damage: 1,
+        pen: 1.1,
+        speed: 1.25,
+        maxSpeed: 1.25,
+        range: 1.1,
+        density: 1.25,
+        spray: 0.5,
+        resist: 1.1
+    },
+    atomizer: {
+        reload: 0.3,
+        recoil: 0.8,
+        shudder: 1,
+        size: 0.5,
+        health: 1,
+        damage: 0.75,
+        pen: 1,
+        speed: 1.2,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1,
+        spray: 2.25,
+        resist: 1
+    },
+    spam: {
+        reload: 1.1,
+        recoil: 1,
+        shudder: 1,
+        size: 1.05,
+        health: 1,
+        damage: 1.1,
+        pen: 1,
+        speed: 0.9,
+        maxSpeed: 0.7,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1.05
+    },
+    gunnerDominator: {
+        reload: 1.1,
+        recoil: 0,
+        shudder: 1.1,
+        size: 0.5,
+        health: 0.5,
+        damage: 0.5,
+        pen: 1,
+        speed: 1.1,
+        maxSpeed: 1,
+        range: 1,
+        density: 0.9,
+        spray: 1.2,
+        resist: 0.8
+    },
+    flank: {
+        reload: 1,
+        recoil: 1.2,
+        shudder: 1,
+        size: 1,
+        health: 1.02,
+        damage: 0.81,
+        pen: 0.9,
+        speed: 1,
+        maxSpeed: 0.85,
+        range: 1,
+        density: 1.2,
+        spray: 1,
+        resist: 1
+    },
+    hurricane: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1.3,
+        damage: 1.3,
+        pen: 1.1,
+        speed: 1.5,
+        maxSpeed: 1.15,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    tri: {
+        reload: 1,
+        recoil: 0.9,
+        shudder: 1,
+        size: 1,
+        health: 0.9,
+        damage: 1,
+        pen: 1,
+        speed: 0.8,
+        maxSpeed: 0.8,
+        range: 0.6,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    trifront: {
+        reload: 1,
+        recoil: 0.2,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1.3,
+        maxSpeed: 1.1,
+        range: 1.5,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    thruster: {
+        reload: 1,
+        recoil: 1.5,
+        shudder: 2,
+        size: 1,
+        health: 0.5,
+        damage: 0.5,
+        pen: 0.7,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 0.5,
+        resist: 0.7
+    },
+    missileTrail: {
+        reload: 0.6,
+        recoil: 0.25,
+        shudder: 2,
+        size: 1,
+        health: 1,
+        damage: 0.9,
+        pen: 0.7,
+        speed: 0.4,
+        maxSpeed: 1,
+        range: 0.5,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    rocketeerMissileTrail: {
+        reload: 0.5,
+        recoil: 7,
+        shudder: 1.5,
+        size: 0.8,
+        health: 0.8,
+        damage: 0.7,
+        pen: 1,
+        speed: 0.9,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1,
+        spray: 5,
+        resist: 1
+    },
+    auto: {
+        reload: 0.9,
+        recoil: 0.75,
+        shudder: 0.5,
+        size: 0.8,
+        health: 0.9,
+        damage: 0.6,
+        pen: 1.2,
+        speed: 1.1,
+        maxSpeed: 1,
+        range: 0.8,
+        density: 1.3,
+        spray: 1,
+        resist: 1.25
+    },
+    five: {
+        reload: 1.15,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1.05,
+        maxSpeed: 1.05,
+        range: 1.1,
+        density: 2,
+        spray: 1,
+        resist: 1
+    },
+    autosnipe: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1.4,
+        health: 2,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    over: {
+        reload: 1.25,
+        recoil: 1,
+        shudder: 1,
+        size: 0.85,
+        health: 0.7,
+        damage: 0.8,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 0.9,
+        range: 1,
+        density: 2,
+        spray: 1,
+        resist: 1
+    },
+    meta: {
+        reload: 1.333,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 0.667,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    overdrive: {
+        reload: 5,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 0.8,
+        damage: 0.8,
+        pen: 0.8,
+        speed: 0.9,
+        maxSpeed: 0.9,
+        range: 0.9,
+        density: 1,
+        spray: 1.2,
+        resist: 1
+    },
+    commander: {
+        reload: 3,
+        recoil: 1,
+        shudder: 1,
+        size: 0.7,
+        health: 0.4,
+        damage: 0.7,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 0.1,
+        density: 0.5,
+        spray: 1,
+        resist: 1
+    },
+    protectorswarm: {
+        reload: 5,
+        recoil: 0.000001,
+        shudder: 1,
+        size: 1,
+        health: 100,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 0.5,
+        density: 5,
+        spray: 1,
+        resist: 10
+    },
+    battle: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1.25,
+        damage: 1.15,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 0.85,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1.1
+    },
+    carrier: {
+        reload: 1.5,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 0.8,
+        pen: 1,
+        speed: 1.3,
+        maxSpeed: 1.2,
+        range: 1.2,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    bees: {
+        reload: 1.3,
+        recoil: 1,
+        shudder: 1,
+        size: 1.4,
+        health: 1,
+        damage: 1.5,
+        pen: 0.5,
+        speed: 3,
+        maxSpeed: 1.5,
+        range: 1,
+        density: 0.25,
+        spray: 1,
+        resist: 1
+    },
+    sunchip: {
+        reload: 5,
+        recoil: 1,
+        shudder: 1,
+        size: 1.4,
+        health: 0.5,
+        damage: 0.4,
+        pen: 0.6,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 0.8,
+        spray: 1,
+        resist: 1
+    },
+    maleficitor: {
+        reload: 0.5,
+        recoil: 1,
+        shudder: 1,
+        size: 1.05,
+        health: 1.15,
+        damage: 1.15,
+        pen: 1.15,
+        speed: 0.8,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1.15,
+        spray: 1,
+        resist: 1
+    },
+    summoner: {
+        reload: 0.3,
+        recoil: 1,
+        shudder: 1,
+        size: 1.125,
+        health: 0.4,
+        damage: 0.345,
+        pen: 0.4,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 0.8,
+        spray: 1,
+        resist: 1
+    },
+    minion: {
+        reload: 1,
+        recoil: 1,
+        shudder: 2,
+        size: 1,
+        health: 0.4,
+        damage: 0.4,
+        pen: 1.2,
+        speed: 1,
+        maxSpeed: 1,
+        range: 0.75,
+        density: 1,
+        spray: 2,
+        resist: 1
+    },
+    babyfactory: {
+        reload: 1.5,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1.35,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    mehdrone: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1.35,
+        health: 1.75,
+        damage: 1,
+        pen: 1,
+        speed: 1.125,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    bigdrone: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1.8,
+        health: 2.5,
+        damage: 1,
+        pen: 1,
+        speed: 1.25,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    mothership: {
+        reload: 1.25,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1.1,
+        speed: 0.775,
+        maxSpeed: 0.8,
+        range: 15,
+        density: 1,
+        spray: 1,
+        resist: 1.15
+    },
+    pound: {
+        reload: 2,
+        recoil: 1.6,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 2,
+        pen: 1,
+        speed: 0.85,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1.5,
+        spray: 1,
+        resist: 1.15
+    },
+    destroy: {
+        reload: 2.2,
+        recoil: 1.8,
+        shudder: 0.5,
+        size: 1,
+        health: 2,
+        damage: 2,
+        pen: 1.2,
+        speed: 0.65,
+        maxSpeed: 0.5,
+        range: 1,
+        density: 2,
+        spray: 1,
+        resist: 3
+    },
+    anni: {
+        reload: 0.8,
+        recoil: 1.25,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    hive: {
+        reload: 1.5,
+        recoil: 0.8,
+        shudder: 1,
+        size: 0.8,
+        health: 0.7,
+        damage: 0.3,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 0.6,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    arty: {
+        reload: 1.2,
+        recoil: 0.7,
+        shudder: 1,
+        size: 0.9,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1.15,
+        maxSpeed: 1.1,
+        range: 1,
+        density: 1.5,
+        spray: 1,
+        resist: 1
+    },
+    mortar: {
+        reload: 1.2,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1.1,
+        damage: 1,
+        pen: 1,
+        speed: 0.8,
+        maxSpeed: 0.8,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    launcher: {
+        reload: 1.5,
+        recoil: 1.5,
+        shudder: 0.1,
+        size: 0.72,
+        health: 1.05,
+        damage: 0.925,
+        pen: 1,
+        speed: 0.9,
+        maxSpeed: 1.2,
+        range: 1.1,
+        density: 1,
+        spray: 1,
+        resist: 1.5
+    },
+    skim: {
+        reload: 1,
+        recoil: 0.8,
+        shudder: 0.8,
+        size: 0.9,
+        health: 1.35,
+        damage: 0.8,
+        pen: 2,
+        speed: 0.3,
+        maxSpeed: 0.3,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1.1
+    },
+    snake: {
+        reload: 0.4,
+        recoil: 1,
+        shudder: 4,
+        size: 1,
+        health: 1.5,
+        damage: 0.9,
+        pen: 1.2,
+        speed: 0.2,
+        maxSpeed: 0.35,
+        range: 1,
+        density: 3,
+        spray: 6,
+        resist: 0.5
+    },
+    sidewind: {
+        reload: 1.5,
+        recoil: 2,
+        shudder: 1,
+        size: 1,
+        health: 1.5,
+        damage: 0.9,
+        pen: 1,
+        speed: 0.15,
+        maxSpeed: 0.5,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    snakeskin: {
+        reload: 0.6,
+        recoil: 1,
+        shudder: 2,
+        size: 1,
+        health: 0.5,
+        damage: 0.5,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 0.2,
+        range: 0.4,
+        density: 1,
+        spray: 5,
+        resist: 1
+    },
+    rocketeer: {
+        reload: 1.4,
+        recoil: 1,
+        shudder: 0.9,
+        size: 1.2,
+        health: 1.5,
+        damage: 1.4,
+        pen: 1.4,
+        speed: 0.3,
+        maxSpeed: 1,
+        range: 1.2,
+        density: 1,
+        spray: 1,
+        resist: 1.4
+    },
+    shotgun: {
+        reload: 8,
+        recoil: 0.4,
+        shudder: 1,
+        size: 1.5,
+        health: 1,
+        damage: 0.4,
+        pen: 0.8,
+        speed: 1.8,
+        maxSpeed: 0.6,
+        range: 1,
+        density: 1.2,
+        spray: 1.2,
+        resist: 1
+    },
+    acc: {
+        reload: 1,
+        recoil: 1,
+        shudder: 0.1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    destroyerDominator: {
+        reload: 6.5,
+        recoil: 0,
+        shudder: 1,
+        size: 0.975,
+        health: 6,
+        damage: 6,
+        pen: 6,
+        speed: 0.575,
+        maxSpeed: 0.475,
+        range: 1,
+        density: 1,
+        spray: 0.5,
+        resist: 1
+    },
+    closer: {
+        reload: 1.25,
+        recoil: 0.25,
+        shudder: 1,
+        size: 1,
+        health: 1000,
+        damage: 1000,
+        pen: 1000,
+        speed: 2.5,
+        maxSpeed: 2.25,
+        range: 1.4,
+        density: 4,
+        spray: 0.25,
+        resist: 1
+    },
+    block: {
+        reload: 1.1,
+        recoil: 2,
+        shudder: 0.1,
+        size: 1.5,
+        health: 2,
+        damage: 1,
+        pen: 1.25,
+        speed: 1.5,
+        maxSpeed: 2.5,
+        range: 1.25,
+        density: 1,
+        spray: 1,
+        resist: 1.25
+    },
+    construct: {
+        reload: 1.3,
+        recoil: 1,
+        shudder: 1,
+        size: 0.9,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1.1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    boomerang: {
+        reload: 0.8,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 0.5,
+        damage: 0.5,
+        pen: 1,
+        speed: 0.75,
+        maxSpeed: 0.75,
+        range: 1.333,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    nest_keeper: {
+        reload: 3,
+        recoil: 1,
+        shudder: 1,
+        size: 0.75,
+        health: 1.05,
+        damage: 1.05,
+        pen: 1.1,
+        speed: 0.5,
+        maxSpeed: 0.5,
+        range: 0.5,
+        density: 1.1,
+        spray: 1,
+        resist: 1
+    },
+    hexatrap: {
+        reload: 1.3,
+        recoil: 1,
+        shudder: 1.25,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 0.8,
+        maxSpeed: 1,
+        range: 0.5,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    megatrap: {
+        reload: 2,
+        recoil: 1.5,
+        shudder: 0.75,
+        size: 1.8,
+        health: 1.52,
+        damage: 1.52,
+        pen: 1.52,
+        speed: 0.9,
+        maxSpeed: 0.8,
+        range: 1.4,
+        density: 1,
+        spray: 1,
+        resist: 2.5
+    },
+    trapperDominator: {
+        reload: 1.26,
+        recoil: 0,
+        shudder: 0.25,
+        size: 1,
+        health: 1.25,
+        damage: 1.45,
+        pen: 1.6,
+        speed: 0.5,
+        maxSpeed: 2,
+        range: 0.7,
+        density: 1,
+        spray: 0.5,
+        resist: 1
+    },
+    healer: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: -1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    lancer: {
+        reload: 0.4,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 0.1,
+        maxSpeed: 0.1,
+        range: 0.1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    celeslower: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 0.5,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    tonsmorrecoil: {
+        reload: 1,
+        recoil: 4,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    lotsmorrecoil: {
+        reload: 1,
+        recoil: 1.8,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    muchmorerecoil: {
+        reload: 1,
+        recoil: 1.35,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    morerecoil: {
+        reload: 1,
+        recoil: 1.15,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    halfrecoil: {
+        reload: 1,
+        recoil: 0.5,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    halfreload: {
+        reload: 2,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    lessreload: {
+        reload: 1.5,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    one_third_reload: {
+        reload: 1.333,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    morereload: {
+        reload: 0.75,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    doublereload: {
+        reload: 0.5,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    fast: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1.2,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    veryfast: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 2.5,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    morespeed: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1.3,
+        maxSpeed: 1.3,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    bitlessspeed: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 0.93,
+        maxSpeed: 0.93,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    slow: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 0.7,
+        maxSpeed: 0.7,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    halfspeed: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 0.5,
+        maxSpeed: 0.5,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    lowpower: {
+        reload: 1,
+        recoil: 1,
+        shudder: 2,
+        size: 1,
+        health: 0.5,
+        damage: 0.5,
+        pen: 0.7,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 0.5,
+        resist: 0.7
+    },
+    notdense: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 0.1,
+        spray: 1,
+        resist: 1
+    },
+    halfrange: {
+        reload: 1,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 0.5,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
+    aura: {
+        reload: 0.001,
+        recoil: 0.001,
+        shudder: 0.001,
+        size: 6,
+        health: 1,
+        damage: 3,
+        pen: 1,
+        speed: 0.001,
+        maxSpeed: 0.001,
+        range: 1,
+        density: 1,
+        spray: 0.001,
+        resist: 1
+    },
+    noRandom: {
+        reload: 1,
+        recoil: 1,
+        shudder: 0.00001,
+        size: 1,
+        health: 1,
+        damage: 1,
+        pen: 1,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 0.00001,
+        resist: 1
+    }
+}
 
 // SKILL DEFINITIONS
 const dfltskl = 9;
@@ -275,31 +1871,31 @@ function dereference(type) {
 // CANNON FUNCTIONS
 function makeGuard(type, name = -1) {
     let output = dereference(type),
-    cannons = [{
-        POSITION: [13, 8, 1, 0, 0, 180, 0],
-    }, {
-        POSITION: [4, 8, 1.7, 13, 0, 180, 0],
-        PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.trap]),
-            TYPE: exports.trap,
-            STAT_CALCULATOR: gunCalcNames.trap,
-        },
-    }];
+        cannons = [{
+            POSITION: [13, 8, 1, 0, 0, 180, 0],
+        }, {
+            POSITION: [4, 8, 1.7, 13, 0, 180, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap]),
+                TYPE: exports.trap,
+                STAT_CALCULATOR: gunCalcNames.trap,
+            },
+        }];
     output.GUNS = type.GUNS == null ? cannons : type.GUNS.concat(cannons);
     output.LABEL = name == -1 ? type.LABEL + " Guard" : name;
     return output;
 }
 function makeConq(type, name = -1) {
     let output = dereference(type),
-    cannons = [{
-        POSITION: [18, 14, 1, 0, 0, 180, 0],
-    }, {
-        POSITION: [2, 14, 1.1, 18, 0, 180, 0],
-        PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.trap, g.block]),
-            TYPE: exports.setTrap,
-        },
-    }];
+        cannons = [{
+            POSITION: [18, 14, 1, 0, 0, 180, 0],
+        }, {
+            POSITION: [2, 14, 1.1, 18, 0, 180, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.block]),
+                TYPE: exports.setTrap,
+            },
+        }];
     output.GUNS = type.GUNS == null ? cannons : type.GUNS.concat(cannons);
     output.LABEL = name == -1 ? type.LABEL + " Conqueror" : name;
     return output;
@@ -1927,36 +3523,37 @@ exports.megaMinion = {
     ],
 };
 exports.tinyMinion = {
-        PARENT: [exports.minion],
-        LABEL: "Tiny Minion",
-        ACCEPTS_SCORE: false,
-        SHAPE: 0,
-        MOTION_TYPE: 'swarm',
-        CRAVES_ATTENTION: true,
-        BODY: {
-                ACCELERATION: 3,
-                PENETRATION: 1.5,
-                HEALTH: 0.35 * 0.5,
-                DAMAGE: 2.25,
-                RESIST: 1.6,
-                RANGE: 300,
-                DENSITY: 12,
-                PUSHABILITY: 0.5,
-                FOV: 1.5,
+    PARENT: [exports.minion],
+    LABEL: "Tiny Minion",
+    ACCEPTS_SCORE: false,
+    SHAPE: 0,
+    MOTION_TYPE: 'swarm',
+    CRAVES_ATTENTION: true,
+    BODY: {
+        ACCELERATION: 3,
+        PENETRATION: 1.5,
+        HEALTH: 0.35 * 0.5,
+        DAMAGE: 2.25,
+        RESIST: 1.6,
+        RANGE: 300,
+        DENSITY: 12,
+        PUSHABILITY: 0.5,
+        FOV: 1.5,
+    },
+    AI: {
+        BLIND: true,
+    },
+    GUNS: [{ /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+        POSITION: [17, 9, 1, 0, 0, 0, 0,],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.minion, g.lowpower]),
+            WAIT_TO_CYCLE: true,
+            TYPE: exports.bullet,
         },
-        AI: {
-                BLIND: true,
-        },
-        GUNS: [ { /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-                POSITION: [    17,         9,            1,            0,            0,            0,            0,     ], 
-                PROPERTIES: {
-                        SHOOT_SETTINGS: combineStats([g.basic, g.minion, g.lowpower]),
-                        WAIT_TO_CYCLE: true,
-                        TYPE: exports.bullet,
-                }, }, 
-        ],
-        DIE_AT_RANGE: true,
-        BUFF_VS_FOOD: true,
+    },
+    ],
+    DIE_AT_RANGE: true,
+    BUFF_VS_FOOD: true,
 };
 
 // TRAPS
@@ -3372,17 +4969,17 @@ exports.healAura = {
         REGEN: 100000,
         HEALTH: 1000000,
         DENSITY: 0,
-        DAMAGE: 0.25/3,
+        DAMAGE: 0.25 / 3,
         SPEED: 0,
         PUSHABILITY: 0,
     },
 };
 exports.auraSymbol = {
     PARENT: [exports.genericTank],
-    CONTROLLERS: [["spin", {speed: -0.04}]],
+    CONTROLLERS: [["spin", { speed: -0.04 }]],
     INDEPENDENT: true,
     COLOR: 0,
-    SHAPE: [[-0.598,-0.7796],[-0.3817,-0.9053],[0.9688,-0.1275],[0.97,0.125],[-0.3732,0.9116],[-0.593,0.785]]
+    SHAPE: [[-0.598, -0.7796], [-0.3817, -0.9053], [0.9688, -0.1275], [0.97, 0.125], [-0.3732, 0.9116], [-0.593, 0.785]]
 };
 
 function addAura(damageFactor = 1, sizeFactor = 1, auraColor) {
@@ -3401,17 +4998,17 @@ function addAura(damageFactor = 1, sizeFactor = 1, auraColor) {
                     POSITION: [0, 20, 1, 0, 0, 0, 0,],
                     PROPERTIES: {
                         SHOOT_SETTINGS: combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
-                        TYPE: [exports[auraType], {COLOR: auraColor}],
+                        TYPE: [exports[auraType], { COLOR: auraColor }],
                         MAX_CHILDREN: 1,
                         AUTOFIRE: true,
                         SYNCS_SKILLS: true,
-                    }, 
-                }, 
+                    },
+                },
             ],
             TURRETS: [
                 {
                     POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
-                    TYPE: [exports[symbolType], {COLOR: auraColor}],
+                    TYPE: [exports[symbolType], { COLOR: auraColor }],
                 },
             ]
         };
@@ -6835,56 +8432,56 @@ exports.vulcan = {
         {
             POSITION: [28, 2, 1, 0, 2.25, 0, 7 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, -2.25, 0, 5 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, 0, 0, 6 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, 4, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, -4, 0, 4 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, 2.25, 0, 1 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, -2.25, 0, 3 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
         {
             POSITION: [28, 2, 1, 0, 0, 0, 2 / 8],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([ g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.twin, g.slow, g.flank, g.lotsmorrecoil]),
                 TYPE: exports.bullet,
             },
         },
@@ -7022,31 +8619,31 @@ exports.phoenix = {
     ],
 };
 exports.atomizer = {
-  PARENT: [exports.genericTank],
-  LABEL: "Atomizer",
-  GUNS: [
-    {
-      POSITION: [5, 7.5, 1.3, 18.5, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([
-          g.basic,
-          g.gunner,
-          g.lowpower,
-          g.mach,
-          g.morerecoil,
-          g.atomizer,
-        ]),
-        TYPE: exports.bullet,
-      },
-    },
-    {
-      POSITION: [12, 10, 1.4, 8, 0, 0, 0],
-      PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
-        TYPE: exports.bullet,
-      },
-    },
-  ],
+    PARENT: [exports.genericTank],
+    LABEL: "Atomizer",
+    GUNS: [
+        {
+            POSITION: [5, 7.5, 1.3, 18.5, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.gunner,
+                    g.lowpower,
+                    g.mach,
+                    g.morerecoil,
+                    g.atomizer,
+                ]),
+                TYPE: exports.bullet,
+            },
+        },
+        {
+            POSITION: [12, 10, 1.4, 8, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
+                TYPE: exports.bullet,
+            },
+        },
+    ],
 };
 exports.focal = {
     PARENT: [exports.genericTank],
@@ -11981,46 +13578,46 @@ exports.vanquisher = {
             TYPE: exports.bullet
         }
 
-    //builder
-    },{
+        //builder
+    }, {
         POSITION: [18, 12, 1, 0, 0, 0, 0],
-    },{
+    }, {
         POSITION: [2, 12, 1.1, 18, 0, 0, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.trap, g.block]),
             TYPE: exports.setTrap
         }
 
-    //launcher
-    },{
+        //launcher
+    }, {
         POSITION: [10, 9, 1, 9, 0, 90, 0],
-    },{
+    }, {
         POSITION: [17, 13, 1, 0, 0, 90, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.arty]), TYPE: exports.minimissile, STAT_CALCULATOR: gunCalcNames.sustained }
 
-    //shotgun
-    },{
+        //shotgun
+    }, {
         POSITION: [4, 3, 1, 11, -3, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
-    },{
+    }, {
         POSITION: [4, 3, 1, 11, 3, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
-    },{
+    }, {
         POSITION: [4, 4, 1, 13, 0, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
-    },{
+    }, {
         POSITION: [1, 4, 1, 12, -1, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
-    },{
+    }, {
         POSITION: [1, 4, 1, 11, 1, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
-    },{
+    }, {
         POSITION: [1, 3, 1, 13, -1, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
-    },{
+    }, {
         POSITION: [1, 3, 1, 13, 1, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.bullet }
-    },{
+    }, {
         POSITION: [1, 2, 1, 13, 2, 270, 0],
         PROPERTIES: { SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]), TYPE: exports.casing }
     }, {
@@ -12092,7 +13689,7 @@ exports.doubleTrapGuard = {
     GUNS: [
         {
             /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [20,         8,            1,            0,        -5.5,         0,            0],
+            POSITION: [20, 8, 1, 0, -5.5, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin]),
                 TYPE: exports.bullet,
@@ -12100,7 +13697,7 @@ exports.doubleTrapGuard = {
         },
         {
             /* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [20,         8,            1,            0,         5.5,         0,         0.5],
+            POSITION: [20, 8, 1, 0, 5.5, 0, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin]),
                 TYPE: exports.bullet,
@@ -12108,10 +13705,10 @@ exports.doubleTrapGuard = {
         },
         {
             /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [14,         7,            1,            0,         -6,         180,         0],
+            POSITION: [14, 7, 1, 0, -6, 180, 0],
         },
         {
-            POSITION: [4,            7,         1.5,        14,         -6,         180,         0],
+            POSITION: [4, 7, 1.5, 14, -6, 180, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.twin]),
                 TYPE: exports.trap,
@@ -12120,10 +13717,10 @@ exports.doubleTrapGuard = {
         },
         {
             /* LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [14,         7,            1,            0,            6,         180,        0.5],
+            POSITION: [14, 7, 1, 0, 6, 180, 0.5],
         },
         {
-            POSITION: [4,            7,         1.5,        14,            6,         180,        0.5],
+            POSITION: [4, 7, 1.5, 14, 6, 180, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.twin]),
                 TYPE: exports.trap,
@@ -12969,103 +14566,117 @@ exports.trapTurret = {
     ],
 };
 exports.shottrapTurret = {
-        PARENT: [exports.genericTank],
-        LABEL: 'Turret',
-        BODY: {
-                FOV: 0,
+    PARENT: [exports.genericTank],
+    LABEL: 'Turret',
+    BODY: {
+        FOV: 0,
+    },
+    INDEPENDENT: true,
+    CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'],
+    COLOR: 16,
+    AI: {
+        SKYNET: true,
+        FULL_VIEW: true,
+    },
+    GUNS: [{    /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+        POSITION: [4, 3, 1, 11, -3, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
         },
-        INDEPENDENT: true,
-        CONTROLLERS: ['nearestDifferentMaster', 'onlyAcceptInArc'], 
-        COLOR: 16,
-        AI: {
-                SKYNET: true,
-                FULL_VIEW: true,
+    }, {
+        POSITION: [4, 3, 1, 11, 3, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
         },
-        GUNS: [ {    /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-                POSITION: [    4,            3,            1,         11,         -3,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    4,            3,            1,         11,            3,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    4,            3,            1,         13,            0,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         11,            1,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         12,         -1,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         11,            1,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {                                
-                POSITION: [    1,            3,            1,         13,         -1,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         13,            1,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         13,            2,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         13,         -2,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         13,         -2,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         13,            2,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    1,            3,            1,         13,         -2,            0,            0,     ], 
-                        PROPERTIES: {
-                                AUTOFIRE: true,
-                                SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
-                                TYPE: exports.trap,
-                        }, }, {
-                POSITION: [    16,        14,            1,            0,            0,            0,            0,     ],
-                        }, {
-                POSITION: [     4,        14,         1.8,        16,            0,            0,            0,     ], 
-                        }, {
-             POSITION:    [    8,         16,        -1.1,        4,             0,            0,            0,     ], }
-        ],
+    }, {
+        POSITION: [4, 3, 1, 13, 0, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 11, 1, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 12, -1, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 11, 1, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, -1, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, 1, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, 2, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, -2, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, -2, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, 2, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [1, 3, 1, 13, -2, 0, 0,],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            SHOOT_SETTINGS: combineStats([g.trap, g.weak, g.lowpower, g.shotgun, g.acc, g.mach]),
+            TYPE: exports.trap,
+        },
+    }, {
+        POSITION: [16, 14, 1, 0, 0, 0, 0,],
+    }, {
+        POSITION: [4, 14, 1.8, 16, 0, 0, 0,],
+    }, {
+        POSITION: [8, 16, -1.1, 4, 0, 0, 0,],
+    }
+    ],
 };
 exports.barricadeTurret = {
     PARENT: [exports.genericTank],
@@ -13821,7 +15432,7 @@ exports.nestKeeper = {
 };
 exports.roguePalisade = (() => {
     let T = SHOOT_SETTINGS => ({
-        SHOOT_SETTINGS: combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ]),
+        SHOOT_SETTINGS: combineStats([g.factory, g.pound, g.halfreload, g.halfreload]),
         TYPE: exports.minion, STAT_CALCULATOR: gunCalcNames.drone, AUTOFIRE: true, MAX_CHILDREN: 1, SYNCS_SKILLS: true, WAIT_TO_CYCLE: true
     });
     return {
@@ -13840,12 +15451,12 @@ exports.roguePalisade = (() => {
             DAMAGE: 3 * base.DAMAGE,
         },
         GUNS: [
-            { POSITION: [4, 6, -1.6, 8, 0, 0, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
-            { POSITION: [4, 6, -1.6, 8, 0, 60, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
-            { POSITION: [4, 6, -1.6, 8, 0, 120, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 0, 0], PROPERTIES: T(combineStats([g.factory, g.pound, g.halfreload, g.halfreload])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 60, 0], PROPERTIES: T(combineStats([g.factory, g.pound, g.halfreload, g.halfreload])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 120, 0], PROPERTIES: T(combineStats([g.factory, g.pound, g.halfreload, g.halfreload])) },
             { POSITION: [4, 6, -1.6, 8, 0, 180, 0], PROPERTIES: T(combineStats([g.factory, g.pound])) }, //why is that?
-            { POSITION: [4, 6, -1.6, 8, 0, 240, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
-            { POSITION: [4, 6, -1.6, 8, 0, 300, 0], PROPERTIES: T(combineStats([ g.factory, g.pound, g.halfreload, g.halfreload ])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 240, 0], PROPERTIES: T(combineStats([g.factory, g.pound, g.halfreload, g.halfreload])) },
+            { POSITION: [4, 6, -1.6, 8, 0, 300, 0], PROPERTIES: T(combineStats([g.factory, g.pound, g.halfreload, g.halfreload])) },
         ],
         TURRETS: [
             { POSITION: [5, 10, 0, 30, 110, 0], TYPE: exports.trapTurret },
@@ -13864,7 +15475,7 @@ exports.rogueArmada = (() => {
     for (let i = 0; i < SHAPE; i++) {
         for (let j = 0; j < 12; j++) {
             GUNS.push({
-                POSITION: [ 4, 0.3 * Math.floor(j / 4), 1, 0, (j + 3) % SHAPE - 3, (i + 0.5) * (360 / SHAPE), 0 ],
+                POSITION: [4, 0.3 * Math.floor(j / 4), 1, 0, (j + 3) % SHAPE - 3, (i + 0.5) * (360 / SHAPE), 0],
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun]),
                     TYPE: j % SHAPE < 2 ? exports.bullet : exports.casing
@@ -13872,18 +15483,18 @@ exports.rogueArmada = (() => {
             });
         }
         GUNS.push({
-            POSITION: [ 9, 6  ,  1  , 4,  0, (i + 0.5) * (360 / SHAPE), 0 ],
+            POSITION: [9, 6, 1, 4, 0, (i + 0.5) * (360 / SHAPE), 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.fake]),
                 TYPE: exports.casing
             }
         }, {
-            POSITION: [ 8, 6  , -1.1, 4,  0, (i + 0.5) * (360 / SHAPE), 0 ]
+            POSITION: [8, 6, -1.1, 4, 0, (i + 0.5) * (360 / SHAPE), 0]
         });
     }
     for (let i = 0; i < SHAPE; i++) {
         TURRETS.push({
-            POSITION: [ 5, 10, 0, i * 360 / SHAPE, 110, 0],
+            POSITION: [5, 10, 0, i * 360 / SHAPE, 110, 0],
             TYPE: exports.shottrapTurret
         });
     }
@@ -16375,7 +17986,7 @@ exports.mummifier = {
             SYNCS_SKILLS: true,
             STAT_CALCULATOR: gunCalcNames.necro
         }
-    },{
+    }, {
         POSITION: [5.5, 13, 1.1, 8, 0, 270, 0],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
@@ -16400,26 +18011,26 @@ exports.colorMan = {
     TURRETS: [{
         POSITION: [20, -20, -20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 20 }]
-    },{
-        POSITION: [20,  0 , -20, 0, 0, 1],
+    }, {
+        POSITION: [20, 0, -20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 21 }]
-    },{
-        POSITION: [20,  20, -20, 0, 0, 1],
+    }, {
+        POSITION: [20, 20, -20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 22 }]
-    },{
-        POSITION: [20, -20,  0 , 0, 0, 1],
+    }, {
+        POSITION: [20, -20, 0, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 23 }]
-    },{
-        POSITION: [20,  20,  0 , 0, 0, 1],
+    }, {
+        POSITION: [20, 20, 0, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 29 }]
-    },{
-        POSITION: [20,  20,  20, 0, 0, 1],
+    }, {
+        POSITION: [20, 20, 20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 24 }]
-    },{
-        POSITION: [20,  0 ,  20, 0, 0, 1],
+    }, {
+        POSITION: [20, 0, 20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 37 }]
-    },{
-        POSITION: [20,  20,  20, 0, 0, 1],
+    }, {
+        POSITION: [20, 20, 20, 0, 0, 1],
         TYPE: [exports.onlySquare, { COLOR: 38 }]
     }]
 };
@@ -16481,8 +18092,8 @@ exports.miscTestHelper = {
     ],
     TURRETS: [
         {
-          POSITION: [20, 0, 20, 0, 0, 1],
-          TYPE: exports.miscTestHelper2,
+            POSITION: [20, 0, 20, 0, 0, 1],
+            TYPE: exports.miscTestHelper2,
         }
     ]
 }
@@ -16517,9 +18128,9 @@ exports.rainbowclone = {
     LEVEL: 45,
     GUNS: [],
 };
-for(let i = 0; i < 12; i++) {
+for (let i = 0; i < 12; i++) {
     let delay;
-    switch (i%4) {
+    switch (i % 4) {
         case 0:
             delay = 0;
             break;
@@ -16535,7 +18146,7 @@ for(let i = 0; i < 12; i++) {
     }
     exports.rainbowclone.GUNS.push(
         {
-            POSITION: [15, 3.5, 1, 0, 0, 30*i, delay],
+            POSITION: [15, 3.5, 1, 0, 0, 30 * i, delay],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
@@ -16546,7 +18157,7 @@ for(let i = 0; i < 12; i++) {
                 TYPE: exports.bullet,
                 COLOR: {
                     BASE: 0, // ID
-                    HUE_SHIFT: 20*i, // Additive, degrees
+                    HUE_SHIFT: 20 * i, // Additive, degrees
                     SATURATION_SHIFT: 1, // Multiplicative
                     BRIGHTNESS_SHIFT: 0, // Additive, ranges from -100 to 100
                     ALLOW_BRIGHTNESS_INVERT: true, // Toggles offset invert if exceeding normal color bounds
@@ -16695,7 +18306,7 @@ exports.armyOfOne = {
                 SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.destroy, g.destroy, g.destroy, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.doublereload, g.doublereload, g.doublereload, g.doublereload]),
                 TYPE: exports.armyOfOneBullet,
             },
-        },{
+        }, {
             POSITION: [21, 11, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.destroy, g.destroy, g.destroy, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.sniper, g.doublereload, g.doublereload, g.doublereload, g.doublereload, g.fake]),
@@ -16708,7 +18319,7 @@ exports.godbasic = {
     PARENT: [exports.genericTank],
     LABEL: "God Basic",
     SKILL_CAP: [31, 31, 31, 31, 31, 31, 31, 31, 31, 31],
-    SKILL: [ 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 ],
+    SKILL: [31, 31, 31, 31, 31, 31, 31, 31, 31, 31],
     BODY: {
         ACCELERATION: base.ACCEL * 1,
         SPEED: base.SPEED * 1,
@@ -16788,86 +18399,86 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team101);
 
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
-    exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone, exports.auraBasic];
-        exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
-            exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
-                exports.tankChangesMenu.UPGRADES_TIER_0 = [];
-    exports.eggGenerator.UPGRADES_TIER_0 = [exports.basic, exports.squareGenerator, exports.crasherGenerator];
-        exports.crasherGenerator.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.alphaPentagonGenerator, exports.eggGenerator];
-    exports.bossesMenu.UPGRADES_TIER_0 = [exports.sentries, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.ironclad];
-        exports.sentries.UPGRADES_TIER_0 = [exports.sentrySwarm, exports.sentryGun, exports.sentryTrap, exports.shinySentrySwarm, exports.shinySentryGun, exports.shinySentryTrap];
-    exports.retrograde.UPGRADES_TIER_0 = [exports.diepTanks, exports.digDig, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.nostalgiaMenu, exports.scrappedMenu, exports.miscRetrograde];
-        exports.diepTanks.UPGRADES_TIER_0 = [exports.diep2Tanks, exports.diepTank];
-            exports.diep2Tanks.UPGRADES_TIER_0 = [exports.blaster, exports.gatlingGun, exports.machineFlank, exports.retroRifle, exports.buttbuttin, exports.blower, exports.quadTwin, exports.tornado, exports.subverter, exports.battery, exports.deathStar, exports.bonker, exports.protector, exports.doubleTrapGuard];
-                exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
-                exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
-                exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
-                exports.retroRifle.UPGRADES_TIER_3 = [exports.sniperRifle, exports.rifleGuard, exports.spreadRifle];
-        exports.celestialBosses.UPGRADES_TIER_0 = [exports.paladin, exports.freyja, exports.zaphkiel, exports.nyx, exports.theia, exports.alviss, exports.tyr];
-        exports.eliteBosses.UPGRADES_TIER_0 = [exports.eliteDestroyer, exports.eliteGunner, exports.eliteSprayer, exports.eliteBattleship, exports.eliteSpawner];
-        exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.rogueArmada, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
-        exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
-        exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
-            exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.vulture];
-                exports.productionist.UPGRADES_TIER_0 = [exports.bismarck];
-        exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
+exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
+exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone, exports.auraBasic];
+exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
+exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
+exports.tankChangesMenu.UPGRADES_TIER_0 = [];
+exports.eggGenerator.UPGRADES_TIER_0 = [exports.basic, exports.squareGenerator, exports.crasherGenerator];
+exports.crasherGenerator.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.alphaPentagonGenerator, exports.eggGenerator];
+exports.bossesMenu.UPGRADES_TIER_0 = [exports.sentries, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.ironclad];
+exports.sentries.UPGRADES_TIER_0 = [exports.sentrySwarm, exports.sentryGun, exports.sentryTrap, exports.shinySentrySwarm, exports.shinySentryGun, exports.shinySentryTrap];
+exports.retrograde.UPGRADES_TIER_0 = [exports.diepTanks, exports.digDig, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.nostalgiaMenu, exports.scrappedMenu, exports.miscRetrograde];
+exports.diepTanks.UPGRADES_TIER_0 = [exports.diep2Tanks, exports.diepTank];
+exports.diep2Tanks.UPGRADES_TIER_0 = [exports.blaster, exports.gatlingGun, exports.machineFlank, exports.retroRifle, exports.buttbuttin, exports.blower, exports.quadTwin, exports.tornado, exports.subverter, exports.battery, exports.deathStar, exports.bonker, exports.protector, exports.doubleTrapGuard];
+exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
+exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
+exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
+exports.retroRifle.UPGRADES_TIER_3 = [exports.sniperRifle, exports.rifleGuard, exports.spreadRifle];
+exports.celestialBosses.UPGRADES_TIER_0 = [exports.paladin, exports.freyja, exports.zaphkiel, exports.nyx, exports.theia, exports.alviss, exports.tyr];
+exports.eliteBosses.UPGRADES_TIER_0 = [exports.eliteDestroyer, exports.eliteGunner, exports.eliteSprayer, exports.eliteBattleship, exports.eliteSpawner];
+exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.rogueArmada, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
+exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
+exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
+exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.vulture];
+exports.productionist.UPGRADES_TIER_0 = [exports.bismarck];
+exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
 exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser];
 exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDominator, exports.gunnerDominator, exports.trapperDominator];
 
 // TANK UPGRADE PATHS
-        exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
-        c.SPECIAL_BOSS_SPAWNS
-        ? exports.basic.UPGRADES_TIER_2 = [exports.healer]
-        : exports.basic.UPGRADES_TIER_2 = [exports.smasher];
-                exports.basic.UPGRADES_TIER_3 = [exports.single];
-                exports.healer.UPGRADES_TIER_3 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic];
-                exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine];
+exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
+c.SPECIAL_BOSS_SPAWNS
+    ? exports.basic.UPGRADES_TIER_2 = [exports.healer]
+    : exports.basic.UPGRADES_TIER_2 = [exports.smasher];
+exports.basic.UPGRADES_TIER_3 = [exports.single];
+exports.healer.UPGRADES_TIER_3 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic];
+exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine];
 
-        exports.twin.UPGRADES_TIER_2 = [exports.doubleTwin, exports.tripleShot, exports.gunner, exports.hexaTank];
-                exports.twin.UPGRADES_TIER_3 = [exports.dual, exports.bulwark, exports.musket];
-                exports.doubleTwin.UPGRADES_TIER_3 = [exports.tripleTwin, exports.hewnDouble, exports.autoDouble, exports.bentDouble];
-                exports.tripleShot.UPGRADES_TIER_3 = [exports.pentaShot, exports.spreadshot, exports.bentHybrid, exports.bentDouble, exports.triplet];
+exports.twin.UPGRADES_TIER_2 = [exports.doubleTwin, exports.tripleShot, exports.gunner, exports.hexaTank];
+exports.twin.UPGRADES_TIER_3 = [exports.dual, exports.bulwark, exports.musket];
+exports.doubleTwin.UPGRADES_TIER_3 = [exports.tripleTwin, exports.hewnDouble, exports.autoDouble, exports.bentDouble];
+exports.tripleShot.UPGRADES_TIER_3 = [exports.pentaShot, exports.spreadshot, exports.bentHybrid, exports.bentDouble, exports.triplet];
 
-        exports.sniper.UPGRADES_TIER_2 = [exports.assassin, exports.hunter, exports.minigun, exports.rifle];
-                exports.sniper.UPGRADES_TIER_3 = [exports.bushwhacker];
-                exports.assassin.UPGRADES_TIER_3 = [exports.ranger, exports.falcon, exports.stalker, exports.autoAssassin];
-                exports.hunter.UPGRADES_TIER_3 = [exports.predator, exports.xHunter, exports.poacher, exports.ordnance, exports.dual];
-                exports.rifle.UPGRADES_TIER_3 = [exports.musket, exports.crossbow, exports.armsman];
+exports.sniper.UPGRADES_TIER_2 = [exports.assassin, exports.hunter, exports.minigun, exports.rifle];
+exports.sniper.UPGRADES_TIER_3 = [exports.bushwhacker];
+exports.assassin.UPGRADES_TIER_3 = [exports.ranger, exports.falcon, exports.stalker, exports.autoAssassin];
+exports.hunter.UPGRADES_TIER_3 = [exports.predator, exports.xHunter, exports.poacher, exports.ordnance, exports.dual];
+exports.rifle.UPGRADES_TIER_3 = [exports.musket, exports.crossbow, exports.armsman];
 
-        exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer];
-                exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade, exports.vulture];
-                exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner];
-                exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.atomizer, exports.focal];
+exports.machineGun.UPGRADES_TIER_2 = [exports.artillery, exports.minigun, exports.gunner, exports.sprayer];
+exports.minigun.UPGRADES_TIER_3 = [exports.streamliner, exports.nailgun, exports.cropDuster, exports.barricade, exports.vulture];
+exports.gunner.UPGRADES_TIER_3 = [exports.autoGunner, exports.nailgun, exports.auto4, exports.machineGunner, exports.gunnerTrapper, exports.cyclone, exports.overgunner];
+exports.sprayer.UPGRADES_TIER_3 = [exports.redistributor, exports.phoenix, exports.atomizer, exports.focal];
 
-        exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
-                exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
-                exports.hexaTank.UPGRADES_TIER_3 = [exports.octoTank, exports.cyclone, exports.hexaTrapper];
-                exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.phoenix];
-                exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee];
+exports.flankGuard.UPGRADES_TIER_2 = [exports.hexaTank, exports.triAngle, exports.auto3, exports.trapGuard, exports.triTrapper];
+exports.flankGuard.UPGRADES_TIER_3 = [exports.tripleTwin];
+exports.hexaTank.UPGRADES_TIER_3 = [exports.octoTank, exports.cyclone, exports.hexaTrapper];
+exports.triAngle.UPGRADES_TIER_3 = [exports.fighter, exports.booster, exports.falcon, exports.bomber, exports.autoTriAngle, exports.surfer, exports.eagle, exports.phoenix];
+exports.auto3.UPGRADES_TIER_3 = [exports.auto5, exports.mega3, exports.auto4, exports.banshee];
 
-        c.SPECIAL_BOSS_SPAWNS
-        ? exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.spawner]
-        : exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner];
-                exports.director.UPGRADES_TIER_3 = [exports.manager, exports.bigCheese];
-                exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrapper, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander];
-                exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander];
-                exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor, exports.infestor];
-                exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner];
+c.SPECIAL_BOSS_SPAWNS
+    ? exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.spawner]
+    : exports.director.UPGRADES_TIER_2 = [exports.overseer, exports.cruiser, exports.underseer, exports.spawner];
+exports.director.UPGRADES_TIER_3 = [exports.manager, exports.bigCheese];
+exports.overseer.UPGRADES_TIER_3 = [exports.overlord, exports.overtrapper, exports.overgunner, exports.banshee, exports.autoOverseer, exports.overdrive, exports.commander];
+exports.cruiser.UPGRADES_TIER_3 = [exports.carrier, exports.battleship, exports.fortress, exports.autoCruiser, exports.commander];
+exports.underseer.UPGRADES_TIER_3 = [exports.necromancer, exports.maleficitor, exports.infestor];
+exports.spawner.UPGRADES_TIER_3 = [exports.factory, exports.autoSpawner];
 
-        exports.pounder.UPGRADES_TIER_2 = [exports.destroyer, exports.builder, exports.artillery, exports.launcher];
-                exports.pounder.UPGRADES_TIER_3 = [exports.shotgun, exports.eagle];
-                exports.destroyer.UPGRADES_TIER_3 = [exports.conqueror, exports.annihilator, exports.hybrid, exports.constructor];
-                exports.artillery.UPGRADES_TIER_3 = [exports.mortar, exports.ordnance, exports.beekeeper, exports.fieldGun];
-                exports.launcher.UPGRADES_TIER_3 = [exports.skimmer, exports.twister, exports.swarmer, exports.sidewinder, exports.fieldGun];
+exports.pounder.UPGRADES_TIER_2 = [exports.destroyer, exports.builder, exports.artillery, exports.launcher];
+exports.pounder.UPGRADES_TIER_3 = [exports.shotgun, exports.eagle];
+exports.destroyer.UPGRADES_TIER_3 = [exports.conqueror, exports.annihilator, exports.hybrid, exports.constructor];
+exports.artillery.UPGRADES_TIER_3 = [exports.mortar, exports.ordnance, exports.beekeeper, exports.fieldGun];
+exports.launcher.UPGRADES_TIER_3 = [exports.skimmer, exports.twister, exports.swarmer, exports.sidewinder, exports.fieldGun];
 
-        exports.trapper.UPGRADES_TIER_2 = [exports.builder, exports.triTrapper, exports.trapGuard];
-                exports.trapper.UPGRADES_TIER_3 = [exports.barricade, exports.overtrapper];
-                exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror];
-                exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
-                exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
+exports.trapper.UPGRADES_TIER_2 = [exports.builder, exports.triTrapper, exports.trapGuard];
+exports.trapper.UPGRADES_TIER_3 = [exports.barricade, exports.overtrapper];
+exports.builder.UPGRADES_TIER_3 = [exports.constructor, exports.autoBuilder, exports.engineer, exports.boomer, exports.architect, exports.conqueror];
+exports.triTrapper.UPGRADES_TIER_3 = [exports.fortress, exports.hexaTrapper, exports.septaTrapper, exports.architect];
+exports.trapGuard.UPGRADES_TIER_3 = [exports.bushwhacker, exports.gunnerTrapper, exports.bomber, exports.conqueror, exports.bulwark];
 
 // To use the following branches, remove the /* and */ surrounding them.
 
