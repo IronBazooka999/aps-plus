@@ -656,15 +656,6 @@ class io_wanderAroundMap extends IO {
         }
     }
 }
-class io_teleportToMaster extends IO {
-    constructor(body) {
-        super(body);
-    }
-    think() {
-        this.body.x = this.body.source.x;
-        this.body.y = this.body.source.y;
-    }
-}
 
 let ioTypes = {
     //misc
@@ -693,7 +684,6 @@ let ioTypes = {
     hangOutNearMaster: io_hangOutNearMaster,
     fleeAtLowHealth: io_fleeAtLowHealth,
     wanderAroundMap: io_wanderAroundMap,
-    teleportToMaster: io_teleportToMaster,
 };
 
 module.exports = { ioTypes, IO };

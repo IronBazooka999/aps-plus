@@ -51,13 +51,7 @@ class Gun {
             if (info.PROPERTIES.TYPE != null) {
                 this.canShoot = true;
                 this.label = info.PROPERTIES.LABEL == null ? "" : info.PROPERTIES.LABEL;
-                if (Array.isArray(info.PROPERTIES.TYPE)) {
-                    // This is to be nicer about our definitions
-                    this.bulletTypes = info.PROPERTIES.TYPE;
-                    //this.natural = info.PROPERTIES.TYPE.BODY;
-                } else {
-                    this.bulletTypes = [info.PROPERTIES.TYPE];
-                }
+                this.bulletTypes = Array.isArray(info.PROPERTIES.TYPE) ? info.PROPERTIES.TYPE : [info.PROPERTIES.TYPE];
                 // Pre-load bullet definitions so we don't have to recalculate them every shot
                 let natural = {};
                 for (let type of this.bulletTypes) setNatural(natural, type);
@@ -1320,6 +1314,12 @@ class Entity extends EventEmitter {
                 this.firingArc = [ref.facing + bound.angle, bound.arc / 2];
                 this.accel.null();
                 this.blend = ref.blend;
+                break;
+            case "withMaster":
+                this.x = this.source.x;
+                this.y = this.source.y;
+                this.velocity.x = this.source.velocity.x;
+                this.velocity.y = this.source.velocity.y;
                 break;
         }
         this.accel.x += engine.x * this.control.power;
