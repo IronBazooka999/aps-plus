@@ -419,12 +419,14 @@ let gNoRandom = [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1];
 
 exports.miscTestHelper2 = {
     PARENT: ["genericTank"],
+    COLOR: -1,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
                 TYPE: "bullet",
+                COLOR: -1,
             },
         },
     ],
