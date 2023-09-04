@@ -68,10 +68,10 @@ class LagLogger {
         this.history = [];
     }
     set() {
-        this.startTime = new Date().getTime();
+        this.startTime = Date.now();
     }
     mark() {
-        this.endTime = new Date().getTime();
+        this.endTime = Date.now();
         this.totalTime = this.endTime - this.startTime;
         this.history.push({
             at: new Date(),
