@@ -16,33 +16,45 @@ let skcnv = {
 };
 
 // GUN DEFINITIONS
-exports.combineStats = function (arr) {
+exports.combineStats = function (array_of_objects) {
     try {
         // Build a blank array of the appropiate length
-        let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-        for (let component of arr) {
-            for (let i = 0; i < data.length; i++) {
-                data[i] = data[i] * component[i];
-            }
-        }
-        return {
-            reload: data[0],
-            recoil: data[1],
-            shudder: data[2],
-            size: data[3],
-            health: data[4],
-            damage: data[5],
-            pen: data[6],
-            speed: data[7],
-            maxSpeed: data[8],
-            range: data[9],
-            density: data[10],
-            spray: data[11],
-            resist: data[12],
+        let data = {
+            reload: 1,
+            recoil: 1,
+            shudder: 1,
+            size: 1,
+            health: 1,
+            damage: 1,
+            pen: 1,
+            speed: 1,
+            maxSpeed: 1,
+            range: 1,
+            density: 1,
+            spray: 1,
+            resist: 1
         };
+
+        for (let object = 0; object < array_of_objects.length; object++) {
+            let gStat = array_of_objects[object];
+            data.reload *= gStat.reload ?? 1;
+            data.recoil *= gStat.recoil ?? 1;
+            data.shudder *= gStat.shudder ?? 1;
+            data.size *= gStat.size ?? 1;
+            data.health *= gStat.health ?? 1;
+            data.damage *= gStat.damage ?? 1;
+            data.pen *= gStat.pen ?? 1;
+            data.speed *= gStat.speed ?? 1;
+            data.maxSpeed *= gStat.maxSpeed ?? 1;
+            data.range *= gStat.range ?? 1;
+            data.density *= gStat.density ?? 1;
+            data.spray *= gStat.spray ?? 1;
+            data.resist *= gStat.resist ?? 1;
+        }
+        return data;
     } catch (err) {
         console.log(err);
-        console.log(JSON.stringify(arr));
+        console.log(JSON.stringify(array_of_objects));
     }
 };
 exports.setBuild = (build) => {
