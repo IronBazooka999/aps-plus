@@ -70,7 +70,8 @@ module.exports = {
     NEST_FOOD_AMOUNT: 1.5,
     CRASHER_RATIO: 2,
 
-    // Gamemode related
+    // Gamemode related.
+    // Please change gamemode in 'server\modules\setup\config.js' instead
     TEAMS: 4,
     RANDOM_COLORS: false,
     SPECIAL_BOSS_SPAWNS: false,

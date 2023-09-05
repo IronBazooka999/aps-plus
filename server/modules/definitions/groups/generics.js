@@ -164,11 +164,6 @@ exports.developerBullet = {
     PARENT: ["bullet"],
     SHAPE: [[-1, -1], [1, -1], [2, 0], [1, 1], [-1, 1]],
 };
-exports.healerBullet = {
-    PARENT: ["bullet"],
-    HEALER: true,
-    HITS_OWN_TYPE: "normal",
-};
 exports.casing = {
     PARENT: ["bullet"],
     LABEL: "Shell",
@@ -236,6 +231,11 @@ exports.mendersymbol = {
     LABEL: "",
     SHAPE: 3,
 };
+exports.healerBullet = {
+    PARENT: ["bullet"],
+    HEALER: true,
+    HITS_OWN_TYPE: "normal",
+};
 exports.healerSymbol = {
     PARENT: ["genericEntity"],
     SHAPE: [[0.3, -0.3],[1,-0.3],[1,0.3],[0.3,0.3],[0.3,1],[-0.3,1],[-0.3,0.3],[-1,0.3],[-1,-0.3],[-0.3,-0.3],[-0.3,-1],[0.3,-1]],
@@ -243,12 +243,11 @@ exports.healerSymbol = {
     COLOR: 12,
 };
 
-exports.aura = {
-    LABEL: "Aura",
+exports.auraBase = {
     TYPE: "aura",
-    CONTROLLERS: ["teleportToMaster"],
     ACCEPTS_SCORE: false,
     FACING_TYPE: "smoothWithMotion",
+    MOTION_TYPE: "withMaster",
     CAN_GO_OUTSIDE_ROOM: true,
     HITS_OWN_TYPE: "never",
     DAMAGE_EFFECTS: false,
@@ -256,38 +255,30 @@ exports.aura = {
     ALPHA: 0.3,
     CLEAR_ON_MASTER_UPGRADE: true,
     CAN_GO_OUTSIDE_ROOM: true,
-    COLOR: 0,
     BODY: {
+        SHIELD: 1000000,
         REGEN: 100000,
         HEALTH: 1000000,
         DENSITY: 0,
-        DAMAGE: 0.25,
         SPEED: 0,
         PUSHABILITY: 0,
+    }
+};
+exports.aura = {
+    PARENT: ["auraBase"],
+    LABEL: "Aura",
+    COLOR: 0,
+    BODY: {
+        DAMAGE: 0.25,
     },
 };
 exports.healAura = {
+    PARENT: ["auraBase"],
     LABEL: "Heal Aura",
-    TYPE: "aura",
-    CONTROLLERS: ["teleportToMaster"],
-    ACCEPTS_SCORE: false,
-    FACING_TYPE: "smoothWithMotion",
-    CAN_GO_OUTSIDE_ROOM: true,
-    HITS_OWN_TYPE: "never",
-    DAMAGE_EFFECTS: false,
-    DIE_AT_RANGE: false,
-    ALPHA: 0.3,
-    CLEAR_ON_MASTER_UPGRADE: true,
-    CAN_GO_OUTSIDE_ROOM: true,
     HEALER: true,
     COLOR: 12,
     BODY: {
-        REGEN: 100000,
-        HEALTH: 1000000,
-        DENSITY: 0,
         DAMAGE: 0.25/3,
-        SPEED: 0,
-        PUSHABILITY: 0,
     },
 };
 exports.auraSymbol = {

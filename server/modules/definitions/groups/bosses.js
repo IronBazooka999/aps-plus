@@ -519,6 +519,38 @@ exports.oldEliteSprayer = {
 };
 
 // STRANGE BOSSES
+exports.waferbread = {
+    PARENT: ["sunchip"],
+    SHAPE: 0
+};
+exports.sorcerer = {
+    PARENT: ["miniboss"],
+    LABEL: "Sorcerer",
+    DANGER: 7,
+    SHAPE: 0,
+    COLOR: 6,
+    SIZE: 26,
+    MAX_CHILDREN: 50,
+    FACING_TYPE: "autospin",
+    VALUE: 2e5,
+    BODY: {
+        FOV: 0.5,
+        SPEED: 0.12 * base.SPEED,
+        HEALTH: 6 * base.HEALTH,
+        DAMAGE: 2 * base.DAMAGE,
+    },
+    GUNS: Array(2).fill().map((_, i) => ({
+        POSITION: [3.5, 8.65, 1.2, 8, 0, i * 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.mach, g.machgun, { size: 0.4, spray: 150, speed: 2, shudder: 1.75 }]),
+            TYPE: "waferbread",
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true,
+        },
+    }))
+};
 exports.summoner = {
     PARENT: ["miniboss"],
     LABEL: "Summoner",
@@ -535,52 +567,81 @@ exports.summoner = {
         HEALTH: 7 * base.HEALTH,
         DAMAGE: 2.6 * base.DAMAGE,
     },
-    GUNS: [
-        {
-            POSITION: [3.5, 8.65, 1.2, 8, 0, 90, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.summoner]),
-                TYPE: "sunchip",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.necro,
-                WAIT_TO_CYCLE: true,
-            },
+    GUNS: Array(4).fill().map((_, i) => ({
+        POSITION: [3.5, 8.65, 1.2, 8, 0, i * 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, { size: 0.8 }]),
+            TYPE: ["sunchip"],
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true,
         },
-        {
-            POSITION: [3.5, 8.65, 1.2, 8, 0, 270, 0.5],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.summoner]),
-                TYPE: "sunchip",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.necro,
-                WAIT_TO_CYCLE: true,
-            },
+    }))
+};
+exports.dorito = {
+    PARENT: ["sunchip"],
+    SHAPE: 3
+};
+exports.enchantress = {
+    PARENT: ["miniboss"],
+    LABEL: "Enchantress",
+    DANGER: 8,
+    SHAPE: 3.5,
+    COLOR: 2,
+    SIZE: 26,
+    MAX_CHILDREN: 28,
+    FACING_TYPE: "autospin",
+    VALUE: 4e5,
+    BODY: {
+        FOV: 0.5,
+        SPEED: 0.09 * base.SPEED,
+        HEALTH: 10 * base.HEALTH,
+        DAMAGE: 3 * base.DAMAGE,
+    },
+    GUNS: Array(3).fill().map((_, i) => ({
+        POSITION: [3.5, 8.65, 1.2, 8, 0, i * 120, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, { size: 0.9 }]),
+            TYPE: "dorito",
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true,
         },
-        {
-            POSITION: [3.5, 8.65, 1.2, 8, 0, 0, 0.25],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.summoner]),
-                TYPE: "sunchip",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.necro,
-                WAIT_TO_CYCLE: true,
-            },
+    }))
+};
+exports.demonchip = {
+    PARENT: ["sunchip"],
+    SHAPE: 5
+};
+exports.exorcistor = {
+    PARENT: ["miniboss"],
+    LABEL: "Exorcistor",
+    DANGER: 8,
+    SHAPE: 5.5,
+    COLOR: 14,
+    SIZE: 26,
+    MAX_CHILDREN: 20,
+    FACING_TYPE: "autospin",
+    VALUE: 5e5,
+    BODY: {
+        FOV: 0.5,
+        SPEED: 0.08 * base.SPEED,
+        HEALTH: 15 * base.HEALTH,
+        DAMAGE: 4 * base.DAMAGE,
+    },
+    GUNS: Array(5).fill().map((_, i) => ({
+        POSITION: [3.5, 8.65, 1.2, 8, 0, i * 72, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy]),
+            TYPE: "demonchip",
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true,
         },
-        {
-            POSITION: [3.5, 8.65, 1.2, 8, 0, 180, 0.75],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.summoner]),
-                TYPE: "sunchip",
-                AUTOFIRE: true,
-                SYNCS_SKILLS: true,
-                STAT_CALCULATOR: gunCalcNames.necro,
-                WAIT_TO_CYCLE: true,
-            },
-        },
-    ],
+    }))
 };
 exports.eliteSkimmer = {
     PARENT: ["elite"],

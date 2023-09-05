@@ -4927,12 +4927,11 @@ exports.doctorDrone = {
 
 // AURAS
 // Foundation credits: DogeisCut on Discord
-exports.aura = {
-    LABEL: "Aura",
+exports.auraBase = {
     TYPE: "aura",
-    CONTROLLERS: ["teleportToMaster"],
     ACCEPTS_SCORE: false,
     FACING_TYPE: "smoothWithMotion",
+    MOTION_TYPE: "withMaster",
     CAN_GO_OUTSIDE_ROOM: true,
     HITS_OWN_TYPE: "never",
     DAMAGE_EFFECTS: false,
@@ -4940,38 +4939,30 @@ exports.aura = {
     ALPHA: 0.3,
     CLEAR_ON_MASTER_UPGRADE: true,
     CAN_GO_OUTSIDE_ROOM: true,
-    COLOR: 0,
     BODY: {
+        SHIELD: 1000000,
         REGEN: 100000,
         HEALTH: 1000000,
         DENSITY: 0,
-        DAMAGE: 0.25,
         SPEED: 0,
         PUSHABILITY: 0,
+    }
+};
+exports.aura = {
+    PARENT: ["auraBase"],
+    LABEL: "Aura",
+    COLOR: 0,
+    BODY: {
+        DAMAGE: 0.25,
     },
 };
 exports.healAura = {
+    PARENT: ["auraBase"],
     LABEL: "Heal Aura",
-    TYPE: "aura",
-    CONTROLLERS: ["teleportToMaster"],
-    ACCEPTS_SCORE: false,
-    FACING_TYPE: "smoothWithMotion",
-    CAN_GO_OUTSIDE_ROOM: true,
-    HITS_OWN_TYPE: "never",
-    DAMAGE_EFFECTS: false,
-    DIE_AT_RANGE: false,
-    ALPHA: 0.3,
-    CLEAR_ON_MASTER_UPGRADE: true,
-    CAN_GO_OUTSIDE_ROOM: true,
     HEALER: true,
     COLOR: 12,
     BODY: {
-        REGEN: 100000,
-        HEALTH: 1000000,
-        DENSITY: 0,
-        DAMAGE: 0.25 / 3,
-        SPEED: 0,
-        PUSHABILITY: 0,
+        DAMAGE: 0.25/3,
     },
 };
 exports.auraSymbol = {
@@ -18081,12 +18072,17 @@ exports.miscTestHelper2 = {
 }
 exports.miscTestHelper = {
     PARENT: [exports.genericTank],
+    COLOR: {
+        BASE: -1,
+        BRIGHTNESS_SHIFT: 15,
+    },
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
                 TYPE: exports.bullet,
+                COLOR: -1,
             },
         },
     ],
@@ -18170,7 +18166,6 @@ for (let i = 0; i < 12; i++) {
 exports.auraBasic = {
     PARENT: [exports.genericTank],
     LABEL: "Aura Basic",
-    LEVEL: 45,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
@@ -18183,10 +18178,38 @@ exports.auraBasic = {
     TURRETS: [
         {
             POSITION: [14, 0, 0, 0, 0, 1],
-            TYPE: addAura(-1, 1),
+            TYPE: addAura(1, 1),
         }
     ]
-}
+};
+exports.auraHealer = {
+    PARENT: [exports.genericTank],
+    LABEL: "Aura Healer",
+    TURRETS: [
+        {
+            /** SIZE         X             Y         ANGLE        ARC */
+            POSITION: [13, 0, 0, 0, 360, 1],
+            TYPE: exports.healerSymbol,
+        },
+        {
+            POSITION: [14, 0, 0, 0, 0, 1],
+            TYPE: addAura(-1, 1, 12),
+        }
+    ],
+    GUNS: [
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [8, 9, -0.5, 12.5, 0, 0, 0],
+        },
+        {
+            POSITION: [18, 10, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.healer]),
+                TYPE: exports.healerBullet,
+            },
+        },
+    ],
+};
 
 // JOKE TANKS
 exports.wifeBeater = {
@@ -18399,30 +18422,30 @@ exports.teams.UPGRADES_TIER_0.push(exports.Team101);
 
 // TOKEN "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = [exports.healer, exports.basic, exports.lancer, exports.gameAdminMenu, exports.spectator, exports.eggGenerator, exports.specialTanksMenu, exports.bossesMenu, exports.memes, exports.retrograde, exports.miscEntities, exports.dominators, exports.levels, exports.teams];
-exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
-exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone, exports.auraBasic];
-exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
-exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
-exports.tankChangesMenu.UPGRADES_TIER_0 = [];
-exports.eggGenerator.UPGRADES_TIER_0 = [exports.basic, exports.squareGenerator, exports.crasherGenerator];
-exports.crasherGenerator.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.alphaPentagonGenerator, exports.eggGenerator];
-exports.bossesMenu.UPGRADES_TIER_0 = [exports.sentries, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.ironclad];
-exports.sentries.UPGRADES_TIER_0 = [exports.sentrySwarm, exports.sentryGun, exports.sentryTrap, exports.shinySentrySwarm, exports.shinySentryGun, exports.shinySentryTrap];
-exports.retrograde.UPGRADES_TIER_0 = [exports.diepTanks, exports.digDig, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.nostalgiaMenu, exports.scrappedMenu, exports.miscRetrograde];
-exports.diepTanks.UPGRADES_TIER_0 = [exports.diep2Tanks, exports.diepTank];
-exports.diep2Tanks.UPGRADES_TIER_0 = [exports.blaster, exports.gatlingGun, exports.machineFlank, exports.retroRifle, exports.buttbuttin, exports.blower, exports.quadTwin, exports.tornado, exports.subverter, exports.battery, exports.deathStar, exports.bonker, exports.protector, exports.doubleTrapGuard];
-exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
-exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
-exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
-exports.retroRifle.UPGRADES_TIER_3 = [exports.sniperRifle, exports.rifleGuard, exports.spreadRifle];
-exports.celestialBosses.UPGRADES_TIER_0 = [exports.paladin, exports.freyja, exports.zaphkiel, exports.nyx, exports.theia, exports.alviss, exports.tyr];
-exports.eliteBosses.UPGRADES_TIER_0 = [exports.eliteDestroyer, exports.eliteGunner, exports.eliteSprayer, exports.eliteBattleship, exports.eliteSpawner];
-exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.rogueArmada, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
-exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
-exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
-exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.vulture];
-exports.productionist.UPGRADES_TIER_0 = [exports.bismarck];
-exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
+    exports.gameAdminMenu.UPGRADES_TIER_0 = [exports.basic, exports.gameModMenu, exports.spectator, exports.eggGenerator, exports.developer, exports.specialTanksMenu, exports.bossesMenu, exports.memes];
+        exports.memes.UPGRADES_TIER_0 = [exports.vanquisher, exports.armyOfOne, exports.godbasic, exports.diamondShape, exports.rotatedTrap, exports.mummifier, exports.colorMan, exports.seventeenagon, exports.aimToCursorMan, exports.miscTest, exports.rainbowclone, exports.auraBasic, exports.auraHealer];
+        exports.gameModMenu.UPGRADES_TIER_0 = [exports.basic, exports.betaTesterMenu, exports.spectator, exports.tankChangesMenu, exports.retrograde];
+            exports.betaTesterMenu.UPGRADES_TIER_0 = [exports.basic, exports.tankChangesMenu, exports.retrograde];
+                exports.tankChangesMenu.UPGRADES_TIER_0 = [];
+    exports.eggGenerator.UPGRADES_TIER_0 = [exports.basic, exports.squareGenerator, exports.crasherGenerator];
+        exports.crasherGenerator.UPGRADES_TIER_0 = [exports.basic, exports.gameAdminMenu, exports.alphaPentagonGenerator, exports.eggGenerator];
+    exports.bossesMenu.UPGRADES_TIER_0 = [exports.sentries, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.ironclad];
+        exports.sentries.UPGRADES_TIER_0 = [exports.sentrySwarm, exports.sentryGun, exports.sentryTrap, exports.shinySentrySwarm, exports.shinySentryGun, exports.shinySentryTrap];
+    exports.retrograde.UPGRADES_TIER_0 = [exports.diepTanks, exports.digDig, exports.celestialBosses, exports.eliteBosses, exports.strangeBosses, exports.nostalgiaMenu, exports.scrappedMenu, exports.miscRetrograde];
+        exports.diepTanks.UPGRADES_TIER_0 = [exports.diep2Tanks, exports.diepTank];
+            exports.diep2Tanks.UPGRADES_TIER_0 = [exports.blaster, exports.gatlingGun, exports.machineFlank, exports.retroRifle, exports.buttbuttin, exports.blower, exports.quadTwin, exports.tornado, exports.subverter, exports.battery, exports.deathStar, exports.bonker, exports.protector, exports.doubleTrapGuard];
+                exports.blaster.UPGRADES_TIER_3 = [exports.triBlaster, exports.splasher];
+                exports.gatlingGun.UPGRADES_TIER_3 = [exports.retroSprayer, exports.accurator, exports.halfNHalf];
+                exports.machineFlank.UPGRADES_TIER_3 = [exports.machineTriple, exports.halfNHalf];
+                exports.retroRifle.UPGRADES_TIER_3 = [exports.sniperRifle, exports.rifleGuard, exports.spreadRifle];
+        exports.celestialBosses.UPGRADES_TIER_0 = [exports.paladin, exports.freyja, exports.zaphkiel, exports.nyx, exports.theia, exports.alviss, exports.tyr];
+        exports.eliteBosses.UPGRADES_TIER_0 = [exports.eliteDestroyer, exports.eliteGunner, exports.eliteSprayer, exports.eliteBattleship, exports.eliteSpawner];
+        exports.strangeBosses.UPGRADES_TIER_0 = [exports.roguePalisade, exports.rogueArmada, exports.nestKeeper, exports.eliteSkimmer, exports.summoner];
+        exports.nostalgiaMenu.UPGRADES_TIER_0 = [exports.oldSpreadshot, exports.bentBoomer, exports.quadBuilder, exports.quintuplet, exports.vulcan, exports.sniper3, exports.weirdSpike, exports.master, exports.oldCommander, exports.blunderbuss, exports.oldRimfire, exports.ransacker];
+        exports.scrappedMenu.UPGRADES_TIER_0 = [exports.scrappedMenu2, exports.rocketeer, exports.crowbar, exports.peashooter, exports.autoTrapper, exports.megaTrapper, exports.railgun, exports.megaSpawner, exports.badDreadnought, exports.mender];
+            exports.scrappedMenu2.UPGRADES_TIER_0 = [exports.scrappedMenu, exports.overcheese, exports.prodigy, exports.spawnerdrive, exports.rimfire, exports.productionist, exports.vulture];
+                exports.productionist.UPGRADES_TIER_0 = [exports.bismarck];
+        exports.miscRetrograde.UPGRADES_TIER_0 = [exports.tracker3, exports.tetraGunner, exports.worstTank];
 
 // MISCELLANEOUS
 exports.miscEntities.UPGRADES_TIER_0 = [exports.dominators, exports.baseProtector, exports.mothership, exports.arenaCloser];
@@ -18430,9 +18453,7 @@ exports.dominators.UPGRADES_TIER_0 = [exports.dominator, exports.destroyerDomina
 
 // TANK UPGRADE PATHS
 exports.basic.UPGRADES_TIER_1 = [exports.twin, exports.sniper, exports.machineGun, exports.flankGuard, exports.director, exports.pounder, exports.trapper];
-c.SPECIAL_BOSS_SPAWNS
-    ? exports.basic.UPGRADES_TIER_2 = [exports.healer]
-    : exports.basic.UPGRADES_TIER_2 = [exports.smasher];
+exports.basic.UPGRADES_TIER_2 = [c.SPECIAL_BOSS_SPAWNS ? exports.healer : exports.smasher];
 exports.basic.UPGRADES_TIER_3 = [exports.single];
 exports.healer.UPGRADES_TIER_3 = [exports.medic, exports.ambulance, exports.surgeon, exports.paramedic];
 exports.smasher.UPGRADES_TIER_3 = [exports.megaSmasher, exports.spike, exports.autoSmasher, exports.landmine];

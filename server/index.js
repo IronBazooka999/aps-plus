@@ -143,40 +143,6 @@ function collide(collision) {
     }
 }
 
-function entitiesliveloop(my) {
-    // Consider death.
-    if (my.contemplationOfMortality()) {
-        my.destroy();
-    } else {
-        if (my.bond == null) {
-            // Resolve the physical behavior from the last collision cycle.
-            logs.physics.set();
-            my.physics();
-            logs.physics.mark();
-        }
-        if (my.activation.check() || my.isPlayer) {
-            logs.entities.tally();
-            // Think about my actions.
-            logs.life.set();
-            my.life();
-            logs.life.mark();
-            // Apply friction.
-            my.friction();
-            my.confinementToTheseEarthlyShackles();
-            logs.selfie.set();
-            my.takeSelfie();
-            logs.selfie.mark();
-        }
-        // Update collisions.
-        my.collisionArray = [];
-        // Activation
-        my.activation.update();
-        my.updateAABB(my.activation.check());
-    }
-    // Update collisions.
-    my.collisionArray = [];
-}
-
 // The most important loop. Lots of looping.
 let time, ticks = 0;
 const gameloop = () => {
@@ -198,7 +164,39 @@ const gameloop = () => {
     logs.collide.mark();
     // Do entities life
     logs.entities.set();
-    for (let e of entities) entitiesliveloop(e);
+    for (let my of entities) {
+        // Consider death.
+        if (my.contemplationOfMortality()) {
+            my.destroy();
+        } else {
+            if (my.bond == null) {
+                // Resolve the physical behavior from the last collision cycle.
+                logs.physics.set();
+                my.physics();
+                logs.physics.mark();
+            }
+            if (my.activation.check() || my.isPlayer) {
+                logs.entities.tally();
+                // Think about my actions.
+                logs.life.set();
+                my.life();
+                logs.life.mark();
+                // Apply friction.
+                my.friction();
+                my.confinementToTheseEarthlyShackles();
+                logs.selfie.set();
+                my.takeSelfie();
+                logs.selfie.mark();
+            }
+            // Update collisions.
+            my.collisionArray = [];
+            // Activation
+            my.activation.update();
+            my.updateAABB(my.activation.check());
+        }
+        // Update collisions.
+        my.collisionArray = [];
+    }
     logs.entities.mark();
     logs.master.mark();
     // Remove dead entities

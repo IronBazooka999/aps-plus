@@ -415,34 +415,39 @@ exports.colorMan = {
     }]
 };
 
-let gNoRandom = [1, 1, 1e-5, 1, 1, 1, 1, 1, 1, 1, 1, 1e-5, 1];
-
 exports.miscTestHelper2 = {
     PARENT: ["genericTank"],
+    COLOR: -1,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
                 TYPE: "bullet",
+                COLOR: -1,
             },
         },
     ],
 };
 exports.miscTestHelper = {
     PARENT: ["genericTank"],
+    COLOR: {
+        BASE: -1,
+        BRIGHTNESS_SHIFT: 15,
+    },
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
                 TYPE: "bullet",
+                COLOR: -1,
             },
         },
     ],
     TURRETS: [
         {
-          POSITION: [20, 0, 0, 0, 0, 1],
+          POSITION: [20, 0, 20, 0, 0, 1],
           TYPE: "miscTestHelper2",
         }
     ]
@@ -454,7 +459,7 @@ exports.miscTest = {
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, gNoRandom]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
                 TYPE: "bullet",
             },
         },
@@ -466,10 +471,10 @@ exports.miscTest = {
         }
     ]
 };
+exports.auraBasicGen = addAura(1, 1, 0);
 exports.auraBasic = {
     PARENT: ["genericTank"],
     LABEL: "Aura Basic",
-    LEVEL: 45,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
@@ -482,10 +487,39 @@ exports.auraBasic = {
     TURRETS: [
         {
             POSITION: [14, 0, 0, 0, 0, 1],
-            TYPE: addAura(1, 1, 36),
+            TYPE: "auraBasicGen",
         }
     ],
-}
+};
+exports.auraHealerGen = addAura(-1, 1, 12);
+exports.auraHealer = {
+    PARENT: ["genericTank"],
+    LABEL: "Aura Healer",
+    TURRETS: [
+        {
+            /** SIZE         X             Y         ANGLE        ARC */
+            POSITION: [13, 0, 0, 0, 360, 1],
+            TYPE: "healerSymbol",
+        },
+        {
+            POSITION: [14, 0, 0, 0, 0, 1],
+            TYPE: "auraHealerGen",
+        }
+    ],
+    GUNS: [
+        {
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [8, 9, -0.5, 12.5, 0, 0, 0],
+        },
+        {
+            POSITION: [18, 10, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.healer]),
+                TYPE: "healerBullet",
+            },
+        },
+    ],
+};
 
 // FUN
 exports.vanquisher = {
@@ -686,7 +720,7 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerat
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals"];
         exports.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap"];
         exports.elites.UPGRADES_TIER_0 = ["eliteDestroyer", "eliteGunner", "eliteSprayer", "eliteBattleship", "eliteSpawner"/*, "eliteTrapGuard", "eliteSpinner"*/, "eliteSkimmer"/*, "legionaryCrasher"*/];
-        exports.mysticals.UPGRADES_TIER_0 = [/*"sorcerer", */"summoner"/*, "enchantress", "exorcistor"*/];
+        exports.mysticals.UPGRADES_TIER_0 = ["sorcerer", "summoner", "enchantress", "exorcistor"];
         exports.nesters.UPGRADES_TIER_0 = ["nestKeeper"/*, "nestWarden", "nestGuardian"*/];
         exports.rogues.UPGRADES_TIER_0 = ["roguePalisade", "rogueArmada", "alviss", "tyr"/*, "fiolnir"*/];
         exports.terrestrials.UPGRADES_TIER_0 = [/*"ares", "gersemi", "ezekiel", "eris", "selene"*/];
@@ -694,4 +728,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerat
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok", "kronos"*/];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer"];
