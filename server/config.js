@@ -1,17 +1,11 @@
 module.exports = {
     // Server
     host: "localhost:3000",
-    servesStatic: true,
     port: 3000,
-    networkUpdateFactor: 24,
-    socketWarningLimit: 5,
-    networkFrontlog: 1,
-    networkFallbackTime: 150,
     visibleListInterval: 250,
     gameSpeed: 1,
     runSpeed: 1.5,
     maxHeartbeatInterval: 300000,
-    verbose: true,
     flattenDefintions: false,
 
     // Room
