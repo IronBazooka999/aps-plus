@@ -647,7 +647,6 @@ exports.makeDeco = (shape, color = 16) => {
 }
 
 exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
-    let name = "aura" + damageFactor + "_" + sizeFactor;
     let isHeal = damageFactor < 0;
     let auraType = isHeal ? "healAura" : "aura";
     let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
