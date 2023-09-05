@@ -1029,6 +1029,11 @@ class Entity extends EventEmitter {
         if (set.RECALC_SKILL) {
             let score = this.skill.score;
             this.skill.reset();
+            this.skill.score = score;
+            while (this.skill.maintain()) {}
+        }
+        if (set.EXTRA_SKILL) {
+            this.skill.points += set.EXTRA_SKILL;
         }
         if (set.BODY != null) {
             if (set.BODY.ACCELERATION != null) this.ACCELERATION = set.BODY.ACCELERATION;
