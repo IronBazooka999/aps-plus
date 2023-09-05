@@ -310,12 +310,12 @@ class io_nearestDifferentMaster extends IO {
     }
     validate(e, m, mm, sqrRange, sqrRangeMaster) {
         return (e.health.amount > 0) &&
-        (!isNaN(e.dangerValue)) &&
-        (!e.invuln && !e.master.master.passive && !this.body.master.master.passive) &&
-        (e.master.master.team !== this.body.master.master.team) &&
-        (e.master.master.team !== -101) &&
         (!e.master.master.ignoredByAi) &&
         (!e.master.master.isDominator) &&
+        (e.master.master.team !== this.body.master.master.team) &&
+        (e.master.master.team !== TEAM_ROOM) &&
+        (!isNaN(e.dangerValue)) &&
+        (!e.invuln && !e.master.master.passive && !this.body.master.master.passive) &&
         (this.body.aiSettings.seeInvisible || this.body.isArenaCloser || e.alpha > 0.5) &&
         (e.type === "miniboss" || e.type === "tank" || e.type === "crasher" || (!this.body.aiSettings.IGNORE_SHAPES && e.type === 'food')) &&
         (this.body.aiSettings.BLIND || ((e.x - m.x) * (e.x - m.x) < sqrRange && (e.y - m.y) * (e.y - m.y) < sqrRange)) &&
