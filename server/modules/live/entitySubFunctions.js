@@ -122,7 +122,7 @@ class Skill {
             this.deduction += this.levelScore;
             this.level += 1;
             this.points += this.levelPoints;
-            if (this.level < c.SKILL_CAP) {
+            if (this.level < c.LEVEL_CAP) {
                 if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER) {
                     this.canUpgrade = true;
                 }
@@ -142,7 +142,7 @@ class Skill {
         return c.LEVEL_SKILL_POINT_FUNCTION(this.level);
     }
     cap(skill, real = false) {
-        if (!real && this.level < c.SKILL_SOFT_CAP) {
+        if (!real && this.level < c.LEVEL_SOFT_CAP) {
             return Math.round(this.caps[skcnv[skill]] * c.SOFT_MAX_SKILL);
         }
         return this.caps[skcnv[skill]];
@@ -152,8 +152,7 @@ class Skill {
             b = ((i + (j === 1 ? 1 : 4)) % 5) + 5 * j;
         let value = 0;
         let denom = Math.max(c.MAX_SKILL, this.caps[i + 5 * j]);
-        value +=
-            (1 - Math.pow(this.raw[a] / denom - 1, 2)) * this.raw[a] * c.SKILL_LEAK;
+        value += (1 - Math.pow(this.raw[a] / denom - 1, 2)) * this.raw[a] * c.SKILL_LEAK;
         value -= Math.pow(this.raw[b] / denom, 2) * this.raw[b] * c.SKILL_LEAK;
         return value;
     }
