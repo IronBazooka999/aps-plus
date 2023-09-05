@@ -152,8 +152,7 @@ class Skill {
             b = ((i + (j === 1 ? 1 : 4)) % 5) + 5 * j;
         let value = 0;
         let denom = Math.max(c.MAX_SKILL, this.caps[i + 5 * j]);
-        value +=
-            (1 - Math.pow(this.raw[a] / denom - 1, 2)) * this.raw[a] * c.SKILL_LEAK;
+        value += (1 - Math.pow(this.raw[a] / denom - 1, 2)) * this.raw[a] * c.SKILL_LEAK;
         value -= Math.pow(this.raw[b] / denom, 2) * this.raw[b] * c.SKILL_LEAK;
         return value;
     }
