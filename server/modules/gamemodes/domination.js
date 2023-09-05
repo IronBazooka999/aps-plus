@@ -22,7 +22,7 @@ let spawn = (loc, team, color, type = false) => {
                     killers.push(instance);
                 }
             }
-            let killer = ran.choose(killers);
+            let killer = ran.choose(killers) ?? { team: TEAM_ENEMIES, color: 3 };
             spawn(loc, killer.team, killer.color, type);
             room.setType("dom" + ((killer.team < 0 && killer.team > -9) ? -killer.team : 0), loc);
             sockets.broadcast(`A dominator is now controlled by ${getTeamName(killer.team)}!`);

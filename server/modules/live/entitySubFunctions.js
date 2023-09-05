@@ -12,8 +12,8 @@ const skcnv = {
 };
 
 let curvePoints = [];
-for (let i = 0; i < c.MAX_SKILL * 2; i++) {
-    curvePoints.push(Math.log(4 * (i / c.MAX_SKILL) + 1) / Math.log(5));
+for (let i = 0; i < 256; i++) {
+    curvePoints.push(Math.log(4 * (i / c.MAX_SKILL) + 1) / 1.6);
 }
 let curve = x => curvePoints[x * c.MAX_SKILL];
 function apply(f, x) {

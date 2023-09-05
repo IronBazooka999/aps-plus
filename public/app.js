@@ -1424,7 +1424,7 @@ function drawMessages(spacing) {
 function drawSkillBars(spacing, alcoveSize) {
     // Draw skill bars
     global.canSkill = !!gui.points;
-    statMenu.set(0 + (global.died || global.statHover || (global.canSkill && gui.skills.every(skill => skill.cap !== skill.amount))));
+    statMenu.set(0 + (global.died || global.statHover || (global.canSkill && !gui.skills.every(skill => skill.cap === skill.amount))));
     global.clickables.stat.hide();
     let vspacing = 4;
     let height = 15;
