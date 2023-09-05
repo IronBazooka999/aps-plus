@@ -86,7 +86,7 @@ class Gun {
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
             if (info.PROPERTIES.COLOR != null) {
-                if (typeof info.PROPERTIES.COLOR === "number")
+                if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string")
                     this.colorUnboxed.base = info.PROPERTIES.COLOR;
                 else if (typeof info.PROPERTIES.COLOR === "object")
                     this.colorUnboxed = {
