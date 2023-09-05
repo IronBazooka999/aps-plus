@@ -73,7 +73,7 @@ class Skill {
         let attrib = [];
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 2; j++) {
-                attrib[i + 5 * j] = curve((this.raw[i + 5 * j] + this.bleed(i, j)) / c.MAX_SKILL);
+                attrib[i + 5 * j] = curve((this.raw[i + 5 * j]) / c.MAX_SKILL);
             }
         }
         this.rld = Math.pow(0.5, attrib[skcnv.rld]);
@@ -123,7 +123,7 @@ class Skill {
             this.level += 1;
             this.points += this.levelPoints;
             if (this.level < c.LEVEL_CAP) {
-                if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER) {
+                if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER * c.TIER_MULTIPLIER) {
                     this.canUpgrade = true;
                 }
                 this.update();
@@ -146,15 +146,6 @@ class Skill {
             return Math.round(this.caps[skcnv[skill]] * c.SOFT_MAX_SKILL);
         }
         return this.caps[skcnv[skill]];
-    }
-    bleed(i, j) {
-        let a = ((i + 2) % 5) + 5 * j,
-            b = ((i + (j === 1 ? 1 : 4)) % 5) + 5 * j;
-        let value = 0;
-        let denom = Math.max(c.MAX_SKILL, this.caps[i + 5 * j]);
-        value += (1 - Math.pow(this.raw[a] / denom - 1, 2)) * this.raw[a] * c.SKILL_LEAK;
-        value -= Math.pow(this.raw[b] / denom, 2) * this.raw[b] * c.SKILL_LEAK;
-        return value;
     }
     upgrade(stat) {
         if (this.points && this.amount(stat) < this.cap(stat)) {
