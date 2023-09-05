@@ -13,13 +13,11 @@ In order to run your server via localhost, you will need to install these first:
 
 Once the required software is installed, open run.bat. If there aren't any errors, your server will start up. Go to localhost:3000 in your favourite web browser (keep the command prompt open, closing it will shut down the server) to play.
 
-You can optionally run your server using [Replit](https://replit.com), [Heroku](https://www.heroku.com/) or [Surge](https://surge.sh).
-
 ## Useful Tools
 
 - [Create a custom shape](https://arras.io/ext/custom-shape)
 - [Create a custom tank](https://dogeiscut.github.io/Arras-Tank-Builder/)
-  - [WIP update](https://github.com/DogeisCut/Arras.io-Entity-Designer-v2)
+  - [WIP update to this tool](https://github.com/DogeisCut/Arras.io-Entity-Designer-v2)
 - [Create a custom theme](https://codepen.io/road-to-100k/full/GRpvMzb)
 
 ## Other Links
