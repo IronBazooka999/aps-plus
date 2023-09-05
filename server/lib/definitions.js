@@ -1,3 +1,21 @@
+/*
+    DEFINITIONS.JS is DEPRECATED!
+    WARNING: This is not gonna be updated, We advise for you to not use this.
+    Move to the new definitions folder at server/modules/definitions
+
+    If you still need this file for some reason,
+    You can toggle back the setting to use this definitions.js instead of using the new one
+*/
+console.error(`
+/------------------------------------------------------------------------------------/
+
+DEFINITIONS.JS is DEPRECATED!
+WARNING: This is not gonna be updated, We advise for you to not use this.
+Move to the new definitions system at server/modules/definitions
+
+/------------------------------------------------------------------------------------/
+`)
+
 // GUN DEFINITIONS
 const combineStats = function (array_of_objects) {
     try {
