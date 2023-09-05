@@ -81,8 +81,10 @@ class Gun {
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
             if (info.PROPERTIES.COLOR != null) {
-                if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string")
-                    this.colorUnboxed.base = info.PROPERTIES.COLOR;
+                if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string") {
+                    if (!isNaN(info.PROPERTIES.COLOR) && !isNaN(parseFloat(info.PROPERTIES.COLOR)))
+                        this.colorUnboxed.base = info.PROPERTIES.COLOR;
+                }
                 else if (typeof info.PROPERTIES.COLOR === "object")
                     this.colorUnboxed = {
                         base: info.PROPERTIES.COLOR.BASE ?? 16,
@@ -1559,7 +1561,7 @@ class Entity extends EventEmitter {
                 }
             }
             if (c.TEAMS === 1) inEnemyBase = false;
-            if (room.isIn("boss", loc) && !this.canEnterEnemyBases) inEnemyBase = true;
+            if (room.isIn("boss", loc) && this.team != TEAM_ENEMIES) inEnemyBase = true;
             if (inEnemyBase && !this.isArenaCloser && !this.master.isArenaCloser) {
                 this.kill();
             }
