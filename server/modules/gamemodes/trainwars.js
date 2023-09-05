@@ -4,9 +4,10 @@
 class Train {
     constructor () {}
     loop () {
-        let teams = new Set(entities.filter(r => r.isPlayer || r.isBot).map(r => r.team));
+        let train_able = entities.filter(r => r.isPlayer || r.isBot),
+            teams = new Set(train_able.map(r => r.team));
         for (let team of teams) {
-            let train = entities.filter(r => (r.isPlayer || r.isBot) && r.team === team && !r.invuln).sort((a, b) => b.skill.score - a.skill.score);
+            let train = train_able.filter(r => r.team === team && !r.invuln).sort((a, b) => b.skill.score - a.skill.score);
 
             for (let [i, player] of train.entries()) {
                 if (i === 0) continue;

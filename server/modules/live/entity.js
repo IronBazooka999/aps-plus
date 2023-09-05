@@ -20,6 +20,7 @@ function setNatural(natural, type) {
         }
     }
 }
+let lerp = (a, b, x) => a + x * (b - a);
 class Gun {
     constructor(body, info) {
         this.ac = false;
@@ -80,7 +81,7 @@ class Gun {
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
             if (info.PROPERTIES.COLOR != null) {
-                if (typeof info.PROPERTIES.COLOR === "number")
+                if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string")
                     this.colorUnboxed.base = info.PROPERTIES.COLOR;
                 else if (typeof info.PROPERTIES.COLOR === "object")
                     this.colorUnboxed = {
@@ -689,6 +690,7 @@ class Entity extends EventEmitter {
         this.SIZE = 1;
         this.define(Class.genericEntity);
         // Initalize physics and collision
+        this.alwaysShowOnMinimap = false;
         this.maxSpeed = 0;
         this.facingLocked = false;
         this.facing = 0;
@@ -1524,23 +1526,19 @@ class Entity extends EventEmitter {
         }
         if (!this.settings.canGoOutsideRoom) {
             if (c.ARENA_TYPE === "circle") {
-                const centerPoint = {
+                let centerPoint = {
                     x: room.width / 2,
                     y: room.height / 2,
-                };
-                const dist = util.getDistance(this, centerPoint);
+                }, dist = util.getDistance(this, centerPoint);
                 if (dist > room.width / 2) {
-                    let lerp = (a, b, x) => a + x * (b - a);
-                    let strength =
-                        ((dist - room.width / 2) * (c.ROOM_BOUND_FORCE / roomSpeed)) / 750;
-                    this.x = lerp(this.x, room.width / 2, strength);
-                    this.y = lerp(this.y, room.height / 2, strength);
+                    let strength = (dist - room.width / 2) * c.ROOM_BOUND_FORCE / (roomSpeed * 750);
+                    this.x = lerp(this.x, centerPoint.x, strength);
+                    this.y = lerp(this.y, centerPoint.y, strength);
                 }
             } else {
-                this.accel.x -= (Math.min(this.x - this.realSize               + 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
-                this.accel.x -= (Math.max(this.x + this.realSize - room.width  - 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
-                this.accel.y -= (Math.min(this.y - this.realSize               + 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
-                this.accel.y -= (Math.max(this.y + this.realSize - room.height - 50, 0) * c.ROOM_BOUND_FORCE) / roomSpeed;
+                let padding = this.realSize - 50;
+                this.accel.x -= Math.max(this.x + padding - room.width, Math.min(this.x - padding, 0)) * c.ROOM_BOUND_FORCE / roomSpeed;
+                this.accel.y -= Math.max(this.y + padding - room.height, Math.min(this.y - padding, 0)) * c.ROOM_BOUND_FORCE / roomSpeed;
             }
         }
         if (c.SPECIAL_BOSS_SPAWNS && (this.type === "tank" || this.type === "food") && room.isIn("outb", this)) {

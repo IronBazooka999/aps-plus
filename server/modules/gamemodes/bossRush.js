@@ -1,45 +1,66 @@
+let calculatePoints = wave => 5 + wave * 3;
+
 class BossRush {
     constructor() {
-        this.bossChoices = [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer, Class.eliteBattleship, Class.eliteSpawner, Class.roguePalisade, Class.eliteSkimmer, Class.summoner, Class.nestKeeper]
+        this.bossChoices = [
+            [2, "eliteDestroyer"],
+            [2, "eliteGunner"],
+            [2, "eliteSprayer"],
+            [2, "eliteBattleship"],
+            [2, "eliteSpawner"],
+            [2, "eliteSkimmer"],
+            [1, "sorcerer"],
+            [2, "summoner"],
+            [2, "enchantress"],
+            [2, "exorcistor"],
+            [3, "nestKeeper"]
+        ];
         this.friendlyBossChoices = [Class.roguePalisade, Class.rogueArmada];
         this.bigFodderChoices = [Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.shinySentryGun];
         this.smallFodderChoices = [Class.crasher];
-        this.waves = this.generateWaves()
-        this.waveId = -1
-        this.gameActive = true
-        this.timer = 0
-        this.remainingEnemies = 0;
+        this.waves = this.generateWaves();
+        this.waveId = -1;
+        this.gameActive = true;
+        this.timer = 0;
+        this.remainingEnemies = 0;;
     }
 
     generateWaves() {
-        let bosses = this.bossChoices.sort(() => 0.5 - Math.random())
-        let waves = []
+        return
+        let waves = [];
         for (let i = 0; i < 10; i++) {
-            let wave = []
-            for (let j = 0; j < 2 + Math.random() * 4 + (i * .4); j++) {
-                wave.push(bosses[j])
+            let wave = [],
+                points = Math.ceil(calculatePoints(i)),
+                choices = this.bossChoices;
+
+            while (points) {
+                choices = choices.filter(x => x[0] >= points);
+                let choice = ran.choose(choices);
+                points -= choice[0];
+                wave.push(choice[1]);
             }
-            bosses = bosses.sort(() => 0.5 - Math.random())
-            waves.push(wave)
+
+            waves.push(wave);
         }
-        return waves
+        return waves;
     }
 
     spawnFriendlyBoss() {
-        let o = new Entity(room.randomType('bas1'))
-        o.define(ran.choose(this.friendlyBossChoices))
-        o.define({ DANGER: 10 });
-        o.color = 10
-        o.team = -1
-        o.controllers.push(new ioTypes.nearestDifferentMaster(o))
-        o.controllers.push(new ioTypes.wanderAroundMap(0, { immitatePlayerMovement: false, lookAtGoal: true }))
-        sockets.broadcast(o.name + ' has arrived and joined your team!')
+        let o = new Entity(room.randomType('bas1'));
+        o.define(ran.choose(this.friendlyBossChoices));
+        o.define({
+            DANGER: 10
+        });
+        o.color = 10;
+        o.team = -1;
+        o.controllers.push(new ioTypes.nearestDifferentMaster(o));
+        o.controllers.push(new ioTypes.wanderAroundMap(0, { immitatePlayerMovement: false, lookAtGoal: true }));
+        sockets.broadcast(o.name + ' has arrived and joined your team!');
     }
 
     spawnDominator(loc, team, type = false) {
-        type = type ? type : Class.destroyerDominator
-        let bossRush = this,
-            o = new Entity(loc)
+        type = type ? type : Class.destroyerDominator;
+        let o = new Entity(loc);
         o.define(type)
         o.team = team
         o.color = getTeamColor(team)
@@ -50,11 +71,11 @@ class BossRush {
         o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spin(o, { onlyWhenIdle: true })]
         o.on('dead', () => {
             if (o.team === TEAM_ENEMIES) {
-                bossRush.spawnDominator(loc, -1, type)
+                this.spawnDominator(loc, -1, type)
                 room.setType('dom1', loc)
                 sockets.broadcast('A dominator has been captured by BLUE!')
             } else {
-                bossRush.spawnDominator(loc, TEAM_ENEMIES, type)
+                this.spawnDominator(loc, TEAM_ENEMIES, type)
                 room.setType('dom0', loc)
                 sockets.broadcast('A dominator has been captured by the bosses!')
             }
@@ -64,7 +85,7 @@ class BossRush {
     playerWin() {
         if (this.gameActive) {
             this.gameActive = false;
-            sockets.broadcast('BLUE has won the game!');
+            sockets.broadcast(getTeamName(-1) + ' has won the game!');
             setTimeout(closeArena, 1500);
         }
     }
@@ -101,16 +122,24 @@ class BossRush {
         }
 
         //spawn fodder enemies
-        for (let i = 0; i < this.waveId / 5; i++) this.spawnEnemyWrapper(room.randomType('boss'), ran.choose(this.bigFodderChoices));
-        for (let i = 0; i < this.waveId / 2; i++) this.spawnEnemyWrapper(room.randomType('boss'), ran.choose(this.smallFodderChoices));
+        for (let i = 0; i < this.waveId / 5; i++) {
+            this.spawnEnemyWrapper(room.randomType('boss'), ran.choose(this.bigFodderChoices));
+        }
+        for (let i = 0; i < this.waveId / 2; i++) {
+            this.spawnEnemyWrapper(room.randomType('boss'), ran.choose(this.smallFodderChoices));
+        }
 
         //spawn a friendly boss every 20 waves
-        if (waveId % 20 == 19) setTimeout(() => this.spawnFriendlyBoss(), 5000);
+        if (waveId % 20 == 19) {
+            setTimeout(() => this.spawnFriendlyBoss(), 5000);
+        }
     }
 
     //runs once when the server starts
     init() {
-        for (let loc of room.bas1) this.spawnDominator(loc, -1);
+        for (let loc of room.bas1) {
+            this.spawnDominator(loc, -1);
+        }
         console.log('Boss rush initialized.');
     }
 

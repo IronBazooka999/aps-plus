@@ -23,9 +23,9 @@ class ManHunt {
         if (this.leaderIDs.includes(leader.id)) return;
 
         // apply buffs to them
-        leader.team = -9;
-        leader.color = getTeamColor(leader.team);
+        leader.color = getTeamColor(TEAM_GREEN);
         leader.skill.points += 18;
+        leader.alwaysShowOnMinimap = true;
 
         // if this guy died then remove them from the leader ids
         // prevents a memory leak
