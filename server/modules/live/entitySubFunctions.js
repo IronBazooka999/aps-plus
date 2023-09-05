@@ -71,10 +71,8 @@ class Skill {
             }
         }
         let attrib = [];
-        for (let i = 0; i < 5; i++) {
-            for (let j = 0; j < 2; j++) {
-                attrib[i + 5 * j] = curve((this.raw[i + 5 * j]) / c.MAX_SKILL);
-            }
+        for (let i = 0; i < 10; i++) {
+            attrib[i] = curve(this.raw[i] / c.MAX_SKILL);
         }
         this.rld = Math.pow(0.5, attrib[skcnv.rld]);
         this.pen = apply(2.5, attrib[skcnv.pen]);
