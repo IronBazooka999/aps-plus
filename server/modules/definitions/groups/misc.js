@@ -77,7 +77,7 @@ exports.dominator = {
         HEALTH: 590,
         DAMAGE: 6,
         PENETRATION: 0.25,
-        FOV: 1,
+        FOV: 0.5,
         PUSHABILITY: 0,
         HETERO: 0,
         SHIELD: base.SHIELD * 1.4,

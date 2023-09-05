@@ -1,5 +1,5 @@
 module.exports = {
-    LEVEL_CAP: 1024,
+    LEVEL_CAP: 4096,
     LEVEL_SKILL_POINT_FUNCTION: level => {
         if (level < 2) return 0;
         if (level <= 40) return 1;

@@ -1023,6 +1023,13 @@ class Entity extends EventEmitter {
                 this.foodCountup = 0;
             }
         }
+        if ("function" === typeof set.LEVEL_SKILL_POINT_FUNCTION) {
+            this.skill.LSPF = set.LEVEL_SKILL_POINT_FUNCTION;
+        }
+        if (set.RECALC_SKILL) {
+            let score = this.skill.score;
+            this.skill.reset();
+        }
         if (set.BODY != null) {
             if (set.BODY.ACCELERATION != null) this.ACCELERATION = set.BODY.ACCELERATION;
             if (set.BODY.SPEED != null) this.SPEED = set.BODY.SPEED;

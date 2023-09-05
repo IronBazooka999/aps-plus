@@ -137,7 +137,7 @@ class Skill {
         return this.levelScore ? (this.score - this.deduction) / this.levelScore : 0;
     }
     get levelPoints() {
-        return c.LEVEL_SKILL_POINT_FUNCTION(this.level);
+        return this.LSPF ? this.LSPF(this.level) : c.LEVEL_SKILL_POINT_FUNCTION(this.level);
     }
     cap(skill, real = false) {
         if (!real && this.level < c.LEVEL_SOFT_CAP) {
