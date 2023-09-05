@@ -441,7 +441,7 @@ let makenpcs = () => {
     // upgrade existing ones
     for (let i = 0; i < bots.length; i++) {
         let o = bots[i];
-        if (o.skill.level < c.SKILL_CAP) o.skill.score += 125;
+        if (o.skill.level < c.LEVEL_CAP) o.skill.score += 125;
         o.skill.maintain();
         o.skillUp([ "atk", "hlt", "spd", "str", "pen", "dam", "rld", "mob", "rgn", "shi" ][ran.chooseChance(1, 1, 3, 4, 4, 4, 4, 2, 1, 1)]);
         if (o.leftoverUpgrades && o.upgrade(ran.irandomRange(0, o.upgrades.length))) o.leftoverUpgrades--;
