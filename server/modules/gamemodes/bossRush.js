@@ -26,6 +26,7 @@ class BossRush {
     }
 
     generateWaves() {
+        return
         let waves = [];
         for (let i = 0; i < 10; i++) {
             let wave = [],
