@@ -1109,7 +1109,7 @@ class Entity extends EventEmitter {
         this.move();
     }
     get level() {
-        return Math.min(c.SKILL_CAP, this.skill.level);
+        return Math.min(c.LEVEL_CAP, this.skill.level);
     }
     get size() {
         return this.bond == null ? (this.coreSize || this.SIZE) * (1 + this.level / 45) : this.bond.size * this.bound.size;

@@ -151,7 +151,7 @@ function incoming(message, socket) {
             socket.player = socket.spawn(name);
 
             if (autoLVLup) {
-                while (socket.player.body.skill.level < c.SKILL_CHEAT_CAP) {
+                while (socket.player.body.skill.level < c.LEVEL_CHEAT_CAP) {
                     socket.player.body.skill.score += socket.player.body.skill.levelScore;
                     socket.player.body.skill.maintain();
                     socket.player.body.refreshBodyAttributes();
@@ -363,7 +363,7 @@ function incoming(message, socket) {
             }
             // cheatingbois
             if (player.body == null || player.body.underControl) return;
-            if (player.body.skill.level < c.SKILL_CHEAT_CAP || (socket.permissions && socket.permissions.infiniteLevelUp)) {
+            if (player.body.skill.level < c.LEVEL_CHEAT_CAP || (socket.permissions && socket.permissions.infiniteLevelUp)) {
                 player.body.skill.score += player.body.skill.levelScore;
                 player.body.skill.maintain();
                 player.body.refreshBodyAttributes();
