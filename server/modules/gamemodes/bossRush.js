@@ -29,16 +29,14 @@ class BossRush {
         let waves = [];
         for (let i = 0; i < 10; i++) {
             let wave = [],
-                points = 0;
+                points = Math.ceil(calculatePoints(i)),
+                choices = this.bossChoices;
 
-            while (points < Math.ceil(calculatePoints(i))) {
-                let choices = this.bossChoices.filter(x => x[0] <= points);
-                if (choices.length) {
-                    let choice = ran.choose(choices);
-                    points += choice[0];
-                    wave.push(choice[1]);
-                }
-                else points += 1;
+            while (points > 0) {
+                choices = choices.filter(x => x[0] <= points);
+                let choice = ran.choose(choices);
+                points -= choice[0];
+                wave.push(choice[1]);
             }
 
             waves.push(wave);
