@@ -47,16 +47,15 @@ module.exports = {
         if (level < 2) return 0;
         if (level <= 40) return 1;
         if (level <= 45 && level & 1 == 1) return 1;
-        if (level % 5 == 1 && level < (90 - 45) * 5 + 45) return 1;
         return 0;
     },
     MAX_SKILL: 9,
     SOFT_MAX_SKILL: 0.59,
     MAX_UPGRADE_TIER: 9,
     TIER_MULTIPLIER: 15,
-    SKILL_CAP: 42,
+    SKILL_CAP: 45,
     SKILL_SOFT_CAP: 0,
-    SKILL_CHEAT_CAP: 42,
+    SKILL_CHEAT_CAP: 45,
     SKILL_LEAK: 0,
     STEALTH: 4, // This does nothing. TODO: Find original purpose
     MIN_SPEED: 0.001,

@@ -935,7 +935,6 @@ class Entity extends EventEmitter {
         if (set.STAT_NAMES != null) this.settings.skillNames = set.STAT_NAMES;
         if (set.AI != null) this.aiSettings = set.AI;
         if (set.INVISIBLE != null) this.invisible = set.INVISIBLE;
-        if (set.MAX_SKILL != null) this.skill.maxSkillCap = set.MAX_SKILL;
         if (set.ALPHA != null) {
             this.alpha = ("number" === typeof set.ALPHA) ? set.ALPHA : set.ALPHA[1];
             this.alphaRange = [
@@ -1110,7 +1109,7 @@ class Entity extends EventEmitter {
         this.move();
     }
     get level() {
-        return Math.min(this.skill.maxSkillCap, this.skill.level);
+        return Math.min(c.SKILL_CAP, this.skill.level);
     }
     get size() {
         return this.bond == null ? (this.coreSize || this.SIZE) * (1 + this.level / 45) : this.bond.size * this.bound.size;
