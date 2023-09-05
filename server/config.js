@@ -56,8 +56,6 @@ module.exports = {
     LEVEL_CAP: 45,
     LEVEL_SOFT_CAP: 0,
     LEVEL_CHEAT_CAP: 45,
-    SKILL_LEAK: 0,
-    STEALTH: 4, // This does nothing. TODO: Find original purpose
     MIN_SPEED: 0.001,
     SKILL_BOOST: 5,
     BOTS: 24,

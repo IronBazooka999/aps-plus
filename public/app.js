@@ -1120,8 +1120,8 @@ const timingGraph = graph(),
     gapGraph = graph();
 // The skill bar dividers
 let skas = [];
-for (let i = 0; i < 256; i++) { //if you want to have more skill levels than 255, then update this
-    skas.push(Math.log(4 * (i / 9) + 1) / Math.log(5));
+for (let i = 1; i <= 256; i++) { //if you want to have more skill levels than 255, then update this
+    skas.push((i - 2) * 0.01 + Math.log(4 * (i / 9) + 1) / 1.6);
 }
 const ska = (x) => skas[x];
 let scaleScreenRatio = (by, unset) => {
@@ -1424,19 +1424,17 @@ function drawMessages(spacing) {
 function drawSkillBars(spacing, alcoveSize) {
     // Draw skill bars
     global.canSkill = !!gui.points;
-    statMenu.set(0 + (global.canSkill || global.died || global.statHover));
+    statMenu.set(0 + (global.died || global.statHover || (global.canSkill && gui.skills.every(skill => skill.cap !== skill.amount))));
     global.clickables.stat.hide();
     let vspacing = 4;
     let height = 15;
-    let gap = 35;
+    let gap = 40;
     let len = alcoveSize; // * global.screenWidth; // The 30 is for the value modifiers
     let save = len;
     let x = -spacing - 2 * len + statMenu.get() * (2 * spacing + 2 * len);
     let y = global.screenHeight - spacing - height;
     let ticker = 11;
-    let namedata = gui.getStatNames(
-        global.mockups[gui.type].statnames || -1
-    );
+    let namedata = gui.getStatNames(global.mockups[gui.type].statnames || -1);
     for (let i = 0; i < gui.skills.length; i++) {
         ticker--;
         //information about the bar
@@ -1457,15 +1455,15 @@ function drawSkillBars(spacing, alcoveSize) {
 
         //bar fills
         drawBar(x + height / 2, x - height / 2 + len * ska(cap), y + height / 2, height - 3 + config.graphical.barChunk, color.black);
-        drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(cap), y + height / 2, height - 3, color.grey);
-        drawBar(x + height / 2, x + height / 2 + (len - gap) * ska(level), y + height / 2, height - 3.5, col);
+        drawBar(x + height / 2, x + height / 2 + len * ska(cap) - gap, y + height / 2, height - 3, color.grey);
+        drawBar(x + height / 2, x + height / 2 + len * ska(level) - gap, y + height / 2, height - 3.5, col);
 
         // Blocked-off area
         if (blocking) {
             ctx.lineWidth = 1;
             ctx.strokeStyle = color.grey;
             for (let j = cap + 1; j < max; j++) {
-                drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
+                drawGuiLine(x + len * ska(j) - gap, y + 1.5, x + len * ska(j) - gap, y - 3 + height);
             }
         }
 
@@ -1473,7 +1471,7 @@ function drawSkillBars(spacing, alcoveSize) {
         ctx.strokeStyle = color.black;
         ctx.lineWidth = 1;
         for (let j = 1; j < level + 1; j++) {
-            drawGuiLine(x + (len - gap) * ska(j), y + 1.5, x + (len - gap) * ska(j), y - 3 + height);
+            drawGuiLine(x + len * ska(j) - gap, y + 1.5, x + len * ska(j) - gap, y - 3 + height);
         }
 
         // Skill name
