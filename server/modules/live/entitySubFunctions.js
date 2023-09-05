@@ -60,6 +60,7 @@ class Skill {
         this.deduction = 0;
         this.level = 0;
         this.canUpgrade = false;
+        this.maxSkillCap = c.SKILL_CAP;
         this.set([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         this.maintain();
     }
@@ -121,11 +122,9 @@ class Skill {
         if (this.score - this.deduction >= this.levelScore) {
             this.deduction += this.levelScore;
             this.level += 1;
-            this.points += this.levelPoints;
-            if (this.level < c.SKILL_CAP) {
-                if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER) {
-                    this.canUpgrade = true;
-                }
+            if (this.points < this.maxSkillCap) {
+                if (this.level % c.TIER_MULTIPLIER && this.level <= c.MAX_UPGRADE_TIER) this.canUpgrade = true;
+                this.points += this.levelPoints;
                 this.update();
                 return true;
             }
