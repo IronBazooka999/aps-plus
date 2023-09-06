@@ -3757,6 +3757,7 @@ exports.overlord = {
 };
 exports.autoOverseer = makeAuto(exports.overseer);
 exports.turretedDrone = makeAuto(generics.drone);
+exports.overdriveDeco = makeDeco(4);
 exports.overdrive = {
     PARENT: ["genericTank"],
     LABEL: "Overdrive",
@@ -3769,7 +3770,7 @@ exports.overdrive = {
     TURRETS: [
         {
             POSITION: [9, 0, 0, 0, 360, 1],
-            TYPE: makeDeco(4),
+            TYPE: "overdriveDeco",
         },
     ],
     GUNS: [

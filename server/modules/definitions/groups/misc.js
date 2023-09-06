@@ -1254,6 +1254,7 @@ exports.oldDreadnought = {
         },
     ],
 };
+exports.menderDeco = makeDeco(3);
 exports.mender = {
     PARENT: ["genericTank"],
     LABEL: "Mender",
@@ -1303,7 +1304,7 @@ exports.mender = {
     TURRETS: [
         {
             POSITION: [7, 0, 0, 0, 0, 1],
-            TYPE: makeDeco(3),
+            TYPE: "menderDeco",
         },
     ],
 };
