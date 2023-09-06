@@ -1,16 +1,17 @@
 /*
-    DEFINITIONS.JS is DEPRECATED!
-    WARNING: This is not gonna be updated, We advise for you to not use this.
+    DEFINITIONS.JS IS DEPRECATED!
+    definitions.js is no longer being maintained and will be removed in a future update.
     Move to the new definitions folder at server/modules/definitions
 
     If you still need this file for some reason,
-    You can toggle back the setting to use this definitions.js instead of using the new one
+    you can toggle back the setting to use this definitions.js instead of using the new one,
+    but once this file is removed you'll have to use servers/modules/definitions
 */
 console.error(`
 /------------------------------------------------------------------------------------/
 
-DEFINITIONS.JS is DEPRECATED!
-WARNING: This is not gonna be updated, We advise for you to not use this.
+DEFINITIONS.JS IS DEPRECATED!
+definitions.js is no longer being maintained and will be removed in a future update.
 Move to the new definitions system at server/modules/definitions
 
 /------------------------------------------------------------------------------------/
