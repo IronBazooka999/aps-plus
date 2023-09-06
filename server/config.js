@@ -131,7 +131,7 @@ module.exports = {
     // Not exact multiplier either.
     FOOD_AMOUNT_NEST: 1.5,
 
-    // Number of crashers per nest tilel
+    // Number of crashers per nest tile.
     CRASHER_RATIO: 2,
 
 
