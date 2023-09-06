@@ -166,6 +166,7 @@ function hueToRgb(p, q, t) {
 function clamp(n, lower, upper) {
     return Math.min(upper, Math.max(lower, n));
 }
+//TODO: somehow move the calculation to these in reanimateColors to improve performance
 function modifyColor(color, base = "16 0 1 0 false") {
     // Edge cases because spaghetti
     if (typeof color == 'number') {
