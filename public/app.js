@@ -16,22 +16,25 @@ let { socketInit, gui, leaderboard, minimap, moveCompensation, lag, getNow } = s
 //         document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${changelog[0].slice(1).join(":") || "Update lol"}<ul>${changelog.slice(1).map((line) => `<li>${line.slice(1).trim()}</li>`).join("")}</ul><hr></div>`;
 //     }
 // });
-let patchNotes = document.querySelector("#patchNotes");
-try {
-    let parser = new DOMParser(),
-        ChangelogsHTMLFile = await fetch("changelog.html", { cache: "no-cache" }),
-        RawHTMLString = await ChangelogsHTMLFile.text(),
-        ParsedHTML = parser.parseFromString(RawHTMLString, "text/html"),
-        titles = ParsedHTML.documentElement.getElementsByTagName('h1');
-    for (const title of titles) {
-        title.classList.add('title');
+
+fetch("changelog.html", { cache: "no-cache" })
+.then(async ChangelogsHTMLFile => {
+    let patchNotes = document.querySelector("#patchNotes");
+    try {
+        let parser = new DOMParser(),
+            RawHTMLString = await ChangelogsHTMLFile.text(),
+            ParsedHTML = parser.parseFromString(RawHTMLString, "text/html"),
+            titles = ParsedHTML.documentElement.getElementsByTagName('h1');
+        for (const title of titles) {
+            title.classList.add('title');
+        }
+        
+        patchNotes.innerHTML += ParsedHTML.documentElement.innerHTML;
+    } catch (error) {
+        patchNotes.innerHTML = `<p>An error occured while trying to fetch 'changelogs.html'</p><p>${error}</p>`;
+        console.error(error);
     }
-    
-    patchNotes.innerHTML += ParsedHTML.documentElement.innerHTML;
-} catch (error) {
-    patchNotes.innerHTML = `<p>An error occured while trying to fetch 'changelogs.html'</p><p>${error}</p>`;
-    console.error(error);
-}
+});
 
 class Animation {
     constructor(start, to, smoothness = 0.05) {
@@ -529,9 +532,7 @@ window.onload = async () => {
         let serverSelector = document.getElementById("serverSelector"),
             tbody = document.createElement("tbody");
         serverSelector.style.display = "block";
-        document
-            .getElementById("startMenuSlidingContent")
-            .removeChild(document.getElementById("serverName"));
+        document.getElementById("startMenuSlidingContent").removeChild(document.getElementById("serverName"));
         serverSelector.classList.add("serverSelector");
         serverSelector.classList.add("shadowscroll");
         serverSelector.appendChild(tbody);
@@ -703,9 +704,7 @@ function startGame() {
     util.submitToLocalStorage("playerNameInput");
     util.submitToLocalStorage("playerKeyInput");
     global.playerName = global.player.name = playerNameInput.value;
-    global.playerKey = playerKeyInput.value
-        .replace(/(<([^>]+)>)/gi, "")
-        .substring(0, 64);
+    global.playerKey = playerKeyInput.value.replace(/(<([^>]+)>)/gi, "").substring(0, 64);
     // Change the screen
     global.screenWidth = window.innerWidth;
     global.screenHeight = window.innerHeight;
@@ -719,14 +718,9 @@ function startGame() {
         animloop();
     }
     window.canvas.socket = global.socket;
-    setInterval(
-        () => moveCompensation.iterate(global.socket.cmd.getMotion()),
-        1000 / 30
-    );
+    setInterval(() => moveCompensation.iterate(global.socket.cmd.getMotion()), 1000 / 30);
     document.getElementById("gameCanvas").focus();
-    window.onbeforeunload = () => {
-        return true;
-    };
+    window.onbeforeunload = () => true;
 }
 // Background clearing
 function clearScreen(clearColor, alpha) {

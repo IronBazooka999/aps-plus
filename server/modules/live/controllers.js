@@ -298,6 +298,43 @@ class io_onlyAcceptInArc extends IO {
         }
     }
 }
+class io_stackGuns extends IO {
+    constructor(body, opts = {}) {
+        super(body);
+        this.timeUntilFire = opts.timeUntilFire || 0;
+    }
+    think ({ target }) {
+
+        //find gun that is about to shoot
+        let lowestReadiness = Infinity
+            readiestGun;
+        for (let i = 0; i < this.body.guns; i++) {
+            let gun = this.body.guns[i];
+            if (!gun.canShoot) continue;
+            let reloadStat = (gun.calculator == "necro" || gun.calculator == "fixed reload") ? 1 : (gun.bulletStats === "master" ? this.body.skill : gun.bulletStats).rld,
+                readiness = (1 - gun.cycle) / (gun.settings.reload * reloadStat);
+            if (lowestReadiness > readiness) {
+                lowestReadiness = readiness;
+                readiestGun = gun;
+            }
+        }
+
+        //if we aren't ready, don't spin yet
+        if (this.timeUntilFire && this.timeUntilFire > lowestReadiness) {
+            return;
+        }
+
+        //rotate the target vector based on the gun
+        let targetAngle = Math.atan2(target.y, target.x) + readiestGun.angle,
+            targetLength = Math.sqrt(target.x ** 2 + target.y ** 2);
+        return {
+            target: {
+                x: targetLength * Math.cos(targetAngle),
+                y: targetLength * Math.sin(targetAngle)
+            }
+        };
+    }
+}
 class io_nearestDifferentMaster extends IO {
     constructor(body, opts = {}) {
         super(body);
