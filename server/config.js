@@ -35,6 +35,8 @@ module.exports = {
     // Shape of the arena.
     // Can be "rect" or "circle".
     ARENA_TYPE: "rect",
+
+    // The tiles that the room consist of.
     ROOM_SETUP: [
         [ "norm", "norm", "norm", "norm", "norm", "norm", "roid", "roid", "roid", "norm", "norm", "norm", "norm", "norm", "norm" ],
         [ "norm", "norm", "norm", "norm", "norm", "norm", "norm", "roid", "norm", "norm", "norm", "norm", "norm", "norm", "norm" ],
