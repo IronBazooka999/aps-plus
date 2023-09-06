@@ -634,16 +634,12 @@ exports.makeCeption = (type, name = -1, options = {}) => {
     return output;
 }
 
-exports.makeDeco = (shape, color = 16) => {
-    if (exports["deco" + shape + "_" + color] == null) {
-        exports["deco" + shape + "_" + color] = {
-            PARENT: ["genericEntity"],
-            SHAPE: shape,
-            COLOR: color,
-            INDEPENDENT: true,
-        };
-    }
-    return exports["deco" + shape + "_" + color];
+exports.makeDeco = (shape = 0, color = 16) => {
+    return {
+        PARENT: ["genericTank"],
+        SHAPE: shape,
+        COLOR: color,
+    };
 }
 
 exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {

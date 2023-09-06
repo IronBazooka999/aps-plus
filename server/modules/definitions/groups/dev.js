@@ -497,11 +497,6 @@ exports.auraHealer = {
     LABEL: "Aura Healer",
     TURRETS: [
         {
-            /** SIZE         X             Y         ANGLE        ARC */
-            POSITION: [13, 0, 0, 0, 360, 1],
-            TYPE: "healerSymbol",
-        },
-        {
             POSITION: [14, 0, 0, 0, 0, 1],
             TYPE: "auraHealerGen",
         }
