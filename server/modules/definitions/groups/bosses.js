@@ -169,6 +169,71 @@ exports.boomerTurret = {
         },
     ],
 };
+exports.triTrapGuardTurret = {
+    PARENT: ["genericTank"],
+    COLOR: 5,
+    CONTROLLERS: [["spin", { independent: true }]],
+    GUNS: [],
+};
+for(let i = 0; i < 3; i++) {
+    exports.triTrapGuardTurret.GUNS.push(
+        {
+            POSITION: [17, 8, 1, 0, 0, 120*i, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.flank]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [13, 8, 1, 0, 0, 120*i+60, 0],
+        },
+        {
+            POSITION: [4, 8, 1.7, 13, 0, 120*i+60, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap]),
+                TYPE: "trap",
+                STAT_CALCULATOR: gunCalcNames.trap,
+            },
+        },
+    )
+};
+exports.eliteSpinnerCyclone = {
+    PARENT: ["genericTank"],
+    COLOR: 5,
+    CONTROLLERS: [["spin", { independent: true }]],
+    GUNS: [],
+};
+for (let i = 0; i < 12; i++) {
+    let delay;
+    switch (i % 4) {
+        case 0:
+            delay = 0;
+            break;
+        case 1:
+            delay = 0.5;
+            break;
+        case 2:
+            delay = 0.25;
+            break;
+        case 3:
+            delay = 0.75;
+            break;
+    }
+    exports.eliteSpinnerCyclone.GUNS.push(
+        {
+            POSITION: [15, 3.5, 1, 0, 0, 30 * i, delay],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.twin,
+                    g.puregunner,
+                    g.hurricane,
+                ]),
+                TYPE: "bullet",
+            },
+        },
+    )
+};
 
 // ELITE CRASHERS
 exports.elite = {
@@ -479,6 +544,82 @@ exports.eliteSpawner = {
             TYPE: ["auto4gun", { INDEPENDENT: false, COLOR: 5 }],
         },
     ],
+};
+exports.eliteTrapGuard = {
+    PARENT: ["elite"],
+    AI: { STRAFE: false },
+    GUNS: [],
+    TURRETS: [
+        {
+            POSITION: [9.5, 0, 0, 0, 360, 1],
+            TYPE: "triTrapGuardTurret",
+        },
+    ],
+};
+for (let i = 0; i < 3; i++) {
+    exports.eliteTrapGuard.GUNS.push(
+        {
+            POSITION: [10.5, 6, 1, 0, 0, 120*i+60, 0],
+        },
+        {
+            POSITION: [3, 6, 1.7, 10.5, 0, 120*i+60, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap]),
+                TYPE: "trap",
+                STAT_CALCULATOR: gunCalcNames.trap,
+            },
+        },
+    )
+    exports.eliteTrapGuard.TURRETS.push(
+        {
+            POSITION: [5, 8, -7, 120*i+60, 160, 0],
+            TYPE: ["autoTurret", { INDEPENDENT: false }],
+        },
+        {
+            POSITION: [5, 8, 7, 120*i+60, 160, 0],
+            TYPE: ["autoTurret", { INDEPENDENT: false }],
+        },
+    )
+};
+exports.eliteSpinner = {
+    PARENT: ["elite"],
+    AI: { STRAFE: false },
+    FACING_TYPE: "spin",
+    GUNS: [],
+    TURRETS: [
+        {
+            POSITION: [9.5, 0, 0, 0, 360, 1],
+            TYPE: ["eliteSpinnerCyclone", {COLOR: 5}],
+        },
+    ],
+};
+for (let i = 0; i < 3; i++) {
+    exports.eliteSpinner.GUNS.push(
+        {
+            POSITION: [9.5, 2, 1, -1.5, 11.5, 120*i+10, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.hurricane]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [9.5, 2, 1, 3.5, 6.5, 120*i+10, 1/3],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.hurricane]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [9.5, 2, 1, 8.5, 1.5, 120*i+10, 2/3],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.hurricane]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [2, 20, 0.75, 8, 0, 120*i+60, 0],
+        },
+    )
 };
 
 // OLD ELITE
