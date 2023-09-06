@@ -184,10 +184,10 @@ function modifyColor(color, base = "16 0 1 0 false") {
     }
 
     // Get HSL values
-    let baseColor;
+    let baseColor = colorDetails[0];
     // check if color.base is not a word.
-    if (!isNaN(colorDetails[0])) {
-        baseColor = parseInt(colorDetails[0]);
+    if (!isNaN(baseColor)) {
+        baseColor = parseInt(baseColor);
     }
     baseColor = rgbToHsl(getColor(baseColor));
     
