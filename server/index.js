@@ -630,6 +630,8 @@ function spawnNestFood() {
 }
 const makefood = () => {
     const maxFood = Math.sqrt(c.FOOD_AMOUNT) + views.length * Math.sqrt(room.width * room.height) / c.FOOD_AMOUNT,
+        maxFoodNest = maxFood * c.FOOD_AMOUNT_NEST * room["nest"].length / (room.xgrid * room.ygrid),
+    census = (() => {
         let food = 0;
         let nestFood = 0;
         for (let instance of entities) {
@@ -638,7 +640,7 @@ const makefood = () => {
                 else food++;
             }
         }
-        };
+        return { food, nestFood };
     })();
     if (census.food < maxFood) {
         for (let i = 0; i < maxFood - census.food; i++) {
@@ -651,6 +653,8 @@ const makefood = () => {
             }
         }
     }
+    if (census.nestFood < maxFoodNest) {
+        for (let i = 0; i < maxFoodNest - census.nestFood; i++) {
             if (Math.random() > 0.75) {
                 spawnNestFood();
             }
