@@ -704,6 +704,7 @@ let ioTypes = {
     mapFireToAlt: io_mapFireToAlt,
 
     //aiming related
+    stackGuns: io_stackGuns,
     nearestDifferentMaster: io_nearestDifferentMaster,
     targetSelf: io_targetSelf,
     onlyAcceptInArc: io_onlyAcceptInArc,
