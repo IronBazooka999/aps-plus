@@ -677,6 +677,16 @@ exports.setTrap = {
         DENSITY: 5,
     },
 };
+exports.unsetTrap = {
+    LABEL: "Set Trap",
+    PARENT: ["trap"],
+    SHAPE: -4,
+    MOTION_TYPE: "motor",
+    BODY: {
+        SPEED: 1,
+        DENSITY: 5,
+    },
+};
 exports.boomerang = {
     LABEL: "Boomerang",
     PARENT: ["trap"],

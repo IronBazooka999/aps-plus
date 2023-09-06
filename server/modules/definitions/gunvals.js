@@ -76,7 +76,7 @@ module.exports = {
     },
     fake: {  
         reload: 1,
-        recoil: 1,
+        recoil: 0.00001,
         shudder: 1,
         size: 0.00001,
         health: 0.0001,

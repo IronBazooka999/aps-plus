@@ -130,7 +130,7 @@ exports.twisterTurret = {
                     g.morespeed,
                     g.one_third_reload,
                 ]),
-                TYPE: "hyperspinmissile",
+                TYPE: "spinmissile",
                 STAT_CALCULATOR: gunCalcNames.sustained,
             },
         },
@@ -927,6 +927,112 @@ exports.nestKeeper = {
             ],
         },
     ],
+};
+exports.nestWarden = {
+    PARENT: ["miniboss"],
+    LABEL: "Nest Warden",
+    COLOR: 14,
+    SHAPE: 5,
+    SIZE: 50,
+    BODY: {
+        FOV: 1.3,
+        SPEED: base.SPEED * 0.25,
+        HEALTH: base.HEALTH * 9,
+        SHIELD: base.SHIELD * 1.5,
+        REGEN: base.REGEN,
+        DAMAGE: base.DAMAGE * 2.5,
+    },
+    GUNS: [],
+    TURRETS: [
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE: [
+                "barricadeTurret",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+    ],
+};
+for(let i = 0; i < 5; i++) {
+    exports.nestWarden.GUNS.push(
+        {
+            POSITION: [10.7, 8, 1, 0, 0, 72*i+36, 0],
+        },
+        {
+            POSITION: [1.5, 8, 1.2, 10.7, 0, 72*i+36, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.fast, g.block, g.construct]),
+                TYPE: "unsetTrap",
+            },
+        },
+    );
+    exports.nestWarden.TURRETS.push(
+        {
+            POSITION: [8, 9, 0, 72*i, 120, 0],
+            TYPE: [
+                "cruiserTurret",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        }
+    );
+};
+exports.nestGuardian = {
+    PARENT: ["miniboss"],
+    LABEL: "Nest Guardian",
+    COLOR: 14,
+    SHAPE: 5,
+    SIZE: 50,
+    BODY: {
+        FOV: 1.3,
+        SPEED: base.SPEED * 0.25,
+        HEALTH: base.HEALTH * 9,
+        SHIELD: base.SHIELD * 1.5,
+        REGEN: base.REGEN,
+        DAMAGE: base.DAMAGE * 2.5,
+    },
+    GUNS: [],
+    TURRETS: [
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE: [
+                "twisterTurret",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        },
+    ],
+};
+for(let i = 0; i < 5; i++) {
+    exports.nestGuardian.GUNS.push(
+        {
+            POSITION: [5.5, 7, 1, 6, 0, 72*i+36, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.pound, g.destroy]),
+                TYPE: "bullet",
+                LABEL: "Devastator",
+            },
+        },
+    );
+    exports.nestGuardian.TURRETS.push(
+        {
+            POSITION: [8, 9, 0, 72*i, 120, 0],
+            TYPE: [
+                "swarmerTurret",
+                {
+                    INDEPENDENT: true,
+                    COLOR: 14,
+                },
+            ],
+        }
+    );
 };
 exports.roguePalisade = {
     PARENT: ["miniboss"],
