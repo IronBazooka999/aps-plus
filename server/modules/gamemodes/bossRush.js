@@ -3,17 +3,30 @@ let calculatePoints = wave => 5 + wave * 3;
 class BossRush {
     constructor() {
         this.bossChoices = [
+            // [ cost , definition reference ],
+
+            //elite crashers
             [2, "eliteDestroyer"],
             [2, "eliteGunner"],
             [2, "eliteSprayer"],
             [2, "eliteBattleship"],
             [2, "eliteSpawner"],
+            [2, "eliteTrapGuard"],
+            [2, "eliteSpinner"],
+
+            //elite tanks
             [2, "eliteSkimmer"],
+
+            //mysticals
             [1, "sorcerer"],
             [2, "summoner"],
             [2, "enchantress"],
             [2, "exorcistor"],
-            [3, "nestKeeper"]
+
+            //nesters
+            [3, "nestKeeper"],
+            [3, "nestWarden"],
+            [3, "nestGuardian"],
         ];
         this.friendlyBossChoices = [Class.roguePalisade, Class.rogueArmada];
         this.bigFodderChoices = [Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.shinySentryGun];
@@ -32,7 +45,7 @@ class BossRush {
                 points = Math.ceil(calculatePoints(i)),
                 choices = this.bossChoices;
 
-            while (points > 0) {
+            while (points > 0 && choices.length) {
                 choices = choices.filter(x => x[0] <= points);
                 let choice = ran.choose(choices);
                 points -= choice[0];
@@ -107,8 +120,8 @@ class BossRush {
         return n;
     }
 
-    //yell at everyone
     spawnWave(waveId) {
+        //yell at everyone
         sockets.broadcast(`Wave ${waveId + 1} has arrived!`);
 
         //spawn bosses
