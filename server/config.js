@@ -1,7 +1,8 @@
 module.exports = {
     // Server
 
-    // Game server domain. If 'localhost:NUMBER', the port must equal the port setting below
+    // Game server domain.
+    // If 'localhost:NUMBER', the port must equal the port setting.
     host: "localhost:3000",
 
     // Which port to run the web server on.
