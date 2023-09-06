@@ -16,28 +16,22 @@ let { socketInit, gui, leaderboard, minimap, moveCompensation, lag, getNow } = s
 //         document.getElementById("patchNotes").innerHTML += `<div><b>${changelog[0][0].slice(1).trim()}</b>: ${changelog[0].slice(1).join(":") || "Update lol"}<ul>${changelog.slice(1).map((line) => `<li>${line.slice(1).trim()}</li>`).join("")}</ul><hr></div>`;
 //     }
 // });
-    (async function getChangelogs() {
-        const patchNotes = document.querySelector("#patchNotes")
-        try {
-            const parser = new DOMParser()
-
-            const ChangelogsHTMLFile = await fetch("changelog.html", { cache: "no-cache" })
-            const RawHTMLString = await ChangelogsHTMLFile.text()
-            const ParsedHTML = parser.parseFromString(RawHTMLString, "text/html")
-
-            let titles = ParsedHTML.documentElement.getElementsByTagName('h1')
-            for (const title of titles) {
-                title.classList.add('title')
-            }
-            
-            patchNotes.innerHTML += ParsedHTML.documentElement.innerHTML
-        } catch (error) {
-            patchNotes.innerHTML = ""
-            patchNotes.innerHTML += "<p>An error occured while trying to fetch 'changelogs.html'</p>"
-            patchNotes.innerHTML += `<p>${error}</p>`
-            console.error(error)
-        }
-    })()  
+let patchNotes = document.querySelector("#patchNotes");
+try {
+    let parser = new DOMParser(),
+        ChangelogsHTMLFile = await fetch("changelog.html", { cache: "no-cache" }),
+        RawHTMLString = await ChangelogsHTMLFile.text(),
+        ParsedHTML = parser.parseFromString(RawHTMLString, "text/html"),
+        titles = ParsedHTML.documentElement.getElementsByTagName('h1');
+    for (const title of titles) {
+        title.classList.add('title');
+    }
+    
+    patchNotes.innerHTML += ParsedHTML.documentElement.innerHTML;
+} catch (error) {
+    patchNotes.innerHTML = `<p>An error occured while trying to fetch 'changelogs.html'</p><p>${error}</p>`;
+    console.error(error);
+}
 
 class Animation {
     constructor(start, to, smoothness = 0.05) {
@@ -174,13 +168,15 @@ function clamp(n, lower, upper) {
 }
 function modifyColor(color, base = "16 0 1 0 false") {
     // Edge cases because spaghetti
-    if (typeof color == 'number')
+    if (typeof color == 'number') {
         color = color + " 0 1 0 false";
-    if (typeof base == 'number')
+    }
+    if (typeof base == 'number') {
         base = base + " 0 1 0 false";
+    }
     // Split into array
-    let colorDetails = color.split(" ");
-    let baseDetails = base.split(" ");
+    let colorDetails = color.split(" "),
+        baseDetails = base.split(" ");
 
     // Color mirroring
     if (colorDetails[0] == "-1") {
@@ -188,32 +184,27 @@ function modifyColor(color, base = "16 0 1 0 false") {
     }
 
     // Get HSL values
-    let baseColor = (function () {
-        let output
-        // check if color.base is a word
-        if (isNaN(colorDetails[0])) {
-            output = rgbToHsl(getColor(colorDetails[0]))
-            // if not then check if its a number, will accept "-1"
-        } else if (!isNaN(colorDetails[0])) {
-            output = rgbToHsl(getColor(parseInt(colorDetails[0])));
-        }
-        return output
-    })()
+    let baseColor;
+    // check if color.base is not a word.
+    if (!isNaN(colorDetails[0])) {
+        baseColor = parseInt(colorDetails[0]);
+    }
+    baseColor = rgbToHsl(getColor(baseColor));
     
     // Get color config
-    let hueShift = parseFloat(colorDetails[1]) / 360;
-    let saturationShift = parseFloat(colorDetails[2]);
-    let brightnessShift = parseFloat(colorDetails[3]) / 100;
-    let allowBrightnessInvert = colorDetails[4] == 'true';
+    let hueShift = parseFloat(colorDetails[1]) / 360,
+        saturationShift = parseFloat(colorDetails[2]),
+        brightnessShift = parseFloat(colorDetails[3]) / 100,
+        allowBrightnessInvert = colorDetails[4] == 'true';
 
     // Apply config
-    let finalHue = (baseColor[0] + hueShift) % 1;
+    let finalHue = (baseColor[0] + hueShift) % 1,
+        finalSaturation = clamp(baseColor[1] * saturationShift, 0, 1),
+        finalBrightness = baseColor[2] + brightnessShift;
 
-    let finalSaturation = clamp(baseColor[1] * saturationShift, 0, 1);
-
-    let finalBrightness = baseColor[2] + brightnessShift;
-    if (allowBrightnessInvert && (finalBrightness > 1 || finalBrightness < 0)) 
+    if (allowBrightnessInvert && (finalBrightness > 1 || finalBrightness < 0)) {
         finalBrightness -= brightnessShift * 2;
+    }
     finalBrightness = clamp(finalBrightness, 0, 1);
     // Gaming.
     return hslToRgb(finalHue, finalSaturation, finalBrightness);
