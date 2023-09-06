@@ -188,7 +188,17 @@ function modifyColor(color, base = "16 0 1 0 false") {
     }
 
     // Get HSL values
-    let baseColor = rgbToHsl(getColor(parseInt(colorDetails[0])));
+    let baseColor = (function () {
+        let output
+        // check if color.base is a word
+        if (isNaN(colorDetails[0])) {
+            output = rgbToHsl(getColor(colorDetails[0]))
+            // if not then check if its a number, will accept "-1"
+        } else if (!isNaN(colorDetails[0])) {
+            output = rgbToHsl(getColor(parseInt(colorDetails[0])));
+        }
+        return output
+    })()
     
     // Get color config
     let hueShift = parseFloat(colorDetails[1]) / 360;
@@ -273,88 +283,146 @@ function reanimateColors() {
 function getColor(colorNumber) {
     switch (colorNumber) {
         case 0:
+        case "teal":
+        case "aqua":
             return color.teal;
         case 1:
+        case "lightGreen":
             return color.lgreen;
         case 2:
+        case "orange":
             return color.orange;
         case 3:
+        case "yellow":
             return color.yellow;
         case 4:
+        case "lavender":
             return color.lavender;
         case 5:
+        case "pink":
             return color.pink;
         case 6:
+        case "veryLightGrey":
+        case "veryLightGray":
             return color.vlgrey;
         case 7:
+        case "lightGrey":
+        case "lightGray":
             return color.lgrey;
         case 8:
+        case "pureWhite":
             return color.guiwhite;
         case 9:
+        case "black":
             return color.black;
         case 10:
+        case "blue":
             return color.blue;
         case 11:
+        case "green":
             return color.green;
         case 12:
+        case "red":
             return color.red;
         case 13:
+        case "gold":
             return color.gold;
         case 14:
+        case "purple":
             return color.purple;
         case 15:
+        case "magenta":
             return color.magenta;
         case 16:
+        case "grey":
+        case "gray":
             return color.grey;
         case 17:
+        case "darkGrey":
+        case "darkGray":
             return color.dgrey;
         case 18:
+        case "white":
             return color.white;
         case 19:
+        case "pureBlack":
             return color.guiblack;
         case 20:
+        case "animatedBlueRed":
             return animatedColor.blue_red;
         case 21:
+        case "animatedBlueGrey":
+        case "animatedBlueGray":
             return animatedColor.blue_grey;
         case 22:
+        case "animatedGreyBlue":
+        case "animatedGrayBlue":
             return animatedColor.grey_blue;
         case 23:
+        case "animatedRedGrey":
+        case "animatedRedGray":
             return animatedColor.red_grey;
         case 24:
+        case "animatedGreyRed":
+        case "animatedGrayRed":
             return animatedColor.grey_red;
         case 25:
+        case "mustard":
             return "#C49608";
         case 26:
+        case "darkOrange":
             return "#EC7B0F";
         case 27:
+        case "brown":
             return "#895918";
         case 28:
+        case "cyan":
+        case "turquoise":
             return "#13808E";
         case 29:
+        case "animatedLesbian":
             return animatedColor.lesbian;
         case 30:
+        case "powerGem":
+        case "powerStone":
             return "#a913cf";
         case 31:
+        case "spaceGem":
+        case "spaceStone":
             return "#226ef6";
         case 32:
+        case "realityGem":
+        case "realityStone":
             return "#ff1000";
         case 33:
+        case "soulGem":
+        case "soulStone":
             return "#ff9000";
         case 34:
+        case "timeGem":
+        case "timeStone":
             return "#00e00b";
         case 35:
+        case "mindGem":
+        case "mindStone":
             return "#ffd300";
         case 36:
+        case "rainbow":
             return animatedColor.gay;
         case 37:
+        case "animatedTrans":
             return animatedColor.trans;
         case 38:
+        case "animatedBi":
             return animatedColor.bi;
         case 39:
+        case "pumpkinStem":
             return "#654321";
         case 40:
+        case "pumpkinBody":
             return "#e58100";
         case 41:
+        case "tree":
             return "#267524";
         default:
             return "#00000000";

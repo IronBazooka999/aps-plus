@@ -82,8 +82,8 @@ class Gun {
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
             if (info.PROPERTIES.COLOR != null) {
                 if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string") {
-                    if (!isNaN(info.PROPERTIES.COLOR) && !isNaN(parseFloat(info.PROPERTIES.COLOR)))
-                        this.colorUnboxed.base = info.PROPERTIES.COLOR;
+                    if (!isNaN(info.PROPERTIES.COLOR) && !isNaN(parseFloat(info.PROPERTIES.COLOR)) || /^[a-zA-Z]*$/.test(info.PROPERTIES.COLOR))
+                        this.colorUnboxed.base = info.PROPERTIES.COLOR; 
                 }
                 else if (typeof info.PROPERTIES.COLOR === "object")
                     this.colorUnboxed = {
@@ -877,7 +877,7 @@ class Entity extends EventEmitter {
             this.shapeData = set.SHAPE;
         }
         if (set.COLOR != null) {
-            if (typeof set.COLOR === "number")
+            if (typeof set.COLOR === "number" || typeof set.COLOR === 'string')
                 this.colorUnboxed.base = set.COLOR;
             else if (typeof set.COLOR === "object")
                 this.colorUnboxed = {
