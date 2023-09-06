@@ -1,4 +1,4 @@
-Everything in definitions.js is in the process of being migrated to `server/modules/definitions`.
+Everything in definitions.js has been migrated to `server/modules/definitions`.
 
 group guide (by taureon):
 bosses   : anything related to bosses
