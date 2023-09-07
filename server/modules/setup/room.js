@@ -6,6 +6,8 @@ const room = {
     setup: c.ROOM_SETUP,
     xgrid: c.X_GRID,
     ygrid: c.Y_GRID,
+    tileWidth: c.WIDTH / c.X_GRID,
+    tileHeight: c.HEIGHT / c.Y_GRID,
     gameMode: c.MODE,
     skillBoost: c.SKILL_BOOST,
     scale: {

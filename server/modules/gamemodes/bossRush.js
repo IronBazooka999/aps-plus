@@ -6,27 +6,31 @@ class BossRush {
             // [ cost , definition reference ],
 
             //elite crashers
-            [2, "eliteDestroyer"],
-            [2, "eliteGunner"],
-            [2, "eliteSprayer"],
-            [2, "eliteBattleship"],
-            [2, "eliteSpawner"],
-            [2, "eliteTrapGuard"],
-            [2, "eliteSpinner"],
+            [  2, "eliteDestroyer"],
+            [  2, "eliteGunner"],
+            [  2, "eliteSprayer"],
+            [  2, "eliteBattleship"],
+            [  2, "eliteSpawner"],
+            [  2, "eliteTrapGuard"],
+            [  2, "eliteSpinner"],
 
             //elite tanks
-            [2, "eliteSkimmer"],
+            [  2, "eliteSkimmer"],
 
             //mysticals
-            [1, "sorcerer"],
-            [2, "summoner"],
-            [2, "enchantress"],
-            [2, "exorcistor"],
+            [  1, "sorcerer"],
+            [  2, "summoner"],
+            [  2, "enchantress"],
+            [  2, "exorcistor"],
 
             //nesters
-            [3, "nestKeeper"],
-            [3, "nestWarden"],
-            [3, "nestGuardian"],
+            [  3, "nestKeeper"],
+            [  3, "nestWarden"],
+            [  3, "nestGuardian"],
+
+            //eternals
+            [100, "kronos"],
+            //[100, "ragnarok"],
         ];
         this.friendlyBossChoices = [Class.roguePalisade, Class.rogueArmada];
         this.bigFodderChoices = [Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.shinySentryGun];
@@ -60,9 +64,7 @@ class BossRush {
     spawnFriendlyBoss() {
         let o = new Entity(room.randomType('bas1'));
         o.define(ran.choose(this.friendlyBossChoices));
-        o.define({
-            DANGER: 10
-        });
+        o.define({ DANGER: 10 });
         o.color = 10;
         o.team = -1;
         o.controllers.push(new ioTypes.nearestDifferentMaster(o));
@@ -103,21 +105,23 @@ class BossRush {
     }
 
     spawnEnemyWrapper(loc, type) {
-        let thisWave = this, n = new Entity(loc);
-        n.define(type);
-        n.team = TEAM_ENEMIES;
-        n.FOV = 10;
-        n.refreshBodyAttributes();
-        n.controllers.push(new ioTypes.bossRushAI(n));
-        n.on('dead', () => {
+        let enemy = new Entity(loc);
+        enemy.define(type);
+        enemy.team = TEAM_ENEMIES;
+        enemy.FOV = 10;
+        enemy.refreshBodyAttributes();
+        enemy.controllers.push(new ioTypes.bossRushAI(enemy));
+
+        this.remainingEnemies++;
+        enemy.on('dead', () => {
             //this enemy has been killed, decrease the remainingEnemies counter
             //if afterwards the counter happens to be 0, announce that the wave has been defeated
-            if (!--thisWave.remainingEnemies) {
-                sockets.broadcast(`Wave ${thisWave.waveId + 1} is defeated!`);
+            if (!--this.remainingEnemies) {
+                sockets.broadcast(`Wave ${this.waveId + 1} is defeated!`);
             }
         });
-        thisWave.remainingEnemies++;
-        return n;
+        
+        return enemy;
     }
 
     spawnWave(waveId) {
@@ -126,11 +130,15 @@ class BossRush {
 
         //spawn bosses
         for (let boss of this.waves[waveId]) {
-            let spot = null, m = 0;
-            do { spot = room.randomType('boss'); } while (dirtyCheck(spot, 500) && ++m < 30);
-            let o = this.spawnEnemyWrapper(spot, boss);
-            o.define({ DANGER: 25 + o.SIZE / 5 });
-            o.isBoss = true;
+            let spot = null,
+                attempts = 0;
+            do {
+                spot = room.randomType('boss');
+            } while (dirtyCheck(spot, 500) && ++attempts < 30);
+
+            let enemy = this.spawnEnemyWrapper(spot, boss);
+            enemy.define({ DANGER: 25 + enemy.SIZE / 5 });
+            enemy.isBoss = true;
         }
 
         //spawn fodder enemies
