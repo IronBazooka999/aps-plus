@@ -1053,7 +1053,7 @@ const eyes = (socket) => {
             for (let i = 0; i < nearby.length; i++) {
                 let e = nearby[i];
                 if (e.photo &&
-                    Math.abs(e.x - x) < fov / 2 + 1.5 * e.size &&
+                    Math.abs(e.x - x) <  fov / 2             + 1.5 * e.size &&
                     Math.abs(e.y - y) < (fov / 2) * (9 / 16) + 1.5 * e.size
                 ) {
                     // Grab the photo

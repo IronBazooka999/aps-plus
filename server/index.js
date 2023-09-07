@@ -679,7 +679,9 @@ const maintainloop = () => {
 };
 
 // Bring it to life
+//TODO: compress all of these intervals into one big one
 setInterval(gameloop, room.cycleSpeed);
 setInterval(maintainloop, 1000);
 setInterval(speedcheckloop, 1000);
 setInterval(gamemodeLoop, 33.33);
+setInterval(roomLoop, 40);

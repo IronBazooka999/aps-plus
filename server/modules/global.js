@@ -55,6 +55,32 @@ global.getTeamName = team => ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANG
 global.getTeamColor = team => [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3 + " 0 1 0 false";
 global.isPlayerTeam = team => team < 0 && team > -9;
 
+global.Tile = class Tile {
+    constructor (args) {
+        this.args = args;
+        if ("object" !== typeof this.args) {
+            throw new Error("First argument has to be an object!");
+        }
+
+        this.color = args.color ?? 8;
+        this.naturalSpawns = args.naturalSpawns ? [...args.naturalSpawns] : [];
+        this.protector = args.protector ?? null;
+        this.protectorDefaultTeam = args.protectorDefaultTeam ?? global.TEAM_ENEMIES;
+        this.protectorIsCapturable = args.protectorIsCapturable ?? false;
+        this.teams = args.teams ?? [global.TEAM_ROOM, global.TEAM_ENEMIES];
+        this.onlyAllowTeams = args.onlyAllowTeams ?? false;
+        this.roids = args.roids ? [...args.roids] : [];
+        this.init = tile.init || (()=>{});
+        if ("function" !== typeof this.init) {
+            throw new Error("'init' property must be a function!");
+        }
+        this.tick = tile.tick || (()=>{});
+        if ("function" !== typeof this.tick) {
+            throw new Error("'tick' property must be a function!");
+        }
+    }
+}
+
 // Now that we've set up the global variables, we import all the modules, then put them into global varialbles and then export something just so this file is run.
 const requires = [
     "./live/class.js", // Class dictionary.

@@ -196,9 +196,58 @@ room.gaussType = function(type, clustering) {
     } while (!room.isIn(type, location));
     return location;
 };
+room.getAt = location => {
+    if (!room.isInRoom(location)) return undefined;
+    let a = Math.floor((location.y * room.ygrid) / room.height);
+    let b = Math.floor((location.x * room.xgrid) / room.width);
+    return room.setup[a][b];
+};
+
+class TileEntity {
+    constructor (tile, location) {
+        if (!(tile instanceof Tile)) {
+            throw new Error('A cell in the room setup is not a Tile object!' +
+                ('string' == typeof tile ? ' But it is a string, which means you probably need to update your room setup!' : '')
+            );
+        }
+        // this.blueprint = tile.args;
+        this.color = tile.color;
+        this.location = tile.location;
+        this.init = tile.init;
+        this.tick = tile.tick;
+        this.entities = [];
+    }
+
+    //Dummy
+    init () {}
+    tick () {}
+}
+
+// NOTE: Uncomment when room rework is done
+//for (let y in room.setup) {
+//    for (let x in room.setup[y]) {
+//        break;
+//        let tile = room.setup[y][x] = new TileEntity(room.setup[y][x]);
+//        tile.init(tile);
+//    }
+//}
 
 for (let type of room.cellTypes) room.findType(type);
 
 room.nestFoodAmount = 1.5 * Math.sqrt(room.nest.length) / room.xgrid / room.ygrid;
 
-module.exports = { room, roomSpeed };
+function roomLoop() {
+    // NOTE: Uncomment when room rework is done
+    //for (let i = 0; i < entities.length; i++) {
+    //    let tile = room.getAt(entities[i])
+    //    if (tile) tile.entities.push(entities[i]);
+    //}
+    //for (let y = 0; y < room.setup; y++) {
+    //    for (let x = 0; x < room.setup[y]; x++) {
+    //        tile.tick(tile);
+    //        tile.entities = [];
+    //    }
+    //}
+}
+
+module.exports = { room, roomSpeed, roomLoop };
