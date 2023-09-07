@@ -2710,7 +2710,7 @@ exports.tripletTurret = {
 };
 exports.kronosBottomBody = {
     LABEL: "",
-    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    CONTROLLERS: [["spin", { independent: true, speed: -0.01 }]],
     COLOR: 6,
     SIZE: 100,
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
