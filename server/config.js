@@ -160,7 +160,7 @@ module.exports = {
     // Miscellaneous
 
     // If someone tries to get a file that does not exist, send them this instead.
-    DEFAULT_FILE: '\\index.html',
+    DEFAULT_FILE: 'index.html',
 
     // Window name of the server terminal.
     WINDOW_NAME: 'APS++ Game Server Instance',

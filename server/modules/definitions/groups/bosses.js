@@ -1228,6 +1228,23 @@ exports.rogueCelestial = {
     LABEL: "Rogue Celestial",
     COLOR: 17,
 };
+exports.eternal = {
+    PARENT: ["miniboss"],
+    LABEL: "Eternal",
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    VALUE: 4e6,
+    SHAPE: 11,
+    LEVEL: 300,
+    SIZE: 75,
+    BODY: {
+        FOV: 1,
+        HEALTH: 3000,
+        SHIELD: 2,
+        REGEN: base.REGEN * 0.1,
+        SPEED: 0.75,
+        DAMAGE: 5,
+    },
+};
 
 // PALADIN
 exports.swarmerTurret = {
@@ -2498,4 +2515,277 @@ exports.tyr = {
         POSITION: [8.6, 0, 0, 0, 360, 1],
         TYPE: ["tyrUpperBody"],
     }]
+};
+
+// Eternals
+exports.kronosMissile = {
+    PARENT: ["missile"],
+    GUNS: [
+        {
+            POSITION: [14, 6, 1, 0, -2, 150, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [14, 6, 1, 0, 2, 210, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "bullet",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+                STAT_CALCULATOR: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [3, 7, 1, 11, -2, 90, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.trap,
+                    g.halfrange,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "trap",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+            },
+        },
+        {
+            POSITION: [11, 6, 1, 0, -2, 90, 0.5],
+        },
+        {
+            POSITION: [3, 7, 1, 11, 2, -90, 0],
+            PROPERTIES: {
+                AUTOFIRE: true,
+                SHOOT_SETTINGS: combineStats([
+                    g.trap,
+                    g.halfrange,
+                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ]),
+                TYPE: [
+                    "trap",
+                    {
+                        PERSISTS_AFTER_DEATH: true,
+                    },
+                ],
+            },
+        },
+        {
+            POSITION: [11, 6, 1, 0, 2, -90, 0.5],
+        },
+    ],
+};
+exports.kronosSkimmerTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Skimmer",
+    BODY: {
+        FOV: 10,
+    },
+    COLOR: 16,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [8, 20, -0.5, 9, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                    g.halfreload,
+                ]),
+                TYPE: "kronosMissile",
+            },
+        },
+        {
+            POSITION: [13, 18, -0.8, 0, 0, 0, 0],
+        },
+    ],
+};
+exports.carrierTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Carrier",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+            POSITION: [7, 8, 0.6, 7, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.battle, g.carrier, g.pound, g.morespeed]),
+                TYPE: "swarm",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 8, 0.6, 7, 2, 30, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.battle, g.carrier, g.pound, g.morespeed]),
+                TYPE: "swarm",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 8, 0.6, 7, -2, -30, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.battle, g.carrier, g.pound, g.morespeed]),
+                TYPE: "swarm",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+    ],
+};
+exports.tripletTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Triplet",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [18, 10, 1, 0, 5, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [18, 10, 1, 0, -5, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [21, 10, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+};
+exports.kronosBottomBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 6,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 9,
+    FOV: 10,
+    TURRETS: [],
+};
+for(let i = 0; i < 9; i++) {
+    exports.kronosBottomBody.TURRETS.push(
+        {
+            POSITION: [6.5, 9, 0, 360/9*(i+0.5), 160, 0],
+            TYPE: ["kronosSkimmerTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.kronosMiddleBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    COLOR: 6,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 7,
+    FOV: 1,
+    TURRETS: [],
+};
+for(let i = 0; i < 7; i++) {
+    exports.kronosMiddleBody.TURRETS.push(
+        {
+            POSITION: [8, 8.5, 0, 360/7*(i+0.5), 160, 0],
+            TYPE: ["carrierTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.kronosTopBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 6,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 5,
+    FOV: 1,
+    TURRETS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.kronosTopBody.TURRETS.push(
+        {
+            POSITION: [9.5, 9, 0, 360/5*(i+0.5), 160, 0],
+            TYPE: ["tripletTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.kronos = {
+    PARENT: ["eternal"],
+    NAME: "Kronos",
+    COLOR: 6,
+    TURRETS: [
+        {
+            POSITION: [16, 0, 0, 0, 360, 1],
+            TYPE: ["kronosBottomBody"],
+        },
+        {
+            POSITION: [11, 0, 0, 0, 360, 1],
+            TYPE: ["kronosMiddleBody"],
+        },
+        {
+            POSITION: [6, 0, 0, 0, 360, 1],
+            TYPE: ["kronosTopBody"],
+        },
+    ],
+};
+for(let i = 0; i < 11; i++) {
+    exports.kronos.TURRETS.push(
+        {
+            POSITION: [6, 9, 0, 360/11*(i+0.5), 180, 0],
+            TYPE: ["trapTurret", { INDEPENDENT: true, }],
+        },
+    )
 };
