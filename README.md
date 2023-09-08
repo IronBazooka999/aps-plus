@@ -11,7 +11,7 @@ In order to run your server via localhost, you will need to install these first:
 - [Node.js v16 or later](https://nodejs.org/en)
 - [ws](https://www.npmjs.com/package/ws)
 
-Once the required software is installed, open run.bat. If there aren't any errors, your server will start up. Go to localhost:3000 in your favourite web browser (keep the command prompt open, closing it will shut down the server) to play.
+Once the required software is installed, open either run.bat (if you're on Windows) or run.sh (if you're not). If there aren't any errors, your server will start up. Go to localhost:3000 in your favourite web browser (keep the command prompt open, closing it will shut down the server) to play.
 
 ## Useful Tools
 
