@@ -5521,9 +5521,8 @@ exports.paramedic = {
 };
 
 // TANK UPGRADE PATHS
-exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper"];
+exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper"/* "whirlwind"*/];
     exports.basic.UPGRADES_TIER_2 = ["smasher"];
-        exports.basic.UPGRADES_TIER_3 = ["single"];
         exports.smasher.UPGRADES_TIER_3 = ["megaSmasher", "spike", "autoSmasher", "landmine"];
 
     exports.twin.UPGRADES_TIER_2 = ["doubleTwin", "tripleShot", "gunner", "hexaTank"];
@@ -5533,7 +5532,7 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
 
     exports.sniper.UPGRADES_TIER_2 = ["assassin", "hunter", "minigun", "rifle"];
         exports.sniper.UPGRADES_TIER_3 = ["bushwhacker"];
-        exports.assassin.UPGRADES_TIER_3 = ["ranger", "falcon", "stalker", "autoAssassin"];
+        exports.assassin.UPGRADES_TIER_3 = ["ranger", "falcon", "stalker", "autoAssassin", "single"];
         exports.hunter.UPGRADES_TIER_3 = ["predator", "xHunter", "poacher", "ordnance", "dual"];
         exports.rifle.UPGRADES_TIER_3 = ["musket", "crossbow", "armsman"];
 
@@ -5563,6 +5562,11 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
 
     exports.trapper.UPGRADES_TIER_2 = ["builder", "triTrapper", "trapGuard"];
         exports.trapper.UPGRADES_TIER_3 = ["barricade", "overtrapper"];
-        exports.builder.UPGRADES_TIER_3 = ["constr", "autoBuilder", "engineer", "boomer", /*assembler coming soonTM*/ "architect", "conqueror"];
+        exports.builder.UPGRADES_TIER_3 = ["constr", "autoBuilder", "engineer", "boomer", /*assembler*/ "architect", "conqueror"];
         exports.triTrapper.UPGRADES_TIER_3 = ["fortress", "hexaTrapper", "septaTrapper", "architect"];
         exports.trapGuard.UPGRADES_TIER_3 = ["bushwhacker", "gunnerTrapper", "bomber", "conqueror", "bulwark"];
+
+    /*exports.whirlwind.UPGRADES_TIER_2 = ["tornado", "hurricane"],
+        exports.whirlwind.UPGRADES_TIER_3 = ["hexaWhirl", "munition", "whirl3", "whirlGuard", "prophet", "vortex"],
+        exports.tornado.UPGRADES_TIER_3 = ["megaTornado", "tempest", "thunderbolt"],
+        exports.hurricane.UPGRADES_TIER_3 = ["typhoon", "blizzard"],*/
