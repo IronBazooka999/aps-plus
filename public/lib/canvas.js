@@ -251,7 +251,7 @@ class Canvas {
             this.target.y *= -1;
         }
         this.target.x *= global.screenWidth / this.width;
-        this.target.y *= global.screenWidth / this.width;
+        this.target.y *= global.screenHeight / this.height;
     }
 }
 export { Canvas }
