@@ -57,6 +57,43 @@ function kick(socket, reason = "No reason given.") {
     util.warn(reason + " Kicking.");
     socket.lastWords("K");
 }
+
+function chatLoop() {
+    // clean up expired messages
+    for (let i in chats) {
+        chats[i] = chats[i].filter(chat => chat.expires > new Date().getTime());
+        if (!chats[i].length) {
+            delete chats[i];
+        }
+    }
+
+    // send chat messages to everyone
+    for (let view of views) {
+        let nearby = view.getNearby(),
+            spammersAdded = 0,
+            array = [];
+
+        // data format:
+        // [ entityCount,
+        //   entityId1, chatMessageCount1, chatMsg1_1, chatExp1_1, chatMsg1_2, chatExp1_2, ... ,
+        //   entityId2, chatMessageCount2, chatMsg2_1, chatExp2_1, chatMsg2_2, chatExp2_2, ... ,
+        //   entityId3, chatMessageCount3, chatMsg3_1, chatExp3_1, chatMsg3_2, chatExp3_2, ... ,
+        //   ... ]
+        for (let entity of nearby) {
+            let id = entity.id;
+            if (chats[id]) {
+                spammersAdded++;
+                array.push(id, chats[id].length);
+                for (let chat of chats[id]) {
+                    array.push(chat.message, chat.expires.toString());
+                }
+            }
+        }
+
+        view.socket.talk('CHAT_MESSAGE_ENTITY', spammersAdded, ...array);
+    }
+}
+
 // Handle incoming messages
 function incoming(message, socket) {
     // Only accept binary
@@ -469,12 +506,42 @@ function incoming(message, socket) {
                 socket.talk("m", "You cannot use this.");
             }
             break;
+
+        case "M":
+            let abort, message = m[0];
+
+            if ("string" !==  typeof message) {
+                socket.kick("Non-string chat message.");
+                return 1;
+            }
+
+            events.emit('chatMessage', { message, socket, preventDefault: () => abort = true });
+
+            // we are not anti-choice here.
+            if (abort) break;
+
+            util.log(player.body.name + ': ' + message);
+
+            let id = player.body.id;
+            if (!chats[id]) {
+                chats[id] = [];
+            }
+            // TODO: this needs to be lag compensated, so the message would not last 1 second less due to high ping
+            chats[id].unshift({ message, expires: new Date().getTime() + c.CHAT_MESSAGE_DURATION });
+
+            // do one tick of the chat loop so they don't need to wait 100ms to receive it.
+            chatLoop();
+
+            // for (let i = 0; i < clients.length; i++) {
+            //     clients[i].talk("CHAT_MESSAGE_BOX", message);
+            // }
+            break;
     }
 }
 // Monitor traffic and handle inactivity disconnects
 function traffic(socket) {
     let strikes = 0;
-    // This function will be called in the slow loop
+    // This function wiSl be called in the slow loop
     return () => {
         // Kick if it's d/c'd
         if (util.time() - socket.status.lastHeartbeat > c.maxHeartbeatInterval) {
@@ -516,13 +583,11 @@ function floppy(value = null) {
                 switch (typeof newValue) {
                     case "number":
                     case "string":
-                        {
-                            if (newValue !== value) {
-                                eh = true;
-                            }
+                        if (newValue !== value) {
+                            eh = true;
                         }
                         break;
-                    case "object": {
+                    case "object":
                         if (Array.isArray(newValue)) {
                             if (newValue.length !== value.length) {
                                 eh = true;
@@ -533,7 +598,6 @@ function floppy(value = null) {
                             }
                             break;
                         }
-                    } // jshint ignore:line
                     default:
                         util.error(newValue);
                         throw new Error("Unsupported type for a floppyvar!");
@@ -970,6 +1034,8 @@ const eyes = (socket) => {
     let y = -1000;
     let fov = 0;
     let o = {
+        socket,
+        getNearby: () => nearby,
         add: (e) => {
             if (check(socket.camera, e)) nearby.push(e);
         },
@@ -1473,4 +1539,4 @@ const sockets = {
         util.log("[INFO] New socket opened with ip " + socket.ip);
     }
 };
-module.exports = { sockets };
+module.exports = { sockets, chatLoop };

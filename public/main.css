@@ -523,6 +523,24 @@ a.link {
     height: 100%;
 }
 
+#gameCanvas {
+    position: absolute;
+}
+
+#chatInput {
+    position: absolute;
+    z-index: 1;
+    width: 300px;
+    height: 30px;
+    top: 60%;
+    left: calc(50% - 149px);
+    box-shadow: 0px 0px 5px 2px darkgray;
+    border: 2px solid black;
+    border-radius: 10px;
+    color: black;
+    background-color: #ffffff88;
+}
+
 input [type="image"]:focus {
     border: none;
     outline: 1px solid transparent;

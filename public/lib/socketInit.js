@@ -898,6 +898,22 @@ const socketInit = port => {
                 console.log(m[0]);
                 global.nameColor = m[0];
                 break;
+            case 'CHAT_MESSAGE_ENTITY':
+                get.set(m);
+                global.chats = {};
+
+                for (let i = get.next(); i; i--) {
+                    let spamCollection = [];
+                    global.chats[get.next()] = spamCollection;
+
+                    for (let j = get.next(); j; j--) {
+                        spamCollection.push({
+                            text: get.next(),
+                            expires: parseFloat(get.next())
+                        });
+                    }
+                }
+                break;
             default:
                 throw new Error('Unknown message index.');
         }

@@ -98,6 +98,9 @@ const global = {
     KEY_CHOOSE_4: 72,
     KEY_CHOOSE_5: 74,
     KEY_CHOOSE_6: 75,
+
+    KEY_ENTER: 13,
+
     showTree: false,
     scrollX: 0,
     realScrollX: 0,
@@ -147,6 +150,7 @@ const global = {
     target: { x: 0, y: 0 },
     fps: 60,
     screenSize: Math.min(1920, Math.max(window.innerWidth, 1280)),
-    ratio: window.devicePixelRatio
+    ratio: window.devicePixelRatio,
+    chats: {}
 };
 export { global }

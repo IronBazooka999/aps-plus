@@ -159,6 +159,10 @@ module.exports = {
 
     // Miscellaneous
 
+    // How long a entity chat message lasts in milliseconds.
+    // Includes the fade-out period.
+    CHAT_MESSAGE_DURATION: 30_000,
+
     // If someone tries to get a file that does not exist, send them this instead.
     DEFAULT_FILE: 'index.html',
 
