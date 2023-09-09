@@ -209,8 +209,9 @@ exports.spawnedAlphaPentagon = {
 // GENERATORS
 exports.generatorBase = {
     PARENT: ["genericTank"],
-    SKILL_CAP: [15, 0, 0, 0, 0, 0, 0, 0, 0, 15],
-    INVISIBLE: [0.01, 0.1],
+    SKILL_CAP: [31, 0, 0, 0, 0, 0, 0, 0, 0, 31],
+    ALPHA: [0, 0],
+    IGNORED_BY_AI: true
 };
 exports.eggGenerator = {
     PARENT: ["generatorBase"],
@@ -662,6 +663,12 @@ exports.godbasic = {
         },
     ],
 };
+exports.maximumOverdrive = {
+    PARENT: ["overdrive"],
+    LABEL: "Maximum Overdrive",
+    SKILL_CAP: Array(10).fill(255),
+    SKILL: Array(10).fill(255),
+};
 
 exports.levels = {
     PARENT: ["menu"],
@@ -723,4 +730,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "eggGenerat
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok",*/ "kronos"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer"];
