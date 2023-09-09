@@ -25,15 +25,18 @@ makeRelic = (type, scale = 1) => { // Code by Damocles (https://discord.com/chan
         CONTROLLERS: [],
         VALUE: type.VALUE * 100_000,
         // angle + (type.SHAPE % 2 === 0 ? 0 : fraction);
-        GUNS: Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [4, width, 2.5, 12, y, i * fraction, 0] }))
-        .concat(Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [4, width, 2.5, 12, -y, i * fraction, 0] }))),
+        GUNS: Array(type.SHAPE).fill().map((_, i) => ([
+            { POSITION: [4, width, 2.5, 12,  y, i * fraction, 0] },
+            { POSITION: [4, width, 2.5, 12, -y, i * fraction, 0] }
+        ])).flat(),
         TURRETS: [{
             POSITION: [32.5, 0, 0, 0, 0, 0],
             TYPE: relicBody,
         },
-        ...Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [8, -15,  y, i * fraction, 0, 1], TYPE: relicCasing })),
-        ...Array(type.SHAPE).fill().map((_, i) => ({ POSITION: [8, -15, -y, i * fraction, 0, 1], TYPE: relicCasing }))
-        ],
+        ...Array(type.SHAPE).fill().map((_, i) => ([
+            { POSITION: [8, -15,  y, i * fraction, 0, 1], TYPE: relicCasing },
+            { POSITION: [8, -15, -y, i * fraction, 0, 1], TYPE: relicCasing }
+        ])).flat()],
     };
 };
 
@@ -741,7 +744,7 @@ exports.icosahedron = {
 };
 
 // RELICS
-//no egge lol
+exports.eggRelic = makeRelic(exports.egg);
 exports.squareRelic = makeRelic(exports.square);
 exports.triangleRelic = makeRelic(exports.triangle, 1.45);
 exports.pentagonRelic = makeRelic(exports.pentagon, -0.6);
