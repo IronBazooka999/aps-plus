@@ -57,6 +57,11 @@ if (c.flattenDefintions) {
 					output[key] = toApply[key];
 				}
 			}
+			for (let key in definition) {
+				if (key !== "PARENT") {
+					output[key] = definition[key];
+				}
+			}
 			return output;
 		};
 
