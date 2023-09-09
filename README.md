@@ -1,5 +1,5 @@
 # Open Source Arras
-Formerly (and often still) known as APS++
+Formerly (and commonly) known as APS++
 
 This is an open beta build of an advanced private server template for Arras.io, independent from the official client. This is **not** representative of the final product. Some things may not either be present or work correctly.
 
