@@ -609,8 +609,9 @@ function resizeEvent() {
     if (!config.graphical.fancyAnimations) {
         scale *= 0.5;
     }
-    c.width = global.screenWidth = window.innerWidth * scale;
-    c.height = global.screenHeight = window.innerHeight * scale;
+    global.screenWidth = window.innerWidth * scale;
+    global.screenHeight = window.innerHeight * scale;
+    c.resize(global.screenWidth, global.screenHeight);
     global.ratio = scale;
     global.screenSize = Math.min(1920, Math.max(window.innerWidth, 1280));
 }
@@ -1325,6 +1326,7 @@ function drawFloor(px, py, ratio) {
     for (let y = (global.screenHeight / 2 - py) % gridsize; y < global.screenHeight; y += gridsize) {
         ctx.moveTo(0, y);
         ctx.lineTo(global.screenWidth, y);
+
     }
     ctx.stroke();
     ctx.globalAlpha = 1;
@@ -1353,7 +1355,7 @@ function drawEntities(px, py, ratio) {
         drawEntity(true, baseColor, x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.75 + 0.25 : 0.25 : instance.alpha, 1.1, instance.render.f);
     }
 
-    //dont draw healthbars in screenshot mode
+    //dont draw healthbars and chat messages in screenshot mode
     if (config.graphical.screenshotMode) return;
 
     //draw health bars above entities
@@ -1363,6 +1365,33 @@ function drawEntities(px, py, ratio) {
         x += global.screenWidth / 2;
         y += global.screenHeight / 2;
         drawHealth(x, y, instance, ratio, instance.alpha);
+    }
+
+    for (let instance of global.entities) {
+        //put chat msg above name
+        let size = instance.size * ratio,
+            m = global.mockups[instance.index],
+            realSize = (size / m.size) * m.realSize,
+            x = instance.id === gui.playerid ? 0 : ratio * instance.render.x - px,
+            y = instance.id === gui.playerid ? 0 : ratio * instance.render.y - py;
+        x += global.screenWidth / 2;
+        y += global.screenHeight / 2 - realSize - 45;
+
+        //draw all the msgs
+        for (let i in global.chats[instance.id]) {
+            let chat = global.chats[instance.id][i],
+                text = chat.text,
+                msgLength = measureText(text, 15),
+                alpha = Math.max(0, Math.min(1000, chat.expires - new Date().getTime()) / 1000);
+
+            ctx.globalAlpha = 0.5 * alpha;
+            drawBar(x - msgLength / 2, x + msgLength / 2, y, 30, getColor(instance.color));
+            ctx.globalAlpha = alpha;
+            config.graphical.fontStrokeRatio *= 1.2;
+            drawText(text, x, y + 7, 15, color.guiwhite, "center");
+            config.graphical.fontStrokeRatio /= 1.2;
+            y -= 35;
+        }
     }
 }
 

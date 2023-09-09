@@ -14,6 +14,7 @@ global.fps = "Unknown";
 global.minimap = [];
 global.entities = [];
 global.views = [];
+global.chats = {};
 global.entitiesToAvoid = [];
 global.grid = new hshg.HSHG();
 global.arenaClosed = false;
