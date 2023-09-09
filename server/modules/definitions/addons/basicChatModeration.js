@@ -38,5 +38,7 @@ module.exports = ({ Events }) => {
 			}
 		}, decay);
 	});
+
+	console.log('[basicChatModeration] Loaded spam prevention!');
 };
 

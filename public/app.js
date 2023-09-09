@@ -1367,6 +1367,7 @@ function drawEntities(px, py, ratio) {
         drawHealth(x, y, instance, ratio, instance.alpha);
     }
 
+    let now = Date.now();
     for (let instance of global.entities) {
         //put chat msg above name
         let size = instance.size * ratio,
@@ -1382,7 +1383,7 @@ function drawEntities(px, py, ratio) {
             let chat = global.chats[instance.id][i],
                 text = chat.text,
                 msgLength = measureText(text, 15),
-                alpha = Math.max(0, Math.min(1000, chat.expires - new Date().getTime()) / 1000);
+                alpha = Math.max(0, Math.min(1000, chat.expires - now) / 1000);
 
             ctx.globalAlpha = 0.5 * alpha;
             drawBar(x - msgLength / 2, x + msgLength / 2, y, 30, getColor(instance.color));
@@ -1514,7 +1515,7 @@ function drawSkillBars(spacing, alcoveSize) {
     let gap = 40;
     let len = alcoveSize; // * global.screenWidth; // The 30 is for the value modifiers
     let save = len;
-    let x = -spacing - 2 * len + statMenu.get() * (2 * spacing + 2 * len);
+    let x = spacing + (statMenu.get() - 1) * (height + 50 + len * ska(gui.skills.reduce((largest, skill) => Math.max(largest, skill.cap), 0)));
     let y = global.screenHeight - spacing - height;
     let ticker = 11;
     let namedata = gui.getStatNames(global.mockups[gui.type].statnames || -1);

@@ -60,8 +60,9 @@ function kick(socket, reason = "No reason given.") {
 
 function chatLoop() {
     // clean up expired messages
+    let now = Date.now();
     for (let i in chats) {
-        chats[i] = chats[i].filter(chat => chat.expires > new Date().getTime());
+        chats[i] = chats[i].filter(chat => chat.expires > now);
         if (!chats[i].length) {
             delete chats[i];
         }
@@ -527,7 +528,7 @@ function incoming(message, socket) {
                 chats[id] = [];
             }
             // TODO: this needs to be lag compensated, so the message would not last 1 second less due to high ping
-            chats[id].unshift({ message, expires: new Date().getTime() + c.CHAT_MESSAGE_DURATION });
+            chats[id].unshift({ message, expires: Date.now() + c.CHAT_MESSAGE_DURATION });
 
             // do one tick of the chat loop so they don't need to wait 100ms to receive it.
             chatLoop();

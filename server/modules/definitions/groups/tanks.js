@@ -4814,7 +4814,7 @@ exports.trapGuard = {
 exports.overtrapper = makeOver(exports.weirdTrapper);
 
 // BUILDER UPGRADES
-exports.constr = {
+exports.construct = {
     PARENT: ["genericTank"],
     LABEL: "Constructor",
     STAT_NAMES: statnames.trap,
@@ -5556,13 +5556,13 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
 
     exports.pounder.UPGRADES_TIER_2 = ["destroyer", "builder", "artillery", "launcher"];
         exports.pounder.UPGRADES_TIER_3 = ["shotgun", "eagle"];
-        exports.destroyer.UPGRADES_TIER_3 = ["conqueror", "annihilator", "hybrid", "constr"];
+        exports.destroyer.UPGRADES_TIER_3 = ["conqueror", "annihilator", "hybrid", "construct"];
         exports.artillery.UPGRADES_TIER_3 = ["mortar", "ordnance", "beekeeper", "fieldGun"/*, "munition"*/];
         exports.launcher.UPGRADES_TIER_3 = ["skimmer", "twister", "swarmer", "sidewinder", "fieldGun"/*, "vortex"*/];
 
     exports.trapper.UPGRADES_TIER_2 = ["builder", "triTrapper", "trapGuard"];
         exports.trapper.UPGRADES_TIER_3 = ["barricade", "overtrapper"];
-        exports.builder.UPGRADES_TIER_3 = ["constr", "autoBuilder", "engineer", "boomer", /*assembler*/ "architect", "conqueror"];
+        exports.builder.UPGRADES_TIER_3 = ["construct", "autoBuilder", "engineer", "boomer", /*assembler,*/ "architect", "conqueror"];
         exports.triTrapper.UPGRADES_TIER_3 = ["fortress", "hexaTrapper", "septaTrapper", "architect"];
         exports.trapGuard.UPGRADES_TIER_3 = ["bushwhacker", "gunnerTrapper", "bomber", "conqueror", "bulwark"/*, "whirlGuard"*/];
 
