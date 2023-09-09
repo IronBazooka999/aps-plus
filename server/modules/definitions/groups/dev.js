@@ -418,6 +418,7 @@ exports.colorMan = {
 
 exports.miscTestHelper2 = {
     PARENT: ["genericTank"],
+    TURRET_FACES_CLIENT: true,
     COLOR: -1,
     GUNS: [
         {
@@ -432,6 +433,7 @@ exports.miscTestHelper2 = {
 };
 exports.miscTestHelper = {
     PARENT: ["genericTank"],
+    TURRET_FACES_CLIENT: true,
     COLOR: {
         BASE: -1,
         BRIGHTNESS_SHIFT: 15,
@@ -461,7 +463,7 @@ exports.miscTest = {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.noRandom]),
-                TYPE: "kronosMissile",
+                TYPE: "bullet",
             },
         },
     ],
