@@ -1,52 +1,109 @@
 const { basePolygonDamage, basePolygonHealth } = require('../constants.js'),
-    center = [0,0], // Centerpoint for SHAPE arrays
 
-makeRelic = (type, scale = 1) => { // Code by Damocles (https://discord.com/channels/366661839620407297/508125275675164673/1090010998053818488)
+// Code by Damocles (https://discord.com/channels/366661839620407297/508125275675164673/1090010998053818488)
+// Albeit heavily modified because the math in the original didn't work LOL
+makeRelic = (type, scale = 1, gem, SIZE) => {
     let relicCasing = {
         PARENT: ['genericEntity'],
         LABEL: 'Relic Casing',
         COLOR: type.COLOR,
-        SHAPE: [[-0.4,-1],[0.4,-0.25],[0.4,0.25],[-0.4,1]].map(r => r.map(s => s * scale)),
+        SHAPE: [[-0.4,-1],[0.4,-0.25],[0.4,0.25],[-0.4,1]].map(r => r.map(s => s * scale))
     }, relicBody = {
         PARENT: ['genericEntity'],
         LABEL: 'Relic Mantle',
         COLOR: type.COLOR,
-        SHAPE: type.SHAPE,
+        SHAPE: type.SHAPE
     };
     exports[Math.random().toString(36)] = relicCasing;
     exports[Math.random().toString(36)] = relicBody;
-    let fraction = 180 / type.SHAPE,
-        width = 6 * scale,
-        y = 8.25 + ((scale % 1) * 5);
+    let width = 6 * scale,
+        y = 8.25 + ((scale % 1) * 5),
+        isEgg = type.SHAPE == 0,
+        casings = isEgg ? 8 : type.SHAPE,
+        fraction = 360 / casings,
+        GUNS = [],
+        TURRETS = [{ POSITION: [32.5, 0, 0, 0, 0, 0], TYPE: relicBody }],
+        PARENT = [type],
+        additionalAngle = type.SHAPE % 2 === 0 ? 0 : fraction / 2;
+
+    if (SIZE) {
+        PARENT.push({ SIZE });
+    }
+
+    for (let i = 0; i < casings; i++) {
+        let angle = i * fraction,
+            gunAngle = angle + additionalAngle;
+        if (isEgg) {
+            GUNS.push({
+                POSITION: [4, width, 2.5, 12,  0, gunAngle, 0]
+            });
+            TURRETS.push({
+                POSITION: [8, -15,  0, angle, 0, 1],
+                TYPE: relicCasing
+            });
+        } else {
+            GUNS.push({
+                POSITION: [4, width, 2.5, 12,  y, gunAngle, 0]
+            });
+            GUNS.push({
+                POSITION: [4, width, 2.5, 12, -y, gunAngle, 0]
+            });
+            TURRETS.push({
+                POSITION: [8, -15,  y, angle, 0, 1],
+                TYPE: relicCasing
+            });
+            TURRETS.push({
+                POSITION: [8, -15, -y, angle, 0, 1],
+                TYPE: relicCasing
+            });
+        }
+    }
+
+    if (gem) {
+        TURRETS.push({
+            POSITION: [8, 0, 0, 0, 0, 1],
+            TYPE: gem
+        });
+    }
+
     return {
-        PARENT: [type],
+        PARENT,
         LABEL: type.LABEL + ' Relic',
         COLOR: 18, // This is the color of the floor, this makes it look hollow.
+        BODY: {
+            ACCELERATION: 0.001
+        },
         CONTROLLERS: [],
         VALUE: type.VALUE * 100_000,
-        // angle + (type.SHAPE % 2 === 0 ? 0 : fraction);
-        GUNS: Array(type.SHAPE).fill().map((_, i) => ([
-            { POSITION: [4, width, 2.5, 12,  y, i * fraction, 0] },
-            { POSITION: [4, width, 2.5, 12, -y, i * fraction, 0] }
-        ])).flat(),
-        TURRETS: [{
-            POSITION: [32.5, 0, 0, 0, 0, 0],
-            TYPE: relicBody,
-        },
-        ...Array(type.SHAPE).fill().map((_, i) => ([
-            { POSITION: [8, -15,  y, i * fraction, 0, 1], TYPE: relicCasing },
-            { POSITION: [8, -15, -y, i * fraction, 0, 1], TYPE: relicCasing }
-        ])).flat()],
+        GUNS,
+        TURRETS
     };
-};
+},
+
+makeRare = (type, level) => ({
+    PARENT: ["food"],
+    LABEL: ["Shiny", "Legendary", "Shadow", "Rainbow", "Transgender"][level] + type.LABEL,
+    VALUE: [100, 500, 2000, 4000, 5000][level] * type.VALUE,
+    SHAPE: type.SHAPE,
+    SIZE: type.SHAPE + level,
+    COLOR: [1, 0, 19, 36, 37][level],
+    ALPHA: level == 2 ? 0.25 : 1,
+    BODY: {
+        DAMAGE: type.BODY.DAMAGE + level,
+        DENSITY: type.BODY.DENSITY + level,
+        HEALTH: [10, 20, 40, 80, 100][level] * type.BODY.HEALTH,
+        PENETRATION: type.BODY.PENETRATION + level,
+        ACCELERATION: type.BODY.ACCELERATION
+    },
+    DRAW_HEALTH: true,
+    INTANGIBLE: false,
+    GIVE_KILL_MESSAGE: true,
+});
 
 // EGGS
 exports.egg = {
     PARENT: ["food"],
     LABEL: "Egg",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 10,
     SHAPE: 0,
     SIZE: 5,
@@ -57,15 +114,13 @@ exports.egg = {
         DENSITY: 2,
         HEALTH: 0.0011,
         PUSHABILITY: 0,
+        ACCELERATION: 0.015
     },
     DRAW_HEALTH: false,
 };
 exports.gem = {
     PARENT: ["food"],
     LABEL: "Gem",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 2e3,
     SHAPE: 6,
     SIZE: 5,
@@ -77,6 +132,7 @@ exports.gem = {
         PENETRATION: 2,
         RESIST: 2,
         PUSHABILITY: 0.25,
+        ACCELERATION: 0.015
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
@@ -84,9 +140,6 @@ exports.gem = {
 exports.jewel = {
     PARENT: ["food"],
     LABEL: "Jewel",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 1e5,
     SHAPE: 6,
     SIZE: 12,
@@ -98,6 +151,7 @@ exports.jewel = {
         PENETRATION: 2,
         RESIST: 2,
         PUSHABILITY: 0.25,
+        ACCELERATION: 0.015
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
@@ -108,9 +162,6 @@ exports.jewel = {
 exports.square = {
     PARENT: ["food"],
     LABEL: "Square",
-    FOOD: {
-        LEVEL: 1,
-    },
     VALUE: 30,
     SHAPE: 4,
     SIZE: 10,
@@ -120,99 +171,21 @@ exports.square = {
         DENSITY: 4,
         HEALTH: basePolygonHealth,
         PENETRATION: 2,
+        ACCELERATION: 0.0075
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
 };
-exports.shinySquare = {
-    PARENT: ["food"],
-    LABEL: "Shiny Square",
-    FOOD: {
-        LEVEL: 1,
-    },
-    VALUE: 2e3,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 0.5,
-        DENSITY: 4,
-        HEALTH: 20,
-        PENETRATION: 2,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.legendarySquare = {
-    PARENT: ["food"],
-    LABEL: "Legendary Square",
-    FOOD: {
-        LEVEL: 1,
-    },
-    VALUE: 3e4,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 0,
-    BODY: {
-        DAMAGE: 2,
-        DENSITY: 6,
-        HEALTH: 60,
-        PENETRATION: 6,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.shadowSquare = {
-    PARENT: ["food"],
-    LABEL: "Shadow Square",
-    FOOD: {
-        LEVEL: 1,
-    },
-    VALUE: 75e3,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 19,
-    ALPHA: 0.25,
-    BODY: {
-        DAMAGE: 4,
-        DENSITY: 10,
-        HEALTH: 100,
-        PENETRATION: 8,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.rainbowSquare = {
-    PARENT: ["food"],
-    LABEL: "Rainbow Square",
-    FOOD: {
-        LEVEL: 1,
-    },
-    VALUE: 5e7,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 36,
-    BODY: {
-        DAMAGE: 8,
-        DENSITY: 15,
-        HEALTH: 200,
-        PENETRATION: 12.5,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
-    GIVE_KILL_MESSAGE: true,
-};
+exports.shinySquare = makeRare(exports.square, 0);
+exports.legendarySquare = makeRare(exports.square, 1);
+exports.shadowSquare = makeRare(exports.square, 2);
+exports.rainbowSquare = makeRare(exports.square, 3);
+exports.transSquare = makeRare(exports.square, 4);
 
 // TRIANGLES
 exports.triangle = {
     PARENT: ["food"],
     LABEL: "Triangle",
-    FOOD: {
-        LEVEL: 2,
-    },
     VALUE: 120,
     SHAPE: 3,
     SIZE: 9,
@@ -223,98 +196,20 @@ exports.triangle = {
         HEALTH: 3 * basePolygonHealth,
         RESIST: 1.15,
         PENETRATION: 1.5,
+        ACCELERATION: 0.005
     },
     DRAW_HEALTH: true,
 };
-exports.shinyTriangle = {
-    PARENT: ["food"],
-    LABEL: "Shiny Triangle",
-    FOOD: {
-        LEVEL: 2,
-    },
-    VALUE: 7e3,
-    SHAPE: 3,
-    SIZE: 9,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 1,
-        DENSITY: 6,
-        HEALTH: 60,
-        RESIST: 1.15,
-        PENETRATION: 1.5,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.legendaryTriangle = {
-    PARENT: ["food"],
-    LABEL: "Legendary Triangle",
-    FOOD: {
-        LEVEL: 2,
-    },
-    VALUE: 6e4,
-    SHAPE: 3,
-    SIZE: 9,
-    COLOR: 0,
-    BODY: {
-        DAMAGE: 4,
-        DENSITY: 8,
-        HEALTH: 90,
-        RESIST: 1.25,
-        PENETRATION: 10,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.shadowTriangle = {
-    PARENT: ["food"],
-    LABEL: "Shadow Triangle",
-    FOOD: {
-        LEVEL: 2,
-    },
-    VALUE: 25e4,
-    SHAPE: 3,
-    SIZE: 9,
-    COLOR: 19,
-    ALPHA: 0.25,
-    BODY: {
-        DAMAGE: 8,
-        DENSITY: 15,
-        HEALTH: 200,
-        RESIST: 3.25,
-        PENETRATION: 14,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.rainbowTriangle = {
-    PARENT: ["food"],
-    LABEL: "Rainbow Triangle",
-    FOOD: {
-        LEVEL: 2,
-    },
-    VALUE: 75e6,
-    SHAPE: 3,
-    SIZE: 9,
-    COLOR: 36,
-    BODY: {
-        DAMAGE: 12,
-        DENSITY: 20,
-        HEALTH: 300,
-        RESIST: 4.25,
-        PENETRATION: 17.5,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
+exports.shinyTriangle = makeRare(exports.triangle, 0);
+exports.legendaryTriangle = makeRare(exports.triangle, 1);
+exports.shadowTriangle = makeRare(exports.triangle, 2);
+exports.rainbowTriangle = makeRare(exports.triangle, 3);
+exports.transTriangle = makeRare(exports.triangle, 4);
 
 // PENTAGONS
 exports.pentagon = {
     PARENT: ["food"],
     LABEL: "Pentagon",
-    FOOD: {
-        LEVEL: 3,
-    },
     VALUE: 400,
     SHAPE: 5,
     SIZE: 16,
@@ -325,98 +220,20 @@ exports.pentagon = {
         HEALTH: 10 * basePolygonHealth,
         RESIST: 1.25,
         PENETRATION: 1.1,
+        ACCELERATION: 0.0035
     },
     DRAW_HEALTH: true,
 };
-exports.shinyPentagon = {
-    PARENT: ["food"],
-    LABEL: "Shiny Pentagon",
-    FOOD: {
-        LEVEL: 3,
-    },
-    VALUE: 3e4,
-    SHAPE: 5,
-    SIZE: 16,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 3,
-        DENSITY: 8,
-        HEALTH: 200,
-        RESIST: 1.25,
-        PENETRATION: 1.1,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.legendaryPentagon = {
-    PARENT: ["food"],
-    LABEL: "Legendary Pentagon",
-    FOOD: {
-        LEVEL: 3,
-    },
-    VALUE: 12e4,
-    SHAPE: 5,
-    SIZE: 16,
-    COLOR: 0,
-    BODY: {
-        DAMAGE: 6,
-        DENSITY: 12,
-        HEALTH: 240,
-        RESIST: 1.75,
-        PENETRATION: 15,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.shadowPentagon = {
-    PARENT: ["food"],
-    LABEL: "Shadow Pentagon",
-    FOOD: {
-        LEVEL: 3,
-    },
-    VALUE: 1e6,
-    SHAPE: 5,
-    SIZE: 16,
-    COLOR: 19,
-    ALPHA: 0.25,
-    BODY: {
-        DAMAGE: 14,
-        DENSITY: 20,
-        HEALTH: 300,
-        RESIST: 4.75,
-        PENETRATION: 20,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.rainbowPentagon = {
-    PARENT: ["food"],
-    LABEL: "Rainbow Pentagon",
-    FOOD: {
-        LEVEL: 3,
-    },
-    VALUE: 1e9,
-    SHAPE: 5,
-    SIZE: 16,
-    COLOR: 36,
-    BODY: {
-        DAMAGE: 17.5,
-        DENSITY: 25,
-        HEALTH: 500,
-        RESIST: 5.5,
-        PENETRATION: 25,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
+exports.shinyPentagon = makeRare(exports.pentagon, 0);
+exports.legendaryPentagon = makeRare(exports.pentagon, 1);
+exports.shadowPentagon = makeRare(exports.pentagon, 2);
+exports.rainbowPentagon = makeRare(exports.pentagon, 3);
+exports.transPentagon = makeRare(exports.pentagon, 4);
 
 // BETA PENTAGONS
 exports.betaPentagon = {
     PARENT: ["food"],
     LABEL: "Beta Pentagon",
-    FOOD: {
-        LEVEL: 4,
-    },
     VALUE: 2500,
     SHAPE: 5,
     SIZE: 30,
@@ -428,100 +245,21 @@ exports.betaPentagon = {
         RESIST: Math.pow(1.25, 2),
         SHIELD: 20 * basePolygonHealth,
         REGEN: 0.2,
+        ACCELERATION: 0.003
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
-exports.shinyBetaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Shiny Beta Pentagon",
-    FOOD: {
-        LEVEL: 4,
-    },
-    VALUE: 6e4,
-    SHAPE: 5,
-    SIZE: 30,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 4 * basePolygonDamage,
-        DENSITY: 30,
-        HEALTH: 1000 * basePolygonHealth,
-        RESIST: Math.pow(1.25, 2),
-        SHIELD: 20 * basePolygonHealth,
-        REGEN: 0.2,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.legendaryBetaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Legendary Beta Pentagon",
-    FOOD: {
-        LEVEL: 4,
-    },
-    VALUE: 5e5,
-    SHAPE: 5,
-    SIZE: 30,
-    COLOR: 0,
-    BODY: {
-        DAMAGE: 11,
-        DENSITY: 17,
-        HEALTH: 480,
-        RESIST: 2.5,
-        PENETRATION: 25,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.shadowBetaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Shadow Beta Pentagon",
-    FOOD: {
-        LEVEL: 4,
-    },
-    VALUE: 1e7,
-    SHAPE: 5,
-    SIZE: 30,
-    COLOR: 19,
-    ALPHA: 0.25,
-    BODY: {
-        DAMAGE: 20,
-        DENSITY: 25,
-        HEALTH: 600,
-        RESIST: 6,
-        PENETRATION: 30,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.rainbowBetaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Rainbow Beta Pentagon",
-    FOOD: {
-        LEVEL: 4,
-    },
-    VALUE: 5e9,
-    SHAPE: 5,
-    SIZE: 30,
-    COLOR: 36,
-    BODY: {
-        DAMAGE: 27.5,
-        DENSITY: 30,
-        HEALTH: 750,
-        RESIST: 8.75,
-        PENETRATION: 35,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
+exports.shinyBetaPentagon = makeRare(exports.betaPentagon, 0);
+exports.legendaryBetaPentagon = makeRare(exports.betaPentagon, 1);
+exports.shadowBetaPentagon = makeRare(exports.betaPentagon, 2);
+exports.rainbowBetaPentagon = makeRare(exports.betaPentagon, 3);
+exports.transBetaPentagon = makeRare(exports.betaPentagon, 4);
 
 // ALPHA PENTAGONS
 exports.alphaPentagon = {
     PARENT: ["food"],
     LABEL: "Alpha Pentagon",
-    FOOD: {
-        LEVEL: 5,
-    },
     VALUE: 15e3,
     SHAPE: 5,
     SIZE: 58,
@@ -533,109 +271,31 @@ exports.alphaPentagon = {
         RESIST: Math.pow(1.25, 3),
         SHIELD: 40 * basePolygonHealth,
         REGEN: 0.6,
+        ACCELERATION: 0.0025
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
-exports.shinyAlphaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Shiny Alpha Pentagon",
-    FOOD: {
-        LEVEL: 5,
-    },
-    VALUE: 2e5,
-    SHAPE: 5,
-    SIZE: 58,
-    COLOR: 1,
-    BODY: {
-        DAMAGE: 4 * basePolygonDamage,
-        DENSITY: 80,
-        HEALTH: 6000 * basePolygonHealth,
-        RESIST: Math.pow(1.25, 3),
-        SHIELD: 40 * basePolygonHealth,
-        REGEN: 0.6,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.legendaryAlphaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Legendary Alpha Pentagon",
-    FOOD: {
-        LEVEL: 5,
-    },
-    VALUE: 2e5,
-    SHAPE: 5,
-    SIZE: 58,
-    COLOR: 0,
-    BODY: {
-        DAMAGE: 15,
-        DENSITY: 28,
-        HEALTH: 550,
-        RESIST: 3.75,
-        PENETRATION: 35,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.shadowAlphaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Shadow Alpha Pentagon",
-    FOOD: {
-        LEVEL: 5,
-    },
-    VALUE: 25e5,
-    SHAPE: 5,
-    SIZE: 58,
-    COLOR: 19,
-    ALPHA: 0.25,
-    BODY: {
-        DAMAGE: 15,
-        DENSITY: 30,
-        HEALTH: 750,
-        RESIST: 8,
-        PENETRATION: 45,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
-exports.rainbowAlphaPentagon = {
-    PARENT: ["food"],
-    LABEL: "Rainbow Alpha Pentagon",
-    FOOD: {
-        LEVEL: 5,
-    },
-    VALUE: 1e9,
-    SHAPE: 5,
-    SIZE: 58,
-    COLOR: 36,
-    BODY: {
-        DAMAGE: 35,
-        DENSITY: 35,
-        HEALTH: 1250,
-        RESIST: 12.5,
-        PENETRATION: 42.5,
-    },
-    DRAW_HEALTH: true,
-    GIVE_KILL_MESSAGE: true,
-};
+exports.shinyAlphaPentagon = makeRare(exports.alphaPentagon, 0);
+exports.legendaryAlphaPentagon = makeRare(exports.alphaPentagon, 1);
+exports.shadowAlphaPentagon = makeRare(exports.alphaPentagon, 2);
+exports.rainbowAlphaPentagon = makeRare(exports.alphaPentagon, 3);
+exports.transAlphaPentagon = makeRare(exports.alphaPentagon, 4);
 
 // 3D POLYGONS
 exports.sphere = {
     PARENT: ["food"],
     LABEL: "The Sphere",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 1e7,
     SHAPE: 0,
-    SIZE: 6,
+    SIZE: 9,
     COLOR: 18,
     BODY: {
         DAMAGE: 10,
         DENSITY: 15,
         HEALTH: 300,
         PENETRATION: 15,
+        ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
@@ -647,18 +307,16 @@ exports.sphere = {
 exports.cube = {
     PARENT: ["food"],
     LABEL: "The Cube",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 2e7,
-    SIZE: 7,
+    SIZE: 10,
     COLOR: 18,
-    SHAPE: "M -0.355 -0.39 V 2 L 1.735 0.802 V -1.585 L -0.355 -0.39 Z M -0.647 -0.39 V 2 L -2.735 0.8 V -1.585 L -0.647 -0.39 Z M -0.5 -0.64 L 1.589 -1.827 L -0.5 -3.02 L -2.58 -1.828 L -0.5 -0.64",
+    SHAPE: "M 0.0575 0.0437 V 0.9921 L 0.8869 0.5167 V -0.4306 L 0.0575 0.0437 Z M -0.0583 0.0437 V 0.9921 L -0.8869 0.5159 V -0.4306 L -0.0583 0.0437 Z M 0 -0.0556 L 0.829 -0.5266 L 0 -1 L -0.8254 -0.527 L 0 -0.0556",
     BODY: {
         DAMAGE: 12,
         DENSITY: 20,
         HEALTH: 500,
         PENETRATION: 17.5,
+        ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
     INTANGIBLE: false,
@@ -667,18 +325,16 @@ exports.cube = {
 exports.tetrahedron = {
     PARENT: ["food"],
     LABEL: "The Tetrahedron",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 3e7,
-    SIZE: 9,
+    SIZE: 12,
     COLOR: 18,
-    SHAPE: [[0,1],center,[0.866,-0.5],center,[-0.866,-0.5],center],
+    SHAPE: "M 0.058 0.044 V 1 L 0.894 -0.434 L 0.058 0.044 Z M -0.0588 0.044 V 1 L -0.894 -0.434 L -0.0588 0.044 Z M 0 -0.056 L 0.8356 -0.5308 L -0.832 -0.5312 L 0 -0.056",
     BODY: {
         DAMAGE: 15,
         DENSITY: 23,
         HEALTH: 666,
         PENETRATION: 22.5,
+        ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true
@@ -686,18 +342,16 @@ exports.tetrahedron = {
 exports.octahedron = {
     PARENT: ["food"],
     LABEL: "The Octahedron",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 4e7,
-    SIZE: 9,
+    SIZE: 13,
     COLOR: 18,
-    SHAPE: [[0,1],center,[1,0],center,[0,-1],center,[-1,0],center],
+    SHAPE: "M 0.06 -0.06 L 0.95 -0.06 L 0.06 -0.95 L 0.06 -0.06 M -0.06 0.06 L -0.06 0.95 L -0.95 0.06 L -0.06 0.06 M -0.06 -0.06 L -0.95 -0.06 L -0.06 -0.95 L -0.06 -0.06 M 0.06 0.06 L 0.06 0.95 L 0.95 0.06 L 0.06 0.06",
     BODY: {
         DAMAGE: 18,
         DENSITY: 26,
         HEALTH: 866,
         PENETRATION: 30,
+        ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true
@@ -705,19 +359,17 @@ exports.octahedron = {
 exports.dodecahedron = {
     PARENT: ["food"],
     LABEL: "The Dodecahedron",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 5e7,
-    SIZE: 10,
+    SIZE: 18,
     COLOR: 18,
-    SHAPE: "M -1.22 -1.45 H 0.17 L 0.615 -0.12 L -0.52 0.7 L -1.65 -0.12 L -1.22 -1.45 Z M -1.835 0.09 L -0.67 0.94 V 1.61 L -1.81 1.255 L -2.51 0.28 L -1.835 0.09 Z M 0.8 0.09 L -0.385 0.95 V 1.62 L 0.77 1.25 L 1.47 0.28 L 0.8 0.09 Z M -1.93 -0.18 L -1.485 -1.56 L -1.89 -2.151 L -2.6 -1.2 V 0.01 L -1.93 -0.18 Z M 0.44 -1.565 L 0.89 -0.18 L 1.555 0.015 V -1.19 L 0.852 -2.17 L 0.44 -1.565 Z M -0.52 -2.7 L -1.67 -2.335 L -1.26 -1.734 H 0.21 L 0.635 -2.329 L -0.52 -2.7",
+    SHAPE: "M -0.3273 -0.4318 H 0.3045 L 0.5068 0.1727 L -0.0091 0.5455 L -0.5227 0.1727 L -0.3273 -0.4318 Z M -0.6068 0.2682 L -0.0773 0.6545 V 0.9591 L -0.5955 0.7977 L -0.9136 0.3545 L -0.6068 0.2682 Z M 0.5909 0.2682 L 0.0523 0.6591 V 0.9636 L 0.5773 0.7955 L 0.8955 0.3545 L 0.5909 0.2682 Z M -0.65 0.1455 L -0.4477 -0.4818 L -0.6318 -0.7505 L -0.9545 -0.3182 V 0.2318 L -0.65 0.1455 Z M 0.4273 -0.4841 L 0.6318 0.1455 L 0.9341 0.2341 V -0.3136 L 0.6145 -0.7591 L 0.4273 -0.4841 Z M -0.0091 -1 L -0.5318 -0.8341 L -0.3455 -0.5609 H 0.3227 L 0.5159 -0.8314 L -0.0091 -1",
     BODY: {
         DAMAGE: 22.5,
         DENSITY: 30,
         HEALTH: 1000,
         RESIST: 10,
         PENETRATION: 35,
+        ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
@@ -725,28 +377,64 @@ exports.dodecahedron = {
 exports.icosahedron = {
     PARENT: ["food"],
     LABEL: "The Icosahedron",
-    FOOD: {
-        LEVEL: 0,
-    },
     VALUE: 1e8,
-    SIZE: 18,
+    SIZE: 20,
     COLOR: 18,
     SHAPE: "M -0.39 -0.245 L 0.392 -0.245 L 0 0.47 L -0.39 -0.245 Z M -0.465 -0.2 L -0.893 0.475 L -0.073 0.51 L -0.465 -0.2 Z M 0.4636 -0.2 L 0.073 0.509 L 0.891 0.4736 L 0.4636 -0.2 Z M 0 -1 L -0.39 -0.33 L 0.389 -0.328 L 0 -1 Z M -0.142 -0.925 L -0.875 -0.506 L -0.48 -0.339 L -0.142 -0.925 Z M -0.925 0.366 L -0.925 -0.431 L -0.525 -0.266 L -0.925 0.366 Z M -0.042 0.595 L -0.808 0.562 L -0.042 1 L -0.042 0.595 Z M 0.042 0.595 L 0.808 0.562 L 0.042 1 L 0.042 0.595 Z M 0.142 -0.925 L 0.858 -0.516 L 0.48 -0.339 L 0.142 -0.925 Z M 0.925 0.366 L 0.925 -0.452 L 0.523 -0.269 L 0.925 0.366 Z",
     BODY: {
         DAMAGE: 17.5,
         DENSITY: 25,
-        HEALTH: 750,
+        HEALTH: 1200,
         RESIST: 7.5,
         PENETRATION: 22.5,
+        ACCELERATION: 0.002
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
 };
 
 // RELICS
-exports.eggRelic = makeRelic(exports.egg);
-exports.squareRelic = makeRelic(exports.square);
-exports.triangleRelic = makeRelic(exports.triangle, 1.45);
-exports.pentagonRelic = makeRelic(exports.pentagon, -0.6);
-exports.betaRelic = makeRelic(exports.betaPentagon, -0.6);
-exports.alphaRelic = makeRelic(exports.alphaPentagon, -0.6);
+for (let [gemColor, name] of [
+    [undefined, ""],
+    [30, "Power"],
+    [31, "Space"],
+    [32, "Reality"],
+    [33, "Soul"],
+    [34, "Time"],
+    [35, "Mind"]
+]) {
+    let gem;
+    if (gemColor) {
+        gem = exports[name + "Gem"] = {
+            PARENT: ['gem'],
+            LABEL: name + ' Gem',
+            SHAPE: 6,
+            COLOR: gemColor
+        }
+    }
+
+    exports[name + "EggRelic"] = makeRelic(exports.egg, 0.5, gem, 7);
+    exports[name + "SquareRelic"] = makeRelic(exports.square, 1, gem);
+    exports[name + "TriangleRelic"] = makeRelic(exports.triangle, 1.45, gem);
+    exports[name + "PentagonRelic"] = makeRelic(exports.pentagon, -0.6, gem);
+    exports[name + "BetaPentagonRelic"] = makeRelic(exports.betaPentagon, -0.6, gem);
+    exports[name + "AlphaPentagonRelic"] = makeRelic(exports.alphaPentagon, -0.6, gem);
+}
+
+exports.tesseract = {
+    PARENT: ["food"],
+    LABEL: "The Tesseract",
+    VALUE: 42e7,
+    SIZE: 25,
+    COLOR: 18,
+    SHAPE: "M -0.43 0.35 L -0.71 0.63 L -0.71 -0.63 L -0.43 -0.35 L -0.43 0.35 M -0.35 0.43 L -0.63 0.71 L 0.63 0.71 L 0.35 0.43 L -0.35 0.43 M 0.35 -0.43 L 0.63 -0.71 L -0.63 -0.71 L -0.35 -0.43 L 0.35 -0.43 M 0.43 -0.35 L 0.71 -0.63 L 0.71 0.63 L 0.43 0.35 L 0.43 -0.35 M 0.32 0.32 L 0.32 -0.32 L -0.32 -0.32 L -0.32 0.32 L 0.32 0.32",
+    BODY: {
+        DAMAGE: 25,
+        DENSITY: 40,
+        HEALTH: 2000,
+        PENETRATION: 50,
+        ACCELERATION: 0.003
+    },
+    DRAW_HEALTH: true,
+    GIVE_KILL_MESSAGE: true
+};

@@ -56,7 +56,7 @@ class Gun {
                 // Pre-load bullet definitions so we don't have to recalculate them every shot
                 let natural = {};
                 for (let type of this.bulletTypes) setNatural(natural, type);
-                this.natural = natural; // Save it
+                this.natural = natural;
                 if (info.PROPERTIES.GUN_CONTROLLERS != null) {
                     let toAdd = [];
                     for (let i = 0; i < info.PROPERTIES.GUN_CONTROLLERS.length; i++) {
@@ -80,6 +80,7 @@ class Gun {
             this.countsOwnKids = info.PROPERTIES.MAX_CHILDREN == null ? false : info.PROPERTIES.MAX_CHILDREN;
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
+            this.independentChildren = info.PROPERTIES.INDEPENDENT_CHILDREN == null ? false : info.PROPERTIES.INDEPENDENT_CHILDREN;
             if (info.PROPERTIES.COLOR != null) {
                 if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string") {
                     if (!isNaN(info.PROPERTIES.COLOR) && !isNaN(parseFloat(info.PROPERTIES.COLOR)) || /^[a-zA-Z]*$/.test(info.PROPERTIES.COLOR))
@@ -287,19 +288,35 @@ class Gun {
                 s.y += (this.body.velocity.length * extraBoost * s.y) / len;
             }
         }
+
+        //create an independent entity
+        if (this.independentChildren) {
+            var o = new Entity({
+                x: this.body.x + this.body.size * gx - s.x,
+                y: this.body.y + this.body.size * gy - s.y,
+            });
+            for (let type of this.bulletTypes) {
+                o.define(type);
+            }
+            o.coreSize = o.SIZE;
+            o.team = this.body.team;
+            o.refreshBodyAttributes();
+            o.life();
+            return;
+        }
+
         // Create the bullet
-        var o = new Entity(
-            {
+        var o = new Entity({
                 x: this.body.x + this.body.size * gx - s.x,
                 y: this.body.y + this.body.size * gy - s.y,
             },
             this.master.master
         );
         /*let jumpAhead = this.cycle - 1;
-                if (jumpAhead) {
-                        o.x += s.x * this.cycle / jumpAhead;
-                        o.y += s.y * this.cycle / jumpAhead;
-                }*/
+        if (jumpAhead) {
+                o.x += s.x * this.cycle / jumpAhead;
+                o.y += s.y * this.cycle / jumpAhead;
+        }*/
         o.velocity = s;
         this.bulletInit(o);
         o.coreSize = o.SIZE;
@@ -462,21 +479,13 @@ class Gun {
                 e.source = this.body;
                 switch (hitScanLevel) {
                     case 1:
-                        {
-                            if (i % 5 === 0) branch(e, branchAlt % 2 === 0);
-                        }
+                        if (i % 5 === 0) branch(e, branchAlt % 2 === 0);
                         break;
-                    case 2:
-                        {
-                            // Superlaser
-                            if (i === amount - 1) explode(e);
-                        }
+                    case 2:// Superlaser
+                        if (i === amount - 1) explode(e);
                         break;
-                    case 3:
-                        {
-                            // Death Star
-                            if (i % 3 === 0) explode(e);
-                        }
+                    case 3:// Death Star
+                        if (i % 3 === 0) explode(e);
                         break;
                 }
             }, 10 * i);
@@ -1017,12 +1026,6 @@ class Entity extends EventEmitter {
             this.guns = newGuns;
         }
         if (set.MAX_CHILDREN != null) this.maxChildren = set.MAX_CHILDREN;
-        if (set.FOOD != null) {
-            if (set.FOOD.LEVEL != null) {
-                this.foodLevel = set.FOOD.LEVEL;
-                this.foodCountup = 0;
-            }
-        }
         if ("function" === typeof set.LEVEL_SKILL_POINT_FUNCTION) {
             this.skill.LSPF = set.LEVEL_SKILL_POINT_FUNCTION;
         }
