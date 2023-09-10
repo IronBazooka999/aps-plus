@@ -597,6 +597,69 @@ exports.auraHealer = {
     ],
 };
 
+exports.trplnrsTestTank = {
+    PARENT: ['genericTank'],
+    LABEL: "Trplnr's Test Tank",
+    COLOR: 'teal',
+    GUNS: [
+    {
+        POSITION: [18, 10, 0.75, -5, 0, 0, 0],
+        PROPERTIES: {
+            COLOR: 'lavender',
+            SHOOT_SETTINGS: combineStats([g.anni, {reload: 250}]),
+            TYPE: 'kronosMissile'
+        }
+    },
+    {
+        POSITION: [10, 6, 1, 0, 14, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, {size: 0.8, reload: 10}]),
+            TYPE: 'swarm'
+        }
+    }, {
+        POSITION: [10, 6, 1, 0, -14, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, {size: 0.8, reload: 10}]),
+            TYPE: 'swarm'
+        }
+    }, {
+        POSITION: [10, 6, 1, 0, 14, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, {size: 1.2, recoil: 1.5, reload: 0.8}]),
+            TYPE: 'bullet'
+        }
+    }, {
+        POSITION: [10, 6, 1, 0, -14, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, {size: 1.2, recoil: 1.5, reload: 0.8}]),
+            TYPE: 'bullet'
+        }
+    }, {
+        POSITION: [18, 8, 1, 0, 0, 90, 0],
+        PROPERTIES: {
+            COLOR: 'black'
+        }
+    }, {
+        POSITION: [18, 8, 1, 0, 0, 270, 0],
+        PROPERTIES: {
+            COLOR: 'black'
+        }
+    }],
+    TURRETS: [{
+        POSITION: [15, 12.5, 12.5, 0, 0, 0],
+        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+    }, {
+        POSITION: [15, 12.5, -12.5, 0, 0, 0],
+        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+    }, {
+        POSITION: [15, -12.5, -12.5, 0, 0, 0],
+        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+    }, {
+        POSITION: [15, -12.5, 12.5, 0, 0, 0],
+        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+    }]
+}
+
 // FUN
 exports.vanquisher = {
     PARENT: ["genericTank"],
@@ -809,4 +872,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.eternals.UPGRADES_TIER_0 = [/*"ragnarok",*/ "kronos"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", 'trplnrsTestTank'];

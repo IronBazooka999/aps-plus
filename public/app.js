@@ -959,7 +959,6 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
     for (let i = 0; i < m.turrets.length; i++) {
         let turretFacesClient = m.turrets[i].turretFacesClient
         let t = m.turrets[i];
-        let isAutospinning = global.autoSpin
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
             : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
@@ -967,11 +966,8 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
                 facing = 0
-            if (isAutospinning && turretFacesClient) {
-                facing = instance.render.f + turretsObeyRot * rot + t.angle;
-            } else
             if (turretFacesClient && drawingEntities) {
-                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot + t.angle;
+                facing = instance.render.f + turretsObeyRot * rot + t.angle
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
@@ -1017,16 +1013,12 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];
         let turretFacesClient = m.turrets[i].turretFacesClient
-        let isAutospinning = global.autoSpin
         if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
                 facing = 0
-            if (isAutospinning && turretFacesClient) {
-                facing = instance.render.f + turretsObeyRot * rot + t.angle;
-            } else
             if (turretFacesClient && drawingEntities) {
-                facing = Math.atan2(global.target.y, global.target.x) + turretsObeyRot * rot + t.angle;
+                facing = instance.render.f + turretsObeyRot * rot + t.angle
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
