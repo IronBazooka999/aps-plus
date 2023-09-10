@@ -2222,83 +2222,85 @@ exports.crossbow = {
     },
     GUNS: [
         {
-            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-            POSITION: [12.5, 3.5, 1, 0, 4, 25, 0.6],
+            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
+            POSITION: [12.5, 2.5, 1, 0, 3.5, 35, 1],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
                     g.sniper,
                     g.rifle,
-                    g.halfspeed,
-                    g.halfreload,
+                    g.slow,
+                    g.crossbow,
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [12.5, 3.5, 1, 0, -4, -25, 0.6],
+            POSITION: [12.5, 2.5, 1, 0, -3.5, -35, 1],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
                     g.sniper,
                     g.rifle,
-                    g.halfspeed,
+                    g.slow,
+                    g.crossbow,
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [15, 3.5, 1, 0, 4, 12.5, 0.4],
+            POSITION: [15, 2.5, 1, 0, 3.5, 35/2, 2/3],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
                     g.sniper,
                     g.rifle,
-                    g.halfspeed,
+                    g.slow,
+                    g.crossbow,
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [15, 3.5, 1, 0, -4, -12.5, 0.4],
+            POSITION: [15, 2.5, 1, 0, -3.5, -35/2, 2/3],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
                     g.sniper,
                     g.rifle,
-                    g.halfspeed,
-                    g.halfreload,
+                    g.slow,
+                    g.crossbow,
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [20, 3.5, 1, 0, 4, 0, 0.2],
+            POSITION: [20, 3.5, 1, 0, 4, 0, 1/3],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
                     g.sniper,
                     g.rifle,
-                    g.halfspeed,
-                    g.halfreload,
+                    g.slow,
+                    g.crossbow,
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [20, 3.5, 1, 0, -4, 0, 0.2],
+            POSITION: [20, 3.5, 1, 0, -4, 0, 1/3],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
                     g.sniper,
                     g.rifle,
-                    g.halfspeed,
-                    g.halfreload,
+                    g.slow,
+                    g.crossbow,
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",

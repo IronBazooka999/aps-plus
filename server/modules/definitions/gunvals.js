@@ -359,6 +359,21 @@ module.exports = {
         spray: 0.2,
         resist: 1.15
     },
+    crossbow: {
+        reload: 2,
+        recoil: 1,
+        shudder: 1,
+        size: 1,
+        health: 0.6,
+        damage: 0.6,
+        pen: 0.8,
+        speed: 1,
+        maxSpeed: 1,
+        range: 1,
+        density: 1,
+        spray: 1,
+        resist: 1
+    },
     assass: {
         reload: 1.65,
         recoil: 1,
