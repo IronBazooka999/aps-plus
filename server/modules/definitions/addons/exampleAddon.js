@@ -48,14 +48,15 @@ module.exports = ({ Class }) => {
 		}
 	}
 
-	// This adds the tank to the definitions and to the memes menu
+	// This adds the tank to the definitions and to the fun menu
 	Class.abomination = {
 		PARENT: ["genericTank"],
 		LABEL: "The Abomination",
 		SKILL_CAP: Array(10).fill(15),
+	    SIZE: 15,
 	    BODY: {
 	        ACCELERATION: base.ACCEL * 0.2,
-	        SPEED: base.SPEED * 0.2,
+	        SPEED: base.SPEED * 0.5,
 	        HEALTH: base.HEALTH * 5,
 	        DAMAGE: base.DAMAGE * 5,
 	        PENETRATION: base.PENETRATION * 5,
@@ -63,10 +64,14 @@ module.exports = ({ Class }) => {
 	        REGEN: base.REGEN * 5,
 	        FOV: base.FOV * 2,
 	        DENSITY: base.DENSITY * 5,
-	        PUSHABILITY: 0.2,
+	        PUSHABILITY: 0.1,
 	        HETERO: 3,
+	        RECOIL_MULTIPLIER: 0.1
 	    },
+	    EXTRA_SKILL: 28,
 		MAX_CHILDREN, GUNS, TURRETS
-	}
-	Class.memes.UPGRADES_TIER_0.push("abomination");
+	};
+	Class.fun.UPGRADES_TIER_0.push("abomination");
+
+	console.log('[exampleAddon] The Amalgamation has been created..');
 };

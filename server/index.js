@@ -330,8 +330,8 @@ const bossSelections = [{
     chance: 0.1,
 }];
 
-let spawnBosses = (census) => {
-    if (!census.miniboss && !timer--) {
+let spawnBosses = minibossCount => {
+    if (!minibossCount && !timer--) {
         timer--;
         const selection = bossSelections[ran.chooseChance(...bossSelections.map((selection) => selection.chance))];
         const amount = ran.chooseChance(...selection.amount) + 1;
@@ -373,9 +373,9 @@ function getCrasherType() {
     if (seed > crasherConfig.sentryChance) return ran.choose(crasherConfig.sentries);
     return ran.choose(crasherConfig.crashers);
 }
-let spawnCrasher = (census) => {
-    if (census.crasher < crasherConfig.max) {
-        for (let i = 0; i < crasherConfig.max - census.crasher; i++) {
+let spawnCrasher = crasherCount => {
+    if (crasherCount < crasherConfig.max) {
+        for (let i = 0; i < crasherConfig.max - crasherCount; i++) {
             if (Math.random() > crasherConfig.chance) {
                 let spot,
                     i = 25;
@@ -406,45 +406,22 @@ for (let team = 1; team < c.TEAMS + 1; team++) {
     }
 }
 
-let bots = [];
-// The NPC function
-let makenpcs = () => {
-    let census = {
-        crasher: 0,
-        miniboss: 0,
-        tank: 0,
-        mothership: 0,
-        sanctuary: 0,
-    };
-    let npcs = entities.filter(e => e)
-    .map(instance => {
-        if (instance.isSanctuary) {
-            census.sanctuary++;
-            return instance;
-        }
-        if (census[instance.type] != null) {
-            census[instance.type]++;
-            return instance;
-        }
-        if (instance.isMothership) {
-            census.mothership++;
-            return instance;
-        }
-    });
-    // Spawning
-    spawnCrasher(census);
-    spawnBosses(census);
-
+let bots = [],
+spawnBots = () => {
     // remove dead bots
     bots = bots.filter(e => !e.isDead());
 
     // upgrade existing ones
     for (let i = 0; i < bots.length; i++) {
         let o = bots[i];
-        if (o.skill.level < c.LEVEL_CAP) o.skill.score += 125;
+        if (o.skill.level < c.LEVEL_CAP) {
+            o.skill.score += c.BOT_XP;
+        }
         o.skill.maintain();
         o.skillUp([ "atk", "hlt", "spd", "str", "pen", "dam", "rld", "mob", "rgn", "shi" ][ran.chooseChance(1, 1, 3, 4, 4, 4, 4, 2, 1, 1)]);
-        if (o.leftoverUpgrades && o.upgrade(ran.irandomRange(0, o.upgrades.length))) o.leftoverUpgrades--;
+        if (o.leftoverUpgrades && o.upgrade(ran.irandomRange(0, o.upgrades.length))) {
+            o.leftoverUpgrades--;
+        }
     }
 
     // then add new bots if arena is open
@@ -469,13 +446,13 @@ let makenpcs = () => {
             color = getTeamColor(team);
         }
         o.define(Class.bot);
-        o.define(Class.basic);
+        o.define(Class[c.SPAWN_CLASS]);
         o.refreshBodyAttributes();
         o.isBot = true;
         o.team = team;
         o.color = color;
         o.name += ran.chooseBotName();
-        o.leftoverUpgrades = ran.chooseChance(1, 5, 20, 37, 37); //some guy in discord once suggested that some bots shouldnt upgrade to latest tier
+        o.leftoverUpgrades = ran.chooseChance(1, 5, 20, 37, 37); // don't always upgrade to the latest tier
         bots.push(o);
 
         //TODO: add support for tag mode
@@ -493,7 +470,24 @@ let makenpcs = () => {
     }
 };
 
-// Place obstacles
+let makenpcs = () => {
+    let crashers = 0,
+        minibosses = 0;
+    for (let i = 0; i < entities.length; i++) {
+        switch (entities[i].type) {
+            case "crasher":
+                crashers++;
+                break;
+            case "miniboss":
+                minibosses++;
+                break;
+        }
+    }
+    spawnCrasher(crashers);
+    spawnBosses(minibosses);
+    spawnBots();
+};
+
 placeRoids();
 
 for (let loc of room["wall"]) spawnWall(loc);

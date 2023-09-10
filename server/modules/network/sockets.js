@@ -366,31 +366,31 @@ function incoming(message, socket) {
                 return 1;
             }
             let number = m[0],
-                amount = m[1];
-            // Verify the request
+                max = m[1],
+                stat = ["atk", "hlt", "spd", "str", "pen", "dam", "rld", "mob", "rgn", "shi"][number];
+
             if (typeof number != "number") {
                 socket.kick("Weird stat upgrade request number.");
                 return 1;
             }
-            if (typeof amount != "number") {
-                socket.kick("Weird stat upgrade request amount.");
+            if (typeof max != "number") {
+                socket.kick("Weird stat upgrade request max boolean.");
                 return 1;
             }
-            if (amount < 0 && Math.round(amount) == amount) {
-                socket.kick("invalid upgrade request amount.");
+            if (max !== 0 && 1 !== max) {
+                socket.kick("invalid upgrade request max boolean.");
                 return 1;
             }
-            // Decipher it
-            let stat = ["atk", "hlt", "spd", "str", "pen", "dam", "rld", "mob", "rgn", "shi"][number];
+
             if (!stat) {
                 socket.kick("Unknown stat upgrade request.");
                 return 1;
             }
-            // Apply it
+
             if (player.body != null) {
-                while (amount--) {
-                    player.body.skillUp(stat); // Ask to upgrade a stat
-                }
+                do {
+                    player.body.skillUp(stat);
+                } while (max && player.body.skill.points && player.body.skill.amount(stat) < player.body.skill.cap(stat))
             }
             break;
         case "L":
@@ -863,39 +863,36 @@ const spawn = (socket, name) => {
         body = new Entity(loc);
         body.protect();
         body.isPlayer = true;
-        body.define(Class.basic); // Start as a basic tank
-        body.name = name; // Define the name
+        body.define(Class[c.SPAWN_CLASS]);
+        body.name = name;
         if (socket.permissions && socket.permissions.nameColor) {
             body.nameColor = socket.permissions.nameColor;
             socket.talk("z", body.nameColor);
         }
-        body.addController(new ioTypes.listenToPlayer(body, { player })); // Make it listen
-        body.sendMessage = (content) => messenger(socket, content); // Make it speak
+        body.addController(new ioTypes.listenToPlayer(body, { player }));
+        body.sendMessage = (content) => messenger(socket, content);
         socket.spectateEntity = null;
-        body.invuln = true; // Make it safe
+        body.invuln = true;
     }
     player.body = body;
     body.socket = socket;
     // Decide how to color and team the body
     switch (room.gameMode) {
         case "tdm":
-            {
-                body.team = -player.team;
-                body.color = body.color != '16 0 1 0 false' ? body.color : getTeamColor(body.team); // Allow custom starting colors
-            }
+            body.team = -player.team;
+            body.color = body.color != '16 0 1 0 false' ? body.color : getTeamColor(body.team);
             break;
         default: {
             if (socket.group) {
                 body.team = -player.team;
                 //socket.talk("J", player.team * 12345);
-                // col
             }
-            body.color = c.RANDOM_COLORS
-                ? ran.choose([
-                        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-                        17,
-                    ])
-                : 12; // red
+            if (c.RANDOM_COLORS) {
+                body.color = ran.choose([ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 ]);
+            } else {
+                body.color = '12 0 1 0 false';
+                body.colorTeam[body.team] = '10 0 1 0 false';
+            }
         }
     }
     // Decide what to do about colors when sending updates and stuff

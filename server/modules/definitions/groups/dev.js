@@ -847,13 +847,13 @@ exports.Team101 = {
     PARENT: ["teams"],
     TEAM: TEAM_ROOM,
     COLOR: 3,
-    LABEL: "Arena Closer Team"
+    LABEL: "Room Team"
 };
 exports.Team101 = {
     PARENT: ["teams"],
     TEAM: TEAM_ENEMIES,
     COLOR: 3,
-    LABEL: "Boss Team"
+    LABEL: "Enemies Team"
 };
 exports.teams.UPGRADES_TIER_0.push("Team101");
 

@@ -119,6 +119,12 @@ module.exports = {
     // Amount of player-bots to spawn.
     BOTS: 24,
 
+    // How much XP player-bots get per second until they reach LEVEL_CAP.
+    BOT_XP: 125,
+
+    // The class that players and player-bots spawn as.
+    SPAWN_CLASS: "basic",
+
 
 
     // Natural Spawns

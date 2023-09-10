@@ -135,7 +135,7 @@ class Canvas {
                     global.KEY_UPGRADE_RLD, global.KEY_UPGRADE_MOB, global.KEY_UPGRADE_RGN,
                     global.KEY_UPGRADE_SHI
                 ].indexOf(event.keyCode);
-                if (skill >= 0) this.socket.talk('x', skill, 1 + 10 * global.statMaxing);
+                if (skill >= 0) this.socket.talk('x', skill, 1 * global.statMaxing);
             }
             if (global.canUpgrade) {
                 switch (event.keyCode) {
@@ -205,7 +205,7 @@ class Canvas {
                 };
                 let statIndex = global.clickables.stat.check(mpos);
                 if (statIndex !== -1) {
-                    this.socket.talk('x', statIndex, 1);
+                    this.socket.talk('x', statIndex, 0);
                 } else if (global.clickables.skipUpgrades.check(mpos) !== -1) {
                     global.clearUpgrades();
                 } else {
