@@ -82,7 +82,7 @@ makeRelic = (type, scale = 1, gem, SIZE) => {
 
 makeRare = (type, level) => ({
     PARENT: ["food"],
-    LABEL: ["Shiny", "Legendary", "Shadow", "Rainbow", "Transgender"][level] + type.LABEL,
+    LABEL: ["Shiny", "Legendary", "Shadow", "Rainbow", "Transgender"][level] + " " + type.LABEL,
     VALUE: [100, 500, 2000, 4000, 5000][level] * type.VALUE,
     SHAPE: type.SHAPE,
     SIZE: type.SHAPE + level,
