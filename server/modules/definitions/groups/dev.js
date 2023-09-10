@@ -613,13 +613,13 @@ exports.trplnrsTestTank = {
     {
         POSITION: [10, 6, 1, 0, 14, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, {size: 0.8, reload: 10}]),
+            SHOOT_SETTINGS: combineStats([g.basic, {size: 0.8, reload: 5}]),
             TYPE: 'swarm'
         }
     }, {
         POSITION: [10, 6, 1, 0, -14, 0, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: combineStats([g.basic, {size: 0.8, reload: 10}]),
+            SHOOT_SETTINGS: combineStats([g.basic, {size: 0.8, reload: 5}]),
             TYPE: 'swarm'
         }
     }, {
