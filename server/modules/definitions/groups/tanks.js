@@ -533,6 +533,7 @@ exports.sunchip = {
 };
 exports.eggchip = {
     PARENT: ["sunchip"],
+    NECRO: [0],
     SHAPE: 0,
 };
 exports.autosunchip = {
@@ -4166,7 +4167,7 @@ exports.infestor = {
             },
         },
         {
-            POSITION: [7.25, 6, 1.2, 6, 5, 90, 0.5],
+            POSITION: [7.25, 6, 1.2, 6, 5, 90, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
                 TYPE: "eggchip",
@@ -4176,7 +4177,7 @@ exports.infestor = {
             },
         },
         {
-            POSITION: [7.25, 6, 1.2, 6, -5, 270, 0.5],
+            POSITION: [7.25, 6, 1.2, 6, -5, 270, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.drone, g.sunchip]),
                 TYPE: "eggchip",
