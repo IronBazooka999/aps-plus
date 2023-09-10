@@ -1178,7 +1178,6 @@ class Entity extends EventEmitter {
     }
     skillUp(stat) {
         let suc = this.skill.upgrade(stat);
-        console.log("skill", stat)
         if (suc) {
             this.refreshBodyAttributes();
             for (let i = 0; i < this.guns.length; i++) this.guns[i].syncChildren();
