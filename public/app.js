@@ -1018,7 +1018,7 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
                 len = t.offset * drawSize,
                 facing = 0
             if (turretFacesClient && drawingEntities) {
-                facing = instance.render.f + turretsObeyRot * rot + t.angle
+                facing = render.f + turretsObeyRot * rot + t.angle
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
