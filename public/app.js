@@ -1378,7 +1378,7 @@ function drawEntities(px, py, ratio) {
                 alpha = Math.max(0, Math.min(1000, chat.expires - now) / 1000);
 
             ctx.globalAlpha = 0.5 * alpha;
-            drawBar(x - msgLength / 2, x + msgLength / 2, y, 30, getColor(instance.color));
+            drawBar(x - msgLength / 2, x + msgLength / 2, y, 30, modifyColor(instance.color));
             ctx.globalAlpha = alpha;
             config.graphical.fontStrokeRatio *= 1.2;
             drawText(text, x, y + 7, 15, color.guiwhite, "center");
