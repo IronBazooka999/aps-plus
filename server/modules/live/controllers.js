@@ -628,7 +628,7 @@ class io_spin extends IO {
             return input;
         }
         this.a += this.speed;
-        let offset = (!this.independent && this.body.bond != null) ? this.body.bound.angle : 0;
+        let offset = (this.independent && this.body.bond != null) ? this.body.bound.angle : 0;
         return {
             target: {
                 x: Math.cos(this.a + offset),
