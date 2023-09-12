@@ -1748,12 +1748,13 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         let ticker = 0;
         let colorIndex = 10;
         let columnCount = Math.max(3, Math.ceil(gui.upgrades.length / 4));
+        let clickableRatio = global.canvas.height / global.screenHeight;
         upgradeSpin += 0.01;
         for (let i = 0; i < gui.upgrades.length; i++) {
             let model = gui.upgrades[i];
             if (y > yo) yo = y;
             xxx = x;
-            global.clickables.upgrade.place(i, x, y, len, height);
+            global.clickables.upgrade.place(i, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);
 
             // Draw box
             ctx.globalAlpha = 0.5;
@@ -1806,7 +1807,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h + config.graphical.barChunk, color.black);
         drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h, color.white);
         drawText(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
-        global.clickables.skipUpgrades.place(0, xx - m / 2, yy, m, h);
+        global.clickables.skipUpgrades.place(0, (xx - m / 2) * clickableRatio, yy * clickableRatio, m * clickableRatio, h * clickableRatio);
     } else {
         global.canUpgrade = false;
         global.clickables.upgrade.hide();
