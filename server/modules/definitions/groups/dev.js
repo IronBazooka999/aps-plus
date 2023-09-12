@@ -219,7 +219,7 @@ function compileMatrix(matrix, matrix2Entrance) {
             LABEL,
             SKILL_CAP: [31, 0, 0, 0, 0, 0, 0, 0, 0, 31],
             ALPHA: [0, 0],
-            IGNORED_BY_AI: true
+            IGNORED_BY_AI: true,
             TURRETS: [{
                 POSITION: [5 + y * 2, 0, 0, 0, 0, 1],
                 TYPE: str,
