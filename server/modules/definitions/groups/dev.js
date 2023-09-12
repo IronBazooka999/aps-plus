@@ -207,124 +207,6 @@ exports.spawnedAlphaPentagon = {
 };
 
 // GENERATORS
-exports.generatorBase = {
-    PARENT: ["genericTank"],
-    SKILL_CAP: [31, 0, 0, 0, 0, 0, 0, 0, 0, 31],
-    ALPHA: [0, 0],
-    IGNORED_BY_AI: true
-};
-exports.eggGenerator = {
-    PARENT: ["generatorBase"],
-    LABEL: "Egg Generator",
-    COLOR: 6,
-    TURRETS: [
-        {
-            /*    SIZE         X             Y         ANGLE        ARC */
-            POSITION: [5, 0, 0, 0, 0, 1],
-            TYPE: ["egg", { COLOR: 6 }],
-        },
-    ],
-    GUNS: [
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [14, 12, 1, 4, 0, 0, 0],
-        },
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [12, 12, 1.4, 4, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.micro]),
-                TYPE: "spawnedEgg",
-                LABEL: "Spawned",
-            },
-        },
-    ],
-};
-exports.squareGenerator = {
-    PARENT: ["generatorBase"],
-    LABEL: "Square Generator",
-    COLOR: 13,
-    SHAPE: 4,
-    TURRETS: [
-        {
-            /*    SIZE         X             Y         ANGLE        ARC */
-            POSITION: [8, 0, 0, 0, 0, 1],
-            TYPE: ["square", { COLOR: 13 }],
-        },
-    ],
-    GUNS: [
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [14, 12, 1, 4, 0, 0, 0],
-        },
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [12, 12, 1.4, 4, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.small]),
-                TYPE: "spawnedSquare",
-                LABEL: "Spawned",
-            },
-        },
-    ],
-};
-exports.alphaPentagonGenerator = {
-    PARENT: ["generatorBase"],
-    LABEL: "Alpha Pentagon Generator",
-    COLOR: 14,
-    SHAPE: 5,
-    TURRETS: [
-        {
-            /*    SIZE         X             Y         ANGLE        ARC */
-            POSITION: [14, 0, 0, 0, 0, 1],
-            TYPE: ["alphaPentagon", { COLOR: 14 }],
-        },
-    ],
-    GUNS: [
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [14, 12, 1, 4, 0, 0, 0],
-        },
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [12, 12, 1.4, 4, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.small]),
-                TYPE: "spawnedAlphaPentagon",
-                LABEL: "Spawned",
-            },
-        },
-    ],
-};
-exports.crasherGenerator = {
-    PARENT: ["generatorBase"],
-    LABEL: "Crasher Generator",
-    COLOR: 5,
-    SHAPE: 3,
-    TURRETS: [
-        {
-            /*    SIZE         X             Y         ANGLE        ARC */
-            POSITION: [5, 0, 0, 0, 0, 1],
-            TYPE: ["crasher", { COLOR: 5 }],
-        },
-    ],
-    GUNS: [
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [14, 12, 1, 4, 0, 0, 0],
-        },
-        {
-            /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-            POSITION: [12, 12, 1.4, 4, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.micro]),
-                TYPE: "crasher",
-                LABEL: "Spawned",
-            },
-        },
-    ],
-};
-
 function compileMatrix(matrix, matrix2Entrance) {
     let matrixWidth = matrix[0].length,
         matrixHeight = matrix.length;
@@ -333,8 +215,11 @@ function compileMatrix(matrix, matrix2Entrance) {
             LABEL = str[0].toUpperCase() + str.slice(1).replace(/[A-Z]/g, m => ' ' + m) + " Generator",
             code = str + 'Generator';
         exports[code] = matrix[y][x] = {
-            PARENT: ["generatorBase"],
+            PARENT: ["genericTank"],
             LABEL,
+            SKILL_CAP: [31, 0, 0, 0, 0, 0, 0, 0, 0, 31],
+            ALPHA: [0, 0],
+            IGNORED_BY_AI: true
             TURRETS: [{
                 POSITION: [5 + y * 2, 0, 0, 0, 0, 1],
                 TYPE: str,
