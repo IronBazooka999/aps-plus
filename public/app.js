@@ -1511,6 +1511,7 @@ function drawSkillBars(spacing, alcoveSize) {
     let y = global.screenHeight - spacing - height;
     let ticker = 11;
     let namedata = gui.getStatNames(global.mockups[gui.type].statnames || -1);
+    let clickableRatio = canvas.height / global.screenHeight;
     for (let i = 0; i < gui.skills.length; i++) {
         ticker--;
         //information about the bar
@@ -1559,7 +1560,7 @@ function drawSkillBars(spacing, alcoveSize) {
         drawText("[" + (ticker % 10) + "]", Math.round(x + len - height * 0.25) - 1.5, y + height / 2, height - 5, textcolor, "right", true);
         if (textcolor === color.guiwhite) {
             // If it's active
-            global.clickables.stat.place(ticker - 1, x, y, len, height);
+            global.clickables.stat.place(ticker - 1, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);
         }
 
         // Skill value
@@ -1570,7 +1571,7 @@ function drawSkillBars(spacing, alcoveSize) {
         // Move on
         y -= height + vspacing;
     }
-    global.clickables.hover.place(0, 0, y, 0.8 * len, 0.8 * (global.screenHeight - y));
+    global.clickables.hover.place(0, 0, y * clickableRatio, 0.8 * len * clickableRatio, (global.screenHeight - y) * clickableRatio);
     if (gui.points !== 0) {
         // Draw skillpoints to spend
         drawText("x" + gui.points, Math.round(x + len - 2) + 0.5, Math.round(y + height - 4) + 0.5, 20, color.guiwhite, "right");
