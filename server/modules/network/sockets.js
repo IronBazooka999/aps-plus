@@ -509,6 +509,7 @@ function incoming(message, socket) {
             break;
 
         case "M":
+            if (player.body == null) return 1;
             let abort, message = m[0];
 
             if ("string" !==  typeof message) {
