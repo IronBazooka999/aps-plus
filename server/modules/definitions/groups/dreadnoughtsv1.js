@@ -393,10 +393,10 @@ exports.cerberusv1 = {
 for (let i = 0; i < 3; i++) {
     exports.cerberusv1.GUNS.push(
         {
-            POSITION: [11.5, 2.5, 1, 0, 3.3, 120*i, 0],
+            POSITION: [11.5, 2.5, 1, 0, 4, 120*i, 0],
         },
         {
-            POSITION: [1.75, 2.5, 1.6, 11.5, 3.3, 120*i, 0],
+            POSITION: [1.75, 2.5, 1.7, 11.5, 4, 120*i, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
                 TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
@@ -404,10 +404,10 @@ for (let i = 0; i < 3; i++) {
             },
         },
         {
-            POSITION: [11.5, 2.5, 1, 0, -3.3, 120*i, 0],
+            POSITION: [11.5, 2.5, 1, 0, -4, 120*i, 0],
         },
         {
-            POSITION: [1.75, 2.5, 1.6, 11.5, -3.3, 120*i, 0],
+            POSITION: [1.75, 2.5, 1.7, 11.5, -4, 120*i, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
                 TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
@@ -415,10 +415,10 @@ for (let i = 0; i < 3; i++) {
             },
         },
         {
-            POSITION: [13, 3.2, 1, 0, 0, 120*i, 0.5],
+            POSITION: [13.5, 3.2, 1, 0, 0, 120*i, 0.5],
         },
         {
-            POSITION: [1.75, 3.2, 1.6, 13, 0, 120*i, 0.5],
+            POSITION: [1.75, 3.2, 1.7, 13.5, 0, 120*i, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
                 TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
