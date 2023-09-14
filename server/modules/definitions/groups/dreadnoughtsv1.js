@@ -238,14 +238,14 @@ for (let i = 0; i < 3; i++) {
         {
             POSITION: [6, 8, 1.3, 7, 0, 120*i, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.pound, g.morereload, {size: 0.55}]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.pound, g.morereload, g.slow, {size: 0.55}]),
                 TYPE: "bullet",
             },
         },
         {
             POSITION: [6, 7.5, 1.2, 9, 0, 120*i, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.pound, g.morereload, {size: 0.55 * 8 / 7.5}]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.pound, g.morereload, g.slow, {size: 0.55 * 8 / 7.5}]),
                 TYPE: "bullet",
             },
         },
@@ -279,21 +279,21 @@ for (let i = 0; i < 3; i++) {
         {
             POSITION: [13.5, 6, 1, 0, 2.2, 120*i, 0.5],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple, g.pound, g.morereload]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple, g.slow, g.pound, g.morereload]),
                 TYPE: "bullet",
             },
         },
         {
             POSITION: [13.5, 6, 1, 0, -2.2, 120*i, 0.5],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple, g.pound, g.morereload]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple, g.slow, g.pound, g.morereload]),
                 TYPE: "bullet",
             },
         },
         {
             POSITION: [15.5, 6, 1, 0, 0, 120*i, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple, g.pound, g.morereload]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple, g.slow, g.pound, g.morereload]),
                 TYPE: "bullet",
             },
         },
