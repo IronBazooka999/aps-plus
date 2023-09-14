@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "server/index.js",
   "scripts": {
-    "start": "node --optimize-for-size --no-lazy --gc_interval=120 server/index",
+    "startOptimized": "node --optimize-for-size --no-lazy --gc_interval=120 server/index",
+    "restartOnSaveOptimized": "node --optimize-for-size --no-lazy --gc_interval=120 --watch server/index",
+    "start": "node server/index",
+    "restartOnSave": "node --watch server/index",
     "host": "node standaloneClient/index",
     "build": "node standaloneClient/build minify"
   },
