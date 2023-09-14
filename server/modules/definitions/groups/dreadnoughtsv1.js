@@ -26,7 +26,7 @@ exports.mechanismMainTurret = {
 exports.automationMainTurret = {
     PARENT: ["genericTank"],
     LABEL: "Turret",
-    CONTROLLERS: ["canRepel", "onlyAcceptInArc", "mapAltToFire", "nearestDifferentMaster"],
+    CONTROLLERS: ["onlyAcceptInArc", "nearestDifferentMaster"],
     INDEPEDENT: true,
     BODY: {
         FOV: 0.8,
@@ -45,7 +45,7 @@ exports.automationMainTurret = {
 exports.automationSecondaryTurret = {
     PARENT: ["genericTank"],
     LABEL: "Turret",
-    CONTROLLERS: ["canRepel", "onlyAcceptInArc", "mapAltToFire", "nearestDifferentMaster"],
+    CONTROLLERS: ["onlyAcceptInArc", "nearestDifferentMaster"],
     INDEPEDENT: true,
     BODY: {
         FOV: 0.8,
@@ -156,7 +156,7 @@ exports.automationv1 = {
 for (let i = 0; i < 6; i++) {
     exports.automationv1.TURRETS.push(
         {
-            POSITION: [4, 9, 0, 60*i+30, 180, 1],
+            POSITION: [4, 8.5, 0, 60*i+30, 180, 1],
             TYPE: "automationSecondaryTurret",
         }
     )
