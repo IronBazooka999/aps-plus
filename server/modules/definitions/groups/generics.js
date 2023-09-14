@@ -1,4 +1,4 @@
-const { base, dfltskl } = require('../constants.js');
+const { base, dreadnought1, dfltskl, smshskl } = require('../constants.js');
 
 exports.genericEntity = {
     NAME: "",
@@ -288,3 +288,14 @@ exports.auraSymbol = {
     COLOR: 0,
     SHAPE: [[-0.598,-0.7796],[-0.3817,-0.9053],[0.9688,-0.1275],[0.97,0.125],[-0.3732,0.9116],[-0.593,0.785]]
 };
+
+exports.genericDreadnought1 = {
+    PARENT: ["genericTank"],
+    BODY: dreadnought1,
+    SHAPE: 6,
+    COLOR: 9,
+    SIZE: 50,
+    LEVEL: 150,
+    EXTRA_SKILL: 48,
+    SKILL_CAP: [smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl],
+}
