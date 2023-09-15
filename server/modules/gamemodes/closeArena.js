@@ -2,7 +2,7 @@ let loop;
 function close() {
     sockets.broadcast("Closing!");
     clearInterval(loop);
-    process.exit()
+    setTimeout(process.exit, 1000);
 }
 
 function closeArena() {
@@ -13,8 +13,6 @@ function closeArena() {
         if (entities[i].isBot) {
             entities[i].kill();
         }
-        entities[i].alpha = 1
-        entities[i].invisible = [0, 0]
     }
     for (let i = 0; i < 15; i++) {
         let angle = ((Math.PI * 2) / 15) * i;
@@ -31,7 +29,7 @@ function closeArena() {
                 LIKES_SHAPES: true,
             },
             CONTROLLERS: ["nearestDifferentMaster", "mapTargetToGoal"],
-            SKILL: Array(10).fill(255),
+            SKILL: Array(10).fill(9),
             ACCEPTS_SCORE: false,
             CAN_BE_ON_LEADERBOARD: false,
             VALUE: 100000,

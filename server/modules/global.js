@@ -54,7 +54,7 @@ global.TEAM_ROOM = -100;
 global.TEAM_ENEMIES = -101;
 global.getTeamName = team => ["BLUE", "GREEN", "RED", "PURPLE", "YELLOW", "ORANGE", "BROWN", "CYAN"][-team - 1] || "An unknown team";
 global.getTeamColor = team => [10, 11, 12, 15, 25, 26, 27, 28][-team - 1] || 3 + " 0 1 0 false";
-global.isPlayerTeam = team => team < 0 && team > -9;
+global.isPlayerTeam = team => /*team < 0 && */team > -9;
 
 global.Tile = class Tile {
     constructor (args) {
