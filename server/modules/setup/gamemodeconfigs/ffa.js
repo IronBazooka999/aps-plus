@@ -1,3 +1,1 @@
-module.exports = {
-    BOTS: 9
-};
+module.exports = {};

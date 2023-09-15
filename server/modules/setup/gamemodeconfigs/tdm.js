@@ -1,6 +1,5 @@
 // you can edit this!
-let teams = 4,
-	bots_per_team = 0;
+let teams = 4;
 
 // you can edit anything below this if you know what you're doing
 
@@ -41,7 +40,6 @@ if (teams > 3) {
 module.exports = {
     MODE: "tdm",
     TEAMS: teams,
-    BOTS: bots_per_team * teams,
     X_GRID: 15,
     Y_GRID: 15,
     WIDTH: 5000,

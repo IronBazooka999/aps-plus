@@ -1,4 +1,6 @@
+// Amount of players per group
+let groupSize = (Math.random() * 3 | 0) + 2;
+
 module.exports = {
-    GROUPS: (Math.random() * 3 | 0) + 2,
-    BOTS: 15
+    GROUPS: groupSize
 };

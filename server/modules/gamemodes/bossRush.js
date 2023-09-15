@@ -1,5 +1,11 @@
 let calculatePoints = wave => 5 + wave * 3;
 
+// Each wave has a certain amount of "points" that it can spend on bosses, calculated above.
+// Each boss costs an amount of points.
+// It will always buy as many bosses until it has no points or else can't spend them.
+// It picks a boss to buy by filtering the list of boss choices by if they are affordable.
+// Then it picks a boss at random, with all choices being equally likely.
+
 class BossRush {
     constructor() {
         this.bossChoices = [
@@ -28,13 +34,30 @@ class BossRush {
             [  3, "nestWarden"],
             [  3, "nestGuardian"],
 
+            //terrestrials
+            /*
+            [ 15, "ares"],
+            [ 15, "gersemi"],
+            [ 15, "ezekiel"],
+            [ 15, "eris"],
+            [ 15, "selene"],
+            */
+
+            //celestials
+            [ 35, "paladin"],
+            [ 35, "freyja"],
+            [ 35, "zaphkiel"],
+            [ 35, "nyx"],
+            [ 35, "theia"],
+
             //eternals
+            //[ 99 /*fucking mid*/, "legionaryCrasher"],
             [100, "kronos"],
             //[100, "ragnarok"],
         ];
-        this.friendlyBossChoices = [Class.roguePalisade, Class.rogueArmada];
-        this.bigFodderChoices = [Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.shinySentryGun];
-        this.smallFodderChoices = [Class.crasher];
+        this.friendlyBossChoices = ["roguePalisade", "rogueArmada", "alviss", "tyr"/*, "fiolnir"*/];
+        this.bigFodderChoices = ["sentryGun", "sentrySwarm", "sentryTrap", "shinySentryGun"];
+        this.smallFodderChoices = ["crasher"];
         this.waves = this.generateWaves();
         this.waveId = -1;
         this.gameActive = true;
@@ -44,16 +67,16 @@ class BossRush {
 
     generateWaves() {
         let waves = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 100; i++) {
             let wave = [],
-                points = Math.ceil(calculatePoints(i)),
+                points = calculatePoints(i),
                 choices = this.bossChoices;
 
             while (points > 0 && choices.length) {
-                choices = choices.filter(x => x[0] <= points);
-                let choice = ran.choose(choices);
-                points -= choice[0];
-                wave.push(choice[1]);
+                choices = choices.filter(([ cost ]) => cost <= points);
+                let [ cost, boss ] = ran.choose(choices);
+                points -= cost;
+                wave.push(boss);
             }
 
             waves.push(wave);
@@ -75,14 +98,14 @@ class BossRush {
     spawnDominator(loc, team, type = false) {
         type = type ? type : Class.destroyerDominator;
         let o = new Entity(loc);
-        o.define(type)
-        o.team = team
-        o.color = getTeamColor(team)
-        o.skill.score = 111069
-        o.name = 'Dominator'
-        o.SIZE = c.WIDTH / c.X_GRID / 10
-        o.isDominator = true
-        o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spin(o, { onlyWhenIdle: true })]
+        o.define(type);
+        o.team = team;
+        o.color = getTeamColor(team);
+        o.skill.score = 111069;
+        o.name = 'Dominator';
+        o.SIZE = c.WIDTH / c.X_GRID / 10;
+        o.isDominator = true;
+        o.controllers = [new ioTypes.nearestDifferentMaster(o), new ioTypes.spin(o, { onlyWhenIdle: true })];
         o.on('dead', () => {
             if (o.team === TEAM_ENEMIES) {
                 this.spawnDominator(loc, -1, type)
