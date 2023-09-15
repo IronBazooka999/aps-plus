@@ -89,8 +89,7 @@ class BossRush {
         o.define(ran.choose(this.friendlyBossChoices));
         o.define({ DANGER: 10 });
         o.team = -1;
-        o.controllers.push(new ioTypes.nearestDifferentMaster(o));
-        o.controllers.push(new ioTypes.wanderAroundMap(0, { immitatePlayerMovement: false, lookAtGoal: true }));
+        o.controllers.push(new ioTypes.nearestDifferentMaster(o), new ioTypes.wanderAroundMap(0, { lookAtGoal: true }));
         sockets.broadcast(o.name + ' has arrived and joined your team!');
     }
 
