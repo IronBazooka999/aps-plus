@@ -88,7 +88,6 @@ class BossRush {
         let o = new Entity(room.randomType('bas1'));
         o.define(ran.choose(this.friendlyBossChoices));
         o.define({ DANGER: 10 });
-        o.color = 10;
         o.team = -1;
         o.controllers.push(new ioTypes.nearestDifferentMaster(o));
         o.controllers.push(new ioTypes.wanderAroundMap(0, { immitatePlayerMovement: false, lookAtGoal: true }));
