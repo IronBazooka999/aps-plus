@@ -105,7 +105,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Sword",
 	    GUNS: [],
-	    BRANCH_FROM: "dreadv1"
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.swordv1.GUNS.push({
@@ -121,7 +120,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Pacifier",
 	    GUNS: [],
-	    BRANCH_FROM: "dreadv1"
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.pacifierv1.GUNS.push({
@@ -137,7 +135,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Invader",
 	    GUNS: [],
-	    BRANCH_FROM: "dreadv1"
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.invaderv1.GUNS.push({
@@ -158,7 +155,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Centaur",
 	    GUNS: [],
-	    BRANCH_FROM: "dreadv1"
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.centaurv1.GUNS.push({
@@ -180,7 +176,7 @@ module.exports = ({ Class }) => {
 	}
 	for (let i = 0; i < 6; i++) {
 	    Class.automationv1.TURRETS.push({
-	        POSITION: [4, 8.5, 0, 60*i+30, 180, 1],
+	        POSITION: [4, 8.7, 0, 60*i+30, 180, 1],
 	        TYPE: "automationSecondaryTurret",
 	    });
 	}
@@ -209,7 +205,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Sabre",
 	    GUNS: [],
-	    BRANCH_FROM: "swordv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.sabrev1.GUNS.push({
@@ -226,7 +221,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Gladius",
 	    GUNS: [],
-	    BRANCH_FROM: "swordv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.gladiusv1.GUNS.push({
@@ -244,7 +238,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Appeaser",
 	    GUNS: [],
-	    BRANCH_FROM: "pacifierv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.appeaserv1.GUNS.push({
@@ -265,7 +258,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Peacekeeper",
 	    GUNS: [],
-	    BRANCH_FROM: "pacifierv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.peacekeeperv1.GUNS.push({
@@ -280,7 +272,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Diplomat",
 	    GUNS: [],
-	    BRANCH_FROM: "pacifierv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.diplomatv1.GUNS.push({
@@ -308,7 +299,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Inquisitor",
 	    GUNS: [],
-	    BRANCH_FROM: "invaderv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.inquisitorv1.GUNS.push({
@@ -328,7 +318,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Assailant",
 	    GUNS: [],
-	    BRANCH_FROM: "invaderv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.assailantv1.GUNS.push({
@@ -344,14 +333,13 @@ module.exports = ({ Class }) => {
 	            SYNCS_SKILLS: true
 	        }
 	    }, {
-	        POSITION: [12, 10, 1, 0, 0, 120*i, 0]
+	        POSITION: [11.5, 10, 1, 0, 0, 120*i, 0]
 	    });
 	}
 	Class.infiltratorv1 = {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Infiltrator",
 	    GUNS: [],
-	    BRANCH_FROM: "invaderv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.infiltratorv1.GUNS.push({
@@ -382,7 +370,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Cerberus",
 	    GUNS: [],
-	    BRANCH_FROM: "centaurv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.cerberusv1.GUNS.push({
@@ -418,7 +405,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Minotaur",
 	    GUNS: [],
-	    BRANCH_FROM: "centaurv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.minotaurv1.GUNS.push({
@@ -436,7 +422,6 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Siren",
 	    GUNS: [],
-	    BRANCH_FROM: "centaurv1",
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.sirenv1.GUNS.push({
@@ -455,11 +440,10 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Mechanism",
 	    TURRETS: [],
-	    BRANCH_FROM: "automationv1",
 	}
 	for (let i = 0; i < 6; i++) {
 	    Class.mechanismv1.TURRETS.push({
-	        POSITION: [4, 8.5, 0, 60*i+30, 180, 1],
+	        POSITION: [4, 8.75, 0, 60*i+30, 180, 1],
 	        TYPE: "automationMainTurret",
 	    })
 	}
@@ -481,22 +465,21 @@ module.exports = ({ Class }) => {
 	        POSITION: [23.5, 0, 0, 0, 0, 0],
 	        TYPE: ["smasherBody", {INDEPEDENT: false} ]
 	    }],
-	    BRANCH_FROM: "juggernautv1",
 	}
 
 	Class.developer.UPGRADES_TIER_0.push("dreadv1");
-		Class.dreadv1.UPGRADES_TIER_0 = ["swordv1", "pacifierv1", "invaderv1", "centaurv1"];
-			Class.swordv1.UPGRADES_TIER_0 = ["sabrev1", "gladiusv1"];
-			Class.pacifierv1.UPGRADES_TIER_0 = ["appeaserv1", "peacekeeperv1", "diplomatv1"];
-			Class.invaderv1.UPGRADES_TIER_0 = ["inquisitorv1", "assailantv1", "infiltratorv1"];
-			Class.centaurv1.UPGRADES_TIER_0 = ["cerberusv1", "minotaurv1", "sirenv1"];
-			Class.automationv1.UPGRADES_TIER_0 = ["mechanismv1"];
-			Class.juggernautv1.UPGRADES_TIER_0 = ["behemothv1"];
+		Class.dreadv1.UPGRADES_TIER_1 = ["swordv1", "pacifierv1", "invaderv1", "centaurv1"];
+			Class.swordv1.UPGRADES_TIER_M1 = ["sabrev1", "gladiusv1"];
+			Class.pacifierv1.UPGRADES_TIER_M1 = ["appeaserv1", "peacekeeperv1", "diplomatv1"];
+			Class.invaderv1.UPGRADES_TIER_M1 = ["inquisitorv1", "assailantv1", "infiltratorv1"];
+			Class.centaurv1.UPGRADES_TIER_M1 = ["cerberusv1", "minotaurv1", "sirenv1"];
+			Class.automationv1.UPGRADES_TIER_M1 = ["mechanismv1"];
+			Class.juggernautv1.UPGRADES_TIER_M1 = ["behemothv1"];
 
-	for (let primary of Class.dreadv1.UPGRADES_TIER_0) {
+	for (let primary of Class.dreadv1.UPGRADES_TIER_1) {
 		let primaryName = primary;
 		primary = ensureIsClass(Class, primary);
-		primary.UPGRADES_TIER_0 = [];
+		primary.UPGRADES_TIER_1 = [];
 
 		for (let secondary of [ "swordv1", "pacifierv1", "invaderv1", "centaurv1", "automationv1", "juggernautv1" ]) {
 			let secondaryName = secondary;
@@ -533,10 +516,56 @@ module.exports = ({ Class }) => {
 			// Actually make that guy
 			Class[definitionName] = {
 				PARENT: ["genericDreadnought1"],
-				UPGRADES_TIER_0: [],
+				UPGRADES_TIER_2: [],
 				BODY, LABEL, GUNS, TURRETS
 			};
-			Class[primaryName].UPGRADES_TIER_0.push(definitionName);
+			Class[primaryName].UPGRADES_TIER_1.push(definitionName);
+
+			// Compile T2
+			for (let primary2 of primary.UPGRADES_TIER_M1) {
+				let primaryName2 = primary2;
+				primary2 = ensureIsClass(Class, primary2);
+
+				for (let secondary2 of secondary.UPGRADES_TIER_M1) {
+					let secondaryName = secondary2;
+					secondary2 = ensureIsClass(Class, secondary2);
+
+					let GUNS = [],
+						TURRETS = [],
+						LABEL = primary2.LABEL + "-" + secondary2.LABEL,
+						BODY = JSON.parse(JSON.stringify(dreadnoughtBody));
+
+					// Label it
+					if (primary2.LABEL == secondary2.LABEL) LABEL = primary2.LABEL;
+
+					// Guns
+					if (primary2.GUNS) GUNS.push(...primary2.GUNS);
+					for (let g in secondary2.GUNS) {
+						let POSITION = JSON.parse(JSON.stringify(secondary2.GUNS[g].POSITION)),
+							PROPERTIES = secondary2.GUNS[g].PROPERTIES;
+						POSITION[5] += 60;
+						GUNS.push({ POSITION, PROPERTIES });
+					}
+
+					// Turrets
+					if (primary2.TURRETS) TURRETS.push(...primary2.TURRETS);
+					if (secondary2.TURRETS) TURRETS.push(...secondary2.TURRETS);
+
+					// Body
+					if (primary2.BODY) for (let m in primary2.BODY) BODY *= primary2.BODY[m];
+					if (secondary2.BODY) for (let m in secondary2.BODY) BODY *= secondary2.BODY[m];
+
+					// Definition name
+					let definitionName2 = primaryName2 + secondaryName;
+
+					// Actually make that guy
+					Class[definitionName2] = {
+						PARENT: ["genericDreadnought1"],
+						BODY, LABEL, GUNS, TURRETS
+					};
+					Class[definitionName].UPGRADES_TIER_2.push(definitionName2);
+				}
+			}
 		}
 	}
 };
