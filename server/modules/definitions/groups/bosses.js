@@ -823,6 +823,8 @@ exports.eliteSkimmer = {
         },
     ],
 };
+
+// Nesters
 exports.nestKeeper = {
     PARENT: ["miniboss"],
     LABEL: "Nest Keeper",
@@ -1054,6 +1056,8 @@ for(let i = 0; i < 5; i++) {
         }
     );
 };
+
+// Rogues
 exports.roguePalisade = {
     PARENT: ["miniboss"],
     LABEL: "Rogue Palisade",
@@ -1226,6 +1230,23 @@ exports.defender = {
 };
 
 // CELESTIALS
+exports.terrestrial = {
+    PARENT: ["miniboss"],
+    LABEL: "Terrestrial",
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    VALUE: 5e5,
+    SHAPE: 7,
+    LEVEL: 35,
+    SIZE: 30,
+    BODY: {
+        FOV: 1,
+        HEALTH: 1000,
+        SHIELD: 2,
+        REGEN: base.REGEN * 0.1,
+        SPEED: 0.75,
+        DAMAGE: 5,
+    },
+};
 exports.celestial = {
     PARENT: ["miniboss"],
     LABEL: "Celestial",
@@ -1264,6 +1285,146 @@ exports.eternal = {
         SPEED: 0.75,
         DAMAGE: 5,
     },
+};
+
+// Terrestrials
+exports.protoHive = {
+    PARENT: ["bullet"],
+    LABEL: "Proto-Hive",
+    BODY: {
+        RANGE: 90,
+        FOV: 0.5,
+    },
+    FACING_TYPE: "turnWithSpeed",
+    INDEPENDENT: true,
+    CONTROLLERS: ["alwaysFire", "nearestDifferentMaster", "targetSelf"],
+    AI: {
+        NO_LEAD: true,
+    },
+    GUNS: [
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, 120, 0.2],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 9.5, 0.6, 7, 0, -120, 0.4],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.hive, g.bees]),
+                TYPE: "bee",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+    ],
+};
+exports.protoSwarmerTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Swarmer",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [10, 14, -1.2, 5, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.hive]),
+                TYPE: "protoHive",
+            },
+        },
+        {
+            POSITION: [11, 12, 1, 5, 0, 0, 0],
+        },
+    ],
+};
+exports.aresLowerBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 14,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 7,
+    BODY: {
+        FOV: 10,
+    },
+    MAX_CHILDREN: 18,
+    FACING_TYPE: "autospin",
+    GUNS: [],
+};
+for(let i = 0; i < 7; i++) {
+    exports.aresLowerBody.GUNS.push(
+        {
+            POSITION: [3.75, 7, 1.2, 8, 0, 360/7*(i+0.5), 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed, {size: 4/3}]),
+                TYPE: ["demonchip", { INDEPENDENT: true, }],
+                AUTOFIRE: true,
+                SYNCS_SKILLS: true,
+                STAT_CALCULATOR: gunCalcNames.necro,
+                WAIT_TO_CYCLE: true,
+            },
+        },
+    )
+};
+exports.aresUpperBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    AUTOSPIN: true,
+    COLOR: 14,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    MAX_CHILDREN: 28,
+    SHAPE: 5,
+    INDEPENDENT: true,
+    TURRETS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.aresUpperBody.TURRETS.push(
+        {
+            POSITION: [10, 8.5, 0, 360/5*(i+0.5), 160, 0],
+            TYPE: ["protoSwarmerTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.ares = {
+    PARENT: ["terrestrial"],
+    NAME: "Ares",
+    COLOR: 14,
+    TURRETS: [
+        {
+            POSITION: [14.5, 0, 0, 0, 360, 1],
+            TYPE: ["aresLowerBody"],
+        },
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE: ["aresUpperBody"],
+        },
+    ],
+};
+for(let i = 0; i < 7; i++) {
+    exports.ares.TURRETS.push(
+        {
+            POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true, }],
+        },
+    )
 };
 
 // PALADIN
