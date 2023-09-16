@@ -3058,3 +3058,292 @@ for(let i = 0; i < 11; i++) {
         },
     )
 };
+// Developer Bosses
+exports.taureonCoreBase = {
+    SHAPE: 4,
+    COLOR: '#00A2E8'
+};
+exports.taureonCore = {
+    PARENT: "genericTank",
+    LABEL: "Core Turret",
+    SHAPE: 4.5,
+    COLOR: '#99D9EA',
+    INDEPENDENT: true,
+    GUNS: [{
+        POSITION: [10, 14, -0.5, 14, 0, 0, 0]
+    },{
+        POSITION: [21, 15, -1.1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.destroy, g.sniper]),
+            TYPE: "snake",
+            STAT_CALCULATOR: gunCalcNames.sustained
+        }
+    }],
+    TURRETS: [{
+        POSITION: [20 * Math.SQRT2, 0, 0, 0, 0, 0],
+        TYPE: "taureonCoreBase"
+    }]
+};
+exports.taureonBase = {
+    SHAPE: 4.5,
+    COLOR: '#161B54',
+    TURRET_FACES_CLIENT: true
+};
+let d = 1/4;
+exports.taureonStar = {
+    SHAPE: [[0,1],[d,d],[1,0],[d,-d],[0,-1],[-d,-d],[-1,0],[-d,d]],
+    COLOR: '#3F48CC',
+    TURRET_FACES_CLIENT: true
+};
+exports.taureonRailgunTurret = {
+    PARENT: "genericTank",
+    LABEL: "Railgun Turret",
+    CONTROLLERS: ["nearestDifferentMaster", "onlyAcceptInArc"],
+    INDEPENDENT: true,
+    GUNS: [{
+        POSITION: [20, 7, 1, 0, 0, 0, 0]
+    },{
+        POSITION: [24, 5, 1, 0, 0, 0, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.destroy, g.veryfast, g.veryfast]),
+            TYPE: "bullet"
+        }
+    },{
+        POSITION: [5, 7.5, -1.6, 8, 0, 0, 0],
+    }]
+};
+exports.taureonThruster = {
+    PARENT: "genericTank",
+    LABEL: "Thruster",
+    CONTROLLERS: ["onlyAcceptInArc"],
+    GUNS: [{
+        POSITION: [14, 12, 1, 4, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.thruster, g.halfspeed, g.halfspeed, g.fake]),
+            TYPE: "bullet"
+        }
+    }, {
+        POSITION: [12, 12, 1.4, 4, 0, 180, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.mach, g.thruster, g.halfspeed, g.halfspeed]),
+            TYPE: "bullet"
+        },
+    }]
+};
+exports.taureonMissile = {
+    PARENT: ["bullet"],
+    LABEL: "Missile",
+    TYPE: "swarm",
+    MOTION_TYPE: "swarm",
+    FACING_TYPE: "smoothWithMotion",
+    CONTROLLERS: ["nearestDifferentMaster", "mapTargetToGoal"],
+    INDEPENDENT: true,
+    BODY: {
+        FOV: base.FOV * 2
+    },
+    TURRETS: [{/** SIZE     X       Y     ANGLE    ARC */
+        POSITION: [10, 0, 0, 0, 360, 1],
+        TYPE: "genericTank",
+    }],
+    GUNS: [{/* LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+        POSITION: [6, 12, 1.4, 8, 0, 180, 0],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            STAT_CALCULATOR: gunCalcNames.thruster,
+            SHOOT_SETTINGS: combineStats([g.basic, g.mach, { range: 0.1 }]),
+            TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+        }
+    },{
+        POSITION: [10, 12, 0.8, 8, 0, 180, 0.5],
+        PROPERTIES: {
+            AUTOFIRE: true,
+            NEGATIVE_RECOIL: true,
+            STAT_CALCULATOR: gunCalcNames.thruster,
+            SHOOT_SETTINGS: combineStats([g.basic, g.mach, { range: 0.1 }]),
+            TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }]
+        }
+    },...Array(16).fill().map((_, i)=>({
+        POSITION: [0, (i % 4) + 1, 0, 0, 0, 0, 9999],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, { spray: 1e6, recoil: 0, range: 0.5 }]),
+            TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+            SHOOT_ON_DEATH: true
+        },
+    }))]
+};
+exports.taureonBoss = {
+    PARENT: "miniboss",
+    LABEL: "Diamond Marauder",
+    NAME: "Taureon",
+    COLOR: '#2B339B',
+    DANGER: 10,
+    SHAPE: 4.5,
+    SIZE: 50,
+    FACING_TYPE: "smoothToTarget",
+    VALUE: 5e6,
+    BODY: {
+        FOV: 1,
+        SPEED: 0.5 * base.SPEED,
+        HEALTH: 20 * base.HEALTH,
+        DAMAGE: 3 * base.DAMAGE,
+    },
+    TURRETS: [{
+        POSITION: [23.3, 0, 0, 0, 0, 0],
+        TYPE: "taureonBase"
+    },{
+        POSITION: [5, 10, 0, -45, 180, 0],
+        TYPE: "taureonRailgunTurret"
+    },{
+        POSITION: [5, 10, 0, 45, 180, 0],
+        TYPE: "taureonRailgunTurret"
+    },{
+        POSITION: [5, -10, 0, -45, 90, 0],
+        TYPE: "taureonThruster"
+    },{
+        POSITION: [5, -10, 0, 45, 90, 0],
+        TYPE: "taureonThruster"
+    },{
+        POSITION: [25, 0, 0, 0, 0, 1],
+        TYPE: "taureonStar"
+    },{
+        POSITION: [5, 0, 0, 0, 0, 1],
+        TYPE: "taureonCore"
+    }],
+    GUNS: [...Array(6).fill().map((_, i) => ({
+        POSITION: [18, 1.75, 1, 0, Math.cos(Math.PI * i / 3) * 2, 0, i / 6],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.twin]),
+            TYPE: "bullet"
+        }
+    })),{
+        POSITION: [4, 5, -0.5, 12, 0, -90, 0]
+    },{
+        POSITION: [10, 5, -1.2, 5, 0, -90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind]),
+            TYPE: "taureonMissile",
+            STAT_CALCULATOR: gunCalcNames.sustained
+        }
+    },{
+        POSITION: [4, 5, -0.5, 12, 0, 90, 0]
+    },{
+        POSITION: [10, 5, -1.2, 5, 0, 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind]),
+            TYPE: "taureonMissile",
+            STAT_CALCULATOR: gunCalcNames.sustained
+        }
+    },{
+        POSITION: [5.5, 5, -1.5, 5, 0, -45, 0]
+    },{
+        POSITION: [5.5, 5, -1.5, 5, 0, 45, 0]
+    },{
+        POSITION: [2, 7, 1, 8, 0, 0, 0]
+    },{
+        POSITION: [2, 7, 1, 14.5, 0, 0, 0]
+    }]
+};
+
+exports.shinyomegasunchip = {
+    PARENT: ["drone"],
+    SHAPE: 4,
+    HITS_OWN_TYPE: "hard",
+    BODY: {
+        FOV: 0.5,
+    },
+    AI: {
+        BLIND: true,
+        FARMER: true,
+    },
+    TURRETS: [{
+        POSITION: [20 * Math.SQRT1_2, 0, 0, 45, 0, 1],
+        TYPE: ["shinySquare", { TURRET_FACES_CLIENT: true }]
+    },{
+        POSITION: [20 * Math.SQRT1_2 ** 2, 0, 0, 0, 0, 1],
+        TYPE: ["shinySquare", { TURRET_FACES_CLIENT: true }]
+    },{
+        POSITION: [20 * Math.SQRT1_2 ** 3, 0, 0, 45, 0, 1],
+        TYPE: ["shinySquare", { TURRET_FACES_CLIENT: true }]
+    }]
+};
+exports.shinyEggDummy = {
+    SHAPE: 0,
+    COLOR: 1
+}
+exports.shinybetawaferbread = {
+    PARENT: ["drone"],
+    SHAPE: 0,
+    HITS_OWN_TYPE: "hard",
+    BODY: {
+        FOV: 0.5,
+    },
+    AI: {
+        BLIND: true,
+        FARMER: true,
+    },
+    TURRETS: [{
+        POSITION: [10, 0, 0, 45, 0, 1],
+        TYPE: "shinyEggDummy"
+    },]
+};;
+exports.tgsBoss = {
+    PARENT: "miniboss",
+    LABEL: "Shiny Omega Thaumaturge",
+    NAME: "TGS",
+    DANGER: 10,
+    SHAPE: 4,
+    COLOR: 1,
+    SIZE: 50,
+    FACING_TYPE: "autospin",
+    VALUE: 5e6,
+    BODY: {
+        FOV: 0.75,
+        SPEED: 0.05 * base.SPEED,
+        HEALTH: 15 * base.HEALTH,
+        DAMAGE: 5 * base.DAMAGE,
+    },
+    GUNS: Array(4).fill().map((_, i) => ([{
+        POSITION: [3.5, 8.65, 1.2, 8, 0, i * 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.destroy, g.veryfast, { maxSpeed: 3 }]),
+            TYPE: "shinyomegasunchip",
+            MAX_CHILDREN: 4,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true
+        }
+    },{
+        POSITION: [2.5, 3, 1.2, 8, 5, i * 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.pound, g.veryfast, g.mach, { spray: 50, speed: 1.25, shudder: 1.25 }]),
+            TYPE: "shinybetawaferbread",
+            MAX_CHILDREN: 8,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true
+        }
+    },{
+        POSITION: [2.5, 3, 1.2, 8, -5, i * 90, 0],
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.pound, g.veryfast, g.mach, { spray: 150, speed: 1.25, shudder: 1.25 }]),
+            TYPE: "shinybetawaferbread",
+            MAX_CHILDREN: 8,
+            AUTOFIRE: true,
+            SYNCS_SKILLS: true,
+            STAT_CALCULATOR: gunCalcNames.necro,
+            WAIT_TO_CYCLE: true
+        }
+    }])).flat(),
+    TURRETS: [{
+        POSITION: [20 * Math.SQRT1_2, 0, 0, 45, 0, 1],
+        TYPE: "shinySquare"
+    },{
+        POSITION: [20 * Math.SQRT1_2 ** 2, 0, 0, 0, 0, 1],
+        TYPE: "shinySquare"
+    },{
+        POSITION: [20 * Math.SQRT1_2 ** 3, 0, 0, 45, 0, 1],
+        TYPE: "shinySquare"
+    }]
+};

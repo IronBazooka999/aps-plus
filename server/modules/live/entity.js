@@ -868,8 +868,12 @@ class Entity extends EventEmitter {
         set = ensureIsClass(set);
 
         if (set.PARENT != null) {
-            for (let i = 0; i < set.PARENT.length; i++) {
-                this.define(set.PARENT[i]);
+            if (Array.isArray(set.PARENT)) {
+                for (let i = 0; i < set.PARENT.length; i++) {
+                    this.define(set.PARENT[i]);
+                }
+            } else {
+                this.define(set.PARENT);
             }
         }
         if (set.LAYER != null) this.layerID = set.LAYER;

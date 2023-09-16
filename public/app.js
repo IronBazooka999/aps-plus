@@ -193,7 +193,7 @@ function modifyColor(color, base = "16 0 1 0 false") {
     if (!isNaN(baseColor)) {
         baseColor = parseInt(baseColor);
     }
-    baseColor = rgbToHsl(getColor(baseColor));
+    baseColor = rgbToHsl(getColor(baseColor) ?? baseColor);
     
     // Get color config
     let hueShift = parseFloat(colorDetails[1]) / 360,
@@ -419,8 +419,6 @@ function getColor(colorNumber) {
         case 41:
         case "tree":
             return "#267524";
-        default:
-            return "#00000000";
     }
 }
 function getColorDark(givenColor) {
