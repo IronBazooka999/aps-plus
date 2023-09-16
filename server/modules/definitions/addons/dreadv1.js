@@ -97,7 +97,7 @@ module.exports = ({ Class }) => {
 	// T0
 	Class.dreadv1 = {
 	    PARENT: ["genericDreadnought1"],
-	    LABEL: "Dreadnoughts V1",
+	    LABEL: "Dreadnought",
 	}
 
 	// T1
