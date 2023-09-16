@@ -751,6 +751,7 @@ exports.antiTankMachineGun = {
     PARENT: ["dominator"],
     LABEL: "Anti Tank Machine Gun",
     CONTROLLERS: [['spin', {onlyWhenIdle: true}], 'nearestDifferentMaster'],
+    LEVEL: 45,
     BODY: {
         RESIST: 100,
         SPEED: 1.32,
@@ -758,7 +759,7 @@ exports.antiTankMachineGun = {
         HEALTH: 1e99,
         DAMAGE: 6,
         PENETRATION: 0.25,
-        FOV: 2,
+        FOV: 0.35,
         PUSHABILITY: 0,
         HETERO: 0,
         SHIELD: base.SHIELD * 1.4,

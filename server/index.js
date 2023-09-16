@@ -405,6 +405,19 @@ for (let team = 1; team < c.TEAMS + 1; team++) {
         spawnPermanentBaseProtector(loc, -team);
     }
 }
+// Make anti tank machine guns if needed
+let spawnPermanentAntiTankMachineGun = (loc) => {
+    let o = new Entity(loc);
+    o.define(Class.antiTankMachineGun);
+    o.controllers = [new ioTypes.nearestDifferentMaster(o)]
+    o.team = TEAM_ROOM;
+    o.color = getTeamColor(TEAM_RED);
+    o.on('dead', () => spawnPermanentAntiTankMachineGun(loc));
+};
+
+for (let loc of room["atmg"]) {
+    spawnPermanentAntiTankMachineGun(loc);
+}
 
 let bots = [],
 spawnBots = () => {
