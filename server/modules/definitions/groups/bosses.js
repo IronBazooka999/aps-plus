@@ -3425,7 +3425,7 @@ exports.tripletTurret = {
             },
         },
         {
-            POSITION: [21, 10, 1, 0, 0, 0, 0],
+            POSITION: [21, 10, 1.2, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
                 TYPE: "bullet",
