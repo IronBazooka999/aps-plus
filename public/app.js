@@ -1515,7 +1515,7 @@ function drawSkillBars(spacing, alcoveSize) {
     let y = global.screenHeight - spacing - height;
     let ticker = 11;
     let namedata = gui.getStatNames(global.mockups[gui.type].statnames || -1);
-    let clickableRatio = canvas.height / global.screenHeight;
+    let clickableRatio = canvas.height / global.screenHeight / global.ratio;
     for (let i = 0; i < gui.skills.length; i++) {
         ticker--;
         //information about the bar
@@ -1752,7 +1752,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         let ticker = 0;
         let colorIndex = 10;
         let columnCount = Math.max(3, Math.ceil(gui.upgrades.length / 4));
-        let clickableRatio = global.canvas.height / global.screenHeight;
+        let clickableRatio = global.canvas.height / global.screenHeight / global.ratio;
         upgradeSpin += 0.01;
         for (let i = 0; i < gui.upgrades.length; i++) {
             let model = gui.upgrades[i];

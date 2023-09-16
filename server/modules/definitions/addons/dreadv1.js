@@ -162,7 +162,7 @@ module.exports = ({ Class }) => {
 	    }, {
 	        POSITION: [2.5, 7, 1.6, 12, 0, 120*i, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.trap, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.trap, g.pound, g.morereload, {range: 3}]),
 	            TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
 	            STAT_CALCULATOR: gunCalcNames.trap,
 	        },
@@ -377,7 +377,7 @@ module.exports = ({ Class }) => {
 	    }, {
 	        POSITION: [1.75, 2.5, 1.7, 11.5, 4, 120*i, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload, {range: 3}]),
 	            TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
 	            STAT_CALCULATOR: gunCalcNames.trap,
 	        },
@@ -386,7 +386,7 @@ module.exports = ({ Class }) => {
 	    }, {
 	        POSITION: [1.75, 2.5, 1.7, 11.5, -4, 120*i, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload, {range: 3}]),
 	            TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
 	            STAT_CALCULATOR: gunCalcNames.trap
 	        }
@@ -395,7 +395,7 @@ module.exports = ({ Class }) => {
 	    }, {
 	        POSITION: [1.75, 3.2, 1.7, 13.5, 0, 120*i, 0.5],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload, {range: 3}]),
 	            TYPE: ["trap", {HITS_OWN_TYPE: "never"} ],
 	            STAT_CALCULATOR: gunCalcNames.trap
 	        }
@@ -412,7 +412,7 @@ module.exports = ({ Class }) => {
 	    }, {
 	        POSITION: [3, 9, 1.6, 13, 0, 120*i, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.trap, g.block, g.veryfast, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.trap, g.block, g.veryfast, g.pound, g.morereload, {range: 3}]),
 	            TYPE: ["unsetTrap", {HITS_OWN_TYPE: "never"} ],
 	            STAT_CALCULATOR: gunCalcNames.trap
 	        }
@@ -429,7 +429,7 @@ module.exports = ({ Class }) => {
 	    }, {
 	        POSITION: [2.5, 7, 1.6, 13, 0, 120*i, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.trap, g.hexatrap, g.fast, g.pound, g.morereload, {range: 3}]),
 	            TYPE: ["turretedTrap", {HITS_OWN_TYPE: "never"} ],
 	            STAT_CALCULATOR: gunCalcNames.trap,
 	        }
