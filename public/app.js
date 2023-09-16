@@ -853,11 +853,12 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
         let strokecolor = context.strokeStyle;
         context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         context.fillStyle = strokecolor;
+        context.lineWidth *= fill ? 1 : 0.5; // Maintain constant border width
         if (!borderless) context.stroke();
         context.closePath();
         context.beginPath();
         context.fillStyle = fillcolor;
-        context.arc(centerX, centerY, radius * (!borderless), 0, 2 * Math.PI);
+        context.arc(centerX, centerY, radius * fill, 0, 2 * Math.PI);
         if (fill) context.fill();
         context.closePath();
         return;
