@@ -271,7 +271,7 @@ class Gun {
         let vecLength = (this.negRecoil ? -1 : 1) * this.settings.speed * c.runSpeed * sk.spd * (1 + ss),
             vecAngle = this.angle + this.body.facing + sd,
         s = new Vector(vecLength * Math.cos(vecAngle), vecLength * Math.sin(vecAngle));
-        // Boost it if we shouldw
+        // Boost it if we should
         if (this.body.velocity.length) {
             let extraBoost =
                 Math.max(0, s.x * this.body.velocity.x + s.y * this.body.velocity.y) /

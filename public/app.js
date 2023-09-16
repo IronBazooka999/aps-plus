@@ -839,6 +839,7 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
             context.scale(radius, radius);
             context.lineWidth /= radius;
             context.rotate(angle);
+            context.lineWidth *= fill ? 1 : 0.5; // Maintain constant border width
             if (!borderless) context.stroke(path);
             if (fill) context.fill(path);
             context.restore();
@@ -868,6 +869,7 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
         sides = Math.floor(sides);
         let dip = 1 - 6 / (sides ** 2);
         context.moveTo(centerX + radius * Math.cos(angle), centerY + radius * Math.sin(angle));
+        context.lineWidth *= fill ? 1 : 0.5; // Maintain constant border width
         for (let i = 0; i < sides; i++) {
             let htheta = ((i + 0.5) / sides) * 2 * Math.PI + angle,
                 theta = ((i + 1) / sides) * 2 * Math.PI + angle,
@@ -887,6 +889,7 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
         // Polygon
         angle += (sides % 1) * Math.PI * 2;
         sides = Math.floor(sides);
+        context.lineWidth *= fill ? 1 : 0.5; // Maintain constant border width
         for (let i = 0; i < sides; i++) {
             let theta = (i / sides) * 2 * Math.PI + angle;
             context.lineTo(centerX + radius * Math.cos(theta), centerY + radius * Math.sin(theta));
