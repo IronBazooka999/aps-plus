@@ -53,7 +53,7 @@ class BossRush {
             [100, "kronos"],
             [100, "ragnarok"],
         ];
-        this.friendlyBossChoices = ["roguePalisade", "rogueArmada", "alviss", "tyr"/*, "fiolnir"*/];
+        this.friendlyBossChoices = ["roguePalisade", "rogueArmada", "alviss", "tyr", "fiolnir"];
         this.bigFodderChoices = ["sentryGun", "sentrySwarm", "sentryTrap", "shinySentryGun"];
         this.smallFodderChoices = ["crasher"];
         this.waves = this.generateWaves();
