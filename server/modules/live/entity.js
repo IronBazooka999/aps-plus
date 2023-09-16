@@ -2,11 +2,6 @@ let EventEmitter = require('events'),
     events,
     init = g => events = g.events;
 
-function ensureIsClass(str) {
-    if ("object" == typeof str) return str;
-    if (str in Class) return Class[str];
-    throw Error(`Definition ${str} is attempted to be gotten but does not exist!`);
-}
 function setNatural(natural, type) {
     type = ensureIsClass(type);
     if (type.PARENT != null) {

@@ -38,17 +38,5 @@ module.exports = {
 	    REGEN: 0.025,
 	    FOV: 1,
 	    DENSITY: 0.5,
-	},
-	dreadnought1: {
-	    ACCEL: 1.6,
-	    SPEED: 1.4,
-	    HEALTH: 400,
-	    DAMAGE: 10,
-	    RESIST: 3,
-	    PENETRATION: 2,
-	    SHIELD: 40,
-	    REGEN: 0.025,
-	    FOV: 1.5,
-	    DENSITY: 3,
 	}
 };
