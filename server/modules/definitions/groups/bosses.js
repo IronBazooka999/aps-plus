@@ -1427,6 +1427,79 @@ for(let i = 0; i < 7; i++) {
     )
 };
 
+exports.erisLowerBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 5,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 7,
+    BODY: {
+        FOV: 10,
+    },
+    MAX_CHILDREN: 18,
+    FACING_TYPE: "autospin",
+    GUNS: [],
+};
+for(let i = 0; i < 7; i++) {
+    exports.erisLowerBody.GUNS.push(
+        {
+            POSITION: [3.75, 7, 1.2, 8, 0, 360/7*(i+0.5), 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed]),
+                TYPE: ["dorito", { COLOR: 5, INDEPENDENT: true, }],
+                AUTOFIRE: true,
+                SYNCS_SKILLS: true,
+                STAT_CALCULATOR: gunCalcNames.necro,
+                WAIT_TO_CYCLE: true,
+            },
+        },
+    )
+};
+exports.erisUpperBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    AUTOSPIN: true,
+    COLOR: 5,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    MAX_CHILDREN: 28,
+    SHAPE: 5,
+    INDEPENDENT: true,
+    TURRETS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.erisUpperBody.TURRETS.push(
+        {
+            POSITION: [10, 8.5, 0, 360/5*(i+0.5), 160, 0],
+            TYPE: ["rocketeerTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.eris = {
+    PARENT: ["terrestrial"],
+    NAME: "Eris",
+    COLOR: 5,
+    TURRETS: [
+        {
+            POSITION: [14.5, 0, 0, 0, 360, 1],
+            TYPE: ["erisLowerBody"],
+        },
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE: ["erisUpperBody"],
+        },
+    ],
+};
+for(let i = 0; i < 7; i++) {
+    exports.eris.TURRETS.push(
+        {
+            POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+
 // PALADIN
 exports.swarmerTurret = {
     PARENT: ["genericTank"],
