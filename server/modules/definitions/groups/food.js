@@ -98,7 +98,36 @@ makeRare = (type, level) => ({
     DRAW_HEALTH: true,
     INTANGIBLE: false,
     GIVE_KILL_MESSAGE: true,
-});
+}),
+
+makeLaby = (type, level) => {
+    let usableSHAPE = Math.max(type.SHAPE, 3),
+        downscale = Math.cos(Math.PI / usableSHAPE),
+        strenghtMultiplier = 5 ** (level - 1);
+    return {
+        PARENT: ["food"],
+        LABEL: ["", "Beta ", "Alpha ", "Omega ", "Gamma ", "Delta "][level] + type.LABEL,
+        VALUE: type.VALUE * strenghtMultiplier,
+        SHAPE: type.SHAPE,
+        SIZE: type.SIZE / downscale ** (level - 1),
+        COLOR: type.COLOR,
+        ALPHA: type.ALPHA,
+        BODY: {
+            DAMAGE: type.BODY.DAMAGE,
+            DENSITY: type.BODY.DENSITY,
+            HEALTH: type.BODY.HEALTH * strenghtMultiplier,
+            PENETRATION: type.BODY.PENETRATION,
+            ACCELERATION: type.BODY.ACCELERATION
+        },
+        DRAW_HEALTH: type.DRAW_HEALTH,
+        GIVE_KILL_MESSAGE: type.GIVE_KILL_MESSAGE || level > 2,
+        GUNS: type.GUNS,
+        TURRETS: [...(type.TURRETS ? type.TURRETS : []), ...Array(level).fill().map((_, i) => ({
+            POSITION: [20 * downscale ** (i + 1), 0, 0, !(i & 1) ? 180 / usableSHAPE : 0, 0, 1],
+            TYPE: type
+        }))]
+    };
+};
 
 // EGGS
 exports.egg = {
@@ -157,6 +186,11 @@ exports.jewel = {
     INTANGIBLE: false,
     GIVE_KILL_MESSAGE: true,
 };
+exports.shinyEgg = makeRare(exports.egg, 0);
+exports.legendaryEgg = makeRare(exports.egg, 1);
+exports.shadowEgg = makeRare(exports.egg, 2);
+exports.rainbowEgg = makeRare(exports.egg, 3);
+exports.transEgg = makeRare(exports.egg, 4); //ironic
 
 // SQUARES
 exports.square = {
@@ -281,6 +315,30 @@ exports.legendaryAlphaPentagon = makeRare(exports.alphaPentagon, 1);
 exports.shadowAlphaPentagon = makeRare(exports.alphaPentagon, 2);
 exports.rainbowAlphaPentagon = makeRare(exports.alphaPentagon, 3);
 exports.transAlphaPentagon = makeRare(exports.alphaPentagon, 4);
+
+// HEXAGONS
+exports.hexagon = {
+    PARENT: ["food"],
+    LABEL: "Hexagon",
+    VALUE: 500,
+    SHAPE: 6,
+    SIZE: 18,
+    COLOR: 0,
+    BODY: {
+        DAMAGE: 1.7 * basePolygonDamage,
+        DENSITY: 8,
+        HEALTH: 12 * basePolygonHealth,
+        RESIST: 1.3,
+        PENETRATION: 1.1,
+        ACCELERATION: 0.003
+    },
+    DRAW_HEALTH: true,
+};
+exports.shinyHexagon = makeRare(exports.hexagon, 0);
+exports.legendaryHexagon = makeRare(exports.hexagon, 1);
+exports.shadowHexagon = makeRare(exports.hexagon, 2);
+exports.rainbowHexagon = makeRare(exports.hexagon, 3);
+exports.transHexagon = makeRare(exports.hexagon, 4);
 
 // 3D POLYGONS
 exports.sphere = {
@@ -421,6 +479,7 @@ for (let [gemColor, name] of [
     exports[name + "AlphaPentagonRelic"] = makeRelic(exports.alphaPentagon, -0.6, gem);
 }
 
+// 4D
 exports.tesseract = {
     PARENT: ["food"],
     LABEL: "The Tesseract",
@@ -438,3 +497,14 @@ exports.tesseract = {
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true
 };
+
+// LABY
+for (let tier = 0; tier < 6; tier++) {
+    for (let poly of [ "egg", "square", "triangle", "pentagon", "hexagon" ]) {
+        for (let shiny of [ "", "shiny", "legendary", "shadow", "rainbow", "trans" ]) {
+            let food = shiny + poly[0].toUpperCase() + poly.slice(1);
+            food = food[0].toLowerCase() + food.slice(1);
+            exports[`laby${tier}${food[0].toUpperCase() + food.slice(1)}`] = makeLaby(exports[food], tier);
+        }
+    }
+}

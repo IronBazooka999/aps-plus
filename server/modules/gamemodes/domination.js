@@ -37,7 +37,7 @@ let spawn = (loc, team, color, type = false) => {
             }
 
             let killer = ran.choose(killers);
-            killer = killer ? killer.master.master : { team: TEAM_ROOM, color: c.TEAM ? 3 : 12 };
+            killer = killer ? killer.master.master : { team: TEAM_ROOM, color: room.gameMode === "tdm" ? 3 : 12 };
 
             let newTeam = killer.team,
                 teamName = newTeam > 0 ? killer.name : getTeamName(newTeam);

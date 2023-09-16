@@ -35,13 +35,11 @@ class BossRush {
             [  3, "nestGuardian"],
 
             //terrestrials
-            /*
             [ 15, "ares"],
-            [ 15, "gersemi"],
-            [ 15, "ezekiel"],
+            //[ 15, "gersemi"],
+            //[ 15, "ezekiel"],
             [ 15, "eris"],
-            [ 15, "selene"],
-            */
+            //[ 15, "selene"],
 
             //celestials
             [ 35, "paladin"],
@@ -53,7 +51,7 @@ class BossRush {
             //eternals
             //[ 99 /*fucking mid*/, "legionaryCrasher"],
             [100, "kronos"],
-            //[100, "ragnarok"],
+            [100, "ragnarok"],
         ];
         this.friendlyBossChoices = ["roguePalisade", "rogueArmada", "alviss", "tyr"/*, "fiolnir"*/];
         this.bigFodderChoices = ["sentryGun", "sentrySwarm", "sentryTrap", "shinySentryGun"];
