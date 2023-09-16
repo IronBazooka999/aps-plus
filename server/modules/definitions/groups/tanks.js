@@ -5208,15 +5208,15 @@ exports.conqueror = {
         {
             POSITION: [21, 14, 1, 0, 0, 180, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound]),
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [18, 14, 1, 0, 0, 0, 0],
+            POSITION: [18, 12, 1, 0, 0, 0, 0],
         },
         {
-            POSITION: [2, 14, 1.1, 18, 0, 0, 0],
+            POSITION: [2, 12, 1.1, 18, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.block]),
                 TYPE: "setTrap",

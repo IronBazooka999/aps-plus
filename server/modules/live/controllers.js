@@ -315,7 +315,7 @@ class io_stackGuns extends IO {
             readiestGun;
         for (let i = 0; i < this.body.guns.length; i++) {
             let gun = this.body.guns[i];
-            if (!gun.canShoot) continue;
+            if (!gun.canShoot || !gun.stack) continue;
             let reloadStat = (gun.calculator == "necro" || gun.calculator == "fixed reload") ? 1 : (gun.bulletStats === "master" ? this.body.skill : gun.bulletStats).rld,
                 readiness = (1 - gun.cycle) / (gun.settings.reload * reloadStat);
             if (lowestReadiness > readiness) {
