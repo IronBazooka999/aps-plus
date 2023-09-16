@@ -36,10 +36,10 @@ class BossRush {
 
             //terrestrials
             [ 15, "ares"],
-            //[ 15, "gersemi"],
-            //[ 15, "ezekiel"],
+            [ 15, "gersemi"],
+            [ 15, "ezekiel"],
             [ 15, "eris"],
-            //[ 15, "selene"],
+            [ 15, "selene"],
 
             //celestials
             [ 35, "paladin"],
