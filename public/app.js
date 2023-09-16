@@ -1201,59 +1201,27 @@ var getClassUpgradeKey = function (number) {
 let tiles = [],
     branches = [],
     measureSize = (x, y, colorIndex, { index, tier = 0 }) => {
-        tiles.push({
-            x,
-            y,
-            colorIndex,
-            index,
-        });
+        tiles.push({ x, y, colorIndex, index });
         let { upgrades } = global.mockups[index];
         switch (tier) {
             case 3:
-                return { width: 1, height: 1, };
+                return { width: 1, height: 1 };
             case 2:
                 for (let i = 0; i < upgrades.length; i++) {
                     measureSize(x, y + 2 + i, i, upgrades[i]);   
                 }
-                branches.push([{
-                    x,
-                    y,
-                }, {
-                    x,
-                    y: y + 1 + upgrades.length,
-                }]);
-                return {
-                    width: 1,
-                    height: 2 + upgrades.length,
-                };
-            //case 2:
+                branches.push([{ x, y }, { x, y: y + 1 + upgrades.length }]);
+                return { width: 1, height: 2 + upgrades.length };
             case 1:
-            case 0: {
+            case 0:
                 let xStart = x,
                     us = upgrades.map((u, i) => {
-                        let spacing = 2 * (u.tier - tier),
+                        let spacing = 2 * u.tier,
                             measure = measureSize(x, y + spacing, i, u);
-                        branches.push([
-                            {
-                                x,
-                                y: y + (i === 0 ? 0 : 1),
-                            },
-                            {
-                                x,
-                                y: y + spacing,
-                            },
-                        ]);
-                        if (i + 1 === upgrades.length)
-                            branches.push([
-                                {
-                                    x: xStart,
-                                    y: y + 1,
-                                },
-                                {
-                                    x,
-                                    y: y + 1,
-                                },
-                            ]);
+                        branches.push([{ x, y: y + Math.sign(i) }, { x, y: y + spacing }]);
+                        if (i + 1 === upgrades.length) {
+                            branches.push([{ x: xStart, y: y + 1 }, { x, y: y + 1 }]);
+                        }
                         x += measure.width;
                         return measure;
                     });
@@ -1261,7 +1229,6 @@ let tiles = [],
                     width: us.map((r) => r.width).reduce((a, b) => a + b, 0),
                     height: 2 + Math.max(...us.map((r) => r.height)),
                 };
-            }
         }
     },
     tankTree;
