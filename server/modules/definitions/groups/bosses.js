@@ -29,6 +29,26 @@ exports.miniboss = {
 };
 
 // GUNS
+exports.baseTrapTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Turret",
+    INDEPENDENT: true,
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [16, 14, 1, 0, 0, 0, 0],
+        },
+        {
+            POSITION: [4, 14, 1.8, 16, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.lowpower, g.slow, g.pound, g.hexatrap]),
+                TYPE: "trap",
+                STAT_CALCULATOR: gunCalcNames.trap,
+                AUTOFIRE: true,
+            },
+        },
+    ],
+}
 exports.machineTripleTurret = {
     PARENT: ["genericTank"],
     LABEL: "Machine Gun",
@@ -1409,39 +1429,39 @@ exports.paladin = {
         {
             /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 219, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 180, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 300, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 339, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 380, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 420, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 459, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 500, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [14.94, 0, 0, 0, 360, 1],
@@ -1570,39 +1590,39 @@ exports.freyja = {
         {
             /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 219, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 180, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 300, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 339, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 380, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 420, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 459, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 500, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [14.77, 0, 0, 0, 360, 1],
@@ -1741,39 +1761,39 @@ exports.zaphkiel = {
         {
             /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 219, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 180, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 300, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 339, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 380, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 420, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 459, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 500, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [14.94, 0, 0, 0, 360, 1],
@@ -1938,7 +1958,7 @@ exports.nyx = {
             /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -1947,7 +1967,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 219, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -1956,7 +1976,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 180, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -1965,7 +1985,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 300, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -1974,7 +1994,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 339, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -1983,7 +2003,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 380, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -1992,7 +2012,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 420, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -2001,7 +2021,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 459, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -2010,7 +2030,7 @@ exports.nyx = {
         {
             POSITION: [6.5, 9, 0, 500, 180, 0],
             TYPE: [
-                "trapTurret",
+                "baseTrapTurret",
                 {
                     INDEPENDENT: true,
                 },
@@ -2157,39 +2177,39 @@ exports.theia = {
         {
             /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 219, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 180, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 300, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 339, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 380, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 420, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 459, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 500, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [14.94, 0, 0, 0, 360, 1],
@@ -2343,39 +2363,39 @@ exports.alviss = {
         {
             /*********    SIZE         X             Y         ANGLE        ARC */
             POSITION: [6.5, 9, 0, 260, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 219, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 180, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 300, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 339, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 380, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 420, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 459, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [6.5, 9, 0, 500, 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
         },
         {
             POSITION: [14.94, 0, 0, 0, 360, 1],
@@ -2483,31 +2503,31 @@ exports.tyr = {
     NAME: "Tyr",
     TURRETS: [{ /*********    SIZE         X             Y         ANGLE        ARC */
         POSITION: [6.5, 9, 0, 260, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 219, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 180, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 300, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 339, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 380, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 420, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 459, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [6.5, 9, 0, 500, 180, 0],
-        TYPE: ["trapTurret", { INDEPENDENT: true }],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
     },{
         POSITION: [14.94, 0, 0, 0, 360, 1],
         TYPE: ["tyrLowerBody"],
@@ -2613,6 +2633,9 @@ exports.kronosSkimmerTurret = {
     GUNS: [
         {
             POSITION: [8, 20, -0.5, 9, 0, 0, 0],
+        },
+        {
+            POSITION: [13, 18, -0.8, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
@@ -2624,9 +2647,6 @@ exports.kronosSkimmerTurret = {
                 ]),
                 TYPE: "kronosMissile",
             },
-        },
-        {
-            POSITION: [13, 18, -0.8, 0, 0, 0, 0],
         },
     ],
 };
@@ -2768,7 +2788,7 @@ exports.kronos = {
     COLOR: 6,
     TURRETS: [
         {
-            POSITION: [16, 0, 0, 0, 360, 1],
+            POSITION: [15.5, 0, 0, 0, 360, 1],
             TYPE: ["kronosBottomBody"],
         },
         {
@@ -2776,7 +2796,7 @@ exports.kronos = {
             TYPE: ["kronosMiddleBody"],
         },
         {
-            POSITION: [6, 0, 0, 0, 360, 1],
+            POSITION: [6.5, 0, 0, 0, 360, 1],
             TYPE: ["kronosTopBody"],
         },
     ],
@@ -2785,7 +2805,256 @@ for(let i = 0; i < 11; i++) {
     exports.kronos.TURRETS.push(
         {
             POSITION: [6, 9, 0, 360/11*(i+0.5), 180, 0],
-            TYPE: ["trapTurret", { INDEPENDENT: true, }],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+
+exports.autoSmasherMissileTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Turret",
+    CONTROLLERS: ["nearestDifferentMaster"],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [20, 6, 1, 0, 5, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.fast, g.mach, g.pound, g.morereload, g.morereload]),
+                TYPE: "bullet",
+                STAT_CALCULATOR: gunCalcNames.fixedReload,
+                AUTOFIRE: true,
+            },
+        },
+        {
+            POSITION: [20, 6, 1, 0, -5, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.fast, g.mach, g.pound, g.morereload, g.morereload]),
+                TYPE: "bullet",
+                STAT_CALCULATOR: gunCalcNames.fixedReload,
+                AUTOFIRE: true,
+            },
+        },
+    ],
+};
+exports.autoSmasherMissile = {
+    PARENT: ["missile"],
+    LABEL: "Auto-Smasher",
+    HITS_OWN_TYPE: "never",
+    DANGER: 6,
+    BODY: {
+        FOV: 1.05 * base.FOV,
+        DENSITY: 2 * base.DENSITY,
+    },
+    GUNS: [],
+    TURRETS: [
+        {
+            POSITION: [21.5, 0, 0, 0, 360, 0],
+            TYPE: "smasherBody",
+        },
+        {
+            POSITION: [11, 0, 0, 0, 360, 1],
+            TYPE: ["autoSmasherMissileTurret", { INDEPENDENT: true }],
+        },
+    ],
+    IS_SMASHER: true,
+}
+exports.autosmashTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Launcher",
+    BODY: {
+        FOV: 10,
+    },
+    COLOR: 16,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [3, 10, 1.2, 15, 0, 0, 0],
+        },
+        {
+            POSITION: [16, 18, -0.7, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                    g.halfreload,
+                    g.morespeed,
+                    g.morespeed,
+                    //g.morespeed,
+                    {range: 2.5},
+                ]),
+                TYPE: "autoSmasherMissile",
+            },
+        },
+    ],
+};
+exports.gunnerCruiserTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Launcher",
+    BODY: {
+        FOV: 10,
+    },
+    COLOR: 16,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [6, 7.5, 0.6, 6, 4.5, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm]),
+                TYPE: "swarm",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [6, 7.5, 0.6, 6, -4.5, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm]),
+                TYPE: "swarm",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [18, 3, 1, 0, -3, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.gunner,
+                    g.power,
+                    g.twin,
+                    g.tonsmorrecoil,
+                    g.lotsmorrecoil,
+                ]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [18, 3, 1, 0, 3, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.gunner,
+                    g.power,
+                    g.twin,
+                    g.tonsmorrecoil,
+                    g.lotsmorrecoil,
+                ]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+};
+exports.gemDrone = {
+    PARENT: ["drone"],
+    COLOR: 0,
+    DRAW_HEALTH: true,
+    SHAPE: 6,
+    INDEPENDENT: true,
+    BODY: {
+        PUSHABILITY: 0.3,
+        HEALTH: 0.3*5,
+        DAMAGE: 3.375/5,
+        SPEED: 1,
+        DENSITY: 0.1,
+        RESIST: 3,
+        FOV: 100,
+    },
+}
+exports.ragnarokBottomBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.01 }]],
+    COLOR: 0,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 9,
+    FOV: 10,
+    MAX_CHILDREN: 18,
+    GUNS: [],
+};
+for(let i = 0; i < 9; i++) {
+    exports.ragnarokBottomBody.GUNS.push(
+        {
+            POSITION: [2.5, 3, -1.8, 9, 0, 360/9*(i+0.5), 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.factory, g.celeslower, g.pound, {size: 1.7}]),
+                TYPE: "gemDrone",
+                AUTOFIRE: true,
+                SYNCS_SKILLS: true,
+            },
+        },
+    )
+};
+exports.ragnarokMiddleBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    COLOR: 0,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 7,
+    FOV: 1,
+    TURRETS: [],
+};
+for(let i = 0; i < 7; i++) {
+    exports.ragnarokMiddleBody.TURRETS.push(
+        {
+            POSITION: [7, 8.5, 0, 360/7*(i+0.5), 160, 0],
+            TYPE: ["autosmashTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.ragnarokTopBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 0,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 5,
+    FOV: 1,
+    TURRETS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.ragnarokTopBody.TURRETS.push(
+        {
+            POSITION: [8.5, 9, 0, 360/5*(i+0.5), 160, 0],
+            TYPE: ["gunnerCruiserTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.ragnarok = {
+    PARENT: ["eternal"],
+    NAME: "Ragnarok",
+    COLOR: 0,
+    TURRETS: [
+        {
+            POSITION: [15.5, 0, 0, 0, 360, 1],
+            TYPE: ["ragnarokBottomBody"],
+        },
+        {
+            POSITION: [11, 0, 0, 0, 360, 1],
+            TYPE: ["ragnarokMiddleBody"],
+        },
+        {
+            POSITION: [6.5, 0, 0, 0, 360, 1],
+            TYPE: ["ragnarokTopBody"],
+        },
+    ],
+};
+for(let i = 0; i < 11; i++) {
+    exports.ragnarok.TURRETS.push(
+        {
+            POSITION: [5, 8.5, 0, 360/11*(i+0.5), 180, 0],
+            TYPE: ["baseTrapTurret", { INDEPENDENT: true, }],
         },
     )
 };

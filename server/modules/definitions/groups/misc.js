@@ -572,6 +572,7 @@ exports.baseProtector = {
         REGEN: 100,
         FOV: 1,
         PUSHABILITY: 0,
+        RESIST: 10000,
         HETERO: 0,
     },
     FACING_TYPE: "autospin",
