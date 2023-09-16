@@ -96,6 +96,7 @@ class Gun {
             this.destroyOldestChild = info.PROPERTIES.DESTROY_OLDEST_CHILD == null ? false : info.PROPERTIES.DESTROY_OLDEST_CHILD;
             this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
             this.drawAbove = (info.PROPERTIES.DRAW_ABOVE == null) ? false : info.PROPERTIES.DRAW_ABOVE;
+            this.stack = (info.PROPERTIES.STACK_GUN == null) ? true : info.PROPERTIES.STACK_GUN;
         }
         let position = info.POSITION;
         this.length = position[0] / 10;
