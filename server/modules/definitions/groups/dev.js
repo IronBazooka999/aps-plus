@@ -744,7 +744,7 @@ exports.teams.UPGRADES_TIER_0.push("Team101");
 
 // DEV "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntities", "eggGenerator", "bosses", "fun", "levels", "teams"];
-    exports.miscEntities.UPGRADES_TIER_0 = ["baseProtector", "dominators", "mothership", "arenaCloser"];
+    exports.miscEntities.UPGRADES_TIER_0 = ["baseProtector", "dominators", "mothership", "arenaCloser", "antiTankMachineGun"];
         exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals"];
         exports.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap"];

@@ -715,6 +715,100 @@ exports.arenaCloser = {
     }]
 };
 
+exports.antiTankMachineGunArm = {
+    PARENT: ["genericTank"],
+    CONTROLLERS: ["mapTargetToGoal"],
+    SKILL_CAP: Array(10).fill(255),
+    SKILL: Array(10).fill(255),
+    GUNS: [
+        {
+            POSITION: [14.25, 3, 1, 0, -2, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.op, {recoil: 0, spray: 0.1}]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [14.25, 3, 1, 0, 2, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.op, {recoil: 0, spray: 0.1}]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [15.85, 3, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.op, {recoil: 0, spray: 0.1}]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [5, 8.5, -1.6, 6.25, 0, 0, 0],
+        },
+    ],
+}
+exports.antiTankMachineGun = {
+    PARENT: ["dominator"],
+    LABEL: "Anti Tank Machine Gun",
+    CONTROLLERS: [['spin', {onlyWhenIdle: true}], 'nearestDifferentMaster'],
+    BODY: {
+        RESIST: 100,
+        SPEED: 1.32,
+        ACCELERATION: 0.8,
+        HEALTH: 1e99,
+        DAMAGE: 6,
+        PENETRATION: 0.25,
+        FOV: 2,
+        PUSHABILITY: 0,
+        HETERO: 0,
+        SHIELD: base.SHIELD * 1.4,
+    },
+    SKILL_CAP: Array(10).fill(255),
+    SKILL: Array(10).fill(255),
+    GUNS: [
+        {
+            POSITION: [18, 12, 0.8, 0, 0, 90, 0],
+        },
+        {
+            POSITION: [18, 12, 0.8, 0, 0, 270, 0],
+        },
+        {
+            POSITION: [14.25, 3, 1, 0, -2, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.op, {recoil: 0, spray: 0.1}]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [14.25, 3, 1, 0, 2, 0, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.op, {recoil: 0, spray: 0.1}]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [15.85, 3, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.op, {recoil: 0, spray: 0.1}]),
+                TYPE: "bullet",
+            },
+        },
+        {
+            POSITION: [5, 8.5, -1.6, 6.25, 0, 0, 0],
+        },
+    ],
+    TURRETS: [{
+        POSITION: [20, 0, 25, 0, 180, 1],
+        TYPE: ["antiTankMachineGunArm"]
+    }, {
+        POSITION: [20, 0, -25, 0, 180, 1],
+        TYPE: ["antiTankMachineGunArm"]
+    }, {
+        POSITION: [22, 0, 0, 0, 360, 0],
+        TYPE: ["dominationBody"]
+    }]
+}
+
 // OLD TANKS
 exports.oldSpreadshot = {
     PARENT: ["genericTank"],
