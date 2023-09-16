@@ -671,7 +671,55 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
         ]
     };
 }
-
+exports.addAegis = (healthFactor = 1, sizeFactor = 1, aegisColor, type) =>  {
+    let aegisType;
+    let symbolType;
+    if (type == 3) {
+      aegisType = 'absorber',
+       symbolType = 'absorberSymbol'
+         if (aegisColor == 'default') {
+           aegisColor = 30
+         }
+    }
+    else if (type == 2) {
+      aegisType = 'forcefield',
+       symbolType = 'forcefieldSymbol'
+         if (aegisColor == 'default') {
+           aegisColor = 3
+         }
+    }
+    else {
+      aegisType = 'aegis',
+      symbolType = 'aegisSymbol'
+        if (aegisColor == 'default') {
+         aegisColor = 1
+        }
+    }
+    return {
+        PARENT: ['genericTank'],
+        LABEL: "",
+        COLOR: 17,
+        GUNS: [
+            {
+                POSITION: [0, 20, 1, 0, 0, 0, 0],
+                PROPERTIES: {//RELOAD RECOIL SHUDDER  SIZE   HEALTH  DAMAGE   PEN    SPEED    MAX    RANGE  DENSITY  SPRAY   RESIST
+                    SHOOT_SETTINGS: exports.combineStats([[5,0.001,0.001,6,1,0.001,1,0.001,0.001,1,1,0.001,1], [1, 1, 1, sizeFactor, healthFactor, 0.001, 1, 1, 1, 1, 1, 1, 1]]),
+                    TYPE: [aegisType, {COLOR: aegisColor,LAYER:6}],
+                    //COLOR_OVERRIDE: aegisColor,
+                    MAX_CHILDREN: 1,
+                    AUTOFIRE: true,
+                    SYNCS_SKILLS: true,
+                }, 
+            }, 
+        ],
+        TURRETS: [
+            {
+                POSITION: [22 - 5, 0, 0, 0, 360, 1],
+                TYPE: [symbolType, {COLOR: aegisColor}],
+            },
+        ]
+    };
+  }
 //unfinished lolo
 exports.makeLabyrinthShape = (type) => {
     let output = exports.dereference(type);
