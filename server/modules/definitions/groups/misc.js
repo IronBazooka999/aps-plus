@@ -1,5 +1,6 @@
-const { base, statnames, gunCalcNames, smshskl } = require('../constants.js');
 const { combineStats, skillSet, makeAuto, makeDeco } = require('../facilitators.js');
+const { base, statnames, gunCalcNames, smshskl } = require('../constants.js');
+const { genericTank } = require('./generics.js')
 const { trapper } = require('./tanks.js');
 const g = require('../gunvals.js');
 
@@ -627,7 +628,7 @@ exports.mothership = {
     PARENT: ["genericTank"],
     LABEL: "Mothership",
     DANGER: 10,
-    SIZE: "genericTank".SIZE * (7 / 3),
+    SIZE: genericTank.SIZE * (7 / 3),
     SHAPE: 16,
     STAT_NAMES: statnames.drone,
     VALUE: 5e5,
