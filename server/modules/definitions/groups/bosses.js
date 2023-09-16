@@ -41,7 +41,27 @@ exports.baseTrapTurret = {
         {
             POSITION: [4, 14, 1.8, 16, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.trap, g.lowpower, g.slow, g.pound, g.hexatrap]),
+                SHOOT_SETTINGS: combineStats([g.trap, g.lowpower, g.pound, g.destroy, g.doublereload, g.hexatrap]),
+                TYPE: "trap",
+                STAT_CALCULATOR: gunCalcNames.trap,
+                AUTOFIRE: true,
+            },
+        },
+    ],
+}
+exports.terrestrialTrapTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Turret",
+    INDEPENDENT: true,
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [13, 14, 1, 0, 0, 0, 0],
+        },
+        {
+            POSITION: [4, 14, 1.8, 13, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.lowpower, g.pound, g.destroy, g.doublereload, g.hexatrap]),
                 TYPE: "trap",
                 STAT_CALCULATOR: gunCalcNames.trap,
                 AUTOFIRE: true,
@@ -151,6 +171,41 @@ exports.twisterTurret = {
                     g.one_third_reload,
                 ]),
                 TYPE: "spinmissile",
+                STAT_CALCULATOR: gunCalcNames.sustained,
+            },
+        },
+    ],
+};
+exports.hyperTwisterTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Twister",
+    BODY: {
+        FOV: 2,
+    },
+    COLOR: 13,
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    GUNS: [
+        {
+            POSITION: [10, 13, -0.5, 9, 0, 0, 0],
+        },
+        {
+            POSITION: [17, 14, -1.4, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.pound,
+                    g.arty,
+                    g.arty,
+                    g.skim,
+                    g.morespeed,
+                    g.one_third_reload,
+                ]),
+                TYPE: "hyperspinmissile",
                 STAT_CALCULATOR: gunCalcNames.sustained,
             },
         },
@@ -1236,8 +1291,7 @@ exports.terrestrial = {
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
     VALUE: 5e5,
     SHAPE: 7,
-    LEVEL: 35,
-    SIZE: 30,
+    SIZE: 35,
     BODY: {
         FOV: 1,
         HEALTH: 1000,
@@ -1253,7 +1307,6 @@ exports.celestial = {
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
     VALUE: 1e6,
     SHAPE: 9,
-    LEVEL: 200,
     SIZE: 45,
     BODY: {
         FOV: 1,
@@ -1275,7 +1328,6 @@ exports.eternal = {
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
     VALUE: 4e6,
     SHAPE: 11,
-    LEVEL: 300,
     SIZE: 75,
     BODY: {
         FOV: 1,
@@ -1373,7 +1425,7 @@ for(let i = 0; i < 7; i++) {
         {
             POSITION: [3.75, 7, 1.2, 8, 0, 360/7*(i+0.5), 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed, {size: 4/3}]),
+                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed]),
                 TYPE: ["demonchip", { INDEPENDENT: true, }],
                 AUTOFIRE: true,
                 SYNCS_SKILLS: true,
@@ -1422,7 +1474,193 @@ for(let i = 0; i < 7; i++) {
     exports.ares.TURRETS.push(
         {
             POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
-            TYPE: ["baseTrapTurret", { INDEPENDENT: true, }],
+            TYPE: ["terrestrialTrapTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+
+exports.swarmTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Swarm",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [7, 7.5, 0.6, 7, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm]),
+                TYPE: "swarm",
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+    ],
+};
+exports.basicTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "Turret",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [16, 4, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.auto, g.gunner, g.twin, g.power, g.slow]),
+                TYPE: "bullet",
+            },
+        },
+    ],
+};
+exports.gersemiLowerBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 1,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 5,
+    BODY: {
+        FOV: 10,
+    },
+    MAX_CHILDREN: 18,
+    FACING_TYPE: "autospin",
+    TURRETS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.gersemiLowerBody.TURRETS.push(
+        {
+            POSITION: [9, 8, 0, 360/5*(i+0.5), 160, 0],
+            TYPE: ["swarmTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.gersemiUpperBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    AUTOSPIN: true,
+    COLOR: 1,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    MAX_CHILDREN: 28,
+    SHAPE: 3,
+    INDEPENDENT: true,
+    TURRETS: [],
+};
+for(let i = 0; i < 3; i++) {
+    exports.gersemiUpperBody.TURRETS.push(
+        {
+            POSITION: [9.5, 7.5, 0, 360/3*(i+0.5), 160, 0],
+            TYPE: ["basicTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.gersemi = {
+    PARENT: ["terrestrial"],
+    NAME: "Gersemi",
+    COLOR: 1,
+    TURRETS: [
+        {
+            POSITION: [14.5, 0, 0, 0, 360, 1],
+            TYPE: ["gersemiLowerBody"],
+        },
+        {
+            POSITION: [8.5, 0, 0, 0, 360, 1],
+            TYPE: ["gersemiUpperBody"],
+        },
+    ],
+};
+for(let i = 0; i < 7; i++) {
+    exports.gersemi.TURRETS.push(
+        {
+            POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
+            TYPE: ["terrestrialTrapTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+
+exports.ezekielLowerBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 2,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 5,
+    BODY: {
+        FOV: 10,
+    },
+    MAX_CHILDREN: 18,
+    FACING_TYPE: "autospin",
+    GUNS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.ezekielLowerBody.GUNS.push(
+        {
+            POSITION: [3.75, 7, 1.2, 8, 0, 360/5*(i+0.5), 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed]),
+                TYPE: ["dorito", { COLOR: 2, INDEPENDENT: true, }],
+                AUTOFIRE: true,
+                SYNCS_SKILLS: true,
+                STAT_CALCULATOR: gunCalcNames.necro,
+                WAIT_TO_CYCLE: true,
+            },
+        },
+    )
+};
+exports.ezekielUpperBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    AUTOSPIN: true,
+    COLOR: 2,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    MAX_CHILDREN: 28,
+    SHAPE: 3,
+    INDEPENDENT: true,
+    TURRETS: [],
+};
+for(let i = 0; i < 3; i++) {
+    exports.ezekielUpperBody.TURRETS.push(
+        {
+            POSITION: [10, 7.5, 0, 360/3*(i+0.5), 160, 0],
+            TYPE: ["zaphkielSkimmerTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.ezekiel = {
+    PARENT: ["terrestrial"],
+    NAME: "Ezekiel",
+    COLOR: 2,
+    TURRETS: [
+        {
+            POSITION: [14.5, 0, 0, 0, 360, 1],
+            TYPE: ["ezekielLowerBody"],
+        },
+        {
+            POSITION: [8.5, 0, 0, 0, 360, 1],
+            TYPE: ["ezekielUpperBody"],
+        },
+    ],
+};
+for(let i = 0; i < 7; i++) {
+    exports.ezekiel.TURRETS.push(
+        {
+            POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
+            TYPE: ["terrestrialTrapTurret", { INDEPENDENT: true, }],
         },
     )
 };
@@ -1435,9 +1673,9 @@ exports.erisLowerBody = {
     SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
     SHAPE: 7,
     BODY: {
-        FOV: 10,
+        FOV: 100,
     },
-    MAX_CHILDREN: 18,
+    MAX_CHILDREN: 14,
     FACING_TYPE: "autospin",
     GUNS: [],
 };
@@ -1446,8 +1684,8 @@ for(let i = 0; i < 7; i++) {
         {
             POSITION: [3.75, 7, 1.2, 8, 0, 360/7*(i+0.5), 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed]),
-                TYPE: ["dorito", { COLOR: 5, INDEPENDENT: true, }],
+                SHOOT_SETTINGS: combineStats([g.factory, g.celeslower]),
+                TYPE: ["minion", { COLOR: 5, HAS_NO_RECOIL: true, }],
                 AUTOFIRE: true,
                 SYNCS_SKILLS: true,
                 STAT_CALCULATOR: gunCalcNames.necro,
@@ -1495,7 +1733,80 @@ for(let i = 0; i < 7; i++) {
     exports.eris.TURRETS.push(
         {
             POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
-            TYPE: ["baseTrapTurret", { INDEPENDENT: true, }],
+            TYPE: ["terrestrialTrapTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+
+exports.seleneLowerBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 13,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 5,
+    BODY: {
+        FOV: 10,
+    },
+    MAX_CHILDREN: 18,
+    FACING_TYPE: "autospin",
+    GUNS: [],
+};
+for(let i = 0; i < 5; i++) {
+    exports.seleneLowerBody.GUNS.push(
+        {
+            POSITION: [3.75, 7, 1.2, 8, 0, 360/5*(i+0.5), 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.drone, g.summoner, g.destroy, g.halfspeed]),
+                TYPE: ["sunchip", { COLOR: 13, INDEPENDENT: true, }],
+                AUTOFIRE: true,
+                SYNCS_SKILLS: true,
+                STAT_CALCULATOR: gunCalcNames.necro,
+                WAIT_TO_CYCLE: true,
+            },
+        },
+    )
+};
+exports.seleneUpperBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    AUTOSPIN: true,
+    COLOR: 13,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    MAX_CHILDREN: 28,
+    SHAPE: 3,
+    INDEPENDENT: true,
+    TURRETS: [],
+};
+for(let i = 0; i < 3; i++) {
+    exports.seleneUpperBody.TURRETS.push(
+        {
+            POSITION: [10, 7.5, 0, 360/3*(i+0.5), 160, 0],
+            TYPE: ["hyperTwisterTurret", { INDEPENDENT: true, }],
+        },
+    )
+};
+exports.selene = {
+    PARENT: ["terrestrial"],
+    NAME: "Selene",
+    COLOR: 13,
+    TURRETS: [
+        {
+            POSITION: [14.5, 0, 0, 0, 360, 1],
+            TYPE: ["seleneLowerBody"],
+        },
+        {
+            POSITION: [8.5, 0, 0, 0, 360, 1],
+            TYPE: ["seleneUpperBody"],
+        },
+    ],
+};
+for(let i = 0; i < 7; i++) {
+    exports.selene.TURRETS.push(
+        {
+            POSITION: [7, 9, 0, 360/7*(i+0.5), 180, 0],
+            TYPE: ["terrestrialTrapTurret", { INDEPENDENT: true, }],
         },
     )
 };
