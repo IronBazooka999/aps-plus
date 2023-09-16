@@ -556,6 +556,7 @@ exports.baseProtector = {
     ACCEPTS_SCORE: false,
     CAN_BE_ON_LEADERBOARD: false,
     IGNORED_BY_AI: true,
+    HITS_OWN_TYPE: "pushOnlyTeam",
     SKILL: skillSet({
         rld: 1,
         dam: 1,
