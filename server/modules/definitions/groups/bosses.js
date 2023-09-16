@@ -1,6 +1,7 @@
-const { combineStats, skillSet } = require('../facilitators.js');
+const { combineStats, skillSet, makeAuto } = require('../facilitators.js');
 const { base, gunCalcNames } = require('../constants.js');
 const g = require('../gunvals.js');
+const { bullet } = require('./generics.js');
 
 exports.miniboss = {
     PARENT: ["genericTank"],
@@ -3079,6 +3080,165 @@ exports.tyr = {
     },{
         POSITION: [8.6, 0, 0, 0, 360, 1],
         TYPE: ["tyrUpperBody"],
+    }]
+};
+
+// Fiolnir
+exports.fiolnirLowerTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            POSITION: [7, 8, 0.6, 6, 0, 30, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.bees, g.pound, g.morespeed]),
+                TYPE: ["bee", { INDEPENDENT: true }],
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+        {
+            POSITION: [7, 8, 0.6, 6, 0, -30, 0.5],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.swarm, g.bees, g.pound, g.morespeed]),
+                TYPE: ["bee", { INDEPENDENT: true }],
+                STAT_CALCULATOR: gunCalcNames.swarm,
+            },
+        },
+    ],
+};
+exports.fiolnirLowerBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: -0.005 }]],
+    COLOR: 17,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    SHAPE: 7,
+    FOV: 1,
+    FACING_TYPE: "autospin",
+    MAX_CHILDREN: 23,
+    TURRETS: [{ //*********    SIZE         X             Y         ANGLE        ARC
+        POSITION: [8.5, 9, 0, 26, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    },{
+        POSITION: [8.5, 9, 0, 77, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    },{
+        POSITION: [8.5, 9, 0, 129, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    },{
+        POSITION: [8.5, 9, 0, 180, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    },{
+        POSITION: [8.5, 9, 0, 231, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    },{
+        POSITION: [8.5, 9, 0, 282, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    },{
+        POSITION: [8.5, 9, 0, 333, 180, 0],
+        TYPE: ["fiolnirLowerTurret"],
+    }]
+};
+exports.turretedBullet = makeAuto(bullet, "Auto-Bullet", {size: 12,});
+exports.fiolnirUpperTurret = {
+    PARENT: ["genericTank"],
+    LABEL: "",
+    BODY: {
+        FOV: 2,
+    },
+    CONTROLLERS: [
+        "canRepel",
+        "onlyAcceptInArc",
+        "mapAltToFire",
+        "nearestDifferentMaster",
+    ],
+    COLOR: 16,
+    GUNS: [
+        {
+            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+            POSITION: [12, 16, -0.6, 0, 0, 0, 0],
+        },
+        {
+            POSITION: [15, 12, 1, 0, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
+                TYPE: "turretedBullet",
+            },
+        },
+    ],
+};
+exports.fiolnirUpperBody = {
+    LABEL: "",
+    CONTROLLERS: [["spin", { independent: true, speed: 0.005 }]],
+    COLOR: 17,
+    SIZE: 100,
+    SKILL: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9],
+    MAX_CHILDREN: 28,
+    SHAPE: 5,
+    INDEPENDENT: true,
+    TURRETS: [{ //**     SIZE         X             Y         ANGLE        ARC
+        POSITION: [10.6, 7.5, 0, 35, 160, 0],
+        TYPE: ["fiolnirUpperTurret"],
+    },{
+        POSITION: [10.6, 7.5, 0, 110, 160, 0],
+        TYPE: ["fiolnirUpperTurret"],
+    },{
+        POSITION: [10.6, 7.5, 0, 180, 160, 0],
+        TYPE: ["fiolnirUpperTurret"],
+    },{
+        POSITION: [10.6, 7.5, 0, 252, 160, 0],
+        TYPE: ["fiolnirUpperTurret"],
+    },{
+        POSITION: [10.6, 7.5, 0, 325, 160, 0],
+        TYPE: ["fiolnirUpperTurret"],
+    }]
+};
+exports.fiolnir = {
+    PARENT: ["rogueCelestial"],
+    NAME: "Fiolnir",
+    TURRETS: [{ /*********    SIZE         X             Y         ANGLE        ARC */
+        POSITION: [6.5, 9, 0, 260, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 219, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 180, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 300, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 339, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 380, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 420, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 459, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [6.5, 9, 0, 500, 180, 0],
+        TYPE: ["baseTrapTurret", { INDEPENDENT: true }],
+    },{
+        POSITION: [14.5, 0, 0, 0, 360, 1],
+        TYPE: ["fiolnirLowerBody"],
+    },{
+        POSITION: [8.6, 0, 0, 0, 360, 1],
+        TYPE: ["fiolnirUpperBody"],
     }]
 };
 
