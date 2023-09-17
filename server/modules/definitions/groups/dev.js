@@ -6,7 +6,7 @@ const g = require('../gunvals.js');
 exports.menu = {
     PARENT: ["genericTank"],
     LABEL: "",
-    RESET_UPGRADES: true,
+    // RESET_UPGRADES: true,
     SKILL_CAP: [
         dfltskl,
         dfltskl,
