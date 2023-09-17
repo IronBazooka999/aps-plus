@@ -770,6 +770,44 @@ exports.maximumOverdrive = {
     SKILL_CAP: Array(10).fill(255),
     SKILL: Array(10).fill(255),
 };
+exports.arraylessAutoBasic = {
+    PARENT: "genericTank",
+    LABEL: "Arrayless Auto-Basic",
+    GUNS: [{
+        POSITION: {
+            LENGTH: 20,
+            WIDTH: 10
+        },
+        PROPERTIES: {
+            SHOOT_SETTINGS: {
+                reload: 18,
+                recoil: 1.4,
+                shudder: 0.1,
+                size: 1,
+                health: 1,
+                damage: 0.75,
+                pen: 1,
+                speed: 4.5,
+                maxSpeed: 1,
+                range: 1,
+                density: 1,
+                spray: 15,
+                resist: 1
+            },
+            TYPE: "bullet"
+        },
+    }],
+    TURRETS: [{
+        POSITION: {
+            ANGLE: 180,
+            LAYER: 1
+        },
+        TYPE: ["autoTurret", {
+            CONTROLLERS: ["nearestDifferentMaster"],
+            INDEPENDENT: true
+        }]
+    }]
+};
 
 exports.levels = {
     PARENT: ["menu"],
@@ -831,4 +869,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", 'trplnrsTestTank'];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "arraylessAutoBasic"];
