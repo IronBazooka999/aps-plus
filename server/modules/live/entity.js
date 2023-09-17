@@ -99,14 +99,32 @@ class Gun {
             this.stack = (info.PROPERTIES.STACK_GUN == null) ? true : info.PROPERTIES.STACK_GUN;
         }
         let position = info.POSITION;
-        this.length = position[0] / 10;
-        this.width = position[1] / 10;
-        this.aspect = position[2];
-        let _off = new Vector(position[3], position[4]);
-        this.angle = (position[5] * Math.PI) / 180;
+        if (Array.isArray(position)) {
+            position = {
+                LENGTH: position[0],
+                WIDTH: position[1],
+                ASPECT: position[2],
+                X: position[3],
+                Y: position[4],
+                ANGLE: position[5],
+                DELAY: position[6]
+            }
+        }
+        position.LENGTH ??= 18;
+        position.WIDTH ??= 8;
+        position.ASPECT ??= 1;
+        position.X ??= 0;
+        position.Y ??= 0;
+        position.ANGLE ??= 0;
+        position.DELAY ??= 0;
+        this.length = position.LENGTH / 10;
+        this.width = position.WIDTH / 10;
+        this.aspect = position.ASPECT;
+        let _off = new Vector(position.X, position.Y);
+        this.angle = (position.ANGLE * Math.PI) / 180;
         this.direction = _off.direction;
         this.offset = _off.length / 10;
-        this.delay = position[6];
+        this.delay = position.DELAY;
         this.position = 0;
         this.motion = 0;
         if (this.canShoot) {
@@ -1109,14 +1127,30 @@ class Entity extends EventEmitter {
         this.settings.drawShape = false;
         this.skipLife = true;
         // Get my position.
-        let _off = new Vector(position[1], position[2]);
+        if (Array.isArray(position)) {
+            position = {
+                SIZE: position[0],
+                X: position[1],
+                Y: position[2],
+                ANGLE: position[3],
+                ARC: position[4],
+                LAYER: position[5]
+            };
+        }
+        position.SIZE ??= 10;
+        position.X ??= 0;
+        position.Y ??= 0;
+        position.ANGLE ??= 0;
+        position.ARC ??= 360;
+        position.LAYER ??= 0;
+        let _off = new Vector(position.X, position.Y);
         this.bound = {
-            size: position[0] / 20,
-            angle: position[3] * Math.PI / 180,
+            size: position.SIZE / 20,
+            angle: position.ANGLE * Math.PI / 180,
             direction: _off.direction,
             offset: _off.length / 10,
-            arc: position[4] * Math.PI / 180,
-            layer: position[5]
+            arc: position.ARC * Math.PI / 180,
+            layer: position.LAYER
         };
         // Initalize.
         this.activation.update();
