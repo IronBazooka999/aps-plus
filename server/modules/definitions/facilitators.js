@@ -37,6 +37,15 @@ exports.combineStats = function (array_of_objects) {
 
         for (let object = 0; object < array_of_objects.length; object++) {
             let gStat = array_of_objects[object];
+            if (Array.isArray(gStat)) {
+                gStat = {
+                    reload: data[0], recoil: data[1], shudder: data[2],
+                    size: data[3], health: data[4], damage: data[5],
+                    pen: data[6], speed: data[7], maxSpeed: data[8],
+                    range: data[9], density: data[10], spray: data[11],
+                    resist: data[12]
+                };
+            }
             data.reload *= gStat.reload ?? 1;
             data.recoil *= gStat.recoil ?? 1;
             data.shudder *= gStat.shudder ?? 1;
