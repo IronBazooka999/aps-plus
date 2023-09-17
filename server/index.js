@@ -157,7 +157,7 @@ function collide(collision) {
                         o.team = target1.team;
                         o.color = target1.color;
                         o.SIZE = target1.SIZE / 3;
-                        o.velocity = new Vector((Math.random() - 0.5) * 15, (Math.random() - 0.5) * 15);
+                        o.velocity = new Vector((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25);
                         o.refreshBodyAttributes();
                         o.life();
                     }

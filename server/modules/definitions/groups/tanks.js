@@ -4904,7 +4904,7 @@ exports.assemblerEffect = {
     LABEL: '',
     BODY: {
         DAMAGE: 0,
-        RANGE: 50
+        RANGE: 10
     },
     ALPHA: 0.8
 };
@@ -4918,8 +4918,7 @@ exports.assemblerTrap = {
     LABEL: "Assembler Trap",
     BODY: {
         SPEED: 0.7,
-        ACCEL: 0.75,
-        DAMAGE: 0.9
+        ACCEL: 0.75
     },
     TURRETS: [
         {
@@ -4948,10 +4947,7 @@ exports.assembler = {
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.trap, g.block]),
                 TYPE: 'assemblerTrap',
-                STAT_CALCULATOR: gunCalcNames.trap,
-                SYNCS_SKILLS: true,
-                AUTOFIRE: false,
-                MAX_CHILDREN: 6
+                MAX_CHILDREN: 8
             }
         }
     ],
