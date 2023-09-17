@@ -1340,6 +1340,16 @@ class Entity extends EventEmitter {
                 this.velocity.x = this.source.velocity.x;
                 this.velocity.y = this.source.velocity.y;
                 break;
+            case 'assembler':
+                this.alpha -= 0.02;
+                this.SIZE += 0.17;
+                if (this.alpha <= 0) {
+                    this.kill();
+                    if (this.SIZE > 50) {
+                        this.destroy();
+                    }
+                }
+                break;
         }
         this.accel.x += engine.x * this.control.power;
         this.accel.y += engine.y * this.control.power;
