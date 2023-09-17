@@ -49,7 +49,7 @@ class BossRush {
             [ 35, "theia"],
 
             //eternals
-            //[ 99 /*fucking mid*/, "legionaryCrasher"],
+            [ 99, "legionaryCrasher" /*fucking mid*/],
             [100, "kronos"],
             [100, "ragnarok"],
         ];

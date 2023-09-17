@@ -144,6 +144,53 @@ function collide(collision) {
             break;
         case instance.settings.hitsOwnType === other.settings.hitsOwnType:
             switch (instance.settings.hitsOwnType) {
+                case 'assembler': {
+                    if (instance.assemblerLevel == null) instance.assemblerLevel = 1;
+                    if (other.assemblerLevel == null) other.assemblerLevel = 1;
+
+                    const [target1, target2] = (instance.id > other.id) ? [instance, other] : [other, instance];
+
+                    if (
+                        target2.assemblerLevel >= 10 || target1.assemblerLevel >= 10 ||
+                        target1.isDead() || target2.isDead() ||
+                        target1.parent.id != target2.parent.id &&
+                        target1.parent.id != null &&
+                        target2.parent.id != null // idk why
+                    ) {
+                        advancedcollide(instance, other, false, false); // continue push
+                        break;
+                    }
+
+                    const better = (state) => {
+                        return target1[state] > target2[state] ? target1[state] : target2[state];
+                    }
+
+                    target1.assemblerLevel = Math.min(target2.assemblerLevel + target1.assemblerLevel, 10);
+                    target1.SIZE = better('SIZE') * 1.1;
+                    target1.SPEED = better('SPEED') * 0.9;
+                    target1.HEALTH = better('HEALTH') * 1.2;
+                    target1.health.amount = target1.health.max;
+                    target1.DAMAGE = better('DAMAGE') * 1.1;
+
+                    target2.kill();
+                    setTimeout(() => {
+                        if (target2) {
+                            target2.destroy(); // walls glitch
+                        }
+                    }, 1000);
+
+                    for (let i = 0; i < 10; ++i) {
+                        const { x, y } = target1;
+                        const o = new Entity({ x, y }, target1);
+                        o.define(Class.assemblerEffect);
+                        o.team = target1.team;
+                        o.color = target1.color;
+                        o.SIZE = target1.SIZE / 3;
+                        o.velocity = new Vector((Math.random() - 0.5) * 25, (Math.random() - 0.5) * 25);
+                        o.refreshBodyAttributes();
+                        o.life();
+                    }
+                } // don't break
                 case "push":
                     advancedcollide(instance, other, false, false);
                     break;

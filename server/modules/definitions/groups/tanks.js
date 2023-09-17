@@ -4898,6 +4898,67 @@ exports.boomer = {
         },
     ],
 };
+exports.assemblerEffect = {
+    PARENT: ['bullet'],
+    MOTION_TYPE: 'assembler',
+    LABEL: '',
+    BODY: {
+        DAMAGE: 0,
+        RANGE: 10
+    },
+    ALPHA: 0.8
+};
+exports.assemblerDot = {
+    LABEL: '',
+    SHAPE: -4,
+    COLOR: 17
+};
+exports.assemblerTrap = {
+    PARENT: ['setTrap'],
+    LABEL: "Assembler Trap",
+    BODY: {
+        SPEED: 0.7,
+        ACCEL: 0.75
+    },
+    TURRETS: [
+        {
+            /**        SIZE X  Y  ANGLE ARC */
+            POSITION: [4, 0, 0, 0,    360, 1],
+            TYPE: 'assemblerDot'
+        }
+    ],
+    HITS_OWN_TYPE: 'assembler'
+};
+exports.assembler = {
+    PARENT: ['genericTank'],
+    DANGER: 7,
+    LABEL: 'Assembler',
+    STAT_NAMES: statnames.trap,
+    BODY: {
+        SPEED: 0.8 * base.SPEED,
+        FOV: 1.15 * base.FOV,
+    },
+    GUNS: [
+        {
+            POSITION: [18, 12, 1, 0, 0, 0, 0],
+        },
+        {
+            POSITION: [2, 12, 1.1, 18, 0, 0, 0],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.trap, g.block]),
+                TYPE: 'assemblerTrap',
+                MAX_CHILDREN: 8
+            }
+        }
+    ],
+    TURRETS: [
+        {
+            /**        SIZE X   Y  ANGLE ARC */
+            POSITION: [2.5, 14, 0, 0,    360, 1],
+            TYPE: 'assemblerDot'
+        }
+    ]
+};
 
 // TRI-TRAPPER UPGRADES
 exports.hexaTrapper = makeAuto({
@@ -5565,7 +5626,7 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
 
     exports.trapper.UPGRADES_TIER_2 = ["builder", "triTrapper", "trapGuard"];
         exports.trapper.UPGRADES_TIER_3 = ["barricade", "overtrapper"];
-        exports.builder.UPGRADES_TIER_3 = ["construct", "autoBuilder", "engineer", "boomer", /*assembler,*/ "architect", "conqueror"];
+        exports.builder.UPGRADES_TIER_3 = ["construct", "autoBuilder", "engineer", "boomer", "assembler", "architect", "conqueror"];
         exports.triTrapper.UPGRADES_TIER_3 = ["fortress", "hexaTrapper", "septaTrapper", "architect"];
         exports.trapGuard.UPGRADES_TIER_3 = ["bushwhacker", "gunnerTrapper", "bomber", "conqueror", "bulwark"/*, "whirlGuard"*/];
 
