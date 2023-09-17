@@ -479,7 +479,6 @@ exports.shinySentry = {
     PARENT: ["sentry"],
     COLOR: 1,
     DANGER: 4,
-    SHAPE: 0,
     SIZE: 12,
     VALUE: 50000,
     BODY: {
