@@ -554,7 +554,7 @@ exports.auraHealer = {
         },
     ],
 };
-exports.aegisBasicGen = addAegis(1, 1, 'default', 1);
+exports.aegisBasicGen = addAegis(1, 5, 'default', 1);
                 exports.aegisBasic = {
                     PARENT: ['genericTank'],
                     LABEL: "Aegis Basic",
@@ -574,7 +574,7 @@ exports.aegisBasicGen = addAegis(1, 1, 'default', 1);
                         }
                     ],
                 };
-                exports.forcefieldBasicGen = addAegis(1, 1, 'default', 2);
+                exports.forcefieldBasicGen = addAegis(1, 5, 'default', 2);
                 exports.forcefieldBasic = {
                     PARENT: ['genericTank'],
                     LABEL: "Forcefield Basic",
@@ -594,7 +594,7 @@ exports.aegisBasicGen = addAegis(1, 1, 'default', 1);
                         }
                     ],
                 };
-                exports.absorberBasicGen = addAegis(1, 1, 'default', 3);
+                exports.absorberBasicGen = addAegis(1, 5, 'default', 3);
                 exports.absorberBasic = {
                     PARENT: ['genericTank'],
                     LABEL: "Absorber Basic",
