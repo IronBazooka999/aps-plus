@@ -1422,7 +1422,6 @@ function drawUpgradeTree() {
     ctx.fillStyle = color.guiwhite;
     ctx.fillRect(0, 0, innerWidth, innerHeight);
     let text = "Use the arrow keys to navigate the class tree. Press T again to close it.";
-    ctx.font = "20px Ubuntu";
     let w = measureText(text);
     ctx.globalAlpha = 1;
     ctx.lineWidth = 1;
