@@ -3300,7 +3300,7 @@ exports.fiolnirLowerBody = {
         TYPE: ["fiolnirLowerTurret"],
     }]
 };
-exports.turretedBullet = makeAuto(bullet, "Auto-Bullet", {size: 12,});
+exports.turretedBullet = makeAuto(bullet, "Auto-Bullet", {size: 14, color: 6, angle: 0});
 exports.fiolnirUpperTurret = {
     PARENT: ["genericTank"],
     LABEL: "",
@@ -3322,8 +3322,8 @@ exports.fiolnirUpperTurret = {
         {
             POSITION: [15, 12, 1, 0, 0, 0, 0],
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty]),
-                TYPE: "turretedBullet",
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.bitlessspeed]),
+                TYPE: ["turretedBullet", {COLOR: 6}],
             },
         },
     ],

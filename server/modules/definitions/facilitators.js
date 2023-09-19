@@ -560,7 +560,9 @@ exports.makeAuto = (type, name = -1, options = {}) => {
     let turret = {
         type: "autoTurret",
         size: 10,
-        independent: true
+        independent: true,
+        color: 16,
+        angle: 180,
     };
     if (options.type != null) {
         turret.type = options.type;
@@ -571,15 +573,22 @@ exports.makeAuto = (type, name = -1, options = {}) => {
     if (options.independent != null) {
         turret.independent = options.independent;
     }
+    if (options.color != null) {
+        turret.color = options.color;
+    }
+    if (options.angle != null) {
+        turret.angle = options.angle;
+    }
     let output = exports.dereference(type);
     let autogun = {
         /*********    SIZE                             X             Y         ANGLE        ARC */
-        POSITION: [turret.size, 0, 0, 180, 360, 1],
+        POSITION: [turret.size, 0, 0, turret.angle, 360, 1],
         TYPE: [
             turret.type,
             {
                 CONTROLLERS: ["nearestDifferentMaster"],
                 INDEPENDENT: turret.independent,
+                COLOR: turret.color,
             },
         ],
     };
