@@ -729,57 +729,111 @@ function clearScreen(clearColor, alpha) {
     ctx.globalAlpha = 1;
 }
 // Text functions
+function arrayifyText(rawText) {
+    // string with double §           txt   col   txt                      txt
+    // "...§text§§text§..." => [..., "text", "", "text", ...] => [..., "text§text", ...]
+    // this code is balanced on tight threads, holy shit
+    let textArrayRaw = rawText.split('§'),
+        textArray = [];
+    if (!(textArrayRaw.length & 1)) {
+        textArrayRaw.unshift('');
+    }
+    while (textArrayRaw.length) {
+        let first = textArrayRaw.shift();
+        if (!textArrayRaw.length) {
+            textArray.push(first);
+        } else if (textArrayRaw[1]) {
+            textArray.push(first, textArrayRaw.shift());
+        } else {
+            textArrayRaw.shift();
+            textArray.push(first + '§' + textArrayRaw.shift(), textArrayRaw.shift());
+        }
+    }
+    return textArray;
+}
 const fontWidth = "bold";
 const measureText = (text, fontSize, twod = false) => {
     fontSize += config.graphical.fontSizeBoost;
     ctx.font = fontWidth + " " + fontSize + "px Ubuntu";
-    return twod ? { width: ctx.measureText(text).width, height: fontSize } : ctx.measureText(text).width;
+    let measurement = ctx.measureText(arrayifyText(text).reduce((a, b, i) => (i & 1) ? a : a + b, ''));
+    return twod ? { width: measurement.width, height: fontSize } : measurement.width;
 };
-function drawText(text, x, y, size, fill, align = "left", center = false, fade = 1, stroke = true, context = ctx) {
+
+//those used to be redefined in the drawText function but they never change anywhere else so
+function drawText(rawText, x, y, size, defaultFillStyle, align = "left", center = false, fade = 1, stroke = true, context = ctx) {
     size += config.graphical.fontSizeBoost;
     // Get text dimensions and resize/reset the canvas
     let offset = size / 5,
         ratio = 1,
-        transform = null;
+        textArray = arrayifyText(rawText),
+        renderedFullText = textArray.reduce((a, b, i) => (i & 1) ? a : a + b, '');
     if (context.getTransform) {
-        transform = ctx.getTransform();
-        ratio = transform.d;
+        ratio = ctx.getTransform().d;
         offset *= ratio;
     }
     if (ratio !== 1) {
         size *= ratio;
     }
     context.font = fontWidth + " " + size + "px Ubuntu";
-    let dim = ctx.measureText(text),
-        Xoffset = offset,
-        Yoffset = (size + 2 * offset) / 2;
+    let Xoffset = offset,
+        Yoffset = (size + 2 * offset) / 2,
+        alignMultiplier = 0;
     switch (align) {
         //case "left":
-        //    //do nothing
+        //    //do nothing.
         //    break;
         case "center":
-            Xoffset += dim.width / 2;
+            alignMultiplier = 0.5;
             break;
         case "right":
-            Xoffset += dim.width;
+            alignMultiplier = 1;
+    }
+    if (alignMultiplier) {
+        Xoffset -= ctx.measureText(renderedFullText).width * alignMultiplier;
     }
     // Draw it
     context.lineWidth = (size + 1) / config.graphical.fontStrokeRatio;
-    context.font = fontWidth + " " + size + "px Ubuntu";
-    context.textAlign = align;
+    context.textAlign = "left";
     context.textBaseline = "middle";
     context.strokeStyle = color.black;
-    context.fillStyle = fill;
+    context.fillStyle = defaultFillStyle;
     context.save();
+    context.lineCap = config.graphical.miterText ? "miter" : "round";
+    context.lineJoin = config.graphical.miterText ? "miter" : "round";
     if (ratio !== 1) {
         context.scale(1 / ratio, 1 / ratio);
     }
-    context.lineCap = config.graphical.miterText ? "miter" : "round";
-    context.lineJoin = config.graphical.miterText ? "miter" : "round";
+    Xoffset += x * ratio - size / 4; //this extra size-dependant margin is a guess lol // apparently this guess worked out to be a hella good one
+    Yoffset += y * ratio - Yoffset * (center ? 1.05 : 1.5);
     if (stroke) {
-        context.strokeText(text, Xoffset + Math.round(x * ratio - Xoffset), Yoffset + Math.round(y * ratio - Yoffset * (center ? 1.05 : 1.5)));
+        context.strokeText(renderedFullText, Xoffset, Yoffset);
     }
-    context.fillText(text, Xoffset + Math.round(x * ratio - Xoffset), Yoffset + Math.round(y * ratio - Yoffset * (center ? 1.05 : 1.5)));
+    for (let i = 0; i < textArray.length; i++) {
+        let str = textArray[i];
+
+        // odd index = this is a color to set the fill style to
+        if (i & 1) {
+
+            //reset color to default
+            if (str === "reset") {
+                context.fillStyle = defaultFillStyle;
+            } else {
+                // try your best to get a valid color out of it
+                if (!isNaN(str)) {
+                    str = parseInt(str);
+                }
+                str = getColor(str) ?? str;
+            }
+            context.fillStyle = str;
+
+        } else {
+            // move forward a bit taking the width of the last piece of text + "kerning"
+            if (i) {
+                Xoffset += ctx.measureText(textArray[i - 2] + str).width - ctx.measureText(str).width;
+            }
+            context.fillText(str, Xoffset, Yoffset);
+        }
+    }
     context.restore();
 }
 // Gui drawing functions
@@ -903,27 +957,12 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless,
     let h = [];
     h = aspect > 0 ? [height * aspect, height] : [height, -height * aspect];
     let r = [Math.atan2(h[0], length), Math.atan2(h[1], length)];
-    let l = [
-        Math.sqrt(length * length + h[0] * h[0]),
-        Math.sqrt(length * length + h[1] * h[1]),
-    ];
+    let l = [Math.sqrt(length ** 2 + h[0] ** 2), Math.sqrt(length ** 2 + h[1] ** 2)];
     context.beginPath();
-    context.lineTo(
-        x + l[0] * Math.cos(angle + r[0]),
-        y + l[0] * Math.sin(angle + r[0])
-    );
-    context.lineTo(
-        x + l[1] * Math.cos(angle + Math.PI - r[1]),
-        y + l[1] * Math.sin(angle + Math.PI - r[1])
-    );
-    context.lineTo(
-        x + l[1] * Math.cos(angle + Math.PI + r[1]),
-        y + l[1] * Math.sin(angle + Math.PI + r[1])
-    );
-    context.lineTo(
-        x + l[0] * Math.cos(angle - r[0]),
-        y + l[0] * Math.sin(angle - r[0])
-    );
+    context.lineTo(x + l[0] * Math.cos(angle +           r[0]), y + l[0] * Math.sin(angle           + r[0]));
+    context.lineTo(x + l[1] * Math.cos(angle + Math.PI - r[1]), y + l[1] * Math.sin(angle + Math.PI - r[1]));
+    context.lineTo(x + l[1] * Math.cos(angle + Math.PI + r[1]), y + l[1] * Math.sin(angle + Math.PI + r[1]));
+    context.lineTo(x + l[0] * Math.cos(angle           - r[0]), y + l[0] * Math.sin(angle           - r[0]));
     context.closePath();
     if (!borderless) context.stroke();
     if (fill) context.fill();
@@ -1384,7 +1423,7 @@ function drawUpgradeTree() {
     ctx.fillRect(0, 0, innerWidth, innerHeight);
     let text = "Use the arrow keys to navigate the class tree. Press T again to close it.";
     ctx.font = "20px Ubuntu";
-    let w = ctx.measureText(text).width;
+    let w = measureText(text);
     ctx.globalAlpha = 1;
     ctx.lineWidth = 1;
     ctx.fillStyle = color.red;
