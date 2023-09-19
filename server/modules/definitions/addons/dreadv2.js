@@ -57,6 +57,7 @@ const hexnoughtBody = {
 };
 
 module.exports = ({ Class }) => {
+	return;
 
 	// Misc
 	Class.genericEggnought = {
