@@ -39,7 +39,7 @@ module.exports = ({ Class }) => {
 	    SIZE: 50,
 	    LEVEL: 150,
 	    EXTRA_SKILL: 48,
-	    SKILL_CAP: [smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl, smshskl],
+	    SKILL_CAP: Array(10).fill(smshskl+3),
 	};
 	Class.mechanismMainTurret = {
 	    PARENT: ["genericTank"],
