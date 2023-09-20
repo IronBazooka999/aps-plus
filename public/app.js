@@ -758,8 +758,6 @@ const measureText = (text, fontSize, twod = false) => {
     let measurement = ctx.measureText(arrayifyText(text).reduce((a, b, i) => (i & 1) ? a : a + b, ''));
     return twod ? { width: measurement.width, height: fontSize } : measurement.width;
 };
-
-//those used to be redefined in the drawText function but they never change anywhere else so
 function drawText(rawText, x, y, size, defaultFillStyle, align = "left", center = false, fade = 1, stroke = true, context = ctx) {
     size += config.graphical.fontSizeBoost;
     // Get text dimensions and resize/reset the canvas
@@ -827,7 +825,9 @@ function drawText(rawText, x, y, size, defaultFillStyle, align = "left", center 
             context.fillStyle = str;
 
         } else {
-            // move forward a bit taking the width of the last piece of text + "kerning"
+            // move forward a bit taking the width of the last piece of text + "kerning" between
+            // the last letter of last text and the first letter of current text,
+            // making it align perfectly with what we drew with strokeText earlier
             if (i) {
                 Xoffset += ctx.measureText(textArray[i - 2] + str).width - ctx.measureText(str).width;
             }
