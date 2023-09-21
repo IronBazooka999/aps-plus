@@ -80,35 +80,6 @@ function collide(collision) {
                     break;
             }
             break;
-             case instance.type === "aegis" || other.type === "aegis":
-                if (instance.type === "aegis" && other.type === "aegis") return;
-                if (instance.type === "aura" || other.type === "aura") return;
-                if (instance.type === 'Piercing Bullet' || other.type  === 'Piercing Bullet') return;
-                if (instance.team == other.team) return;
-                let aegis = instance.type === "aegis" ? instance : other;
-                let entity2 = instance.type === "aegis" ? other : instance;
-                if (entity2.ac || entity2.master.ac) return;
-                switch (aegis.color) {
-                    case 30:
-                        /*if (entity2.type !== 'tank' && entity2.type !== 'miniboss' && entity2.type !== 'minion' && entity2.type !== 'food' && entity2.type !== null)
-                        {
-                            entity2.kill();
-                        }*/
-                        reflectcollide(aegis, entity2);
-                        break;
-                    case 3:
-                        reflectcollide(aegis, entity2);
-                        advancedcollide(aegis, entity2, true, true);
-                        break;
-                    default:
-                        if (entity2.type !== 'tank' && entity2.type !== 'miniboss' && entity2.type !== 'crasher' && entity2.type !== 'minion' && entity2.type !== 'food')
-                        {
-                            reflectcollide(aegis, entity2);
-                            advancedcollide(aegis, entity2, true, true);
-                        }
-                        break;
-                }
-                break;
         case instance.team === other.team &&
             (instance.settings.hitsOwnType === "pushOnlyTeam" ||
                 other.settings.hitsOwnType === "pushOnlyTeam"):
