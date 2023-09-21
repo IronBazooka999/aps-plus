@@ -751,10 +751,9 @@ function arrayifyText(rawText) {
     }
     return textArray;
 }
-const fontWidth = "bold";
 const measureText = (text, fontSize, twod = false) => {
     fontSize += config.graphical.fontSizeBoost;
-    ctx.font = fontWidth + " " + fontSize + "px Ubuntu";
+    ctx.font = "bold " + fontSize + "px Ubuntu";
     let measurement = ctx.measureText(arrayifyText(text).reduce((a, b, i) => (i & 1) ? a : a + b, ''));
     return twod ? { width: measurement.width, height: fontSize } : measurement.width;
 };
@@ -772,7 +771,7 @@ function drawText(rawText, x, y, size, defaultFillStyle, align = "left", center 
     if (ratio !== 1) {
         size *= ratio;
     }
-    context.font = fontWidth + " " + size + "px Ubuntu";
+    context.font = "bold " + size + "px Ubuntu";
     let Xoffset = offset,
         Yoffset = (size + 2 * offset) / 2,
         alignMultiplier = 0;
@@ -978,10 +977,10 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
         source = turretInfo === false ? instance : turretInfo;
     source.guns.update();
     if (source.guns.length !== m.guns.length) {
-        throw new Error("Mismatch gun number with mockup.");
+        throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
     }
     if (source.turrets.length !== m.turrets.length) {
-        throw new Error("Mismatch turret number with mockup.");
+        throw new Error("Mismatch turret number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
     }
     if (fade === 0 || alpha === 0) return;
     if (render.expandsWithDeath) drawSize *= 1 + 0.5 * (1 - fade);
