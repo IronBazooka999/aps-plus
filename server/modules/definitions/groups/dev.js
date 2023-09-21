@@ -1,4 +1,4 @@
-const { combineStats, addAura } = require('../facilitators.js');
+const { combineStats, addAura, addAegis } = require('../facilitators.js');
 const { base, gunCalcNames, basePolygonDamage, basePolygonHealth, dfltskl, statnames } = require('../constants.js');
 const g = require('../gunvals.js');
 
@@ -554,7 +554,66 @@ exports.auraHealer = {
         },
     ],
 };
-
+exports.aegisBasicGen = addAegis(1, 5, 'default', 1);
+                exports.aegisBasic = {
+                    PARENT: ['genericTank'],
+                    LABEL: "Aegis Basic",
+                    GUNS: [
+                        {
+                            POSITION: [18, 8, 1, 0, 0, 0, 0],
+                            PROPERTIES: {
+                                SHOOT_SETTINGS: combineStats([g.basic]),
+                                TYPE: 'bullet',
+                            },
+                        },
+                    ],
+                    TURRETS: [
+                        {
+                            POSITION: [14, 0, 0, 0, 360, 1],
+                            TYPE: ['aegisBasicGen',{INDEPENDENT: true,CONTROLLERS: ['onlyAcceptInArc']}]
+                        }
+                    ],
+                };
+                exports.forcefieldBasicGen = addAegis(1, 5, 'default', 2);
+                exports.forcefieldBasic = {
+                    PARENT: ['genericTank'],
+                    LABEL: "Forcefield Basic",
+                    GUNS: [
+                        {
+                            POSITION: [18, 8, 1, 0, 0, 0, 0],
+                            PROPERTIES: {
+                                SHOOT_SETTINGS: combineStats([g.basic]),
+                                TYPE: ['bullet',{COLOR: 1}]
+                            },
+                        },
+                    ],
+                    TURRETS: [
+                        {
+                            POSITION: [14, 0, 0, 0, 360, 1],
+                            TYPE: ['forcefieldBasicGen',{INDEPENDENT: true,CONTROLLERS: ['onlyAcceptInArc']}]
+                        }
+                    ],
+                };
+                exports.absorberBasicGen = addAegis(1, 5, 'default', 3);
+                exports.absorberBasic = {
+                    PARENT: ['genericTank'],
+                    LABEL: "Absorber Basic",
+                    GUNS: [
+                        {
+                            POSITION: [18, 8, 1, 0, 0, 0, 0],
+                            PROPERTIES: {
+                                SHOOT_SETTINGS: combineStats([g.basic]),
+                                TYPE: 'bullet',
+                            },
+                        },
+                    ],
+                    TURRETS: [
+                        {
+                            POSITION: [14, 0, 0, 0, 360, 1],
+                            TYPE: ['absorberBasicGen',{INDEPENDENT: true,CONTROLLERS: ['onlyAcceptInArc']}]
+                        }
+                    ],
+                };
 exports.trplnrsTestTank = {
     PARENT: ['genericTank'],
     LABEL: "Trplnr's Test Tank",
@@ -855,4 +914,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "aegisBasic", "forcefieldBasic", "absorberBasic", "trplnrsTestTank", "weirdAutoBasic"];
