@@ -1,63 +1,12 @@
 const path = require('path');
 const fs = require('fs');
 
-// TERMINAL STUFF
-const repl = require('repl').start({useGlobal: true})
-repl.context.getPlayers = () => {
-    let arr = []
-    for (const player of sockets.players) {
-        const { body } = player 
-        arr.push({name: body.name, id: body.id, team: body.team, score: body.skill.score})
-    }
-    console.dir(arr, {maxArrayLength: null})
-}
-repl.context.getEntities = () => {
-    let arr = []
-    for (const entity of entities) {
-        arr.push({label: entity.label, id: entity.id, team: entity.team, name: entity.name})
-    }
-    console.dir(arr, { maxArrayLength: null })
-}
-repl.context.broadcastMessage = (message) => {
-    if (typeof message !== 'string') throw new TypeError(`Argument needs to be of type string, You provided type ${typeof message}`)
-    sockets.broadcast(message)
-}
-repl.context.getPlayer = (id) => {
-    let thePlayer
-    for (const player of sockets.players) {
-        if (id == null) throw new TypeError(`Parameter {id} doesn't have a value`)
-        if (typeof id !== 'number') throw new TypeError(`Argument needs to be of type number, You provided type ${typeof id}`)
-        if (player.body.id == id) thePlayer = player
-    }
-    if (thePlayer == null) {
-        console.log("Couldn't find the player!")
-        return null
-    }
-    return thePlayer
-}
-repl.context.getEntity = (id) => {
-    let theEntity
-    for (const entity of entities) {
-        if (id == null) throw new TypeError(`Parameter {id} doesn't have a value`)
-        if (typeof id !== 'number') throw new TypeError(`Argument needs to be of type number, You provided type ${typeof id}`)
-        if (entity.id == id) theEntity = entity
-    }
-    if (theEntity == null) {
-        console.log("Couldn't find the entity!")
-        return null
-    }
-    return theEntity
-}
-// --------------
-
 Error.stackTraceLimit = Infinity;
 let enviroment = require('./lib/dotenv.js')(fs.readFileSync(path.join(__dirname, '../.env')).toString());
 for (let key in enviroment) {
     process.env[key] = enviroment[key];
 }
 const GLOBAL = require("./modules/global.js");
-const { sockets } = require('./modules/network/sockets.js');
-const { type } = require('os');
 
 console.log(`[${GLOBAL.creationDate}]: Server initialized.\nRoom Info:\n Dimensions: ${room.width} x ${room.height}\n Max Food / Nest Food: ${room.maxFood} / ${room.maxFood * room.nestFoodAmount}`);
 
@@ -776,6 +725,13 @@ const maintainloop = () => {
         }
     }
 };
+
+//evaluating js with a seperate console window if enabled
+if (c.REPL_WINDOW) {
+    util.log('Starting REPL Terminal.');
+    //let { stdin, stdout, stderr } = (require('child_process').spawn("cmd.exe", ["/c", "node", "blank.js"], { detached: true }));
+    require('repl').start({/* stdin, stdout, stderr,*/ useGlobal: true });
+}
 
 // Bring it to life
 //TODO: compress all of these intervals into one big one

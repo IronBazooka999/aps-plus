@@ -175,6 +175,9 @@ module.exports = {
     // Window name of the server terminal.
     WINDOW_NAME: 'APS++ Game Server Instance',
 
+    // Allows you to type and run javascript code in the terminal.
+    REPL_WINDOW: false,
+
     // Welcome message once a player spawns.
     WELCOME_MESSAGE: "You have spawned! Welcome to the game.\n"
                     +"You will be invulnerable until you move or shoot.\n"
