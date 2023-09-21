@@ -29,7 +29,7 @@ function closeArena() {
                 LIKES_SHAPES: true,
             },
             CONTROLLERS: ["nearestDifferentMaster", "mapTargetToGoal"],
-            SKILL: Array(10).fill(9),
+            SKILL: Array(10).fill(255),
             ACCEPTS_SCORE: false,
             CAN_BE_ON_LEADERBOARD: false,
             VALUE: 100000,

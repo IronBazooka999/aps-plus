@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const repl = require('repl').start({useGlobal: true})
 Error.stackTraceLimit = Infinity;
 let enviroment = require('./lib/dotenv.js')(fs.readFileSync(path.join(__dirname, '../.env')).toString());
 for (let key in enviroment) {
