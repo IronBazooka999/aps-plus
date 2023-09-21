@@ -153,63 +153,6 @@ exports.sentries = {
     LABEL: "Sentries",
 };
 
-// GENERATOR-SPECIFIC POLYGONS
-exports.spawnedEgg = {
-    PARENT: ["genericEntity"],
-    LABEL: "Egg",
-    VALUE: 10,
-    SHAPE: 0,
-    SIZE: 5,
-    COLOR: 6,
-    BODY: {
-        DAMAGE: 0,
-        DENSITY: 2,
-        HEALTH: 0.0011,
-        PUSHABILITY: 0,
-    },
-    DRAW_HEALTH: false,
-    INTANGIBLE: true,
-    MOTION_TYPE: "drift",
-    FACING_TYPE: "turnWithSpeed",
-};
-exports.spawnedSquare = {
-    PARENT: ["genericEntity"],
-    LABEL: "Square",
-    VALUE: 30,
-    SHAPE: 4,
-    SIZE: 10,
-    COLOR: 13,
-    BODY: {
-        DAMAGE: basePolygonDamage,
-        DENSITY: 4,
-        HEALTH: basePolygonHealth,
-        PENETRATION: 2,
-    },
-    DRAW_HEALTH: true,
-    INTANGIBLE: false,
-    MOTION_TYPE: "drift",
-    FACING_TYPE: "turnWithSpeed",
-};
-exports.spawnedAlphaPentagon = {
-    PARENT: ["genericEntity"],
-    LABEL: "Alpha Pentagon",
-    VALUE: 15e3,
-    SHAPE: 5,
-    SIZE: 58,
-    COLOR: 14,
-    BODY: {
-        DAMAGE: 2 * basePolygonDamage,
-        DENSITY: 80,
-        HEALTH: 300 * basePolygonHealth,
-        RESIST: Math.pow(1.25, 3),
-        SHIELD: 40 * basePolygonHealth,
-        REGEN: 0.6,
-    },
-    DRAW_HEALTH: true,
-    MOTION_TYPE: "drift",
-    FACING_TYPE: "turnWithSpeed",
-};
-
 // GENERATORS
 function compileMatrix(matrix, matrix2Entrance) {
     let matrixWidth = matrix[0].length,
