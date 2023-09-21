@@ -729,6 +729,7 @@ const maintainloop = () => {
 //evaluating js with a seperate console window if enabled
 if (c.REPL_WINDOW) {
     util.log('Starting REPL Terminal.');
+    //TODO: figure out how to spawn a seperate window and put the REPL stdio in there instead
     //let { stdin, stdout, stderr } = (require('child_process').spawn("cmd.exe", ["/c", "node", "blank.js"], { detached: true }));
     require('repl').start({/* stdin, stdout, stderr,*/ useGlobal: true });
 }
