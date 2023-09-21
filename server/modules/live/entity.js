@@ -1817,7 +1817,6 @@ class Entity extends EventEmitter {
         if (this.parent != null)
             util.remove(this.parent.children, this.parent.children.indexOf(this));
         // Kill all of its children
-        let ID = this.id;
         for (let instance of entities) {
             if (instance.source.id === this.id) {
                 if (instance.settings.persistsAfterDeath) {
