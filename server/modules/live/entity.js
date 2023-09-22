@@ -558,10 +558,8 @@ class Gun {
             case "drone":
                 out.PUSHABILITY = 1;
                 out.PENETRATION = Math.max(1, shoot.pen * (0.5 * (sk.pen - 1) + 1));
-                out.HEALTH =
-                    (shoot.health * sk.str + sizeFactor) / Math.pow(sk.pen, 0.8);
-                out.DAMAGE =
-                    shoot.damage * sk.dam * Math.sqrt(sizeFactor) * shoot.pen * sk.pen;
+                out.HEALTH = (shoot.health * sk.str + sizeFactor) / Math.pow(sk.pen, 0.8);
+                out.DAMAGE = shoot.damage * sk.dam * Math.sqrt(sizeFactor) * shoot.pen * sk.pen;
                 out.RANGE = shoot.range * Math.sqrt(sizeFactor);
                 break;
         }
@@ -575,54 +573,83 @@ class Gun {
     }
 }
 
-function resetAN(me, data) {
-    data.x = me.x;
-    data.y = me.y;
-    data.vx = me.velocity.x;
-    data.vy = me.velocity.y;
-    data.ax = me.accel.x;
-    data.ay = me.accel.y;
-}
+class antiNaN {
+    constructor (me) {
+        this.me = me;
+        this.nansInARow = 0;
+        this.data = { x: 1, y: 1, vx: 0, vy: 0, ax: 0, ay: 0 };
+    }
+    resetAN(me, data) {
+        data.x = me.x;
+        data.y = me.y;
+        data.vx = me.velocity.x;
+        data.vy = me.velocity.y;
+        data.ax = me.accel.x;
+        data.ay = me.accel.y;
+    }
+    saveAN (me, data) {
+        me.x = data.x;
+        me.y = data.y;
+        me.velocity.x = data.vx;
+        me.velocity.y = data.vy;
+        me.accel.x = data.ax;
+        me.accel.y = data.ay;
+    }
+    amNaN (me) {
+        return [
+            isNaN(me.x), isNaN(me.y),
+            isNaN(me.velocity.x), isNaN(me.velocity.y),
+            isNaN(me.accel.x), isNaN(me.accel.x)
+        ].some(x=>x);
+    }
 
-function saveAN(me, data) {
-    me.x = data.x;
-    me.y = data.y;
-    me.velocity.x = data.vx;
-    me.velocity.y = data.vy;
-    me.accel.x = data.ax;
-    me.accel.y = data.ay;
-}
-let amNaN = me => [
-    isNaN(me.x), isNaN(me.y),
-    isNaN(me.velocity.x), isNaN(me.velocity.y),
-    isNaN(me.accel.x), isNaN(me.accel.x)
-].some(x=>x);
-function antiNaN(me) {
-    let nansInARow = 0;
-    let data = { x: 1, y: 1, vx: 0, vy: 0, ax: 0, ay: 0 };
-
-    return function() {
-        if (amNaN(me)) {
-            nansInARow++;
-            if (nansInARow > 50) {
+    update() {
+        if (this.amNaN(this.me)) {
+            this.nansInARow++;
+            if (this.nansInARow > 50) {
                 console.log("NaN instance found. (Repeated)");
                 console.log("Debug:", [
-                    ["x,"        , isNaN(me.x)],
-                    ["y,"        , isNaN(me.y)],
-                    ["velocity.x", isNaN(me.velocity.x)],
-                    ["velocity.y", isNaN(me.velocity.y)],
-                    ["accel.x"   , isNaN(me.accel.x)],
-                    ["accel.y"   , isNaN(me.accel.y)],
-                ].map(entry => !!entry[1]));
+                    ["x"         , isNaN(this.me.x)],
+                    ["y"         , isNaN(this.me.y)],
+                    ["velocity.x", isNaN(this.me.velocity.x)],
+                    ["velocity.y", isNaN(this.me.velocity.y)],
+                    ["accel.x"   , isNaN(this.me.accel.x)],
+                    ["accel.y"   , isNaN(this.me.accel.y)],
+                ].filter(entry => !!entry[1])).join(', ');
             }
-            saveAN(me, data);
-            if (amNaN(me)) console.log("NaN instance is still NaN.");
+            this.saveAN(this.me, this.data);
+            if (this.amNaN(this.me)) console.log("NaN instance is still NaN.");
         } else {
-            resetAN(me, data);
-            if (nansInARow > 0) nansInARow--;
+            this.resetAN(this.me, this.data);
+            if (this.nansInARow > 0) this.nansInARow--;
         }
     }
 }
+
+function getValidated(obj, prop, type, from) {
+    if (type === typeof obj[prop]) return obj[prop];
+    throw new TypeError(`${from} property ${prop} is of type ${typeof obj[prop]} instead of type ${type}`);
+}
+let labelThing = "StatusEffect's effects argument";
+class StatusEffect extends EventEmitter {
+    constructor (duration = 0, effects = {}, tick = a=>a) {
+        this.duration = getValidated(effects, 'duration', 'number', labelThing);
+        this.acceleration = getValidated(effects, 'acceleration', 'number', labelThing);
+        this.topSpeed = getValidated(effects, 'topSpeed', 'number', labelThing);
+        this.health = getValidated(effects, 'health', 'number', labelThing);
+        this.shield = getValidated(effects, 'shield', 'number', labelThing);
+        this.regen = getValidated(effects, 'regen', 'number', labelThing);
+        this.damage = getValidated(effects, 'damage', 'number', labelThing);
+        this.penetration = getValidated(effects, 'penetration', 'number', labelThing);
+        this.range = getValidated(effects, 'range', 'number', labelThing);
+        this.fov = getValidated(effects, 'fov', 'number', labelThing);
+        this.density = getValidated(effects, 'density', 'number', labelThing);
+        this.stealth = getValidated(effects, 'stealth', 'number', labelThing);
+        this.pushability = getValidated(effects, 'pushability', 'number', labelThing);
+        this.tick = getValidated(effects, 'tick', 'function', "StatusEffect's argument");
+    }
+}
+
 let entitiesIdLog = 0;
 class Entity extends EventEmitter {
     constructor(position, master) {
@@ -711,6 +738,7 @@ class Entity extends EventEmitter {
         this.settings = {};
         this.aiSettings = {};
         this.children = [];
+        this.statusEffects = [];
         // Define it
         this.SIZE = 1;
         this.define(Class.genericEntity);
@@ -747,66 +775,79 @@ class Entity extends EventEmitter {
         this.invisible = [0, 0];
         this.alphaRange = [0, 1];
         this.autospinBoost = 0;
-        this.antiNaN = antiNaN(this);
+        this.antiNaN = new antiNaN(this);
         // Get a new unique id
         this.id = entitiesIdLog++;
         this.team = this.id;
         this.team = master.team;
         this.turnAngle = 0;
         // This is for collisions
-        this.updateAABB = () => {};
-        this.getAABB = (() => {
-            let data = {},
-                savedSize = 0;
-            let getLongestEdge = (x1, y1, x2, y2) => {
-                return Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+        this.AABB_data = {};
+        this.AABB_savedSize = 0;
+        this.updateAABB = (active) => {
+            if (this.bond != null) return 0;
+            if (!active) {
+                this.AABB_data.active = false;
+                return 0;
+            }
+            if (this.isPlayer && !this.isDead()) this.refreshBodyAttributes();
+            this.antiNaN.update();
+            // Get bounds
+            let x1 = Math.min(this.x, this.x + this.velocity.x + this.accel.x) - this.realSize - 5;
+            let y1 = Math.min(this.y, this.y + this.velocity.y + this.accel.y) - this.realSize - 5;
+            let x2 = Math.max(this.x, this.x + this.velocity.x + this.accel.x) + this.realSize + 5;
+            let y2 = Math.max(this.y, this.y + this.velocity.y + this.accel.y) + this.realSize + 5;
+            let size = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1));
+            let sizeDiff = this.AABB_savedSize / size;
+            // Update data
+            this.AABB_data = {
+                min: [x1, y1],
+                max: [x2, y2],
+                active: true,
+                size: size,
             };
-            this.updateAABB = (active) => {
-                if (this.bond != null) return 0;
-                if (!active) {
-                    data.active = false;
-                    return 0;
-                }
-                if (this.isPlayer && !this.isDead()) this.refreshBodyAttributes();
-                this.antiNaN();
-                // Get bounds
-                let x1 = Math.min(this.x, this.x + this.velocity.x + this.accel.x) - this.realSize - 5;
-                let y1 = Math.min(this.y, this.y + this.velocity.y + this.accel.y) - this.realSize - 5;
-                let x2 = Math.max(this.x, this.x + this.velocity.x + this.accel.x) + this.realSize + 5;
-                let y2 = Math.max(this.y, this.y + this.velocity.y + this.accel.y) + this.realSize + 5;
-                // Size check
-                let size = getLongestEdge(x1, y1, x2, y1);
-                let sizeDiff = savedSize / size;
-                // Update data
-                data = {
-                    min: [x1, y1],
-                    max: [x2, y2],
-                    active: true,
-                    size: size,
-                };
-                // Update grid if needed
-                if (sizeDiff > Math.SQRT2 || sizeDiff < Math.SQRT1_2) {
-                    this.removeFromGrid();
-                    this.addToGrid();
-                    savedSize = data.size;
-                }
-            };
-            return () => data;
-        })();
+            // Update grid if needed
+            if (sizeDiff > Math.SQRT2 || sizeDiff < Math.SQRT1_2) {
+                this.removeFromGrid();
+                this.addToGrid();
+                this.AABB_savedSize = size;
+            }
+        };
+        this.getAABB = () => this.AABB_data;
         this.updateAABB(true);
         entities.push(this);
         for (let v of views) v.add(this);
         this.activation.update();
         events.emit('spawn', this);
     }
+    addStatusEffect(effect) {
+        this.emit('newStatusEffect', effect);
+        this.statusEffects.push({ durationLeftover: effect.duration, effect });
+        this.refreshBodyAttributes();
+    }
     life() {
         // Size
         this.coreSize = this.SIZE;
         // Invisibility
-        if ((this.velocity.x ** 2 + this.velocity.y ** 2 <= 0.1) && !this.damageReceived)
+        if (!this.damageReceived && (this.velocity.x ** 2 + this.velocity.y ** 2 <= 0.1)) {
             this.alpha = Math.max(this.alphaRange[0], this.alpha - this.invisible[1]);
-        else
+        } else {
             this.alpha = Math.min(this.alphaRange[1], this.alpha + this.invisible[0]);
+        }
+
+        let lastingEffects = [], needsBodyAttribRefresh = false;
+        for (let i = 0; i < this.statusEffects.length; i++) {
+            let entry = this.statusEffects[i];
+            if (--entry.durationLeftover > 0) {
+                lastingEffects.push(entry);
+            } else {
+                needsBodyAttribRefresh = true;
+                this.emit('expiredStatusEffect', entry.effect);
+            }
+            entry.effect.tick(this);
+        }
+        this.statusEffects = lastingEffects;
+
         // Think
         let faucet = this.settings.independent || this.source == null || this.source === this ? {} : this.source.control,
         b = {
@@ -846,7 +887,8 @@ class Entity extends EventEmitter {
         // Handle guns and turrets if we've got them
         for (let i = 0; i < this.guns.length; i++) this.guns[i].live();
         for (let i = 0; i < this.turrets.length; i++) this.turrets[i].life();
-        if (this.skill.maintain()) this.refreshBodyAttributes();
+        if (this.skill.maintain()) needsBodyAttribRefresh = true;
+        if (needsBodyAttribRefresh) this.refreshBodyAttributes();
     }
     addController(newIO) {
         let listenToPlayer;
@@ -863,17 +905,18 @@ class Entity extends EventEmitter {
         this.kick = (reason) => player.socket.kick(reason);
     }
     giveUp(player, name = "Mothership") {
-        if (!player.body.isMothership)
+        if (!player.body.isMothership) {
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
                 new ioTypes.spin(player.body, { onlyWhenIdle: true }),
             ];
-        else if (player.body.isMothership)
+        } else {
             player.body.controllers = [
                 new ioTypes.nearestDifferentMaster(player.body),
-                new ioTypes.wanderAroundMap(player.body, { immitatePlayerMovement: false, lookAtGoal: true }),
+                new ioTypes.wanderAroundMap(player.body, { lookAtGoal: true }),
                 new ioTypes.mapTargetToGoal(player.body),
             ];
+        }
         player.body.name = player.body.label;
         player.body.underControl = false;
         player.body.sendMessage = () => {};
@@ -990,12 +1033,13 @@ class Entity extends EventEmitter {
             this.squiggle = this.settings.variesInSize ? ran.randomRange(0.8, 1.2) : 1;
         }
         if (set.RESET_UPGRADES) {
+            let caps = this.skill.caps.map(x=>x);
+            this.skill.setCaps(Array(10).fill(0));
+            this.skill.setCaps(caps);
             this.upgrades = [];
             this.isArenaCloser = false;
             this.ac = false;
             this.alpha = 1;
-            this.skill.reset();
-            this.reset();
         }
         if (set.ARENA_CLOSER != null) {
             this.isArenaCloser = set.ARENA_CLOSER;
@@ -1100,21 +1144,50 @@ class Entity extends EventEmitter {
         }
     }
     refreshBodyAttributes() {
+
+        let accelerationMultiplier = 1,
+            topSpeedMultiplier = 1,
+            healthMultiplier = 1,
+            shieldMultiplier = 1,
+            regenMultiplier = 1,
+            damageMultiplier = 1,
+            penetrationMultiplier = 1,
+            rangeMultiplier = 1,
+            fovMultiplier = 1,
+            densityMultiplier = 1,
+            stealthMultiplier = 1,
+            pushabilityMultiplier = 1;
+        for (let i = 0; i < this.statusEffects.length; i++) {
+            let effect = this.statusEffects[i].effect;
+            if (effect.acceleration != null) accelerationMultiplier *= effect.acceleration;
+            if (effect.topSpeed != null) topSpeedMultiplier *= effect.topSpeed;
+            if (effect.health != null) healthMultiplier *= effect.health;
+            if (effect.shield != null) shieldMultiplier *= effect.shield;
+            if (effect.regen != null) regenMultiplier *= effect.regen;
+            if (effect.damage != null) damageMultiplier *= effect.damage;
+            if (effect.penetration != null) penetrationMultiplier *= effect.penetration;
+            if (effect.range != null) rangeMultiplier *= effect.range;
+            if (effect.fov != null) fovMultiplier *= effect.fov;
+            if (effect.density != null) densityMultiplier *= effect.density;
+            if (effect.stealth != null) stealthMultiplier *= effect.stealth;
+            if (effect.pushability != null) pushabilityMultiplier *= effect.pushability;
+        }
+
         let speedReduce = Math.pow(this.size / (this.coreSize || this.SIZE), 1);
-        this.acceleration = (c.runSpeed * this.ACCELERATION) / speedReduce;
+        this.acceleration = (accelerationMultiplier * c.runSpeed * this.ACCELERATION) / speedReduce;
         if (this.settings.reloadToAcceleration) this.acceleration *= this.skill.acl;
-        this.topSpeed = (c.runSpeed * this.SPEED * this.skill.mob) / speedReduce;
+        this.topSpeed = (topSpeedMultiplier * c.runSpeed * this.SPEED * this.skill.mob) / speedReduce;
         if (this.settings.reloadToAcceleration) this.topSpeed /= Math.sqrt(this.skill.acl);
-        this.health.set(((this.settings.healthWithLevel ? 2 * this.level : 0) + this.HEALTH) * this.skill.hlt);
+        this.health.set(((this.settings.healthWithLevel ? 2 * this.level : 0) + this.HEALTH) * this.skill.hlt * healthMultiplier);
         this.health.resist = 1 - 1 / Math.max(1, this.RESIST + this.skill.brst);
-        this.shield.set(((this.settings.healthWithLevel ? 0.6 * this.level : 0) + this.SHIELD) * this.skill.shi, Math.max(0, ((this.settings.healthWithLevel ? 0.006 * this.level : 0) + 1) * this.REGEN * this.skill.rgn));
-        this.damage = this.DAMAGE * this.skill.atk;
-        this.penetration = this.PENETRATION + 1.5 * (this.skill.brst + 0.8 * (this.skill.atk - 1));
-        if (!this.settings.dieAtRange || !this.range) this.range = this.RANGE;
-        this.fov = this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.level);
-        this.density = (1 + 0.08 * this.level) * this.DENSITY;
-        this.stealth = this.STEALTH;
-        this.pushability = this.PUSHABILITY;
+        this.shield.set(((this.settings.healthWithLevel ? 0.6 * this.level : 0) + this.SHIELD) * this.skill.shi, Math.max(0, ((this.settings.healthWithLevel ? 0.006 * this.level : 0) + 1) * this.REGEN * this.skill.rgn * regenMultiplier));
+        this.damage = damageMultiplier * this.DAMAGE * this.skill.atk;
+        this.penetration = penetrationMultiplier * (this.PENETRATION + 1.5 * (this.skill.brst + 0.8 * (this.skill.atk - 1)));
+        if (!this.settings.dieAtRange || !this.range) this.range = rangeMultiplier * this.RANGE;
+        this.fov = fovMultiplier * this.FOV * 250 * Math.sqrt(this.size) * (1 + 0.003 * this.level);
+        this.density = densityMultiplier * (1 + 0.08 * this.level) * this.DENSITY;
+        this.stealth = stealthMultiplier * this.STEALTH;
+        this.pushability = pushabilityMultiplier * this.PUSHABILITY;
     }
     bindToMaster(position, bond) {
         this.bond = bond;

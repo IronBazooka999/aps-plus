@@ -353,7 +353,6 @@ class io_nearestDifferentMaster extends IO {
     validate(e, m, mm, sqrRange, sqrRangeMaster) {
         return (e.health.amount > 0) &&
         (!e.master.master.ignoredByAi) &&
-        (!e.master.master.isDominator) &&
         (e.master.master.team !== this.body.master.master.team) &&
         (e.master.master.team !== TEAM_ROOM) &&
         (!isNaN(e.dangerValue)) &&
@@ -692,7 +691,10 @@ class io_wanderAroundMap extends IO {
                 goal = compressMovement(this.body, goal);
             }
             return {
-                target: (this.lookAtGoal && input.target == null) ? this.spot : null,
+                target: (this.lookAtGoal && input.target == null) ? {
+                    x: this.spot.x - this.body.x,
+                    y: this.spot.y - this.body.y
+                } : null,
                 goal
             };
         }

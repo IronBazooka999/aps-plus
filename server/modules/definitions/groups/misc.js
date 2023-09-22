@@ -62,7 +62,7 @@ exports.dominationBody = {
 exports.dominator = {
     PARENT: ["genericTank"],
     LABEL: "Dominator",
-    DANGER: 10,
+    DANGER: 7,
     SKILL: skillSet({
         rld: 1,
         dam: 1,

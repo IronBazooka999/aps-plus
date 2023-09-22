@@ -6,7 +6,6 @@ const g = require('../gunvals.js');
 exports.menu = {
     PARENT: ["genericTank"],
     LABEL: "",
-    RESET_UPGRADES: true,
     SKILL_CAP: [
         dfltskl,
         dfltskl,
@@ -76,9 +75,9 @@ exports.spectator = {
     ARENA_CLOSER: true,
     SKILL_CAP: [0, 0, 0, 0, 0, 0, 0, 0, 0, 255],
     BODY: {
-        DAMAGE: 0,
         SPEED: 5,
         FOV: 2.5,
+        DAMAGE: 0,
         HEALTH: 1e100,
         SHIELD: 1e100,
         REGEN: 1e100,
@@ -167,6 +166,14 @@ function compileMatrix(matrix, matrix2Entrance) {
             SKILL_CAP: [31, 0, 0, 0, 0, 0, 0, 0, 0, 31],
             ALPHA: [0, 0],
             IGNORED_BY_AI: true,
+            BODY: {
+                SPEED: 5,
+                FOV: 2.5,
+                DAMAGE: 0,
+                HEALTH: 1e100,
+                SHIELD: 1e100,
+                REGEN: 1e100,
+            },
             TURRETS: [{
                 POSITION: [5 + y * 2, 0, 0, 0, 0, 1],
                 TYPE: str,
@@ -249,6 +256,14 @@ for (let tier = 0; tier < 6; tier++) {
                 SKILL_CAP: [31, 0, 0, 0, 0, 0, 0, 0, 0, 31],
                 ALPHA: [0, 0],
                 IGNORED_BY_AI: true,
+                BODY: {
+                    SPEED: 5,
+                    FOV: 2.5,
+                    DAMAGE: 0,
+                    HEALTH: 1e100,
+                    SHIELD: 1e100,
+                    REGEN: 1e100,
+                },
                 TURRETS: [{
                     POSITION: [5 + tier * 2, 0, 0, 0, 0, 1],
                     TYPE: str,
@@ -743,14 +758,14 @@ exports.levels = {
     LABEL: "Levels",
     UPGRADES_TIER_0: ["developer"]
 };
-for (let i = 0; i < 186; i += c.TIER_MULTIPLIER) { //c.MAX_UPGRADE_TIER is irrelevant
-    let LEVEL = i;
+for (let i = 0; i < 15; i++) {
+    let LEVEL = i * c.TIER_MULTIPLIER;
     exports["level" + LEVEL] = {
         PARENT: ["levels"],
         LEVEL,
         LABEL: "Level " + LEVEL
     };
-    exports.levels.UPGRADES_TIER_0.push(exports["level" + LEVEL]);
+    exports.levels.UPGRADES_TIER_0.push("level" + LEVEL);
 }
 
 exports.teams = {
@@ -758,7 +773,7 @@ exports.teams = {
     LABEL: "Teams",
     UPGRADES_TIER_0: ["developer"]
 };
-for (let i = 1; i <= c.TEAMS; i++) {
+for (let i = 1; i <= 8; i++) {
     let TEAM = i;
     exports["Team" + TEAM] = {
         PARENT: ["teams"],
@@ -766,21 +781,21 @@ for (let i = 1; i <= c.TEAMS; i++) {
         COLOR: getTeamColor(-TEAM),
         LABEL: "Team " + TEAM
     };
-    exports.teams.UPGRADES_TIER_0.push(exports["Team" + TEAM]);
+    exports.teams.UPGRADES_TIER_0.push("Team" + TEAM);
 }
-exports.Team101 = {
+exports['Team' + TEAM_ROOM] = {
     PARENT: ["teams"],
     TEAM: TEAM_ROOM,
     COLOR: 3,
     LABEL: "Room Team"
 };
-exports.Team101 = {
+exports['Team' + TEAM_ENEMIES] = {
     PARENT: ["teams"],
     TEAM: TEAM_ENEMIES,
     COLOR: 3,
     LABEL: "Enemies Team"
 };
-exports.teams.UPGRADES_TIER_0.push("Team101");
+exports.teams.UPGRADES_TIER_0.push('Team' + TEAM_ROOM, 'Team' + TEAM_ENEMIES);
 
 // DEV "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntities", "eggGenerator", "bosses", "fun", "levels", "teams"];

@@ -415,6 +415,7 @@ function incoming(message, socket) {
             }
             // cheatingbois
             if (player.body != null && socket.permissions && socket.permissions.class) {
+                player.body.define({ RESET_UPGRADES: true });
                 player.body.define(Class[socket.permissions.class]);
             }
             break;
@@ -972,8 +973,8 @@ function flatten(data) {
             /* 12 */ data.layer,
             /* 13 */ data.color,
             /* 14 */ data.invuln,
-            /* 15 */ Math.ceil(255 * data.health),
-            /* 16 */ Math.round(255 * data.shield),
+            /* 15 */ Math.ceil(65535 * data.health),
+            /* 16 */ Math.round(65535 * data.shield),
             /* 17 */ Math.round(255 * data.alpha)
         );
         if (data.type & 0x04) {
