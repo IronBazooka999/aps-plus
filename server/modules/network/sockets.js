@@ -456,7 +456,7 @@ function incoming(message, socket) {
             let body = player.body;
             if (body.underControl) {
                 body.giveUp(player, body.isDominator ? "" : undefined);
-                socket.talk("m", "You are no longer controling the mothership.");
+                socket.talk("m", "You are no longer controlling the mothership.");
                 return 1;
             }
             if (c.MOTHERSHIP_LOOP) {
