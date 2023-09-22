@@ -626,27 +626,27 @@ class antiNaN {
     }
 }
 
-function getValidated(obj, prop, type, from) {
-    if (type === typeof obj[prop]) return obj[prop];
+function getValidated(obj, prop, type, from, optional = true) {
+    if (type === typeof obj[prop] && (optional && 'undefined' === typeof obj[prop])) return obj[prop];
     throw new TypeError(`${from} property ${prop} is of type ${typeof obj[prop]} instead of type ${type}`);
 }
 let labelThing = "StatusEffect's effects argument";
 class StatusEffect extends EventEmitter {
-    constructor (duration = 0, effects = {}, tick = a=>a) {
-        this.duration = getValidated(effects, 'duration', 'number', labelThing);
-        this.acceleration = getValidated(effects, 'acceleration', 'number', labelThing);
-        this.topSpeed = getValidated(effects, 'topSpeed', 'number', labelThing);
-        this.health = getValidated(effects, 'health', 'number', labelThing);
-        this.shield = getValidated(effects, 'shield', 'number', labelThing);
-        this.regen = getValidated(effects, 'regen', 'number', labelThing);
-        this.damage = getValidated(effects, 'damage', 'number', labelThing);
-        this.penetration = getValidated(effects, 'penetration', 'number', labelThing);
-        this.range = getValidated(effects, 'range', 'number', labelThing);
-        this.fov = getValidated(effects, 'fov', 'number', labelThing);
-        this.density = getValidated(effects, 'density', 'number', labelThing);
-        this.stealth = getValidated(effects, 'stealth', 'number', labelThing);
-        this.pushability = getValidated(effects, 'pushability', 'number', labelThing);
-        this.tick = getValidated(effects, 'tick', 'function', "StatusEffect's argument");
+    constructor (duration = 0, multipliers = {}, tick = a=>a) {
+        this.duration = getValidated(multipliers, 'duration', 'number', labelThing, false);
+        this.acceleration = getValidated(multipliers, 'acceleration', 'number', labelThing);
+        this.topSpeed = getValidated(multipliers, 'topSpeed', 'number', labelThing);
+        this.health = getValidated(multipliers, 'health', 'number', labelThing);
+        this.shield = getValidated(multipliers, 'shield', 'number', labelThing);
+        this.regen = getValidated(multipliers, 'regen', 'number', labelThing);
+        this.damage = getValidated(multipliers, 'damage', 'number', labelThing);
+        this.penetration = getValidated(multipliers, 'penetration', 'number', labelThing);
+        this.range = getValidated(multipliers, 'range', 'number', labelThing);
+        this.fov = getValidated(multipliers, 'fov', 'number', labelThing);
+        this.density = getValidated(multipliers, 'density', 'number', labelThing);
+        this.stealth = getValidated(multipliers, 'stealth', 'number', labelThing);
+        this.pushability = getValidated(multipliers, 'pushability', 'number', labelThing);
+        this.tick = getValidated(multipliers, 'tick', 'function', "StatusEffect's argument");
     }
 }
 
@@ -838,7 +838,8 @@ class Entity extends EventEmitter {
         let lastingEffects = [], needsBodyAttribRefresh = false;
         for (let i = 0; i < this.statusEffects.length; i++) {
             let entry = this.statusEffects[i];
-            if (--entry.durationLeftover > 0) {
+            entry.durationLeftover -= 1 / roomSpeed;
+            if (entry.durationLeftover > 0) {
                 lastingEffects.push(entry);
             } else {
                 needsBodyAttribRefresh = true;
