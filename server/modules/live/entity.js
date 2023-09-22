@@ -1916,4 +1916,4 @@ class Entity extends EventEmitter {
         return this.health.amount <= 0;
     }
 }
-module.exports = { init, Gun, Entity };
+module.exports = { init, StatusEffect, Gun, Entity };
