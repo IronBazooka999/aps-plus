@@ -169,6 +169,10 @@ module.exports = {
     // Includes the fade-out period.
     CHAT_MESSAGE_DURATION: 30_000,
 
+    // If you don't want your players to color their messages.
+    // Sanitization is outward only, does not change the data that addons have to deal with.
+    SANITIZE_CHAT_MESSAGE_COLORS: true,
+
     // If someone tries to get a file that does not exist, send them this instead.
     DEFAULT_FILE: 'index.html',
 

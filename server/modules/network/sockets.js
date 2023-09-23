@@ -529,6 +529,12 @@ function incoming(message, socket) {
             if (!chats[id]) {
                 chats[id] = [];
             }
+
+            if (c.SANITIZE_CHAT_MESSAGE_COLORS) {
+                // I thought it should be "§§" but it only works if you do "§§§§"?
+                message = message.replace(/§/g, "§§§§");
+            }
+
             // TODO: this needs to be lag compensated, so the message would not last 1 second less due to high ping
             chats[id].unshift({ message, expires: Date.now() + c.CHAT_MESSAGE_DURATION });
 
