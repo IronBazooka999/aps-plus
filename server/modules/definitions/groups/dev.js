@@ -513,17 +513,21 @@ exports.auraHealer = {
     ],
 };
 
+/**
+ * @type {Entity}
+ */
 exports.trplnrsTestTank = {
     PARENT: ['genericTank'],
     LABEL: "Trplnr's Test Tank",
     COLOR: 'teal',
+    RESET_UPGRADES: true,
     GUNS: [
     {
         POSITION: [18, 10, 0.75, -5, 0, 0, 0],
         PROPERTIES: {
             COLOR: 'lavender',
-            SHOOT_SETTINGS: combineStats([g.anni, {reload: 250}]),
-            TYPE: 'kronosMissile'
+            SHOOT_SETTINGS: combineStats([g.basic, g.anni, {reload: 20}]),
+            TYPE: 'bullet',
         }
     },
     {
@@ -574,6 +578,58 @@ exports.trplnrsTestTank = {
         POSITION: [15, -12.5, 12.5, 0, 0, 0],
         TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
     }]
+}
+
+/**
+ * @type {Entity}
+ */
+exports.ghoster_ghostForm = {
+    PARENT: ['genericTank'],
+    TOOLTIP: 'You are now in ghost form, roam around and find your next target. Will turn back in 5 seconds',
+    LABEL: 'Ghoster - Ghost Form',
+    BODY: {
+        SPEED: 20,
+        ACCELERATION: 10,
+        FOV: base.FOV + 1,
+    },
+    GUNS: [{
+        POSITION: { WIDTH: 20, LENGTH: 20 },
+    }],
+    ALPHA: 0.6,
+}
+
+/**
+ * @type {Entity}
+ */
+exports.ghoster = {
+    PARENT: ['genericTank'],
+    LABEL: 'Ghoster',
+    TOOLTIP: 'Shooting will turn you into a ghost for 5 seconds',
+    BODY: {
+        SPEED: base.SPEED,
+        ACCELERATION: base.ACCEL,
+    },
+    GUNS: [{
+        POSITION: {WIDTH: 20, LENGTH: 20},
+        PROPERTIES: {
+            TYPE: 'bullet',
+            SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni]),
+            ON_FIRE: ({body}) => {
+                body.define(Class.ghoster_ghostForm)
+                setTimeout(() => { 
+                    body.SPEED = 1e-99
+                    body.ACCEL = 1e-99
+                    body.FOV *= 2
+                    body.alpha = 1 
+                }, 2000)
+                setTimeout(() => { 
+                    body.SPEED = base.SPEED 
+                    body.define(Class.ghoster) 
+                }, 2500)
+            }
+        }
+    }],
+    ALPHA: 1,
 }
 
 // FUN
@@ -813,4 +869,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic", "ghoster"];

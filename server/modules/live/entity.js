@@ -97,6 +97,7 @@ class Gun {
             this.shootOnDeath = (info.PROPERTIES.SHOOT_ON_DEATH == null) ? false : info.PROPERTIES.SHOOT_ON_DEATH;
             this.drawAbove = (info.PROPERTIES.DRAW_ABOVE == null) ? false : info.PROPERTIES.DRAW_ABOVE;
             this.stack = (info.PROPERTIES.STACK_GUN == null) ? true : info.PROPERTIES.STACK_GUN;
+            this.onFire = (info.PROPERTIES.ON_FIRE == null) ? null : info.PROPERTIES.ON_FIRE
         }
         let position = info.POSITION;
         if (Array.isArray(position)) {
@@ -334,6 +335,10 @@ class Gun {
         o.velocity = s;
         this.bulletInit(o);
         o.coreSize = o.SIZE;
+
+        if (this.onFire != null) {
+            this.onFire({body: this.master.master, gun: this})
+        }
     }
     bulletInit(o) {
         // Define it by its natural properties
