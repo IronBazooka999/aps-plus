@@ -513,9 +513,6 @@ exports.auraHealer = {
     ],
 };
 
-/**
- * @type {Entity}
- */
 exports.trplnrsTestTank = {
     PARENT: ['genericTank'],
     LABEL: "Trplnr's Test Tank",
@@ -580,9 +577,6 @@ exports.trplnrsTestTank = {
     }]
 }
 
-/**
- * @type {Entity}
- */
 exports.ghoster_ghostForm = {
     PARENT: ['genericTank'],
     TOOLTIP: 'You are now in ghost form, roam around and find your next target. Will turn back in 5 seconds',
@@ -598,9 +592,6 @@ exports.ghoster_ghostForm = {
     ALPHA: 0.6,
 }
 
-/**
- * @type {Entity}
- */
 exports.ghoster = {
     PARENT: ['genericTank'],
     LABEL: 'Ghoster',
