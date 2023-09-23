@@ -1060,7 +1060,7 @@ class Entity extends EventEmitter {
             this.settings.variesInSize = set.VARIES_IN_SIZE;
             this.squiggle = this.settings.variesInSize ? ran.randomRange(0.8, 1.2) : 1;
         }
-        if (set.RESET_UPGRADES) {
+        if (set.RESET_UPGRADES || set.RESET_STATS) {
             let caps = this.skill.caps.map(x=>x);
             this.skill.setCaps(Array(10).fill(0));
             this.skill.setCaps(caps);
@@ -1068,17 +1068,9 @@ class Entity extends EventEmitter {
             this.isArenaCloser = false;
             this.ac = false;
             this.alpha = 1;
-        }
-        if (set.RESET_UPGRADE_MENU) this.upgrades = []
-        if (set.RESET_STATS) {
-            let caps = this.skill.caps.map(x=>x);
-            this.skill.setCaps(Array(10).fill(0));
-            this.skill.setCaps(caps);
-            this.isArenaCloser = false;
-            this.ac = false;
-            this.alpha = 1;
             this.reset();
         }
+        if (set.RESET_UPGRADE_MENU) this.upgrades = []
         if (set.ARENA_CLOSER != null) {
             this.isArenaCloser = set.ARENA_CLOSER;
             this.ac = set.ARENA_CLOSER;
@@ -1505,9 +1497,8 @@ class Entity extends EventEmitter {
         this.accel.x += engine.x * this.control.power;
         this.accel.y += engine.y * this.control.power;
     }
-    reset(_con = true) {
-        this.controllers = this.controllers.filter(con => (con instanceof ioTypes.listenToPlayer) * _con);
-        if (this.controllers.length > 1 && _con) this.controllers = this.controllers[0];
+    reset(keepPlayerController = true) {
+        this.controllers = [keepPlayerController ? this.controllers.filter(con => con instanceof ioTypes.listenToPlayer)[0] : []];
     }
     face() {
         let t = this.control.target,

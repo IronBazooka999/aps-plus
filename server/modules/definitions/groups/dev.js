@@ -517,7 +517,6 @@ exports.trplnrsTestTank = {
     PARENT: ['genericTank'],
     LABEL: "Trplnr's Test Tank",
     COLOR: 'teal',
-    RESET_UPGRADES: true,
     GUNS: [
     {
         POSITION: [18, 10, 0.75, -5, 0, 0, 0],
