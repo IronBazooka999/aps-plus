@@ -1071,12 +1071,13 @@ class Entity extends EventEmitter {
         }
         if (set.RESET_UPGRADE_MENU) this.upgrades = []
         if (set.RESET_STATS) {
-            let caps = this.skill.caps.map(x=>x)
-            this.skill.setCaps(Array(10).fill(0))
-            this.skill.setCaps(caps)
-            this.isArenaCloser = false
-            this.ac = false
-            this.alpha = 1
+            let caps = this.skill.caps.map(x=>x);
+            this.skill.setCaps(Array(10).fill(0));
+            this.skill.setCaps(caps);
+            this.isArenaCloser = false;
+            this.ac = false;
+            this.alpha = 1;
+            this.reset();
         }
         if (set.ARENA_CLOSER != null) {
             this.isArenaCloser = set.ARENA_CLOSER;
