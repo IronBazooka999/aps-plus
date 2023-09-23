@@ -638,7 +638,7 @@ exports.switcheroo = {
                 store.switcheroo_i++;
                 store.switcheroo_i %= 6;
                 body.define(Class.basic.UPGRADES_TIER_1[store.switcheroo_i]);
-                setTimeout(body.define, 6000, "switcheroo");
+                setTimeout(() => body.define("switcheroo"), 6000);
             }
         }
     }]
