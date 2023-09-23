@@ -611,7 +611,7 @@ exports.ghoster = {
                     body.SPEED = 1e-99
                     body.ACCEL = 1e-99
                     body.FOV *= 2
-                    body.alpha = 1 
+                    body.alpha = 1
                 }, 2000)
                 setTimeout(() => { 
                     body.SPEED = base.SPEED 
@@ -621,6 +621,33 @@ exports.ghoster = {
         }
     }],
     ALPHA: 1,
+}
+
+exports.switcheroo = {
+    PARENT: ['basic'],
+    LABEL: 'Switcheroo',
+    UPGRADES_TIER_0: [],
+    RESET_UPGRADE_MENU: true,
+    GUNS: [{
+        POSITION: {},
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic]),
+            TYPE: 'bullet',
+            ON_FIRE: ({ body, masterStore }) => {
+                if (masterStore.switcheroo_tankIndex != null) {
+                    if (masterStore.switcheroo_tankIndex >= 6) masterStore.switcheroo_tankIndex = 0
+                    masterStore.switcheroo_tankIndex++
+                } else {
+                    masterStore.switcheroo_tankIndex = 0
+                }
+                console.log(masterStore.switcheroo_tankIndex)
+                body.define(Class[`${Class.basic.UPGRADES_TIER_1[masterStore.switcheroo_tankIndex]}`])
+                setTimeout(() => {
+                    body.define(Class.switcheroo)
+                }, 6000)
+            }
+        }
+    }]
 }
 
 // FUN
@@ -860,4 +887,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic", "ghoster"];
+    exports.fun.UPGRADES_TIER_0 = ["vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic", "ghoster", "switcheroo"];
