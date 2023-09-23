@@ -69,7 +69,7 @@ module.exports = ({ Class }) => {
 	    EXTRA_SKILL: 18,
 	    SKILL_CAP: Array(10).fill(smshskl),
 	}
-	Class.squareEggnought = {
+	Class.genericSquarenought = {
 		PARENT: ["genericTank"],
 		BODY: squarenoughtBody,
 	    SHAPE: 4,
@@ -78,7 +78,7 @@ module.exports = ({ Class }) => {
 	    EXTRA_SKILL: 18,
 	    SKILL_CAP: Array(10).fill(smshskl),
 	}
-	Class.triEggnought = {
+	Class.genericTrinought = {
 		PARENT: ["genericTank"],
 		BODY: trinoughtBody,
 	    SHAPE: 3.5,
@@ -87,7 +87,7 @@ module.exports = ({ Class }) => {
 	    EXTRA_SKILL: 18,
 	    SKILL_CAP: Array(10).fill(smshskl),
 	}
-	Class.pentaEggnought = {
+	Class.genericPentanought = {
 		PARENT: ["genericTank"],
 		BODY: pentanoughtBody,
 	    SHAPE: 5.5,
@@ -96,7 +96,7 @@ module.exports = ({ Class }) => {
 	    EXTRA_SKILL: 18,
 	    SKILL_CAP: Array(10).fill(smshskl),
 	}
-	Class.hexEggnought = {
+	Class.genericHexnought = {
 		PARENT: ["genericTank"],
 		BODY: hexnoughtBody,
 	    SHAPE: 6,

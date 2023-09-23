@@ -170,7 +170,7 @@ module.exports = {
     CHAT_MESSAGE_DURATION: 30_000,
 
     // If you don't want your players to color their messages.
-    // Sanitization is outward only, does not change the data that addons have to deal with.
+    // They get sanitized after addons interpret them, but before they're added to the chat message dictionary.
     SANITIZE_CHAT_MESSAGE_COLORS: true,
 
     // If someone tries to get a file that does not exist, send them this instead.
