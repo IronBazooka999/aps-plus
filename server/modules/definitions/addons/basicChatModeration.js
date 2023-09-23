@@ -9,7 +9,7 @@ let recent = {},
 module.exports = ({ Events }) => {
 	Events.on('chatMessage', ({ message, socket, preventDefault }) => {
 		let perms = socket.permissions,
-			id = socket.player.id;
+			id = socket.player.body.id;
 
 		// They are allowed to spam ANYTHING they want INFINITELY.
 		if (perms && perms.allowSpam) return;

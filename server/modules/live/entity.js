@@ -18,6 +18,7 @@ function setNatural(natural, type) {
 let lerp = (a, b, x) => a + x * (b - a);
 class Gun {
     constructor(body, info) {
+        this.id = entitiesIdLog++;
         this.ac = false;
         this.lastShot = { time: 0, power: 0 };
         this.body = body;
@@ -71,7 +72,7 @@ class Gun {
             this.calculator = info.PROPERTIES.STAT_CALCULATOR == null ? "default" : info.PROPERTIES.STAT_CALCULATOR;
             this.waitToCycle = info.PROPERTIES.WAIT_TO_CYCLE == null ? false : info.PROPERTIES.WAIT_TO_CYCLE;
             this.bulletStats = (info.PROPERTIES.BULLET_STATS == null || info.PROPERTIES.BULLET_STATS == "master") ? "master" : new Skill(info.PROPERTIES.BULLET_STATS);
-            this.settings = info.PROPERTIES.SHOOT_SETTINGS == null ? [] : info.PROPERTIES.SHOOT_SETTINGS;
+            this.settings = info.PROPERTIES.SHOOT_SETTINGS == null ? [] : JSON.parse(JSON.stringify(info.PROPERTIES.SHOOT_SETTINGS));
             this.countsOwnKids = info.PROPERTIES.MAX_CHILDREN == null ? false : info.PROPERTIES.MAX_CHILDREN;
             this.syncsSkills = info.PROPERTIES.SYNCS_SKILLS == null ? false : info.PROPERTIES.SYNCS_SKILLS;
             this.negRecoil = info.PROPERTIES.NEGATIVE_RECOIL == null ? false : info.PROPERTIES.NEGATIVE_RECOIL;
@@ -111,13 +112,15 @@ class Gun {
                 DELAY: position[6]
             }
         }
-        position.LENGTH ??= 18;
-        position.WIDTH ??= 8;
-        position.ASPECT ??= 1;
-        position.X ??= 0;
-        position.Y ??= 0;
-        position.ANGLE ??= 0;
-        position.DELAY ??= 0;
+        position = {
+            LENGTH: position.LENGTH ?? 18,
+            WIDTH: position.WIDTH ?? 8,
+            ASPECT: position.ASPECT ?? 1,
+            X: position.X ?? 0,
+            Y: position.Y ?? 0,
+            ANGLE: position.ANGLE ?? 0,
+            DELAY: position.DELAY ?? 0
+        };
         this.length = position.LENGTH / 10;
         this.width = position.WIDTH / 10;
         this.aspect = position.ASPECT;
@@ -279,17 +282,17 @@ class Gun {
         this.lastShot.power = 3 * Math.log(Math.sqrt(sk.spd) + this.trueRecoil + 1) + 1;
         this.motion += this.lastShot.power;
         // Find inaccuracy
-        let ss, sd;
+        let shudder, spread;
         do {
-            ss = ran.gauss(0, Math.sqrt(this.settings.shudder));
-        } while (Math.abs(ss) >= this.settings.shudder * 2);
+            shudder = ran.gauss(0, Math.sqrt(this.settings.shudder));
+        } while (Math.abs(shudder) >= this.settings.shudder * 2);
         do {
-            sd = ran.gauss(0, this.settings.spray * this.settings.shudder);
-        } while (Math.abs(sd) >= this.settings.spray / 2);
-        sd *= Math.PI / 180;
+            spread = ran.gauss(0, this.settings.spray * this.settings.shudder);
+        } while (Math.abs(spread) >= this.settings.spray / 2);
+        spread *= Math.PI / 180;
         // Find speed
-        let vecLength = (this.negRecoil ? -1 : 1) * this.settings.speed * c.runSpeed * sk.spd * (1 + ss),
-            vecAngle = this.angle + this.body.facing + sd,
+        let vecLength = (this.negRecoil ? -1 : 1) * this.settings.speed * c.runSpeed * sk.spd * (1 + shudder),
+            vecAngle = this.angle + this.body.facing + spread,
         s = new Vector(vecLength * Math.cos(vecAngle), vecLength * Math.sin(vecAngle));
         // Boost it if we should
         if (this.body.velocity.length) {
@@ -631,14 +634,18 @@ class antiNaN {
     }
 }
 
-function getValidated(obj, prop, type, from, optional = true) {
-    if (type === typeof obj[prop] && (optional && 'undefined' === typeof obj[prop])) return obj[prop];
-    throw new TypeError(`${from} property ${prop} is of type ${typeof obj[prop]} instead of type ${type}`);
+function getValidated(obj, prop, allowedType, from, optional = true) {
+    let type = typeof obj[prop];
+    if (allowedType === type || (optional && 'undefined' === type)) {
+        return obj[prop];
+    }
+    throw new TypeError(`${from} property ${prop} is of type ${type} instead of type ${allowedType}`);
 }
 let labelThing = "StatusEffect's effects argument";
 class StatusEffect extends EventEmitter {
     constructor (duration = 0, multipliers = {}, tick = a=>a) {
-        this.duration = getValidated(multipliers, 'duration', 'number', labelThing, false);
+        super();
+        this.duration = getValidated({duration}, 'duration', 'number', labelThing, false);
         this.acceleration = getValidated(multipliers, 'acceleration', 'number', labelThing);
         this.topSpeed = getValidated(multipliers, 'topSpeed', 'number', labelThing);
         this.health = getValidated(multipliers, 'health', 'number', labelThing);
@@ -651,7 +658,8 @@ class StatusEffect extends EventEmitter {
         this.density = getValidated(multipliers, 'density', 'number', labelThing);
         this.stealth = getValidated(multipliers, 'stealth', 'number', labelThing);
         this.pushability = getValidated(multipliers, 'pushability', 'number', labelThing);
-        this.tick = getValidated(multipliers, 'tick', 'function', "StatusEffect's argument");
+        this.size = getValidated(multipliers, 'size', 'number', labelThing);
+        this.tick = getValidated({tick}, 'tick', 'function', "StatusEffect's argument");
     }
 }
 
@@ -746,7 +754,8 @@ class Entity extends EventEmitter {
         this.statusEffects = [];
         // Define it
         this.SIZE = 1;
-        this.define(Class.genericEntity);
+        this.sizeMultiplier = 1;
+        this.define("genericEntity");
         // Initalize physics and collision
         this.alwaysShowOnMinimap = false;
         this.maxSpeed = 0;
@@ -779,6 +788,7 @@ class Entity extends EventEmitter {
         this.color = '16 0 1 0 false';
         this.invisible = [0, 0];
         this.alphaRange = [0, 1];
+        this.levelCap = undefined;
         this.autospinBoost = 0;
         this.antiNaN = new antiNaN(this);
         // Get a new unique id
@@ -850,7 +860,9 @@ class Entity extends EventEmitter {
                 needsBodyAttribRefresh = true;
                 this.emit('expiredStatusEffect', entry.effect);
             }
-            entry.effect.tick(this);
+            if (entry.effect.tick) {
+                entry.effect.tick(this);
+            }
         }
         this.statusEffects = lastingEffects;
 
@@ -1069,6 +1081,9 @@ class Entity extends EventEmitter {
             this.SIZE = set.SIZE * this.squiggle;
             if (this.coreSize == null) this.coreSize = this.SIZE;
         }
+        if (set.LEVEL_CAP != null) {
+            this.levelCap = set.LEVEL_CAP;
+        }
         if (set.LEVEL != null) {
             this.skill.reset();
             while (this.skill.level < set.LEVEL) {
@@ -1162,7 +1177,8 @@ class Entity extends EventEmitter {
             fovMultiplier = 1,
             densityMultiplier = 1,
             stealthMultiplier = 1,
-            pushabilityMultiplier = 1;
+            pushabilityMultiplier = 1,
+            sizeMultiplier = 1;
         for (let i = 0; i < this.statusEffects.length; i++) {
             let effect = this.statusEffects[i].effect;
             if (effect.acceleration != null) accelerationMultiplier *= effect.acceleration;
@@ -1177,6 +1193,7 @@ class Entity extends EventEmitter {
             if (effect.density != null) densityMultiplier *= effect.density;
             if (effect.stealth != null) stealthMultiplier *= effect.stealth;
             if (effect.pushability != null) pushabilityMultiplier *= effect.pushability;
+            if (effect.size != null) sizeMultiplier *= effect.size;
         }
 
         let speedReduce = Math.pow(this.size / (this.coreSize || this.SIZE), 1);
@@ -1194,6 +1211,7 @@ class Entity extends EventEmitter {
         this.density = densityMultiplier * (1 + 0.08 * this.level) * this.DENSITY;
         this.stealth = stealthMultiplier * this.STEALTH;
         this.pushability = pushabilityMultiplier * this.PUSHABILITY;
+        this.sizeMultiplier = sizeMultiplier;
     }
     bindToMaster(position, bond) {
         this.bond = bond;
@@ -1239,10 +1257,10 @@ class Entity extends EventEmitter {
         this.move();
     }
     get level() {
-        return Math.min(c.LEVEL_CAP, this.skill.level);
+        return Math.min(this.levelCap ?? c.LEVEL_CAP, this.skill.level);
     }
     get size() {
-        return this.bond == null ? (this.coreSize || this.SIZE) * (1 + this.level / 45) : this.bond.size * this.bound.size;
+        return this.bond == null ? (this.coreSize || this.SIZE) * this.sizeMultiplier * (1 + this.level / 45) : this.bond.size * this.bound.size;
     }
     get mass() {
         return this.density * (this.size ** 2 + 1);
