@@ -343,7 +343,12 @@ class Gun {
         o.coreSize = o.SIZE;
 
         if (this.onFire != null) {
-            this.onFire({body: this.master.master, gun: this, gunStore: this.master.master.store, masterStore})
+            this.onFire({
+                body: this.master.master,
+                gun: this,
+                masterStore: this.master.master.store,
+                gunStore: this.store
+            });
         }
     }
     bulletInit(o) {

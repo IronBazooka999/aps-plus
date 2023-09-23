@@ -633,18 +633,12 @@ exports.switcheroo = {
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.basic]),
             TYPE: 'bullet',
-            ON_FIRE: ({ body, masterStore }) => {
-                if (masterStore.switcheroo_tankIndex != null) {
-                    if (masterStore.switcheroo_tankIndex >= 6) masterStore.switcheroo_tankIndex = 0
-                    masterStore.switcheroo_tankIndex++
-                } else {
-                    masterStore.switcheroo_tankIndex = 0
-                }
-                console.log(masterStore.switcheroo_tankIndex)
-                body.define(Class[`${Class.basic.UPGRADES_TIER_1[masterStore.switcheroo_tankIndex]}`])
-                setTimeout(() => {
-                    body.define(Class.switcheroo)
-                }, 6000)
+            ON_FIRE: ({ body, masterStore: store }) => {
+                store.switcheroo_i ??= 0;
+                store.switcheroo_i++;
+                store.switcheroo_i %= 6;
+                body.define(Class.basic.UPGRADES_TIER_1[store.switcheroo_i]);
+                setTimeout(body.define, 6000, "switcheroo");
             }
         }
     }]
