@@ -659,10 +659,11 @@ class io_zoom extends IO {
         super(body);
         this.distance = opts.distance || 225;
         this.dynamic = opts.dynamic;
+        this.permanent = opts.permanent;
     }
 
     think(input) {
-        if (input.alt && input.target) {
+        if (this.permanent || (input.alt && input.target)) {
             if (this.dynamic || this.body.cameraOverrideX === null) {
                 let direction = Math.atan2(input.target.y, input.target.x);
                 this.body.cameraOverrideX = this.body.x + this.distance * Math.cos(direction);

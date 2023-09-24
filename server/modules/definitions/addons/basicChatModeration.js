@@ -14,6 +14,7 @@ module.exports = ({ Events }) => {
 		// They are allowed to spam ANYTHING they want INFINITELY.
 		if (perms && perms.allowSpam) return;
 
+
 		// If they're talking too much, they can take a break.
 		// Fortunately, this returns false if 'recent[id] is 'undefined'.
 		if (recent[id] >= ratelimit) {
@@ -37,6 +38,12 @@ module.exports = ({ Events }) => {
 				delete recent[id];
 			}
 		}, decay);
+
+		// If message above the character limit, lets stop that from getting through
+		if (message.length > 256) {
+			preventDefault();
+			socket.talk('m', 'Too long!')
+		}
 	});
 
 	console.log('[basicChatModeration] Loaded spam prevention!');
