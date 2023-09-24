@@ -12,17 +12,19 @@ let level = 0;
 let sscore = util.Smoothbar(0, 10);
 var serverStart = 0,
     gui = {
-        getStatNames: num => {
-            switch (num) {
-                case 1:  return ['Body Damage', 'Max Health', 'Bullet Speed'   , 'Bullet Health'  , 'Bullet Penetration', 'Bullet Damage', 'Engine Acceleration', 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                case 2:  return ['Body Damage', 'Max Health', 'Drone Speed'    , 'Drone Health'   , 'Drone Penetration' , 'Drone Damage' , 'Respawn Rate'       , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                case 3:  return ['Body Damage', 'Max Health', 'Drone Speed'    , 'Drone Health'   , 'Drone Penetration' , 'Drone Damage' , 'Max Drone Count'    , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                case 4:  return ['Body Damage', 'Max Health', 'Swarm Speed'    , 'Swarm Health'   , 'Swarm Penetration' , 'Swarm Damage' , 'Reload'             , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                case 5:  return ['Body Damage', 'Max Health', 'Placement Speed', 'Trap Health'    , 'Trap Penetration'  , 'Trap Damage'  , 'Reload'             , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                case 6:  return ['Body Damage', 'Max Health', 'Weapon Speed'   , 'Weapon Health'  , 'Weapon Penetration', 'Weapon Damage', 'Reload'             , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                case 7:  return ['Body Damage', 'Max Health', 'Lance Range'    , 'Lance Longevity', 'Lance Sharpness'   , 'Lance Damage' , 'Lance Density'      , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-                default: return ['Body Damage', 'Max Health', 'Bullet Speed'   , 'Bullet Health'  , 'Bullet Penetration', 'Bullet Damage', 'Reload'             , 'Movement Speed', 'Shield Regeneration', 'Shield Capacity'];
-            }
+        getStatNames: data => {
+            return [
+                    data?.body_damage ?? 'Body Damage',
+                    data?.max_health ?? 'Max Health',
+                    data?.bullet_speed ?? 'Bullet Speed',
+                    data?.bullet_health ?? 'Bullet Health',
+                    data?.bullet_pen ?? 'Bullet Penetration',
+                    data?.bullet_damage ?? 'Bullet Damage',
+                    data?.reload ?? 'Reload',
+                    data?.move_speed ?? 'Movement Speed',
+                    data?.shield_regen ?? 'Shield Regeneration',
+                    data?.shield_cap ?? 'Shield Capacity',
+                ]
         },
         skills: [
             { amount: 0, color: 'purple', cap: 1, softcap: 1 },

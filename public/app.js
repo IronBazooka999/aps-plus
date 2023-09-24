@@ -1517,7 +1517,8 @@ function drawSkillBars(spacing, alcoveSize) {
     let x = spacing + (statMenu.get() - 1) * (height + 50 + len * ska(gui.skills.reduce((largest, skill) => Math.max(largest, skill.cap), 0)));
     let y = global.screenHeight - spacing - height;
     let ticker = 11;
-    let namedata = gui.getStatNames(global.mockups[gui.type].statnames || -1);
+    let namedata = gui.getStatNames(global.mockups[gui.type].statnames);
+    console.log(namedata)
     let clickableRatio = canvas.height / global.screenHeight / global.ratio;
     for (let i = 0; i < gui.skills.length; i++) {
         ticker--;
