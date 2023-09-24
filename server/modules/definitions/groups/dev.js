@@ -412,6 +412,7 @@ exports.colorMan = {
 
 exports.miscTestHelper2 = {
     PARENT: ["genericTank"],
+    LABEL: "Turret Reload Test 3",
     TURRET_FACES_CLIENT: true,
     COLOR: -1,
     GUNS: [
@@ -427,6 +428,7 @@ exports.miscTestHelper2 = {
 };
 exports.miscTestHelper = {
     PARENT: ["genericTank"],
+    LABEL: "Turret Reload Test 2",
     TURRET_FACES_CLIENT: true,
     COLOR: {
         BASE: -1,

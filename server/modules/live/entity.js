@@ -1473,6 +1473,7 @@ class Entity extends EventEmitter {
                 this.y = ref.y + ref.size * bound.offset * Math.sin(bound.direction + bound.angle + ref.facing);
                 ref.velocity.x += bound.size * this.accel.x * ref.recoilMultiplier;
                 ref.velocity.y += bound.size * this.accel.y * ref.recoilMultiplier;
+                this.velocity = ref.velocity;
                 this.firingArc = [ref.facing + bound.angle, bound.arc / 2];
                 this.accel.null();
                 this.blend = ref.blend;
