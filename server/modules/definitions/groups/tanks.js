@@ -1363,6 +1363,7 @@ exports.healer = {
             },
         },
     ],
+    STAT_NAMES: statnames.healer,
 };
 exports.single = {
     PARENT: ["genericTank"],
@@ -5445,6 +5446,7 @@ exports.medic = {
             },
         },
     ],
+    STAT_NAMES: statnames.healer,
 };
 exports.ambulance = {
     PARENT: ["genericTank"],
@@ -5498,6 +5500,7 @@ exports.ambulance = {
             },
         },
     ],
+    STAT_NAMES: statnames.healer,
 };
 exports.surgeon = {
     PARENT: ["genericTank"],
@@ -5535,6 +5538,7 @@ exports.surgeon = {
             POSITION: [4, 14, 1, 8, 0, 0, 0],
         },
     ],
+    STAT_NAMES: statnames.healer,
 };
 exports.paramedic = {
     PARENT: ["genericTank"],
@@ -5582,6 +5586,7 @@ exports.paramedic = {
             },
         },
     ],
+    STAT_NAMES: statnames.healer,
 };
 
 // TANK UPGRADE PATHS
