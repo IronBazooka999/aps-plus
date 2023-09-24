@@ -107,383 +107,383 @@ module.exports = ({ Class }) => {
 	}
 
 	// T0
-	Class.dreadv2 = {
+	Class.dread_APSofficialdreadv2 = {
 		PARENT: ["genericEggnought"],
 	    LABEL: "Dreadnought",
 		LEVEL: 90,
 	}
 
 	// T1 Weapons
-	Class.swordv2 = {
+	Class.sword_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Sword",
 	    GUNS: [],
 	}
-	Class.pacifierv2 = {
+	Class.pacifier_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Pacifier",
 	    GUNS: [],
 	}
-	Class.peacekeeperv2 = {
+	Class.peacekeeper_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Peacekeeper",
 	    GUNS: [],
 	}
-	Class.invaderv2 = {
+	Class.invader_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Invader",
 	    GUNS: [],
 	}
-	Class.centaurv2 = {
+	Class.centaur_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Centaur",
 	    GUNS: [],
 	}
 
 	// T1 Bodies
-	Class.bytev2 = {
+	Class.byte_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Byte",
 	    TURRETS: [],
 	}
-	Class.atmospherev2 = {
+	Class.atmosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Atmosphere",
 	    TURRETS: [],
 	}
-	Class.juggernautv2 = {
+	Class.juggernaut_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Juggernaut",
 	    TURRETS: [],
 	}
 
 	// T2 Weapons
-	Class.sabrev2 = {
+	Class.sabre_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Sabre",
 	    GUNS: [],
 	}
-	Class.gladiusv2 = {
+	Class.gladius_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Gladius",
 	    GUNS: [],
 	}
-	Class.mediatorv2 = {
+	Class.mediator_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Mediator",
 	    GUNS: [],
 	}
-	Class.negotiatorv2 = {
+	Class.negotiator_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Negotiator",
 	    GUNS: [],
 	}
-	Class.enforcerv2 = {
+	Class.enforcer_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Enforcer",
 	    GUNS: [],
 	}
-	Class.executorv2 = {
+	Class.executor_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Executor",
 	    GUNS: [],
 	}
-	Class.inquisitorv2 = {
+	Class.inquisitor_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Inquisitor",
 	    GUNS: [],
 	}
-	Class.assailantv2 = {
+	Class.assailant_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Assailant",
 	    GUNS: [],
 	}
-	Class.daemonv2 = {
+	Class.daemon_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Daemon",
 	    GUNS: [],
 	}
-	Class.minotaurv2 = {
+	Class.minotaur_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Minotaur",
 	    GUNS: [],
 	}
 
 	// T2 Bodies
-	Class.automationv2 = {
+	Class.automation_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Automation",
 	    TURRETS: [],
 	}
-	Class.kilobytev2 = {
+	Class.kilobyte_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Kilobyte",
 	    TURRETS: [],
 	}
-	Class.coronav2 = {
+	Class.corona_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Corona",
 	    TURRETS: [],
 	}
-	Class.thermospherev2 = {
+	Class.thermosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Thermosphere",
 	    TURRETS: [],
 	}
-	Class.jumbov2 = {
+	Class.jumbo_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Jumbo",
 	    TURRETS: [],
 	}
-	Class.colossalv2 = {
+	Class.colossal_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Colossal",
 	    TURRETS: [],
 	}
 
 	// T3 Weapons
-	Class.bayonetv2 = {
+	Class.bayonet_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Bayonet",
 	    GUNS: [],
 	}
-	Class.bladev2 = {
+	Class.blade_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Blade",
 	    GUNS: [],
 	}
-	Class.mitigatorv2 = {
+	Class.mitigator_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Mitigator",
 	    GUNS: [],
 	}
-	Class.appeaserv2 = {
+	Class.appeaser_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Appeaser",
 	    GUNS: [],
 	}
-	Class.suppressorv2 = {
+	Class.suppressor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Suppressor",
 	    GUNS: [],
 	}
-	Class.inhibitorv2 = {
+	Class.inhibitor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Inhibitor",
 	    GUNS: [],
 	}
-	Class.infiltratorv2 = {
+	Class.infiltrator_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Infiltrator",
 	    GUNS: [],
 	}
-	Class.aggressorv2 = {
+	Class.aggressor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Aggressor",
 	    GUNS: [],
 	}
-	Class.hydrav2 = {
+	Class.hydra_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Hydra",
 	    GUNS: [],
 	}
-	Class.charonv2 = {
+	Class.charon_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Charon",
 	    GUNS: [],
 	}
 
 	// T3 Bodies
-	Class.mechanismv2 = {
+	Class.mechanism_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Mechanism",
 	    TURRETS: [],
 	}
-	Class.fusionv2 = {
+	Class.fusion_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Fusion",
 	    TURRETS: [],
 	}
-	Class.binaryv2 = {
+	Class.binary_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Binary",
 	    TURRETS: [],
 	}
-	Class.exospherev2 = {
+	Class.exosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Exosphere",
 	    TURRETS: [],
 	}
-	Class.megabytev2 = {
+	Class.megabyte_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Megabyte",
 	    TURRETS: [],
 	}
-	Class.trojanv2 = {
+	Class.trojan_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Trojan",
 	    TURRETS: [],
 	}
-	Class.hardwarev2 = {
+	Class.hardware_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Hardware",
 	    TURRETS: [],
 	}
-	Class.chromospherev2 = {
+	Class.chromosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Chromosphere",
 	    TURRETS: [],
 	}
-	Class.mesospherev2 = {
+	Class.mesosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Mesosphere",
 	    TURRETS: [],
 	}
-	Class.goliathv2 = {
+	Class.goliath_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Goliath",
 	    TURRETS: [],
 	}
-	Class.planetv2 = {
+	Class.planet_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Planet",
 	    TURRETS: [],
 	}
-	Class.titanv2 = {
+	Class.titan_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Titan",
 	    TURRETS: [],
 	}
-	Class.sirenv2 = {
+	Class.siren_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Siren",
 	    TURRETS: [],
 	}
-	Class.harpyv2 = {
+	Class.harpy_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Harpy",
 	    TURRETS: [],
 	}
 
 	// T4 Weapons
-	Class.javelinv2 = {
+	Class.javelin_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Javelin",
 	    GUNS: [],
 	}
-	Class.rapierv2 = {
+	Class.rapier_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Rapier",
 	    GUNS: [],
 	}
-	Class.diplomatv2 = {
+	Class.diplomat_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Diplomat",
 	    GUNS: [],
 	}
-	Class.arbitratorv2 = {
+	Class.arbitrator_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Arbitrator",
 	    GUNS: [],
 	}
-	Class.retardantv2 = {
+	Class.retardant_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Retardant",
 	    GUNS: [],
 	}
-	Class.tyrantv2 = {
+	Class.tyrant_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Tyrant",
 	    GUNS: [],
 	}
-	Class.raiderv2 = {
+	Class.raider_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Raider",
 	    GUNS: [],
 	}
-	Class.gladiatorv2 = {
+	Class.gladiator_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Gladiator",
 	    GUNS: [],
 	}
-	Class.cerberusv2 = {
+	Class.cerberus_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Cerberus",
 	    GUNS: [],
 	}
-	Class.luciferv2 = {
+	Class.lucifer_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Lucifer",
 	    GUNS: [],
 	}
 
 	// T4 Bodies
-	Class.skynetv2 = {
+	Class.skynet_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Skynet",
 	    TURRETS: [],
 	}
-	Class.supernovav2 = {
+	Class.supernova_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Supernova",
 	    TURRETS: [],
 	}
-	Class.cipherv2 = {
+	Class.cipher_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Cipher",
 	    TURRETS: [],
 	}
-	Class.interstellarv2 = {
+	Class.interstellar_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Interstellar",
 	    TURRETS: [],
 	}
-	Class.gigabytev2 = {
+	Class.gigabyte_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Gigabyte",
 	    TURRETS: [],
 	}
-	Class.malwarev2 = {
+	Class.malware_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Malware",
 	    TURRETS: [],
 	}
-	Class.softwarev2 = {
+	Class.software_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Software",
 	    TURRETS: [],
 	}
-	Class.photospherev2 = {
+	Class.photosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Photosphere",
 	    TURRETS: [],
 	}
-	Class.stratospherev2 = {
+	Class.stratosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Stratosphere",
 	    TURRETS: [],
 	}
-	Class.behemothv2 = {
+	Class.behemoth_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Behemoth",
 	    TURRETS: [],
 	}
-	Class.astronomicv2 = {
+	Class.astronomic_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Astronomic",
 	    TURRETS: [],
 	}
-	Class.leviathanv2 = {
+	Class.leviathan_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Leviathan",
 	    TURRETS: [],
 	}
-	Class.valrayvnv2 = {
+	Class.valrayvn_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Valrayvn",
 	    TURRETS: [],
 	}
-	Class.grandiosev2 = {
+	Class.grandiose_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Grandiose",
 	    TURRETS: [],
@@ -493,8 +493,8 @@ module.exports = ({ Class }) => {
 
 	};
 
-	Class.developer.UPGRADES_TIER_0.push("dreadv2");
-		Class.dreadv2.UPGRADES_TIER_1 = ["swordv2", "pacifierv2", "peacekeeperv2", "invaderv2", "centaurv2"];
+	Class.developer.UPGRADES_TIER_0.push("dread_APSofficialdreadv2");
+		Class.dread_APSofficialdreadv2.UPGRADES_TIER_1 = ["sword_APSofficialdreadv2", "pacifier_APSofficialdreadv2", "peacekeeper_APSofficialdreadv2", "invader_APSofficialdreadv2", "centaur_APSofficialdreadv2"];
 
 	// Build up to pentanoughts
 };
