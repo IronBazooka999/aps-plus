@@ -56,6 +56,10 @@ module.exports = {
 			BULLET_DAMAGE: 'Lance Damage',
 			RELOAD: 'Lance Density',
 		},
+		healer: {
+			BULLET_PEN: 'Heal Rate',
+			BULLET_DAMAGE: 'Heal Amount',
+		},
 	},
 	gunCalcNames: {
 	    default: 0,
