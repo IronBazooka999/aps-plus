@@ -1810,7 +1810,7 @@ class Entity extends EventEmitter {
             // Now for each of the things that kill me...
             for (let i = 0; i < this.collisionArray.length; i++) {
                 let instance = this.collisionArray[i];
-                if (instance.type === 'wall' || !instance.damage) return;
+                if (instance.type === 'wall' || !instance.damage) continue;
                 if (instance.master.settings.acceptsScore) {
                     // If it's not food, give its master the score
                     if (instance.master.type === "tank" || instance.master.type === "miniboss") {
