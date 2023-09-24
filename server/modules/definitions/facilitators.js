@@ -107,7 +107,7 @@ exports.makeGuard = (type, name = -1) => {
     }, {
         POSITION: [4, 8, 1.7, 13, 0, 180, 0],
         PROPERTIES: {
-            SHOOT_SETTINGS: exports.dereference([g.trap]),
+            SHOOT_SETTINGS: exports.combineStats([g.trap]),
             TYPE: "trap",
             STAT_CALCULATOR: gunCalcNames.trap,
         },
