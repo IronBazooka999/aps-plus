@@ -897,8 +897,12 @@ class Entity extends EventEmitter {
         }
         // So we start with my master's thoughts and then we filter them down through our control stack
         for (let i = 0; i < this.controllers.length; i++) {
-            let AI = this.controllers[i],
-                a = AI.think(b);
+            let AI = this.controllers[i]
+            if (Array.isArray(AI) && AI.length == 0) {
+                this.controllers.splice(i, 1);
+                continue;
+            }
+            let a = AI.think(b);
             if (a != null) {
                 if (a.target != null && (b.target == null || AI.acceptsFromTop)) b.target = a.target;
                 if (a.goal   != null && (b.goal   == null || AI.acceptsFromTop)) b.goal   = a.goal  ;
