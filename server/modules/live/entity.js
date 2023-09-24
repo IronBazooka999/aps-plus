@@ -27,6 +27,7 @@ class Gun {
         this.controllers = [];
         this.children = [];
         // Stored Variables
+        this.globalStore = {}
         this.store = {}
         // ----------------
         this.control = {
@@ -347,7 +348,9 @@ class Gun {
                 body: this.master.master,
                 gun: this,
                 masterStore: this.master.master.store,
-                gunStore: this.store
+                gunStore: this.store,
+                globalMasterStore: this.master.master.globalStore,
+                globalGunStore: this.globalStore
             });
         }
     }
@@ -805,6 +808,7 @@ class Entity extends EventEmitter {
         this.team = master.team;
         this.turnAngle = 0;
         // Stored Variables
+        this.globalStore = {}
         this.store = {}
         // This is for collisions
         this.AABB_data = {};
@@ -956,6 +960,10 @@ class Entity extends EventEmitter {
     }
     define(set) {
         set = ensureIsClass(set);
+        this.store = {}
+        for (let gun of this.guns) {
+            gun.store = {}
+        }
 
         if (set.PARENT != null) {
             if (Array.isArray(set.PARENT)) {

@@ -634,7 +634,7 @@ exports.switcheroo = {
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.basic]),
             TYPE: 'bullet',
-            ON_FIRE: ({ body, masterStore: store }) => {
+            ON_FIRE: ({ body, globalMasterStore: store }) => {
                 store.switcheroo_i ??= 0;
                 store.switcheroo_i++;
                 store.switcheroo_i %= 6;
