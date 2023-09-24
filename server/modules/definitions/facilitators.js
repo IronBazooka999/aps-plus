@@ -673,7 +673,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
             {
                 POSITION: [0, 20, 1, 0, 0, 0, 0,],
                 PROPERTIES: {
-                    SHOOT_SETTINGS: exports.combineStats([g.aura, [1, 1, 1, sizeFactor, 1, damageFactor, 1, 1, 1, 1, 1, 1, 1]]),
+                    SHOOT_SETTINGS: exports.combineStats([g.aura, { size: sizeFactor, damage: damageFactor }]),
                     TYPE: [auraType, {COLOR: auraColor}],
                     MAX_CHILDREN: 1,
                     AUTOFIRE: true,
