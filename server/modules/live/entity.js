@@ -669,6 +669,7 @@ class StatusEffect extends EventEmitter {
         this.density = getValidated(multipliers, 'density', 'number', labelThing);
         this.stealth = getValidated(multipliers, 'stealth', 'number', labelThing);
         this.pushability = getValidated(multipliers, 'pushability', 'number', labelThing);
+        this.recoilReceived = getValidated(multipliers, 'recoilReceived', 'number', labelThing);
         this.size = getValidated(multipliers, 'size', 'number', labelThing);
         this.tick = getValidated({tick}, 'tick', 'function', "StatusEffect's argument");
     }
@@ -1154,7 +1155,7 @@ class Entity extends EventEmitter {
             if (set.BODY.FOV != null) this.FOV = set.BODY.FOV;
             if (set.BODY.RANGE != null) this.RANGE = set.BODY.RANGE;
             if (set.BODY.SHOCK_ABSORB != null) this.SHOCK_ABSORB = set.BODY.SHOCK_ABSORB;
-            if (set.BODY.RECOIL_MULTIPLIER != null) this.recoilMultiplier = set.BODY.RECOIL_MULTIPLIER;
+            if (set.BODY.RECOIL_MULTIPLIER != null) this.RECOIL_MULTIPLIER = set.BODY.RECOIL_MULTIPLIER;
             if (set.BODY.DENSITY != null) this.DENSITY = set.BODY.DENSITY;
             if (set.BODY.STEALTH != null) this.STEALTH = set.BODY.STEALTH;
             if (set.BODY.PUSHABILITY != null) this.PUSHABILITY = set.BODY.PUSHABILITY;
@@ -1198,7 +1199,8 @@ class Entity extends EventEmitter {
             densityMultiplier = 1,
             stealthMultiplier = 1,
             pushabilityMultiplier = 1,
-            sizeMultiplier = 1;
+            sizeMultiplier = 1,
+            recoilReceivedMultiplier = 1;
         for (let i = 0; i < this.statusEffects.length; i++) {
             let effect = this.statusEffects[i].effect;
             if (effect.acceleration != null) accelerationMultiplier *= effect.acceleration;
@@ -1213,6 +1215,7 @@ class Entity extends EventEmitter {
             if (effect.density != null) densityMultiplier *= effect.density;
             if (effect.stealth != null) stealthMultiplier *= effect.stealth;
             if (effect.pushability != null) pushabilityMultiplier *= effect.pushability;
+            if (effect.recoilReceived != null) recoilReceivedMultiplier *= effect.recoilReceived;
             if (effect.size != null) sizeMultiplier *= effect.size;
         }
 
@@ -1232,6 +1235,7 @@ class Entity extends EventEmitter {
         this.stealth = stealthMultiplier * this.STEALTH;
         this.pushability = pushabilityMultiplier * this.PUSHABILITY;
         this.sizeMultiplier = sizeMultiplier;
+        this.recoilMultiplier = this.RECOIL_MULTIPLIER * recoilReceivedMultiplier;
     }
     bindToMaster(position, bond) {
         this.bond = bond;
