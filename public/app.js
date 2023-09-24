@@ -1085,7 +1085,7 @@ function drawHealth(x, y, instance, ratio, alpha) {
     if (instance.drawsHealth) {
         let health = instance.render.health.get(),
             shield = instance.render.shield.get();
-        if (health < 1 - 1e-6 || shield < 1 - 1e-6) {
+        if (health < 1 - 1e-4 || shield < 1 - 1e-4) {
             const col = config.graphical.coloredHealthbars ? mixColors(getColor(instance.color), color.guiwhite, 0.5) : color.lgreen;
             let yy = y + 1.1 * realSize + 15;
             let barWidth = 5;

@@ -1005,8 +1005,6 @@ function perspective(e, player, data) {
     if (player.body != null) {
         if (player.body.id === e.master.id) {
             data = data.slice(); // So we don't mess up references to the original
-            // Set the proper color if it's on our team
-            data[12] = player.body.color;
             // And make it force to our mouse if it ought to
             if (player.command.autospin) {
                 data[10] = 1;
@@ -1015,7 +1013,7 @@ function perspective(e, player, data) {
         if (player.body.team === e.source.team && c.GROUPS) {
             // GROUPS
             data = data.slice();
-            data[12] = player.body.color;
+            data[13] = player.body.color;
         }
     }
     return data;
