@@ -1721,7 +1721,7 @@ function drawLeaderboard(spacing, alcoveSize, max) {
         drawBar(x, x + len, y + height / 2, height - 3 + config.graphical.barChunk, color.black);
         drawBar(x, x + len, y + height / 2, height - 3, color.grey);
         let shift = Math.min(1, entry.score / max);
-        drawBar(x, x + len * shift, y + height / 2, height - 3.5, getColor(entry.barColor));
+        drawBar(x, x + len * shift, y + height / 2, height - 3.5, modifyColor(entry.barColor));
         // Leadboard name + score
         let nameColor = entry.nameColor || "#FFFFFF";
         drawText(entry.label + (": " + util.handleLargeNumber(Math.round(entry.score))), x + len / 2, y + height / 2, height - 5, nameColor, "center", true);
