@@ -8,35 +8,6 @@ module.exports = {
 
 	// NAMES
 	statnames: {
-	    smasher: {
-			RELOAD: 'Engine Acceleration',	
-		},
-		drone: {
-			BULLET_SPEED: 'Drone Speed',
-			BULLET_HEALTH: 'Drone Health',
-			BULLET_PEN: 'Drone Penetration',
-			BULLET_DAMAGE: 'Drone Damage',
-			RELOAD: 'Respawn Rate',
-		},
-		necro: {
-			BULLET_SPEED: 'Drone Speed',
-			BULLET_HEALTH: 'Drone Health',
-			BULLET_PEN: 'Drone Penetration',
-			BULLET_DAMAGE: 'Drone Damage',
-			RELOAD: 'Max Drone Count',
-		},
-		swarm: {
-			BULLET_SPEED: 'Swarm Speed',
-			BULLET_HEALTH: 'Swarm Health',
-			BULLET_PEN: 'Swarm Penetration',
-			BULLET_DAMAGE: 'Swarm Damage',
-		},
-		trap: {
-			BULLET_SPEED: 'Placement Speed',
-			BULLET_HEALTH: 'Trap Health',
-			BULLET_PEN: 'Trap Penetration',
-			BULLET_DAMAGE: 'Trap Damage',
-		},
 		generic: {
 			BODY_DAMAGE: 'Body Damage',
 			MAX_HEALTH: 'Max Health',
@@ -49,6 +20,36 @@ module.exports = {
 			SHIELD_REGEN: 'Shield Regeneration',
 			SHIELD_CAP: 'Shield Capacity',
 		},
+		drone: {
+			BULLET_SPEED: 'Drone Speed',
+			BULLET_HEALTH: 'Drone Health',
+			BULLET_PEN: 'Drone Penetration',
+			BULLET_DAMAGE: 'Drone Damage',
+			RELOAD: 'Respawn Rate',
+		},
+		swarm: {
+			BULLET_SPEED: 'Swarm Speed',
+			BULLET_HEALTH: 'Swarm Health',
+			BULLET_PEN: 'Swarm Penetration',
+			BULLET_DAMAGE: 'Swarm Damage',
+		},
+		necro: {
+			BULLET_SPEED: 'Drone Speed',
+			BULLET_HEALTH: 'Drone Health',
+			BULLET_PEN: 'Drone Penetration',
+			BULLET_DAMAGE: 'Drone Damage',
+			RELOAD: 'Max Drone Count',
+		},
+		trap: {
+			BULLET_SPEED: 'Placement Speed',
+			BULLET_HEALTH: 'Trap Health',
+			BULLET_PEN: 'Trap Penetration',
+			BULLET_DAMAGE: 'Trap Damage',
+		},
+		heal: {
+			BULLET_PEN: 'Heal Rate',
+			BULLET_DAMAGE: 'Heal Amount',
+		},
 		lance: {
 			BULLET_SPEED: 'Lance Range',
 			BULLET_HEALTH: 'Lance Longevity',
@@ -56,9 +57,8 @@ module.exports = {
 			BULLET_DAMAGE: 'Lance Damage',
 			RELOAD: 'Lance Density',
 		},
-		heal: {
-			BULLET_PEN: 'Heal Rate',
-			BULLET_DAMAGE: 'Heal Amount',
+		smasher: {
+			RELOAD: 'Engine Acceleration',	
 		},
 	},
 	gunCalcNames: {
