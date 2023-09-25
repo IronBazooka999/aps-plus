@@ -61,6 +61,7 @@ exports.genericEntity = {
     MAX_CHILDREN: 0,
     BORDERLESS: false,
     DRAW_FILL: true,
+    REROOT_UPGRADE_TREE: false,
     BODY: {
         ACCELERATION: 1,
         SPEED: 0,

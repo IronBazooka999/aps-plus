@@ -504,7 +504,8 @@ global.player = {
 };
 var upgradeSpin = 0,
     lastPing = 0,
-    renderTimes = 0;
+    renderTimes = 0,
+    generatedTankTree = null;
 global.clearUpgrades = () => gui.upgrades = [];
 // Build the leaderboard object
 global.player = global.player;
@@ -519,7 +520,6 @@ var provider = "Unknown";
 function getMockups() {
     util.pullJSON("mockups").then((data) => {
         global.mockups = data;
-        generateTankTree();
     });
 }
 window.onload = async () => {
@@ -1271,13 +1271,11 @@ let tiles = [],
         }
     },
     tankTree;
-function generateTankTree(rootLabel = "Basic") {
-    let root = global.mockups.find((r) => r.name === rootLabel);
-    if (!root) {
-        console.log("No root tank");
-        return;
-    }
-    tankTree = measureSize(0, 0, 0, { index: root.index });
+function generateTankTree(rootIndex) {
+    generatedTankTree = rootIndex;
+    tiles = [];
+    branches = [];
+    tankTree = measureSize(0, 0, 0, { index: rootIndex });
 }
 
 function drawFloor(px, py, ratio) {
@@ -1402,10 +1400,20 @@ function drawUpgradeTree() {
         global.scrollX = global.realScrollX = 0;
     }
     global.scrollX = util.lerp(global.scrollX, global.realScrollX, 0.1);
+
+    let instance = global.entities.find((i) => i.id === gui.playerid),
+        m = global.mockups[instance.index],
+        rootIndex = m.index;
+    if (m.rerootUpgradeTree && rootIndex !== generatedTankTree) {
+        console.log(m.upgrades);
+        generateTankTree(rootIndex);
+    }
+    
     if (!tankTree) {
         console.log('No tank tree rendered yet');
         return;
     }
+
     let tileDiv = true ? 1 : 1.25,
         tileSize = Math.min(((global.screenWidth * 0.9) / tankTree.width) * 55, (global.screenHeight * 0.9) / tankTree.height) / tileDiv,
         size = tileSize - 4;

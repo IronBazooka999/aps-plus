@@ -111,6 +111,7 @@ module.exports = ({ Class }) => {
 		PARENT: ["genericEggnought"],
 	    LABEL: "Dreadnought",
 		LEVEL: 90,
+		REROOT_UPGRADE_TREE: true,
 	}
 
 	// T1 Weapons

@@ -20,6 +20,7 @@ function getMockup(e, positionInfo) {
         layer: e.layer,
         statnames: e.settings.skillNames,
         position: positionInfo,
+        rerootUpgradeTree: e.rerootUpgradeTree,
         upgrades: e.upgrades.map(r => ({
             tier: r.tier,
             index: r.index

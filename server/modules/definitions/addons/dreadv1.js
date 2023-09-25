@@ -98,6 +98,7 @@ module.exports = ({ Class }) => {
 	Class.dread_APSofficialdreadv1 = {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Dreadnought",
+		REROOT_UPGRADE_TREE: true,
 	}
 
 	// T1
