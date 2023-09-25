@@ -174,6 +174,7 @@ module.exports = {
     SANITIZE_CHAT_MESSAGE_COLORS: true,
 
     // If someone tries to get a file that does not exist, send them this instead.
+    _404_FILE: '404.html',
     DEFAULT_FILE: 'index.html',
 
     // Window name of the server terminal.

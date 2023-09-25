@@ -22,6 +22,10 @@ if (c.host.match(/localhost:(\d)/) && c.host !== 'localhost:' + c.port) {
 server = require('http').createServer((req, res) => {
     let resStr = "";
     switch (req.url) {
+        case "/":
+            resStr = path.join(publicRoot, c.DEFAULT_FILE)
+            res.writeHead(200, { 'Content-Type': mimeSet[resStr.split('.').pop()] || 'text/html' });
+            return fs.createReadStream(resStr).pipe(res);
         case "/lib/json/mockups.json":
             resStr = mockupJsonData;
             break;
@@ -36,9 +40,19 @@ server = require('http').createServer((req, res) => {
 
             //if this FILE does not exist, return the default;
             if (!fs.existsSync(fileToGet)) {
-                fileToGet = path.join(publicRoot, c.DEFAULT_FILE);
+                fileToGet = path.join(publicRoot, c._404_FILE);
+                let data = fs.readFileSync(fileToGet, 'utf8');
+                data = data.replace('{{ERROR_MESSAGE}}', 'File / Directory not found');
+                data = data.replace('{{TITLE}}', 'File / Directory not found');
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                res.end(data);
             } else if (!fs.lstatSync(fileToGet).isFile()) {
-                fileToGet = path.join(publicRoot, c.DEFAULT_FILE);
+                fileToGet = path.join(publicRoot, c._404_FILE);
+                let data = fs.readFileSync(fileToGet, 'utf8');
+                data = data.replace('{{ERROR_MESSAGE}}', 'File / Directory not found');
+                data = data.replace('{{TITLE}}', 'File / Directory not found');
+                res.writeHead(404, { 'Content-Type': 'text/html' });
+                res.end(data);
             }
 
             //return the file
