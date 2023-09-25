@@ -999,7 +999,7 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
     context.lineJoin = "round";
     // Draw turrets beneath us
     for (let i = 0; i < m.turrets.length; i++) {
-        let turretFacesClient = false;//m.turrets[i].turretFacesClient
+        let turretFacesClient = m.turrets[i].turretFacesClient
         let t = m.turrets[i];
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
@@ -1054,7 +1054,7 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
     // Draw turrets above us
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];
-        let turretFacesClient = false;//m.turrets[i].turretFacesClient
+        let turretFacesClient = m.turrets[i].turretFacesClient
         if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
