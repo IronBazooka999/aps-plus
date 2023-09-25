@@ -1572,7 +1572,8 @@ class Entity extends EventEmitter {
                 break;
             case "bound":
                 let givenangle,
-                    reduceIndependence = false;
+                    reduceIndependence = false,
+                    slowness = this.settings.turretFacesClient ? 1 : 4 / roomSpeed;
                 if (this.control.main) {
                     givenangle = Math.atan2(t.y, t.x);
                     let diff = util.angleDifference(givenangle, this.firingArc[0]);
@@ -1595,7 +1596,7 @@ class Entity extends EventEmitter {
                         this.perceptionAngleIndependence = 1;
                     }
                 }
-                this.facing += util.loopSmooth(this.facing, givenangle, 4 / roomSpeed);
+                this.facing += util.loopSmooth(this.facing, givenangle, slowness);
                 break;
         }
         this.facing += this.turnAngle;
