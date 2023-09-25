@@ -1163,8 +1163,8 @@ class Entity extends EventEmitter {
             if (set.BODY.REGEN != null) this.REGEN = set.BODY.REGEN;
             if (set.BODY.DAMAGE != null) this.DAMAGE = set.BODY.DAMAGE;
             if (set.BODY.PENETRATION != null) this.PENETRATION = set.BODY.PENETRATION;
-            if (set.BODY.FOV != null) this.FOV = set.BODY.FOV;
             if (set.BODY.RANGE != null) this.RANGE = set.BODY.RANGE;
+            if (set.BODY.FOV != null) this.FOV = set.BODY.FOV;
             if (set.BODY.SHOCK_ABSORB != null) this.SHOCK_ABSORB = set.BODY.SHOCK_ABSORB;
             if (set.BODY.RECOIL_MULTIPLIER != null) this.RECOIL_MULTIPLIER = set.BODY.RECOIL_MULTIPLIER;
             if (set.BODY.DENSITY != null) this.DENSITY = set.BODY.DENSITY;

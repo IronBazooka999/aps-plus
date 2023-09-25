@@ -73,6 +73,8 @@ exports.genericEntity = {
         PENETRATION: 1,
         RANGE: 0,
         FOV: 1,
+        SHOCK_ABSORB: 1,
+        RECOIL_MULTIPLIER: 1,
         DENSITY: 1,
         STEALTH: 1,
         PUSHABILITY: 1,
