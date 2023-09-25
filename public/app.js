@@ -520,6 +520,7 @@ var provider = "Unknown";
 function getMockups() {
     util.pullJSON("mockups").then((data) => {
         global.mockups = data;
+        generateTankTree(global.mockups.find((r) => r.name === "Basic").index);
     });
 }
 window.onload = async () => {
@@ -998,7 +999,7 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
     context.lineJoin = "round";
     // Draw turrets beneath us
     for (let i = 0; i < m.turrets.length; i++) {
-        let turretFacesClient = m.turrets[i].turretFacesClient
+        let turretFacesClient = false;//m.turrets[i].turretFacesClient
         let t = m.turrets[i];
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
@@ -1053,7 +1054,7 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
     // Draw turrets above us
     for (let i = 0; i < m.turrets.length; i++) {
         let t = m.turrets[i];
-        let turretFacesClient = m.turrets[i].turretFacesClient
+        let turretFacesClient = false;//m.turrets[i].turretFacesClient
         if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
