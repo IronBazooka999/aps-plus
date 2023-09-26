@@ -486,7 +486,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 8, 1, 0, 0, 90*i, 0],
 			},
 			{
-				POSITION: [6, 8, 1.6, 13, 0, 90*i, 0],
+				POSITION: [4, 8, 1.6, 13, 0, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, {health: 2}]),
 					TYPE: "unsetTrap",
