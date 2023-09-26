@@ -193,7 +193,7 @@ module.exports = ({ Class }) => {
 	        HEALTH: 2,
 	        SHIELD: 3,
 	        REGEN: 1.5,
-	        SPEED: 0.85
+	        SPEED: 0.7,
 	    },
 	    TURRETS: [{
 	        POSITION: [22, 0, 0, 0, 0, 0],
@@ -460,7 +460,7 @@ module.exports = ({ Class }) => {
 	        HEALTH: 4,
 	        SHIELD: 5,
 	        REGEN: 2.25,
-	        SPEED: 0.7,
+	        SPEED: 0.5,
 	    },
 	    TURRETS: [{
 	        POSITION: [23.5, 0, 0, 0, 0, 0],
@@ -553,8 +553,8 @@ module.exports = ({ Class }) => {
 					if (secondary2.TURRETS) TURRETS.push(...secondary2.TURRETS);
 
 					// Body
-					if (primary2.BODY) for (let m in primary2.BODY) BODY *= primary2.BODY[m];
-					if (secondary2.BODY) for (let m in secondary2.BODY) BODY *= secondary2.BODY[m];
+					if (primary2.BODY) for (let m in primary2.BODY) BODY[m] *= primary2.BODY[m];
+					if (secondary2.BODY) for (let m in secondary2.BODY) BODY[m] *= secondary2.BODY[m];
 
 					// Definition name
 					let definitionName2 = primaryName2 + secondaryName;
