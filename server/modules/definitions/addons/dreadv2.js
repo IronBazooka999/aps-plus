@@ -101,6 +101,20 @@ module.exports = ({ Class }) => {
 	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 
+	Class.spamAutoTurret = {
+		PARENT: ["autoTankGun"],
+		INDEPENDENT: true,
+		GUNS: [
+			{
+				POSITION: [22, 10, 1, 0, 0, 0, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.flank, g.auto]),
+					TYPE: "bullet",
+				},
+			},
+		],
+	}
+
 	// T0
 	Class.dread_APSofficialdreadv2 = {
 		PARENT: ["genericEggnought"],
@@ -153,7 +167,7 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [17, 9, 1, 0, 0, 180*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 0.85}]),
+					SHOOT_SETTINGS: combineStats([g.basic, {reload: 1.2, damage: 1.5}]),
 					TYPE: "bullet",
 				},
 			},
@@ -211,7 +225,7 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}, "Byte", {angle: 0});
-	Class.atmosphereAura = addAura();
+	Class.atmosphereAura_APSofficialdreadv2 = addAura();
 	Class.atmosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Atmosphere",
@@ -222,7 +236,7 @@ module.exports = ({ Class }) => {
 			},
 			{
 				POSITION: [11, 0, 0, 0, 360, 1],
-				TYPE: 'atmosphereAura',
+				TYPE: 'atmosphereAura_APSofficialdreadv2',
 			},
 		],
 	}
@@ -253,82 +267,360 @@ module.exports = ({ Class }) => {
 	    LABEL: "Sabre",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 4; i++) {
+		Class.sabre_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [25, 6, 1, 0, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+			{
+				POSITION: [5, 6, -1.7, 7, 0, 90*i, 0],
+			},
+		)
+	}
 	Class.gladius_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Gladius",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.gladius_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [18, 8.5, 1, 0, 0, 90*i, 0],
+			},
+			{
+				POSITION: [21, 5.5, 1, 0, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle, {health: 1.3}]),
+					TYPE: "bullet",
+				},
+			},
+		)
 	}
 	Class.mediator_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Mediator",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 4; i++) {
+		Class.mediator_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [15, 7, 1, 0, 4.25, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.twin, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+			{
+				POSITION: [15, 7, 1, 0, -4.25, 90*i, 0.5],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.twin, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.negotiator_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Negotiator",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.negotiator_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [9, 8, 1.4, 6, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.mach, {size: 0.8, health: 1.3}]),
+					TYPE: "bullet",
+				},
+			},
+		)
 	}
 	Class.enforcer_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Enforcer",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 4; i++) {
+		Class.enforcer_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [17, 9, 1, 0, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 0.9}]),
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.executor_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Executor",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.executor_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [11, 6, 1, 8, 0, 90*i, 0],
+			},
+			{
+				POSITION: [17, 9, 1, 0, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.halfspeed, {reload: 0.8}]),
+					TYPE: "missile",
+					STAT_CALCULATOR: gunCalcNames.sustained,
+				},
+			},
+		)
 	}
 	Class.inquisitor_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Inquisitor",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 4; i++) {
+		Class.inquisitor_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [5, 11, 1.1, 8, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, {size: 1.5, reload: 0.6}]),
+					TYPE: "drone",
+					MAX_CHILDREN: 3,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					STAT_CALCULATOR: gunCalcNames.drone,
+					WAIT_TO_CYCLE: true,
+				},
+			},
+		)
+	}
+	Class.assailantMinion_APSofficialdreadv2 = {
+		PARENT: ["minion"],
+		BODY: {
+			SPEED: 0.5,
+		},
+		SHAPE: 4,
+	    COLOR: 13,
+		GUNS: []
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.assailantMinion_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [15, 7.5, 1, 0, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.assass, g.minion]),
+					WAIT_TO_CYCLE: true,
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.assailant_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Assailant",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.assailant_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [5, 11, 1, 10.5, 0, 90*i, 0],
+			},
+			{
+				POSITION: [1.5, 12, 1, 15.5, 0, 90*i, 0],
+				PROPERTIES: {
+					MAX_CHILDREN: 4,
+					SHOOT_SETTINGS: combineStats([g.factory, {size: 0.9, reload: 0.5}]),
+					TYPE: "assailantMinion_APSofficialdreadv2",
+					STAT_CALCULATOR: gunCalcNames.drone,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					MAX_CHILDREN: 2,
+				},
+			},
+			{
+				POSITION: [12.2, 12, 1, 0, 0, 90*i, 0],
+			},
+		)
 	}
 	Class.daemon_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Daemon",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 4; i++) {
+		Class.daemon_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [11.5, 4.5, 1, 0, 4.5, 90*i, 0],
+			},
+			{
+				POSITION: [2, 4.5, 1.6, 11.5, 4.5, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.twin, {health: 2}]),
+					TYPE: "trap",
+					STAT_CALCULATOR: gunCalcNames.trap,
+				},
+			},
+			{
+				POSITION: [11.5, 4.5, 1, 0, -4.5, 90*i, 0],
+			},
+			{
+				POSITION: [2, 4.5, 1.6, 11.5, -4.5, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.twin, {health: 2}]),
+					TYPE: "trap",
+					STAT_CALCULATOR: gunCalcNames.trap,
+				},
+			},
+		)
+	}
 	Class.minotaur_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Minotaur",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.minotaur_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [13, 8, 1, 0, 0, 90*i, 0],
+			},
+			{
+				POSITION: [6, 8, 1.6, 13, 0, 90*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.block, {health: 2}]),
+					TYPE: "unsetTrap",
+				},
+			},
+		)
 	}
 
 	// T2 Bodies
 	Class.automation_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Automation",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [11, 0, 0, 0, 0, 1],
+				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+			},
+		],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.automation_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [4, 9, 0, 90*i+45, 180, 1],
+				TYPE: "spamAutoTurret",
+			},
+		)
+	}
+	Class.kilobyteTurret_APSofficialdreadv2 = {
+		PARENT: ["autoTankGun"],
+		INDEPENDENT: true,
+		GUNS: [
+			{
+				POSITION: [26, 10, 1, 0, 0, 0, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.assass, g.auto, {health: 1.2, speed: 0.8}]),
+					TYPE: "bullet",
+				},
+			},
+		],
 	}
 	Class.kilobyte_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Kilobyte",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [12, 0, 0, 0, 0, 1],
+				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [10, 0, 0, 0, 360, 1],
+				TYPE: "kilobyteTurret_APSofficialdreadv2",
+			},
+		],
 	}
+	Class.coronaAura_APSofficialdreadv2 = addAura(1.5, 0.8);
 	Class.corona_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Corona",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 0, 0, 1],
+				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [12, 0, 0, 0, 360, 1],
+				TYPE: "coronaAura_APSofficialdreadv2",
+			},
+		],
 	}
+	Class.thermosphereAura_APSofficialdreadv2 = addAura(-1, 1.3);
 	Class.thermosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Thermosphere",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 0, 0, 1],
+				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [12, 0, 0, 0, 360, 1],
+				TYPE: "thermosphereAura_APSofficialdreadv2",
+			},
+		],
 	}
 	Class.jumbo_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Jumbo",
-	    TURRETS: [],
+	    BODY: {
+			HEALTH: 2.2,
+			SHIELD: 2.2,
+			REGEN: 2,
+			SPEED: 0.65,
+		},
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 0, 0, 1],
+				TYPE: ['square', {TURRET_FACES_CLIENT: true}]
+			},
+			{
+				POSITION: [24, 0, 0, 0, 0, 0],
+				TYPE: ['square', {COLOR: 9, TURRET_FACES_CLIENT: true}]
+			},
+		],
+	}
+	Class.colossalTop_APSofficialdreadv2 = {
+	    PARENT: ["genericSquarenought"],
+	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.colossalTop_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [4, 17.5, 0.001, 9, 0, 90*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
 	}
 	Class.colossal_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Colossal",
-	    TURRETS: [],
+		GUNS: [],
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 0, 0, 1],
+				TYPE: ['colossalTop_APSofficialdreadv2', {TURRET_FACES_CLIENT: true}]
+			},
+		],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.colossal_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [4, 17.5, 0.001, 9, 0, 90*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
 	}
 
 	// T3 Weapons
@@ -683,12 +975,12 @@ module.exports = ({ Class }) => {
 			UPGRADES_TIER_0 = [];
 		
 		// Guns
-		if (weapon.GUNS) GUNS.push(...weapon.GUNS);
 		if (body.GUNS) GUNS.push(...body.GUNS);
+		if (weapon.GUNS) GUNS.push(...weapon.GUNS);
 		
 		// Turrets
-		if (weapon.TURRETS) TURRETS.push(...weapon.TURRETS);
 		if (body.TURRETS) TURRETS.push(...body.TURRETS);
+		if (weapon.TURRETS) TURRETS.push(...weapon.TURRETS);
 		
 		// Body stat modification
 		if (weapon.BODY) for (let m in weapon.BODY) BODY[m] *= weapon.BODY[m];
