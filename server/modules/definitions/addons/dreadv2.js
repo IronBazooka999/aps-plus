@@ -1,4 +1,4 @@
-const { combineStats, addAura } = require('../facilitators.js');
+const { combineStats, addAura, makeAuto } = require('../facilitators.js');
 const { gunCalcNames, smshskl, base } = require('../constants.js');
 const g = require('../gunvals.js');
 const ensureIsClass = (Class, str) => {
@@ -116,42 +116,135 @@ module.exports = ({ Class }) => {
 	    LABEL: "Sword",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 2; i++) {
+		Class.sword_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [21, 7.5, 1, 0, 0, 180*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.pacifier_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Pacifier",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 2; i++) {
+		Class.pacifier_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [15, 8.5, 1, 0, 0, 180*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.8}]),
+					TYPE: "bullet",
+				},
+			},
+		)
 	}
 	Class.peacekeeper_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Peacekeeper",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 2; i++) {
+		Class.peacekeeper_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [17, 9, 1, 0, 0, 180*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.invader_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Invader",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 2; i++) {
+		Class.invader_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [5, 9.5, 1.2, 8, 0, 180*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.drone, g.over, {reload: 0.85}]),
+					TYPE: "drone",
+					MAX_CHILDREN: 4,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					STAT_CALCULATOR: gunCalcNames.drone,
+					WAIT_TO_CYCLE: true,
+				},
+			},
+		)
 	}
 	Class.centaur_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Centaur",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 2; i++) {
+		Class.centaur_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [13, 8, 1, 0, 0, 180*i, 0],
+			},
+			{
+				POSITION: [4, 8, 1.5, 13, 0, 180*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, {health: 2}]),
+					TYPE: "trap",
+					STAT_CALCULATOR: gunCalcNames.trap,
+				},
+			},
+		)
+	}
 
 	// T1 Bodies
-	Class.byte_APSofficialdreadv2 = {
+	Class.byte_APSofficialdreadv2 = makeAuto({
 	    PARENT: ["genericEggnought"],
-	    LABEL: "Byte",
-	    TURRETS: [],
-	}
+	    TURRETS: [
+			{
+				POSITION: [15.5, 0, 0, 0, 0, 1],
+				TYPE: 'egg',
+			},
+		],
+	}, "Byte", {angle: 0});
+	Class.atmosphereAura = addAura();
 	Class.atmosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Atmosphere",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [14, 0, 0, 0, 0, 1],
+				TYPE: 'egg',
+			},
+			{
+				POSITION: [11, 0, 0, 0, 360, 1],
+				TYPE: 'atmosphereAura',
+			},
+		],
 	}
 	Class.juggernaut_APSofficialdreadv2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Juggernaut",
-	    TURRETS: [],
+		BODY: {
+			HEALTH: 1.6,
+			SHIELD: 1.6,
+			REGEN: 1.5,
+			SPEED: 0.8,
+		},
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 0, 0, 1],
+				TYPE: 'egg',
+			},
+			{
+				POSITION: [24, 0, 0, 0, 0, 0],
+				TYPE: ['egg', {COLOR: 9}]
+			},
+		],
 	}
 
 	// T2 Weapons
