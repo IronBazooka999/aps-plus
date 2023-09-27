@@ -114,6 +114,88 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}
+	Class.supermissile = {
+		PARENT: ["bullet"],
+		LABEL: "Missile",
+		INDEPENDENT: true,
+		BODY: {
+			RANGE: 120,
+		},
+		GUNS: [
+			{
+				POSITION: [14, 6, 1, 0, -2, 130, 0],
+				PROPERTIES: {
+					AUTOFIRE: true,
+					SHOOT_SETTINGS: combineStats([
+						g.basic,
+						g.skim,
+						g.doublereload,
+						g.lowpower,
+						g.muchmorerecoil,
+						g.morespeed,
+						g.morespeed,
+					]),
+					TYPE: [
+						"bullet",
+						{
+							PERSISTS_AFTER_DEATH: true,
+						},
+					],
+					STAT_CALCULATOR: gunCalcNames.thruster,
+				},
+			},
+			{
+				POSITION: [14, 6, 1, 0, 2, 230, 0],
+				PROPERTIES: {
+					AUTOFIRE: true,
+					SHOOT_SETTINGS: combineStats([
+						g.basic,
+						g.skim,
+						g.doublereload,
+						g.lowpower,
+						g.muchmorerecoil,
+						g.morespeed,
+						g.morespeed,
+					]),
+					TYPE: [
+						"bullet",
+						{
+							PERSISTS_AFTER_DEATH: true,
+						},
+					],
+					STAT_CALCULATOR: gunCalcNames.thruster,
+				},
+			},
+			{
+				POSITION: [14, 6, 1, 0, 0, 0, 0],
+				PROPERTIES: {
+					AUTOFIRE: true,
+					SHOOT_SETTINGS: combineStats([
+						g.basic,
+						g.skim,
+						g.doublereload,
+						g.morespeed,
+						g.morespeed,
+					]),
+					TYPE: [
+						"bullet",
+						{
+							PERSISTS_AFTER_DEATH: true,
+						},
+					],
+				},
+			},
+		],
+	};
+	Class.betadrone = {
+		PARENT: ["drone"],
+		TURRETS: [
+			{
+				POSITION: [10, 0, 0, 180, 0, 1],
+				TYPE: ["triangle", {COLOR: -1}],
+			},
+		]
+	}
 
 	// T0
 	Class.dread_APSofficialdreadv2 = {
@@ -629,35 +711,172 @@ module.exports = ({ Class }) => {
 	    LABEL: "Bayonet",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 3; i++) {
+		Class.bayonet_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [28, 7.5, 1, 0, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.assass, {reload: 0.8}]),
+					TYPE: "bullet",
+				},
+			},
+			{
+				POSITION: [5, 7.5, -1.7, 7, 0, 120*i, 0],
+			},
+		)
+	}
 	Class.blade_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Blade",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 3; i++) {
+		Class.blade_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [17, 15, 1, 0, 0, 120*i, 0],
+			},
+			{
+				POSITION: [18, 6, 1, 0, 3.5, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle, g.twin, {speed: 0.8, health: 1.5}]),
+					TYPE: "bullet",
+				},
+			},
+			{
+				POSITION: [18, 6, 1, 0, -3.5, 120*i, 0.5],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle, g.twin, {speed: 0.8, health: 1.5}]),
+					TYPE: "bullet",
+				},
+			},
+		)
 	}
 	Class.mitigator_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Mitigator",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 3; i++) {
+		Class.mitigator_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [13.5, 8, 1, 0, 5, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+			{
+				POSITION: [13.5, 8, 1, 0, -5, 120*i, 0.5],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.appeaser_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Appeaser",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 3; i++) {
+		Class.appeaser_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [7, 10, 1.4, 6, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.mach, {size: 0.8}]),
+					TYPE: "bullet",
+				},
+			},
+			{
+				POSITION: [7, 9.5, 1.3, 8, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.mach, {size: 0.8, reload: 0.95}]),
+					TYPE: "bullet",
+				},
+			},
+		)
 	}
 	Class.suppressor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Suppressor",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 3; i++) {
+		Class.suppressor_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [17, 11, 1, 0, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, {reload: 0.85}]),
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.inhibitor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Inhibitor",
 	    GUNS: [],
 	}
+	for (let i = 0; i < 3; i++) {
+		Class.inhibitor_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [10, 14, -0.5, 7, 0, 120*i, 0],
+			},
+			{
+				POSITION: [15, 15, 1, 0, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.arty, g.skim, g.halfspeed, {reload: 0.8}]),
+					TYPE: "supermissile",
+					STAT_CALCULATOR: gunCalcNames.sustained,
+				},
+			},
+		)
+	}
 	Class.infiltrator_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Infiltrator",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 3; i++) {
+		Class.infiltrator_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [5, 6, 1.4, 6, 5.5, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, {size: 1.5, reload: 0.6}]),
+					TYPE: "drone",
+					MAX_CHILDREN: 2,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					STAT_CALCULATOR: gunCalcNames.drone,
+					WAIT_TO_CYCLE: true,
+				},
+			},
+			{
+				POSITION: [5, 6, 1.4, 6, -5.5, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, {size: 1.5, reload: 0.6}]),
+					TYPE: "drone",
+					MAX_CHILDREN: 2,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					STAT_CALCULATOR: gunCalcNames.drone,
+					WAIT_TO_CYCLE: true,
+				},
+			},
+			{
+				POSITION: [5, 6, 1.4, 8, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, g.pound, {size: 2, reload: 0.4}]),
+					TYPE: "betadrone",
+					MAX_CHILDREN: 2,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					STAT_CALCULATOR: gunCalcNames.drone,
+					WAIT_TO_CYCLE: true,
+				},
+			},
+		)
 	}
 	Class.aggressor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
