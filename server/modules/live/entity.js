@@ -959,9 +959,8 @@ class Entity extends EventEmitter {
         player.body = fakeBody;
         player.body.kill();
     }
-    define(set) {
+    define(set, emitEvent = true) {
         set = ensureIsClass(set);
-        this.emit('define', this)
         this.store = {}
         for (let gun of this.guns) {
             gun.store = {}
@@ -970,10 +969,10 @@ class Entity extends EventEmitter {
         if (set.PARENT != null) {
             if (Array.isArray(set.PARENT)) {
                 for (let i = 0; i < set.PARENT.length; i++) {
-                    this.define(set.PARENT[i]);
+                    this.define(set.PARENT[i], false);
                 }
             } else {
-                this.define(set.PARENT);
+                this.define(set.PARENT, false);
             }
         }
         if (set.LAYER != null) this.layerID = set.LAYER;
@@ -1196,6 +1195,10 @@ class Entity extends EventEmitter {
         }
         if (set.mockup != null) {
             this.mockup = set.mockup;
+        }
+
+        if (emitEvent) {
+            this.emit('define', set);
         }
     }
     refreshBodyAttributes() {
