@@ -961,6 +961,7 @@ class Entity extends EventEmitter {
     }
     define(set) {
         set = ensureIsClass(set);
+        this.emit('define', this)
         this.store = {}
         for (let gun of this.guns) {
             gun.store = {}
