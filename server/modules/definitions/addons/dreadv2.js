@@ -1014,10 +1014,6 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
 			},
-			{
-				POSITION: [10, 0, 0, 0, 360, 1],
-				TYPE: "kilobyteTurret_APSofficialdreadv2",
-			},
 		],
 	}
 	for (let i = 0; i < 3; i++) {
@@ -1028,6 +1024,12 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.binary_APSofficialdreadv2.TURRETS.push(
+		{
+			POSITION: [10, 0, 0, 0, 360, 1],
+			TYPE: "kilobyteTurret_APSofficialdreadv2",
+		},
+	)
 	Class.trinaughtBigHealAura = addAura(-1.5, 1.5);
 	Class.exosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
@@ -1087,10 +1089,6 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
 			},
-			{
-				POSITION: [10, 0, 0, 0, 360, 1],
-				TYPE: "kilobyteTurret_APSofficialdreadv2",
-			},
 		],
 	}
 	for (let i = 0; i < 3; i++) {
@@ -1101,6 +1099,12 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.trojan_APSofficialdreadv2.TURRETS.push(
+		{
+			POSITION: [10, 0, 0, 0, 360, 1],
+			TYPE: "kilobyteTurret_APSofficialdreadv2",
+		},
+	)
 	Class.trinaughtSmallHealAura = addAura(-2/3, 2);
 	Class.hardware_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
@@ -1109,10 +1113,6 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
-			},
-			{
-				POSITION: [10, 0, 0, 0, 360, 1],
-				TYPE: "kilobyteTurret_APSofficialdreadv2",
 			},
 		],
 	}
@@ -1124,6 +1124,12 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.hardware_APSofficialdreadv2.TURRETS.push(
+		{
+			POSITION: [10, 0, 0, 0, 360, 1],
+			TYPE: "kilobyteTurret_APSofficialdreadv2",
+		},
+	)
 	Class.chromosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Chromosphere",
