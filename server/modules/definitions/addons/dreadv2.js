@@ -57,6 +57,7 @@ const hexnoughtBody = {
 };
 
 module.exports = ({ Class }) => {
+	// Comment out the line below to enable this addon, uncomment it to disable this addon.
 	return;
 
 	// Misc
@@ -126,21 +127,8 @@ module.exports = ({ Class }) => {
 				POSITION: [14, 6, 1, 0, -2, 130, 0],
 				PROPERTIES: {
 					AUTOFIRE: true,
-					SHOOT_SETTINGS: combineStats([
-						g.basic,
-						g.skim,
-						g.doublereload,
-						g.lowpower,
-						g.muchmorerecoil,
-						g.morespeed,
-						g.morespeed,
-					]),
-					TYPE: [
-						"bullet",
-						{
-							PERSISTS_AFTER_DEATH: true,
-						},
-					],
+					SHOOT_SETTINGS: combineStats([g.basic, g.skim, g.doublereload, g.lowpower, g.muchmorerecoil, g.morespeed, g.morespeed]),
+					TYPE: ["bullet", {PERSISTS_AFTER_DEATH: true}],
 					STAT_CALCULATOR: gunCalcNames.thruster,
 				},
 			},
@@ -148,41 +136,17 @@ module.exports = ({ Class }) => {
 				POSITION: [14, 6, 1, 0, 2, 230, 0],
 				PROPERTIES: {
 					AUTOFIRE: true,
-					SHOOT_SETTINGS: combineStats([
-						g.basic,
-						g.skim,
-						g.doublereload,
-						g.lowpower,
-						g.muchmorerecoil,
-						g.morespeed,
-						g.morespeed,
-					]),
-					TYPE: [
-						"bullet",
-						{
-							PERSISTS_AFTER_DEATH: true,
-						},
-					],
+					SHOOT_SETTINGS: combineStats([g.basic, g.skim, g.doublereload, g.lowpower, g.muchmorerecoil, g.morespeed, g.morespeed]),
+					TYPE: ["bullet", {PERSISTS_AFTER_DEATH: true}],
 					STAT_CALCULATOR: gunCalcNames.thruster,
 				},
 			},
 			{
-				POSITION: [14, 6, 1, 0, 0, 0, 0],
+				POSITION: [14, 6, 1, 0, 0, 0, 0.2],
 				PROPERTIES: {
 					AUTOFIRE: true,
-					SHOOT_SETTINGS: combineStats([
-						g.basic,
-						g.skim,
-						g.doublereload,
-						g.morespeed,
-						g.morespeed,
-					]),
-					TYPE: [
-						"bullet",
-						{
-							PERSISTS_AFTER_DEATH: true,
-						},
-					],
+					SHOOT_SETTINGS: combineStats([g.basic, g.skim, g.doublereload, g.morespeed, g.morespeed]),
+					TYPE: ["bullet", {PERSISTS_AFTER_DEATH: true}],
 				},
 			},
 		],
@@ -565,10 +529,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 4; i++) {
 		Class.minotaur_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [13, 8, 1, 0, 0, 90*i, 0],
+				POSITION: [13, 7, 1, 0, 0, 90*i, 0],
 			},
 			{
-				POSITION: [4, 8, 1.6, 13, 0, 90*i, 0],
+				POSITION: [4, 7, 1.6, 13, 0, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -638,7 +602,7 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}
-	Class.thermosphereAura_APSofficialdreadv2 = addAura(-1, 1.3);
+	Class.thermosphereAura_APSofficialdreadv2 = addAura(-1, 1.5);
 	Class.thermosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Thermosphere",
@@ -878,20 +842,113 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.aggressorMinion_APSofficialdreadv2 = {
+		PARENT: ["minion"],
+		SHAPE: 3.5,
+		COLOR: 2,
+		BODY: {
+			SPEED: 0.8,
+		},
+		GUNS: [],
+	}
+	for (let i = 0; i < 3; i++) {
+		Class.aggressorMinion_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [15, 8.5, 1, 0, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.bitlessspeed, g.minion]),
+					WAIT_TO_CYCLE: true,
+					TYPE: "bullet",
+				},
+			},
+		)
+	}
 	Class.aggressor_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Aggressor",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 3; i++) {
+		Class.aggressor_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [5, 12, 1, 10.5, 0, 120*i, 0],
+			},
+			{
+				POSITION: [1.5, 13, 1, 15.5, 0, 120*i, 0],
+				PROPERTIES: {
+					MAX_CHILDREN: 4,
+					SHOOT_SETTINGS: combineStats([g.factory, {size: 0.9, reload: 0.5}]),
+					TYPE: "aggressorMinion_APSofficialdreadv2",
+					STAT_CALCULATOR: gunCalcNames.drone,
+					AUTOFIRE: true,
+					SYNCS_SKILLS: true,
+					MAX_CHILDREN: 2,
+				},
+			},
+			{
+				POSITION: [12.2, 13, 1, 0, 0, 120*i, 0],
+			},
+		)
 	}
 	Class.hydra_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Hydra",
 	    GUNS: [],
 	}
-	Class.charon_APSofficialdreadv2 = {
+	for (let i = 0; i < 3; i++) {
+		Class.hydra_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [6, 3.5, 1, 4, 8, 120*i, 0],
+			},
+			{
+				POSITION: [2, 3.5, 1.8, 10, 8, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
+					TYPE: "trap",
+					STAT_CALCULATOR: gunCalcNames.trap,
+				},
+			},
+			{
+				POSITION: [6, 3.5, 1, 4, -8, 120*i, 0],
+			},
+			{
+				POSITION: [2, 3.5, 1.8, 10, -8, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
+					TYPE: "trap",
+					STAT_CALCULATOR: gunCalcNames.trap,
+				},
+			},
+			{
+				POSITION: [12, 5, 1, 0, 0, 120*i, 0],
+			},
+			{
+				POSITION: [2, 5, 1.6, 12, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.twin, g.pound, g.fast]),
+					TYPE: "unsetTrap",
+				},
+			},
+		)
+	}
+	Class.beelzebub_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
-	    LABEL: "Charon",
+	    LABEL: "Beelzebub",
 	    GUNS: [],
+	}
+	for (let i = 0; i < 3; i++) {
+		Class.beelzebub_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [13.5, 10, 1, 0, 0, 120*i, 0],
+			},
+			{
+				POSITION: [4, 10, 1.6, 13.5, 0, 120*i, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, {health: 2}]),
+					TYPE: "unsetTrap",
+				},
+			},
+		)
 	}
 
 	// T3 Bodies
@@ -1134,8 +1191,8 @@ module.exports = ({ Class }) => {
 			Class.centaur_APSofficialdreadv2.UPGRADES_TIER_M1 = ["daemon_APSofficialdreadv2", "minotaur_APSofficialdreadv2"];
 				Class.daemon_APSofficialdreadv2.UPGRADES_TIER_M1 = ["hydra_APSofficialdreadv2"];
 					Class.hydra_APSofficialdreadv2.UPGRADES_TIER_M1 = ["cerberus_APSofficialdreadv2"];
-				Class.minotaur_APSofficialdreadv2.UPGRADES_TIER_M1 = ["charon_APSofficialdreadv2"];
-					Class.charon_APSofficialdreadv2.UPGRADES_TIER_M1 = ["cerberus_APSofficialdreadv2"];
+				Class.minotaur_APSofficialdreadv2.UPGRADES_TIER_M1 = ["beelzebub_APSofficialdreadv2"];
+					Class.beelzebub_APSofficialdreadv2.UPGRADES_TIER_M1 = ["cerberus_APSofficialdreadv2"];
 
 			Class.byte_APSofficialdreadv2.UPGRADES_TIER_M1 = ["automation_APSofficialdreadv2", "kilobyte_APSofficialdreadv2"];
 
