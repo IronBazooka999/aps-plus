@@ -873,7 +873,7 @@ class Entity extends EventEmitter {
                 this.emit('expiredStatusEffect', entry.effect);
             }
             if (entry.effect.tick) {
-                entry.effect.tick(this);
+                entry.effect.tick(this, entry.effect);
             }
         }
         this.statusEffects = lastingEffects;
