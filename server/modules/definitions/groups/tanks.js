@@ -1842,23 +1842,26 @@ exports.triplet = {
     PARENT: ["genericTank"],
     DANGER: 6,
     LABEL: "Triplet",
+    BODY: {
+        FOV: 1.05 * base.FOV,
+    },
     GUNS: [
         {
-            POSITION: [17, 8, 1, 0, 5.25, 0, 0.5],
+            POSITION: [18, 10, 1, 0, 5, 0, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [17, 8, 1, 0, -5.25, 0, 0.5],
+            POSITION: [18, 10, 1, 0, -5, 0, 0.5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [20, 8, 1, 0, 0, 0, 0],
+            POSITION: [21, 10, 1, 0, 0, 0, 0],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.triple]),
                 TYPE: "bullet",
