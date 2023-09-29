@@ -1083,7 +1083,7 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}
-	Class.trinoughtSmallAura = addAura(1, 2);
+	Class.trinoughtSmallAura = addAura(1, 2, 0.15);
 	Class.trojan_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Trojan",
@@ -1108,7 +1108,7 @@ module.exports = ({ Class }) => {
 			TYPE: "kilobyteTurret_APSofficialdreadv2",
 		},
 	)
-	Class.trinoughtSmallHealAura = addAura(-2/3, 2);
+	Class.trinoughtSmallHealAura = addAura(-2/3, 2, 0.15);
 	Class.hardware_APSofficialdreadv2 = {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Hardware",
