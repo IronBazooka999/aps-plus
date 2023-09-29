@@ -667,6 +667,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
     auraColor = auraColor ?? (isHeal ? 12 : 0);
     return {
         PARENT: ["genericTank"],
+        INDEPENDENT: true,
         LABEL: "",
         COLOR: 17,
         GUNS: [
@@ -684,7 +685,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
         TURRETS: [
             {
                 POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
-                TYPE: [symbolType, {COLOR: auraColor}],
+                TYPE: [symbolType, {COLOR: auraColor, INDEPENDENT: true}],
             },
         ]
     };

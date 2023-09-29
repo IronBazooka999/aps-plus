@@ -626,8 +626,8 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Jumbo",
 	    BODY: {
-			HEALTH: 2.2,
-			SHIELD: 2.2,
+			HEALTH: 2.4,
+			SHIELD: 2.4,
 			REGEN: 2,
 			SPEED: 0.65,
 		},
@@ -1181,8 +1181,8 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Goliath",
 	    BODY: {
-			HEALTH: 3,
-			SHIELD: 3,
+			HEALTH: 3.2,
+			SHIELD: 3.2,
 			REGEN: 2.5,
 			SPEED: 0.5,
 		},
@@ -1201,8 +1201,8 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Planet",
 		BODY: {
-			HEALTH: 2.2,
-			SHIELD: 2.2,
+			HEALTH: 2.4,
+			SHIELD: 2.4,
 			REGEN: 2,
 			SPEED: 0.65,
 		},
@@ -1225,8 +1225,8 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericTrinought"],
 	    LABEL: "Moon",
 		BODY: {
-			HEALTH: 2.2,
-			SHIELD: 2.2,
+			HEALTH: 2.4,
+			SHIELD: 2.4,
 			REGEN: 2,
 			SPEED: 0.65,
 		},
@@ -1288,7 +1288,12 @@ module.exports = ({ Class }) => {
 			HEALTH: 0.65,
 		},
 		GUNS: [],
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [12, 0, 0, 180, 0, 1],
+				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+			}
+		],
 	}
 	for (let i = 0; i < 3; i++) {
 		Class.siren_APSofficialdreadv2.GUNS.push(
@@ -1312,7 +1317,12 @@ module.exports = ({ Class }) => {
 			HEALTH: 0.65,
 		},
 		GUNS: [],
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [12, 0, 0, 180, 0, 1],
+				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+			}
+		],
 	}
 	for (let i = 0; i < 3; i++) {
 		Class.harpy_APSofficialdreadv2.GUNS.push(
@@ -1338,9 +1348,9 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.javelin_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [28, 7.5, 1, 0, 0, 72*i, 0],
+				POSITION: [30, 7.5, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.sniper, g.assass, g.assass, {reload: 0.8}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.assass, g.assass, {reload: 0.8}]),
 					TYPE: "bullet",
 				},
 			},
@@ -1388,21 +1398,21 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [13, 7, 1, 0, 3, 72*i, 0.5],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam, {size: 0.85}]),
 					TYPE: "bullet",
 				},
 			},
 			{
 				POSITION: [13, 7, 1, 0, -3, 72*i, 0.5],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam, {size: 0.85}]),
 					TYPE: "bullet",
 				},
 			},
       {
 				POSITION: [15, 7, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam, {size: 0.85}]),
 					TYPE: "bullet",
 				},
 			},
@@ -1704,6 +1714,7 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.pentanoughtBigAura = addAura(2.5, 1.5);
 	Class.supernova_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Supernova",
@@ -1714,7 +1725,7 @@ module.exports = ({ Class }) => {
 			},
 			{
 				POSITION: [9, 0, 0, 0, 360, 1],
-				TYPE: "trinoughtBigAura",
+				TYPE: "pentanoughtBigAura",
 			},
 		],
 	}
@@ -1729,28 +1740,125 @@ module.exports = ({ Class }) => {
 	Class.cipher_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Cipher",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+		],
 	}
+	for (let i = 0; i < 5; i++) {
+		Class.cipher_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.25, 9, 0, 72*i+36, 180, 1],
+				TYPE: "spamAutoTurret",
+			},
+		)
+	}
+	Class.cipher_APSofficialdreadv2.TURRETS.push(
+		{
+			POSITION: [11.5, 0, 0, 0, 360, 1],
+			TYPE: "megabyteTurret_APSofficialdreadv2",
+		},
+	)
+	Class.pentanoughtBigHealAura = addAura(-2, 1.5);
 	Class.interstellar_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Interstellar",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [9.5, 0, 0, 0, 360, 1],
+				TYPE: "pentanoughtBigHealAura",
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.interstellar_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.25, 9, 0, 72*i+36, 180, 1],
+				TYPE: "spamAutoTurret",
+			},
+		)
+	}
+	Class.gigabyteTurret_APSofficialdreadv2 = {
+		PARENT: ["autoTankGun"],
+		INDEPENDENT: true,
+		GUNS: [
+			{
+				POSITION: [24, 13, 1, 0, 0, 0, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.pound, g.destroy, g.auto, {speed: 1.1, health: 0.8}]),
+					TYPE: "bullet",
+				},
+			},
+		],
 	}
 	Class.gigabyte_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Gigabyte",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [13.5, 0, 0, 0, 360, 1],
+				TYPE: "gigabyteTurret_APSofficialdreadv2",
+			},
+		],
 	}
 	Class.malware_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Malware",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [14, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+		],
 	}
+	for (let i = 0; i < 5; i++) {
+		Class.malware_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallAura",
+			},
+		)
+	}
+	Class.malware_APSofficialdreadv2.TURRETS.push(
+		{
+			POSITION: [12, 0, 0, 0, 360, 1],
+			TYPE: "megabyteTurret_APSofficialdreadv2",
+		},
+	)
 	Class.software_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Software",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [14, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+		],
 	}
+	for (let i = 0; i < 5; i++) {
+		Class.software_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallHealAura",
+			},
+		)
+	}
+	Class.software_APSofficialdreadv2.TURRETS.push(
+		{
+			POSITION: [12, 0, 0, 0, 360, 1],
+			TYPE: "megabyteTurret_APSofficialdreadv2",
+		},
+	)
 	Class.photosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Photosphere",
@@ -1759,37 +1867,183 @@ module.exports = ({ Class }) => {
 	Class.stratosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Stratosphere",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [9.5, 0, 0, 0, 360, 1],
+				TYPE: "pentanoughtBigHealAura",
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.stratosphere_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallHealAura",
+			},
+		)
 	}
 	Class.behemoth_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Behemoth",
-	    TURRETS: [],
+		BODY: {
+			HEALTH: 4,
+			SHIELD: 4,
+			REGEN: 2.5,
+			SPEED: 0.4,
+		},
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {COLOR: 9, TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [24, 0, 0, 180, 0, 0],
+				TYPE: ["pentagon", {COLOR: 9, TURRET_FACES_CLIENT: true}],
+			},
+		],
 	}
 	Class.astronomic_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Astronomic",
-	    TURRETS: [],
+		BODY: {
+			HEALTH: 3.2,
+			SHIELD: 3.2,
+			REGEN: 2.5,
+			SPEED: 0.5,
+		},
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [24, 0, 0, 180, 0, 0],
+				TYPE: ["pentagon", {COLOR: 9,TURRET_FACES_CLIENT: true}],
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.astronomic_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallAura",
+			},
+		)
 	}
 	Class.grandiose_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Grandiose",
-	    TURRETS: [],
+		BODY: {
+			HEALTH: 3.2,
+			SHIELD: 3.2,
+			REGEN: 2.5,
+			SPEED: 0.5,
+		},
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+			{
+				POSITION: [24, 0, 0, 180, 0, 0],
+				TYPE: ["pentagon", {COLOR: 9,TURRET_FACES_CLIENT: true}],
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.grandiose_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallHealAura",
+			},
+		)
+	}
+	Class.leviathanTop_APSofficialdreadv2 = {
+	    PARENT: ["genericPentanought"],
+	    LABEL: "Leviathan",
+		TURRET_FACES_CLIENT: true,
+	    GUNS: [],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.leviathanTop_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [6, 13.5, 0.001, 9, 0, 72*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
 	}
 	Class.leviathan_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Leviathan",
-	    TURRETS: [],
+		GUNS: [],
+	    TURRETS: [
+			{
+				POSITION: [12, 0, 0, 0, 0, 1],
+				TYPE: "leviathanTop_APSofficialdreadv2"
+			}
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.leviathan_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [6.5, 16, 0.001, 9, 0, 72*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
 	}
 	Class.valrayvn_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Valrayvn",
-	    TURRETS: [],
+		GUNS: [],
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.valrayvn_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [6.5, 16, 0.001, 9, 0, 72*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
+		Class.valrayvn_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallAura",
+			},
+		)
 	}
 	Class.pegasus_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Pegasus",
-	    TURRETS: [],
+		GUNS: [],
+	    TURRETS: [
+			{
+				POSITION: [13, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.pegasus_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [6.5, 16, 0.001, 9, 0, 72*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
+		Class.pegasus_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "trinoughtSmallHealAura",
+			},
+		)
 	}
 
 	Class.developer.UPGRADES_TIER_0.push("dread_APSofficialdreadv2");
