@@ -1195,7 +1195,7 @@ class Entity extends EventEmitter {
         }
 
         if (emitEvent) {
-            this.emit('define', set);
+            this.emit('define', this);
         }
     }
     refreshBodyAttributes() {
