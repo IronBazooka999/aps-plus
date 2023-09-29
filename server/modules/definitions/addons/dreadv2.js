@@ -1867,7 +1867,7 @@ module.exports = ({ Class }) => {
 			TYPE: "megabyteTurret_APSofficialdreadv2",
 		},
 	)
-	Class.photosphereSmallAura_APSofficialdreadv2 = addAura(1, 1.8, 0.15);
+	Class.photosphereSmallAura_APSofficialdreadv2 = addAura(1, 2, 0.15);
 	Class.photosphereBigAura_APSofficialdreadv2 = addAura(1.5, 4);
 	Class.photosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
@@ -1890,7 +1890,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.photosphere_APSofficialdreadv2.TURRETS.push(
 			{
-				POSITION: [3.2, 3.9, 0, 72*i, 360, 1],
+				POSITION: [3, 4, 0, 72*i, 360, 1],
 				TYPE: "photosphereBigAura_APSofficialdreadv2",
 			},
 		)
