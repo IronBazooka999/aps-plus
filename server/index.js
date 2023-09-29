@@ -106,12 +106,11 @@ function collide(collision) {
                 other.healer
             )):
             // Exits if the aura is not hitting a boss or tank
-            if (!(
-                instance.type === "aura" && other.type === "tank" ||
-                instance.type === "tank" && other.type === "aura" ||
-                instance.type === "aura" && other.type === "miniboss" ||
-                instance.type === "miniboss" && other.type === "aura"
-            )) return;
+            if (instance.type === "aura") {
+                if (!(other.type === "tank" || other.type === "miniboss")) return;
+            } else if (other.type === "aura") {
+                if (!(instance.type === "tank" || instance.type === "miniboss")) return;
+            }
             advancedcollide(instance, other, true, true);
             break;
         case instance.settings.hitsOwnType == "never" ||

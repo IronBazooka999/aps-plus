@@ -2052,7 +2052,7 @@ module.exports = ({ Class }) => {
 		// First turret
 		TURRETS.push(
 			{
-				POSITION: [turret.POSITION[0], 0, 0, 0, 0, 1],
+				POSITION: [turret.POSITION[0] / hexnoughtScaleFactor ** 0.5, 0, 0, 0, 0, 1],
 				TYPE: ['hexagon', {TURRET_FACES_CLIENT: true}],
 			}
 		);
@@ -2066,7 +2066,7 @@ module.exports = ({ Class }) => {
 						turret = body.TURRETS[t*turretRingLoopLength+j];
 						TURRETS.push(
 							{
-								POSITION: [turret.POSITION[0] * hexnoughtScaleFactor, turret.POSITION[1] * hexnoughtScaleFactor, turret.POSITION[2], turret.POSITION[3] / 6 * 5 + 60 * i, turret.POSITION[4], turret.POSITION[5]],
+								POSITION: [turret.POSITION[0] * hexnoughtScaleFactor ** 0.5, turret.POSITION[1] * hexnoughtScaleFactor ** 0.5, turret.POSITION[2], turret.POSITION[3] / 6 * 5 + 60 * i, turret.POSITION[4], turret.POSITION[5]],
 								TYPE: turret.TYPE,
 							}
 						)
