@@ -1211,6 +1211,10 @@ module.exports = ({ Class }) => {
 				POSITION: [24, 0, 0, 180, 0, 0],
 				TYPE: ['triangle', {COLOR: 9, TURRET_FACES_CLIENT: true}]
 			},
+			{
+				POSITION: [12, 0, 0, 180, 0, 1],
+				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+			}
 		],
 	}
 	for (let i = 0; i < 3; i++) {
@@ -1235,6 +1239,10 @@ module.exports = ({ Class }) => {
 				POSITION: [24, 0, 0, 180, 0, 0],
 				TYPE: ['triangle', {COLOR: 9, TURRET_FACES_CLIENT: true}]
 			},
+			{
+				POSITION: [12, 0, 0, 180, 0, 1],
+				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+			}
 		],
 	}
 	for (let i = 0; i < 3; i++) {
@@ -1859,10 +1867,33 @@ module.exports = ({ Class }) => {
 			TYPE: "megabyteTurret_APSofficialdreadv2",
 		},
 	)
+	Class.photosphereSmallAura_APSofficialdreadv2 = addAura(1, 1.8, 0.15);
+	Class.photosphereBigAura_APSofficialdreadv2 = addAura(1.5, 4);
 	Class.photosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Photosphere",
-	    TURRETS: [],
+	    TURRETS: [
+			{
+				POSITION: [12, 0, 0, 180, 0, 1],
+				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+			},
+		],
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.photosphere_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.5, 8.75, 0, 72*i+36, 360, 1],
+				TYPE: "photosphereSmallAura_APSofficialdreadv2",
+			},
+		)
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.photosphere_APSofficialdreadv2.TURRETS.push(
+			{
+				POSITION: [3.2, 3.9, 0, 72*i, 360, 1],
+				TYPE: "photosphereBigAura_APSofficialdreadv2",
+			},
+		)
 	}
 	Class.stratosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],

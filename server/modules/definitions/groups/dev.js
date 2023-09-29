@@ -470,7 +470,7 @@ exports.miscTest = {
         }
     ]
 };
-exports.auraBasicGen = addAura(1, 1, 0);
+exports.auraBasicGen = addAura();
 exports.auraBasic = {
     PARENT: ["genericTank"],
     LABEL: "Aura Basic",
@@ -490,7 +490,7 @@ exports.auraBasic = {
         }
     ],
 };
-exports.auraHealerGen = addAura(-1, 1, 12);
+exports.auraHealerGen = addAura(-1);
 exports.auraHealer = {
     PARENT: ["genericTank"],
     LABEL: "Aura Healer",

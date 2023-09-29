@@ -660,7 +660,7 @@ exports.makeDeco = (shape = 0, color = 16) => {
     };
 }
 
-exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
+exports.addAura = (damageFactor = 1, sizeFactor = 1, opacity, auraColor) => {
     let isHeal = damageFactor < 0;
     let auraType = isHeal ? "healAura" : "aura";
     let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
@@ -675,7 +675,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
                 POSITION: [0, 20, 1, 0, 0, 0, 0,],
                 PROPERTIES: {
                     SHOOT_SETTINGS: exports.combineStats([g.aura, { size: sizeFactor, damage: damageFactor }]),
-                    TYPE: [auraType, {COLOR: auraColor}],
+                    TYPE: [auraType, {COLOR: auraColor, ALPHA: opacity}],
                     MAX_CHILDREN: 1,
                     AUTOFIRE: true,
                     SYNCS_SKILLS: true,

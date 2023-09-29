@@ -259,9 +259,9 @@ exports.auraBase = {
     CLEAR_ON_MASTER_UPGRADE: true,
     CAN_GO_OUTSIDE_ROOM: true,
     BODY: {
-        SHIELD: 1000000,
-        REGEN: 100000,
-        HEALTH: 1000000,
+        SHIELD: 1e9,
+        REGEN: 1e6,
+        HEALTH: 1e9,
         DENSITY: 0,
         SPEED: 0,
         PUSHABILITY: 0,
