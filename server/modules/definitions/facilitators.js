@@ -660,13 +660,14 @@ exports.makeDeco = (shape = 0, color = 16) => {
     };
 }
 
-exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
+exports.addAura = (damageFactor = 1, sizeFactor = 1, opacity, auraColor) => {
     let isHeal = damageFactor < 0;
     let auraType = isHeal ? "healAura" : "aura";
     let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
     auraColor = auraColor ?? (isHeal ? 12 : 0);
     return {
         PARENT: ["genericTank"],
+        INDEPENDENT: true,
         LABEL: "",
         COLOR: 17,
         GUNS: [
@@ -674,7 +675,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
                 POSITION: [0, 20, 1, 0, 0, 0, 0,],
                 PROPERTIES: {
                     SHOOT_SETTINGS: exports.combineStats([g.aura, { size: sizeFactor, damage: damageFactor }]),
-                    TYPE: [auraType, {COLOR: auraColor}],
+                    TYPE: [auraType, {COLOR: auraColor, ALPHA: opacity}],
                     MAX_CHILDREN: 1,
                     AUTOFIRE: true,
                     SYNCS_SKILLS: true,
@@ -684,7 +685,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, auraColor) => {
         TURRETS: [
             {
                 POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
-                TYPE: [symbolType, {COLOR: auraColor}],
+                TYPE: [symbolType, {COLOR: auraColor, INDEPENDENT: true}],
             },
         ]
     };
