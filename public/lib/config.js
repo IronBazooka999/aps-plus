@@ -3,7 +3,7 @@ const config = {
         screenshotMode: false,
         borderChunk: 5,
         barChunk: 4,
-        mininumBorderChunk: 2,
+        mininumBorderChunk: 5,
         deathBlurAmount: 3,
         darkBorders: false,
         fancyAnimations: true,
