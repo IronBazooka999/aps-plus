@@ -884,7 +884,7 @@ const socketInit = port => {
                 global.finalKills[0].set(m[2]);
                 global.finalKills[1].set(m[3]);
                 global.finalKills[2].set(m[4]);
-                global.finalKills[2].set(m[5]);
+                global.finalKills[3].set(m[5]);
                 global.finalKillers = [];
                 for (let i = 0; i < m[6]; i++) {
                     global.finalKillers.push(m[7 + i]);

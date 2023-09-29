@@ -1845,14 +1845,17 @@ class Entity extends EventEmitter {
             killers = killers.filter((elem, index, self) => index == self.indexOf(elem));
             // If there's no valid killers (you were killed by food), change the message to be more passive
             let killText = notJustFood ? "" : "You have been killed by ",
-                dothISendAText = this.settings.givesKillMessage,
-                killCountType = this.type == "food" ? "polygons" :
-                                this.type == "miniboss" ? "bosses" :
-                                killers.length == 1 ? "solo" : "assists";
+                dothISendAText = this.settings.givesKillMessage;
+
             for (let i = 0; i < killers.length; i++) {
-                killers[i].killCount[killCountType]++;
-                this.killCount.killers.push(killers[i].index);
-            }
+                let instance = killers[i];
+
+                if (this.type === "tank") killers.length > 1 ? instance.killCount.assists++ : instance.killCount.solo++;
+                else if (this.type === "food" || this.type === "crasher") instance.killCount.polygons++;
+                else if (this.type === "miniboss") instance.killCount.bosses++;
+
+                this.killCount.killers.push(instance.index);
+            };
             // Add the killers to our death message, also send them a message
             if (notJustFood) {
                 for (let i = 0; i < killers.length; i++) {
