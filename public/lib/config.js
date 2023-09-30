@@ -1,9 +1,9 @@
 const config = {
     graphical: {
         screenshotMode: false,
-        borderChunk: 5,
+        borderChunk: 6,
         barChunk: 4,
-        mininumBorderChunk: 5,
+        mininumBorderChunk: 6,
         deathBlurAmount: 3,
         darkBorders: false,
         fancyAnimations: true,
