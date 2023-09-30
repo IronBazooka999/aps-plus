@@ -66,7 +66,7 @@ module.exports = ({ Class }) => {
 		BODY: eggnoughtBody,
 	    SHAPE: 0,
 	    COLOR: 6,
-	    SIZE: 12.5,
+	    SIZE: 13.75,
 		DANGER: 8,
 	    SKILL_CAP: Array(10).fill(smshskl),
 	}
@@ -200,7 +200,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 2; i++) {
 		Class.pacifier_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [15, 8.5, 1, 0, 0, 180*i, 0],
+				POSITION: [15, 7.5, 1, 0, 0, 180*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.8}]),
 					TYPE: "bullet",
@@ -253,10 +253,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 2; i++) {
 		Class.centaur_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [13, 8, 1, 0, 0, 180*i, 0],
+				POSITION: [13, 7.5, 1, 0, 0, 180*i, 0],
 			},
 			{
-				POSITION: [4, 8, 1.5, 13, 0, 180*i, 0],
+				POSITION: [3, 7.5, 1.35, 13, 0, 180*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, {health: 2}]),
 					TYPE: "trap",
@@ -340,10 +340,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 4; i++) {
 		Class.gladius_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [18, 8.5, 1, 0, 0, 90*i, 0],
+				POSITION: [17, 8.5, 1, 0, 0, 90*i, 0],
 			},
 			{
-				POSITION: [21, 5.5, 1, 0, 0, 90*i, 0],
+				POSITION: [19, 5.5, 1, 0, 0, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.rifle, {health: 1.3}]),
 					TYPE: "bullet",
@@ -592,17 +592,17 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}
-	Class.coronaAura_APSofficialdreadv2 = addAura(1.5, 0.8);
+	Class.coronaAura_APSofficialdreadv2 = addAura(1.5);
 	Class.corona_APSofficialdreadv2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Corona",
 	    TURRETS: [
 			{
-				POSITION: [15, 0, 0, 0, 0, 1],
+				POSITION: [14, 0, 0, 0, 0, 1],
 				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
 			},
 			{
-				POSITION: [12, 0, 0, 0, 360, 1],
+				POSITION: [11, 0, 0, 0, 360, 1],
 				TYPE: "coronaAura_APSofficialdreadv2",
 			},
 		],
@@ -1074,11 +1074,11 @@ module.exports = ({ Class }) => {
 	    LABEL: "Megabyte",
 	    TURRETS: [
 			{
-				POSITION: [16, 0, 0, 180, 0, 1],
+				POSITION: [15, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
 			},
 			{
-				POSITION: [12, 0, 0, 0, 360, 1],
+				POSITION: [11, 0, 0, 0, 360, 1],
 				TYPE: "megabyteTurret_APSofficialdreadv2",
 			},
 		],
@@ -1434,21 +1434,21 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.arbitrator_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [7, 10, 1.4, 5.5, 0, 72*i, 0],
+				POSITION: [8, 10, 1.4, 5.5, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.2}]),
 					TYPE: "bullet",
 				},
 			},
 			{
-				POSITION: [7, 9.5, 1.33, 7.5, 0, 72*i, 0],
+				POSITION: [8, 9.5, 1.33, 7.5, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.125}]),
 					TYPE: "bullet",
 				},
 			},
       {
-				POSITION: [7, 7.5, 1.2, 9.5, 0, 72*i, 0],
+				POSITION: [8, 7.5, 1.2, 9.5, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.05}]),
 					TYPE: "bullet",
@@ -1464,7 +1464,7 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.retardant_APSofficialdreadv2.GUNS.push(
 			{
-				POSITION: [16, 11, 1, 0, 0, 72*i, 0],
+				POSITION: [17, 11, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, {reload: 0.9, health: 1.1}]),
 					TYPE: "bullet",
@@ -1867,7 +1867,7 @@ module.exports = ({ Class }) => {
 			TYPE: "megabyteTurret_APSofficialdreadv2",
 		},
 	)
-	Class.photosphereSmallAura_APSofficialdreadv2 = addAura(1, 2, 0.15);
+	Class.photosphereSmallAura_APSofficialdreadv2 = addAura(1, 1.75, 0.15);
 	Class.photosphereBigAura_APSofficialdreadv2 = addAura(1.5, 4);
 	Class.photosphere_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
