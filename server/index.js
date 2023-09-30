@@ -621,7 +621,7 @@ const foodTypes = [
         ["scale", 10], 0.0001
     ),
     new FoodType("Nest Food", // Commented out because stats aren't done yet.
-        [Class.pentagon, Class.betaPentagon, Class.alphaPentagon, /*Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon, Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/],
+        [Class.pentagon, Class.betaPentagon, Class.alphaPentagon],
         ["scale", 4], 1, true
     ),
 ];
