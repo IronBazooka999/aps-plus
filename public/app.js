@@ -1313,7 +1313,7 @@ function drawFloor(px, py, ratio) {
             ctx.fillRect(left, top, right - left, bottom - top);
         }
     }
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.5;
     ctx.strokeStyle = config.graphical.screenshotMode ? color.guiwhite : color.guiblack;
     ctx.globalAlpha = 0.04;
     ctx.beginPath();
