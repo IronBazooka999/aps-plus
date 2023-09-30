@@ -57,10 +57,10 @@ const hexnoughtBody = {
 };
 
 module.exports = ({ Class }) => {
-	// Comment out the line below to enable this addon, uncomment it to disable this addon.
-	//return;
+	// Comment out the line below to enable this addon, uncomment it to disable this addon (WARNING: Increases load time by approximately 10x).
+	return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See line 60-61 to enable it. ---');
 	// Set the below variable to true to enable hex dreadnought building (WARNING: increases load time by approximately 20x)
-	const buildHexnoughts = false;
+	const buildHexnoughts = true;
 
 	// Misc
 	Class.genericEggnought = {
