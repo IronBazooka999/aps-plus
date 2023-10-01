@@ -302,6 +302,7 @@ function mooncollide(moon, n) {
 
 function reflectCollide(wall, bounce) {
     if (bounce.god === true || bounce.passive === true || bounce.ac || bounce.master.ac) return;
+    if (bounce.store.noWallCollision) return;
     if (bounce.team === wall.team && bounce.type === "tank") return;
     if (bounce.x + bounce.size < wall.x - wall.size ||
         bounce.x - bounce.size > wall.x + wall.size ||
@@ -376,7 +377,7 @@ function reflectCollide(wall, bounce) {
     }
 
     if (intersected) {
-        if (bounce.type !== 'tank' && bounce.type !== 'miniboss') {
+        if (bounce.type !== 'tank' && bounce.type !== 'miniboss' && bounce.type !== 'food') {
             bounce.kill();
         } else {
             bounce.collisionArray.push(wall);
