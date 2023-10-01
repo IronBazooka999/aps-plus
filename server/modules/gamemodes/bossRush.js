@@ -1,5 +1,4 @@
 let calculatePoints = wave => 5 + wave * 3;
-Class.basic.UPGRADES_TIER_1.push('healer')
 // Each wave has a certain amount of "points" that it can spend on bosses, calculated above.
 // Each boss costs an amount of points.
 // It will always buy as many bosses until it has no points or else can't spend them.
@@ -144,6 +143,8 @@ class BossRush {
     }
 
     spawnWave(waveId) {
+        //hotfix because trio didnt test this????
+        Class.basic.UPGRADES_TIER_1.push('healer');
         //yell at everyone
         sockets.broadcast(`Wave ${waveId + 1} has arrived!`);
 
