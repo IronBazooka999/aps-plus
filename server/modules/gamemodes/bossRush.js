@@ -175,9 +175,9 @@ class BossRush {
 
     //runs once when the server starts
     init() {
+        Class.basic.UPGRADES_TIER_1.push('healer');
         for (let loc of room.bas1) {
             this.spawnDominator(loc, -1);
-    init() {Class.basic.UPGRADES_TIER_1.push('healer');
         //TODO: filter out tiles that are not of sanctuary type
         }
         console.log('Boss rush initialized.');
