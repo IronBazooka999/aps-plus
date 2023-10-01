@@ -177,8 +177,8 @@ class BossRush {
     init() {
         for (let loc of room.bas1) {
             this.spawnDominator(loc, -1);
-        //hotfix because trio didnt test this????
-        Class.basic.UPGRADES_TIER_1.push('healer');
+    init() {Class.basic.UPGRADES_TIER_1.push('healer');
+        //TODO: filter out tiles that are not of sanctuary type
         }
         console.log('Boss rush initialized.');
     }
