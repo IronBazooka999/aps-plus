@@ -143,8 +143,6 @@ class BossRush {
     }
 
     spawnWave(waveId) {
-        //hotfix because trio didnt test this????
-        Class.basic.UPGRADES_TIER_1.push('healer');
         //yell at everyone
         sockets.broadcast(`Wave ${waveId + 1} has arrived!`);
 
@@ -179,6 +177,8 @@ class BossRush {
     init() {
         for (let loc of room.bas1) {
             this.spawnDominator(loc, -1);
+        //hotfix because trio didnt test this????
+        Class.basic.UPGRADES_TIER_1.push('healer');
         }
         console.log('Boss rush initialized.');
     }
