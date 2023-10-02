@@ -1728,7 +1728,11 @@ module.exports = ({ Class }) => {
 				POSITION: [3.25, 4.5, 0, 72*i, 180, 1],
 				TYPE: "spamAutoTurret",
 			},
-			 {
+		)
+	}
+	for (let i = 0; i < 5; i++) {
+		Class.skynet_APSofficialdreadv2.TURRETS.push(
+			{
 				POSITION: [3.25, 8, 0, 72*i+36, 180, 1],
 				TYPE: "spamAutoTurret",
 			},
@@ -2005,16 +2009,30 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
-	Class.leviathanTop_APSofficialdreadv2 = {
+	Class.pentagonLeviathanTop_APSofficialdreadv2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Leviathan",
 		TURRET_FACES_CLIENT: true,
 	    GUNS: [],
 	}
 	for (let i = 0; i < 5; i++) {
-		Class.leviathanTop_APSofficialdreadv2.GUNS.push(
+		Class.pentagonLeviathanTop_APSofficialdreadv2.GUNS.push(
 			{
 				POSITION: [6, 13.5, 0.001, 9, 0, 72*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
+	}
+	Class.hexagonLeviathanTop_APSofficialdreadv2 = {
+	    PARENT: ["genericHexnought"],
+	    LABEL: "Leviathan",
+		TURRET_FACES_CLIENT: true,
+	    GUNS: [],
+	}
+	for (let i = 0; i < 6; i++) {
+		Class.hexagonLeviathanTop_APSofficialdreadv2.GUNS.push(
+			{
+				POSITION: [6, 10, 0.001, 9.5, 0, 60*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
@@ -2026,7 +2044,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 0, 0, 1],
-				TYPE: "leviathanTop_APSofficialdreadv2"
+				TYPE: ["pentagonLeviathanTop_APSofficialdreadv2", {TURRET_FACES_CLIENT: true}]
 			}
 		],
 	}
@@ -2269,7 +2287,11 @@ module.exports = ({ Class }) => {
 			className = weaponName.toLowerCase() + orientationId + bodyLabel.toLowerCase() + "_APSofficialdreadv2";
 		
 		// Guns ----------------------
-		if (body.GUNS) gunsOnOneSide.push(...JSON.parse(JSON.stringify(body.GUNS.slice(0, body.GUNS.length / 5))));
+		if (body.GUNS) gunsOnOneSide.push(...JSON.parse(JSON.stringify(body.GUNS.slice(0, body.GUNS.length / 5 * 2))));
+		for (let g in gunsOnOneSide) {
+			gunsOnOneSide[g].POSITION[5] *= 5 / 6;
+			gunsOnOneSide[g].POSITION[1] *= hexnoughtScaleFactor;
+		}
 		if (weapon1.GUNS) gunsOnOneSide.push(...JSON.parse(JSON.stringify(weapon1.GUNS.slice(0, weapon1.GUNS.length / 5))));
 		if (weapon2.GUNS) weapon2GunsOnOneSide = JSON.parse(JSON.stringify(weapon2.GUNS.slice(0, weapon2.GUNS.length / 5)));
 
@@ -2320,33 +2342,31 @@ module.exports = ({ Class }) => {
 		
 		// Turrets --------------------
 		let turretRingLoopLength = Math.floor(body.TURRETS.length / 5);
-    	let turret = body.TURRETS[0];
-
-		// First turret
-		TURRETS.push(
-			{
-				POSITION: [turret.POSITION[0] / hexnoughtScaleFactor ** 0.5, 0, 0, 0, 0, 1],
-				TYPE: ['hexagon', {TURRET_FACES_CLIENT: true}],
-			}
-		);
   
-    	// Turrets besides the first
-		for (let t = 1; t < body.TURRETS.length; t++) {
-			turret = body.TURRETS[t];
-			if (turret.POSITION[1]) {
-				for (let i = 0; i < 6; i++) {
-					for (let j = 0; j < turretRingLoopLength; j++) {
-						turret = body.TURRETS[t*turretRingLoopLength+j];
+    	// Turret adding
+		for (let t = 0; t < body.TURRETS.length; t++) {
+			let turret = body.TURRETS[t];
+			if (turret.TYPE[0].indexOf('pentagon') >= 0) { // Replace pentagons with hexagons
+				TURRETS.push(
+					{
+						POSITION: [turret.POSITION[0], 0, 0, 0, 0, turret.POSITION[5]],
+						TYPE: ['hexagon' + turret.TYPE[0].substring(8), turret.TYPE[1]],
+					}
+				);
+			} else if (turret.POSITION[1]) { // Do whole turret loop at once
+				for (let i = 0; i < turretRingLoopLength; i++) {
+					for (let j = 0; j < 6; j++) {
+						turret = body.TURRETS[t + i * 5];
 						TURRETS.push(
 							{
-								POSITION: [turret.POSITION[0] * hexnoughtScaleFactor, turret.POSITION[1] * hexnoughtScaleFactor ** 0.5, turret.POSITION[2], turret.POSITION[3] / 6 * 5 + 60 * i, turret.POSITION[4], turret.POSITION[5]],
+								POSITION: [turret.POSITION[0] * hexnoughtScaleFactor, turret.POSITION[1] * hexnoughtScaleFactor ** 0.5, turret.POSITION[2], turret.POSITION[3] / 6 * 5 + 60 * j, turret.POSITION[4], turret.POSITION[5]],
 								TYPE: turret.TYPE,
 							}
 						)
 					}
 				}
 				t += 5 * turretRingLoopLength - 1;
-			} else {
+			} else { // Centered turrets
 				TURRETS.push(
 					{
 						POSITION: [turret.POSITION[0] * hexnoughtScaleFactor ** 0.5, 0, 0, turret.POSITION[3], turret.POSITION[4], turret.POSITION[5]],
