@@ -1364,7 +1364,7 @@ exports.healer = {
             },
         },
     ],
-    STAT_NAMES: statnames.healer,
+    STAT_NAMES: statnames.heal,
 };
 exports.single = {
     PARENT: ["genericTank"],
@@ -5447,7 +5447,7 @@ exports.medic = {
             },
         },
     ],
-    STAT_NAMES: statnames.healer,
+    STAT_NAMES: statnames.heal,
 };
 exports.ambulance = {
     PARENT: ["genericTank"],
@@ -5501,7 +5501,7 @@ exports.ambulance = {
             },
         },
     ],
-    STAT_NAMES: statnames.healer,
+    STAT_NAMES: statnames.heal,
 };
 exports.surgeon = {
     PARENT: ["genericTank"],
@@ -5539,7 +5539,7 @@ exports.surgeon = {
             POSITION: [4, 14, 1, 8, 0, 0, 0],
         },
     ],
-    STAT_NAMES: statnames.healer,
+    STAT_NAMES: statnames.heal,
 };
 exports.paramedic = {
     PARENT: ["genericTank"],
@@ -5587,13 +5587,14 @@ exports.paramedic = {
             },
         },
     ],
-    STAT_NAMES: statnames.healer,
+    STAT_NAMES: statnames.heal,
 };
 
 // TANK UPGRADE PATHS
 exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper"/* "whirlwind"*/];
     exports.basic.UPGRADES_TIER_2 = ["smasher"];
         exports.smasher.UPGRADES_TIER_3 = ["megaSmasher", "spike", "autoSmasher", "landmine"];
+        exports.healer.UPGRADES_TIER_3 = ["medic", "ambulance", "surgeon", "paramedic"]
 
     exports.twin.UPGRADES_TIER_2 = ["doubleTwin", "tripleShot", "gunner", "hexaTank"];
         exports.twin.UPGRADES_TIER_3 = ["dual", "bulwark", "musket"];
