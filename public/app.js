@@ -170,6 +170,7 @@ function clamp(n, lower, upper) {
     return Math.min(upper, Math.max(lower, n));
 }
 //TODO: somehow move the calculation to these in reanimateColors to improve performance
+var colorCache = {};
 function modifyColor(color, base = "16 0 1 0 false") {
     // Edge cases because spaghetti
     if (typeof color == 'number') {
@@ -186,6 +187,15 @@ function modifyColor(color, base = "16 0 1 0 false") {
     if (colorDetails[0] == "-1") {
         colorDetails[0] = baseDetails[0];
     }
+
+    let colorId = "";
+    for (let i in colorDetails) {
+        colorId += colorDetails[i] + " ";
+    }
+
+    // Exit if calculated already
+    let cachedColor = colorCache[colorId];
+    if (cachedColor != undefined) return cachedColor;
 
     // Get HSL values
     let baseColor = colorDetails[0];
@@ -210,8 +220,11 @@ function modifyColor(color, base = "16 0 1 0 false") {
         finalBrightness -= brightnessShift * 2;
     }
     finalBrightness = clamp(finalBrightness, 0, 1);
+
     // Gaming.
-    return hslToRgb(finalHue, finalSaturation, finalBrightness);
+    let finalColor = hslToRgb(finalHue, finalSaturation, finalBrightness);
+    colorCache[colorId] = finalColor
+    return finalColor;
 }
 function getRainbow(a, b, c = 0.5) {
     if (0 >= c) return a;
@@ -1009,7 +1022,7 @@ const drawEntity = (drawingEntities, baseColor, x, y, instance, ratio, alpha = 1
                 len = t.offset * drawSize,
                 facing = 0
             if (turretFacesClient && drawingEntities) {
-                facing = instance.render.f + turretsObeyRot * rot + t.angle
+                facing = render.f + turretsObeyRot * rot + t.angle
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
             }
@@ -1406,7 +1419,6 @@ function drawUpgradeTree() {
         m = global.mockups[instance.index],
         rootIndex = m.index;
     if (m.rerootUpgradeTree && rootIndex !== generatedTankTree) {
-        console.log(m.upgrades);
         generateTankTree(rootIndex);
     }
     
@@ -1460,8 +1472,8 @@ function drawUpgradeTree() {
             scale = (0.8 * size) / position.axis,
             xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
             yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle),
-            baseColor = gui.color,
-            picture = util.getEntityImageFromMockup(index, baseColor, baseColor);
+            picture = util.getEntityImageFromMockup(index, gui.color),
+            baseColor = picture.color;
         drawEntity(false, baseColor, xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
         ctx.strokeStyle = color.black;
         ctx.globalAlpha = 1;
@@ -1738,7 +1750,7 @@ function drawLeaderboard(spacing, alcoveSize, max) {
         let scale = height / entry.position.axis,
             xx = x - 1.5 * height - scale * entry.position.middle.x * 0.707,
             yy = y + 0.5 * height + scale * entry.position.middle.x * 0.707,
-            baseColor = entry.barColor;
+            baseColor = entry.image.color;
         drawEntity(false, baseColor, xx, yy, entry.image, 1 / scale, 1, (scale * scale) / entry.image.size, -Math.PI / 4, true);
         // Move down
         y += vspacing + height;
@@ -1788,8 +1800,8 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
                 scale = (0.6 * len) / position.axis,
                 xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
                 yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
-                baseColor = gui.color,
-                picture = util.getEntityImageFromMockup(model, baseColor, baseColor);
+                picture = util.getEntityImageFromMockup(model, gui.color),
+                baseColor = picture.color;
             drawEntity(false, baseColor, xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
             let upgradeKey = getClassUpgradeKey(ticker);
 
@@ -1930,8 +1942,8 @@ const gameDrawDead = () => {
         scale = len / position.axis,
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
         yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707,
-        baseColor = gui.color,
-        picture = util.getEntityImageFromMockup(gui.type, baseColor, baseColor);
+        picture = util.getEntityImageFromMockup(gui.type, gui.color),
+        baseColor = picture.color;
     drawEntity(false, baseColor, (xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
     drawText("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
     drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);

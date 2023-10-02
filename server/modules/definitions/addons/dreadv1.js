@@ -39,7 +39,6 @@ module.exports = ({ Class }) => {
 	    SHAPE: 6,
 	    COLOR: 9,
 	    SIZE: 50,
-	    LEVEL: 150,
 	    EXTRA_SKILL: 48,
 	    SKILL_CAP: Array(10).fill(smshskl+3),
 	};
@@ -101,6 +100,7 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Dreadnought",
 		REROOT_UPGRADE_TREE: true,
+		LEVEL: 150,
 	}
 
 	// T1
