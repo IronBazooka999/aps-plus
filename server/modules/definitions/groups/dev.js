@@ -454,6 +454,7 @@ exports.miscTestHelper = {
 exports.miscTest = {
     PARENT: ["genericTank"],
     LABEL: "Turret Reload Test",
+    COLOR: 1,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],

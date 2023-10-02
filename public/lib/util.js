@@ -187,6 +187,7 @@ const util = {
                 o.offset = t.offset;
                 o.direction = t.direction;
                 o.facing = t.direction + t.angle;
+                o.render.f = o.facing;
                 return o;
             }),
         };
