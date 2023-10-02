@@ -1573,6 +1573,16 @@ module.exports = ({ Class }) => {
 			}
 		]
 	}
+	Class.gladiatorHealAuraMinionAura_APSofficialdreadv2 = addAura(-2/3, 1.2);
+	Class.gladiatorHealAuraMinion_APSofficialdreadv2 = {
+	    PARENT: ["gladiatorGenericMinion_APSofficialdreadv2"],
+		TURRETS: [
+			{
+				POSITION: [12, 0, 0, 0, 360, 1],
+				TYPE: "gladiatorHealAuraMinionAura_APSofficialdreadv2",
+			}
+		]
+	}
 	for (let i = 0; i < 3; i++) {
 		Class.gladiatorTritankMinion_APSofficialdreadv2.GUNS.push(
 			{
@@ -2230,10 +2240,6 @@ module.exports = ({ Class }) => {
 		},
 	};
 
-	/* Hexnought merge testers:
-	Raider-Gladiator-Behemoth (Filibuster-Behemoth)
-	Diplomat-Rapier-Supernova (Emissary-Supernova)
-	*/
 	const hexnoughtScaleFactor = 0.9;
 	function mergeHexnoughtV2(weapon1, weapon2, body) {
 		weapon1 = ensureIsClass(Class, weapon1);
@@ -2283,6 +2289,34 @@ module.exports = ({ Class }) => {
 				GUNS.push(gun);
 			}
 		};
+
+		// Gladiator
+		if (weapon1.LABEL == "Gladiator" || weapon2.LABEL == "Gladiator") {
+			let droneSpawnerIndex = 0
+			for (let g in GUNS) {
+				let gun = GUNS[g];
+				if (gun.PROPERTIES && gun.PROPERTIES.TYPE == "gladiatorTritankMinion_APSofficialdreadv2") {
+					switch (droneSpawnerIndex) {
+						case 1:
+							gun.PROPERTIES.TYPE = "gladiatorTritrapMinion_APSofficialdreadv2";
+							break;
+						case 2:
+							gun.PROPERTIES.TYPE = "gladiatorTriswarmMinion_APSofficialdreadv2";
+							break;
+						case 3:
+							gun.PROPERTIES.TYPE = "gladiatorAutoMinion_APSofficialdreadv2";
+							break;
+						case 4:
+							gun.PROPERTIES.TYPE = "gladiatorAuraMinion_APSofficialdreadv2";
+							break;
+						case 5:
+							gun.PROPERTIES.TYPE = "gladiatorHealAuraMinion_APSofficialdreadv2";
+							break;
+					}
+					droneSpawnerIndex++;
+				}
+			}
+		}
 		
 		// Turrets --------------------
 		let turretRingLoopLength = Math.floor(body.TURRETS.length / 5);
@@ -2315,7 +2349,7 @@ module.exports = ({ Class }) => {
 			} else {
 				TURRETS.push(
 					{
-						POSITION: [turret.POSITION[0], 0, 0, turret.POSITION[3], turret.POSITION[4], turret.POSITION[5]],
+						POSITION: [turret.POSITION[0] * hexnoughtScaleFactor ** 0.5, 0, 0, turret.POSITION[3], turret.POSITION[4], turret.POSITION[5]],
 						TYPE: turret.TYPE,
 					}
 				) 
