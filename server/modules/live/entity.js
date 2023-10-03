@@ -1525,7 +1525,7 @@ class Entity extends EventEmitter {
         this.accel.y += engine.y * this.control.power;
     }
     reset(keepPlayerController = true) {
-        this.controllers = keepPlayerController ? this.controllers.filter(con => con instanceof ioTypes.listenToPlayer)[0] : [];
+        this.controllers = keepPlayerController ? [this.controllers.filter(con => con instanceof ioTypes.listenToPlayer)[0]] : [];
     }
     face() {
         let t = this.control.target,
