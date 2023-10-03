@@ -976,6 +976,7 @@ class Entity extends EventEmitter {
         if (set.index != null) this.index = set.index;
         if (set.NAME != null) this.name = set.NAME;
         if (set.LABEL != null) this.label = set.LABEL;
+        if (set.UPGRADE_LABEL != null) this.upgradeLabel = set.UPGRADE_LABEL;
         if (set.TYPE != null) this.type = set.TYPE;
         if (set.SHAPE != null) {
             this.shape = typeof set.SHAPE === "number" ? set.SHAPE : 0;

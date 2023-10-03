@@ -1806,7 +1806,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             let upgradeKey = getClassUpgradeKey(ticker);
 
             // Tank name
-            drawText(picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
+            drawText(picture.upgradeName ?? picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
 
             // Upgrade key
             if (upgradeKey) {
