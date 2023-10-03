@@ -5,6 +5,7 @@ let fs = require('fs'),
 	Class = {},
 	definitionCount = 0;
 
+let definitionGroupsLoadStart = Date.now();
 console.log(`Loading ${groups.length} groups...`);
 for (let filename of groups) {
 	console.log(`Loading group: ${filename}`);
@@ -19,6 +20,9 @@ for (let filename of groups) {
 	}
 }
 
+let definitionGroupsLoadEnd = Date.now();
+console.log("Loaded definitions in " + (definitionGroupsLoadEnd - definitionGroupsLoadStart) + " milliseconds. \n");
+
 console.log(`Loading ${addons.length} addons...`);
 for (let filename of addons) {
 	if (!filename.endsWith('.js')) continue;
@@ -27,6 +31,9 @@ for (let filename of addons) {
 
 	require('./addons/' + filename)({ Config: c, Class, Events: events });
 }
+
+let addonsLoadEnd = Date.now();
+console.log("Loaded addons in " + (addonsLoadEnd - definitionGroupsLoadEnd) + " milliseconds. \n");
 
 // "Flattening" refers to removing PARENT attributes and applying the parents' attributes to the definition themselves, if not overwritten later on.
 if (c.flattenDefintions) {
@@ -70,7 +77,9 @@ if (c.flattenDefintions) {
 	}
 	Class = flattened;
 	definitionCount = Object.keys(Class).length;
+	let flatteningEnd = Date.now();
+	console.log("Definitions flattened in " + (flatteningEnd - addonsLoadEnd) + " milliseconds. \n");
 }
 
-console.log(`Combined ${groups.length} definition groups and ${addons.length} addons into ${definitionCount} ${c.flattenDefintions ? 'flattened ' : ''}definitions!`);
+console.log(`Combined ${groups.length} definition groups and ${addons.length} addons into ${definitionCount} ${c.flattenDefintions ? 'flattened ' : ''}definitions!\n`);
 module.exports = Class;

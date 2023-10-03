@@ -1,3 +1,5 @@
+const { serverStartTime } = require("../../lib/util");
+
 function rounder(val) {
     if (Math.abs(val) < 0.00001) val = 0;
     return +val.toPrecision(6);
@@ -238,6 +240,7 @@ function getDimensions(entities) {
 }
 
 console.log("Started loading mockups...");
+let mockupsLoadStartTime = Date.now();
 
 let mockupData = [];
 for (let k in Class) {
@@ -269,7 +272,10 @@ for (let k in Class) {
 // Remove them
 purgeEntities();
 
+let mockupsLoadEndTime = Date.now();
 console.log("Finished compiling " + mockupData.length + " classes into mockups.");
+console.log("Mockups generated in " + (mockupsLoadEndTime - mockupsLoadStartTime) + " milliseconds.\n");
+console.log("Server loaded in " + (mockupsLoadEndTime - serverStartTime) + " milliseconds.\n");
 mockupsLoaded = true;
 
 let mockupJsonData = JSON.stringify(mockupData);

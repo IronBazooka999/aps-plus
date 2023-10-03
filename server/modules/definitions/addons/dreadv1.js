@@ -30,7 +30,7 @@ const dreadnoughtBody = {
 
 module.exports = ({ Class }) => {
 	// Comment out the line below to enable this addon, uncomment it to disable this addon.
-	//return;
+	//return console.log('--- Dreadnoughts v1 addon [dreadv1.js] is disabled. See lines 32-33 to enable it. ---');;
 
 	// Misc
 	Class.genericDreadnought1 = {
