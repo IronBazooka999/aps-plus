@@ -226,7 +226,7 @@ function modifyColor(color, base = "16 0 1 0 false") {
 
     // Gaming.
     let finalColor = hslToRgb(finalHue, finalSaturation, finalBrightness);
-    colorCache[colorId] = finalColor
+    if (!animatedColors[colorDetails[0]]) colorCache[colorId] = finalColor
     return finalColor;
 }
 function getRainbow(a, b, c = 0.5) {
@@ -290,6 +290,41 @@ function reanimateColors() {
     animatedColor.grey_blue = blinker ? color.grey : color.blue;
     animatedColor.red_grey = blinker ? color.red : color.grey;
     animatedColor.grey_red = blinker ? color.grey : color.red;
+}
+const animatedColors = {
+    // police
+    20: true,
+    animatedBlueRed: true,
+
+    21: true,
+    animatedBlueGrey: true,
+    animatedBlueGray: true,
+
+    22: true,
+    animatedGreyBlue: true,
+    animatedGrayBlue: true,
+
+    23: true,
+    animatedRedGrey: true,
+    animatedRedGray: true,
+
+    24: true,
+    animatedGreyRed: true,
+    animatedGrayRed: true,
+
+    // lesbian
+    29: true,
+    animatedLesbian: true,
+
+    // rainbow
+    rainbow: true,
+
+    // trans
+    37: true,
+    animatedTrans: true,
+
+    38: true,
+    animatedBi: true,
 }
 function getColor(colorNumber) {
     switch (colorNumber) {
