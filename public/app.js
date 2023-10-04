@@ -187,6 +187,9 @@ function modifyColor(color, base = "16 0 1 0 false") {
     if (colorDetails[0] == "-1") {
         colorDetails[0] = baseDetails[0];
     }
+    if (colorDetails[0] == "-1") {
+        colorDetails[0] = gui.color;
+    }
 
     let colorId = "";
     for (let i in colorDetails) {
