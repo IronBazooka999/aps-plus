@@ -39,14 +39,13 @@ module.exports = ({ Class }) => {
 	    SHAPE: 6,
 	    COLOR: 9,
 	    SIZE: 50,
-	    EXTRA_SKILL: 48,
 	    SKILL_CAP: Array(10).fill(smshskl+3),
 	};
 	Class.mechanismMainTurret = {
 	    PARENT: ["genericTank"],
 	    LABEL: "Turret",
 	    CONTROLLERS: ["nearestDifferentMaster"],
-	    INDEPEDENT: true,
+	    INDEPENDENT: true,
 	    BODY: {
 	        FOV: 0.8,
 	    },
@@ -54,7 +53,7 @@ module.exports = ({ Class }) => {
 	    GUNS: [{
 	        POSITION: [22, 10, 1, 0, 0, 0, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.pound, g.destroy, g.morespeed, g.morereload, g.doublereload]),
+	            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.pound, g.morespeed, g.morereload, g.doublereload]),
 	            TYPE: "bullet"
 	        }
 	    }]
@@ -63,7 +62,7 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericTank"],
 	    LABEL: "Turret",
 	    CONTROLLERS: ["onlyAcceptInArc", "nearestDifferentMaster"],
-	    INDEPEDENT: true,
+	    INDEPENDENT: true,
 	    BODY: {
 	        FOV: 0.8,
 	    },
@@ -71,7 +70,7 @@ module.exports = ({ Class }) => {
 	    GUNS: [{
 	        POSITION: [22, 10, 1, 0, 0, 0, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.destroy, g.morespeed, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.morereload]),
 	            TYPE: "bullet"
 	        }
 	    }]
@@ -80,7 +79,7 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericTank"],
 	    LABEL: "Turret",
 	    CONTROLLERS: ["onlyAcceptInArc", "nearestDifferentMaster"],
-	    INDEPEDENT: true,
+	    INDEPENDENT: true,
 	    BODY: {
 	        FOV: 0.8,
 	    },
@@ -88,7 +87,7 @@ module.exports = ({ Class }) => {
 	    GUNS: [{
 	        POSITION: [22, 10, 1, 0, 0, 0, 0],
 	        PROPERTIES: {
-	            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.pound, g.morereload]),
+	            SHOOT_SETTINGS: combineStats([g.basic, g.gunner, g.power, g.morerecoil, g.turret, g.morereload]),
 	            TYPE: "bullet"
 	        }
 	    }]
@@ -101,6 +100,7 @@ module.exports = ({ Class }) => {
 	    LABEL: "Dreadnought",
 		REROOT_UPGRADE_TREE: true,
 		LEVEL: 150,
+		EXTRA_SKILL: 48,
 	}
 
 	// T1
@@ -199,7 +199,7 @@ module.exports = ({ Class }) => {
 	    },
 	    TURRETS: [{
 	        POSITION: [22, 0, 0, 0, 0, 0],
-	        TYPE: ["smasherBody", {INDEPEDENT: false} ]
+	        TYPE: ["smasherBody", {INDEPENDENT: false} ]
 	    }]
 	}
 
@@ -264,7 +264,7 @@ module.exports = ({ Class }) => {
 	}
 	for (let i = 0; i < 3; i++) {
 	    Class.peacekeeper_APSofficialdreadv1.GUNS.push({
-	        POSITION: [15, 10, 1, 0, 0, 120*i, 0],
+	        POSITION: [17, 10, 1, 0, 0, 120*i, 0],
 	        PROPERTIES: {
 	            SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.destroy, g.morereload]),
 	            TYPE: "bullet",
@@ -466,7 +466,7 @@ module.exports = ({ Class }) => {
 	    },
 	    TURRETS: [{
 	        POSITION: [23.5, 0, 0, 0, 0, 0],
-	        TYPE: ["smasherBody", {INDEPEDENT: false} ]
+	        TYPE: ["smasherBody", {INDEPENDENT: false} ]
 	    }],
 	}
 
