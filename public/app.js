@@ -1327,13 +1327,14 @@ let tiles,
                 height = 2 + upgrades.length;
             measureSize(x, y + 1 + i + Math.sign(hasUpgrades.length) * 2, 10 + i, upgrade);
             if (i === noUpgrades.length - 1) {
+                if (hasUpgrades.length > 1) cumulativeWidth++;
                 branches.push([{ x: xStart, y }, { x, y }]);
                 branches.push([{ x, y }, { x, y: y + noUpgrades.length + Math.sign(hasUpgrades.length) * 2 }]);
             }
             if (maxHeight < height) maxHeight = height;
         }
         return {
-            width: cumulativeWidth + Math.sign(hasUpgrades.length) - !noUpgrades.length,
+            width: cumulativeWidth,
             height: 2 + maxHeight,
         };
     };
@@ -1480,7 +1481,7 @@ function drawUpgradeTree(spacing, alcoveSize) {
         tileSize = alcoveSize / 2,
         size = tileSize - 4,
         spaceBetween = 8,
-        padding = spaceBetween / tileSize;
+        padding = 0.5 + spaceBetween / tileSize;
 
     if (global.died) {
         global.showTree = false;
