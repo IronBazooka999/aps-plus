@@ -1297,21 +1297,43 @@ let tiles,
         let { upgrades } = global.mockups[index],
             xStart = x,
             cumulativeWidth = 1,
-            maxHeight = 0;
+            maxHeight = 1,
+            hasUpgrades = [],
+            noUpgrades = [];
         for (let i = 0; i < upgrades.length; i++) {
-            let upgrade = upgrades[i],
+            let upgrade = upgrades[i];
+            if (global.mockups[upgrade.index].upgrades.length) {
+                hasUpgrades.push(upgrade);
+            } else {
+                noUpgrades.push(upgrade);
+            }
+        }
+        for (let i = 0; i < hasUpgrades.length; i++) {
+            let upgrade = hasUpgrades[i],
                 spacing = 2 * (upgrade.tier - tier),
                 measure = measureSize(x, y + spacing, 10 + i, upgrade);
-            branches.push([{ x, y: y + Math.sign(i) }, { x, y: y + spacing }]);
-            if (i === upgrades.length - 1) {
+            branches.push([{ x, y: y + Math.sign(i) }, { x, y: y + spacing + 1 }]);
+            if (i === hasUpgrades.length - 1 && !noUpgrades.length) {
                 branches.push([{ x: xStart, y: y + 1 }, { x, y: y + 1 }]);
             }
             x += measure.width;
             cumulativeWidth += measure.width;
             if (maxHeight < measure.height) maxHeight = measure.height;
         }
+        y++;
+        for (let i = 0; i < noUpgrades.length; i++) {
+            let upgrade = noUpgrades[i],
+                spacing = 2 * (upgrade.tier - tier),
+                height = 2 + upgrades.length;
+            measureSize(x, y + 1 + i, 10 + i, upgrade);
+            if (i === noUpgrades.length - 1) {
+                branches.push([{ x: xStart, y }, { x, y }]);
+                branches.push([{ x, y }, { x, y: y + noUpgrades.length }]);
+            }
+            if (maxHeight < height) maxHeight = height;
+        }
         return {
-            width: cumulativeWidth,
+            width: Math.sign(hasUpgrades.length) - !noUpgrades.length + cumulativeWidth,
             height: 2 + maxHeight,
         };
     };
