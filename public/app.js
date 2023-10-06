@@ -1333,7 +1333,7 @@ let tiles,
             if (maxHeight < height) maxHeight = height;
         }
         return {
-            width: cumulativeWidth + Math.sign(hasUpgrades.length) - !noUpgrades.length,
+            width: cumulativeWidth + Math.sign(hasUpgrades.length) - !noUpgrades.length - !hasUpgrades.length,
             height: 2 + maxHeight,
         };
     };
