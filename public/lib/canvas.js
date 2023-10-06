@@ -30,6 +30,7 @@ class Canvas {
         this.reverseDirection = false;
         this.inverseMouse = false;
         this.spinLock = true;
+        this.treeScrollSpeed = 0.5;
         global.canvas = this;
     }
     keyDown(event) {
@@ -51,22 +52,22 @@ class Canvas {
                 break;
 
             case global.KEY_UP_ARROW:
-                if (!global.died && global.showTree) return global.realScrollX = 0;
+                if (!global.died && global.showTree) return global.shouldScrollY = -this.treeScrollSpeed;
             case global.KEY_UP:
                 this.socket.cmd.set(0, true);
                 break;
             case global.KEY_DOWN_ARROW:
-                if (!global.died && global.showTree) return global.realScrollX = 1;
+                if (!global.died && global.showTree) return global.shouldScrollY = +this.treeScrollSpeed;
             case global.KEY_DOWN:
                 this.socket.cmd.set(1, true);
                 break;
             case global.KEY_LEFT_ARROW:
-                if (!global.died && global.showTree) return global.realScrollX -= global.realScrollX <= 0 ? 0 : .01;
+                if (!global.died && global.showTree) return global.shouldScrollX = -this.treeScrollSpeed;
             case global.KEY_LEFT:
                 this.socket.cmd.set(2, true);
                 break;
             case global.KEY_RIGHT_ARROW:
-                if (!global.died && global.showTree) return global.realScrollX += global.realScrollX >= 1 ? 0 : .01;
+                if (!global.died && global.showTree) return global.shouldScrollX = +this.treeScrollSpeed;
             case global.KEY_RIGHT:
                 this.socket.cmd.set(3, true);
                 break;
@@ -164,18 +165,22 @@ class Canvas {
     keyUp(event) {
         switch (event.keyCode) {
             case global.KEY_UP_ARROW:
+                global.shouldScrollY = 0;
             case global.KEY_UP:
                 this.socket.cmd.set(0, false);
                 break;
             case global.KEY_DOWN_ARROW:
+                global.shouldScrollY = 0;
             case global.KEY_DOWN:
                 this.socket.cmd.set(1, false);
                 break;
             case global.KEY_LEFT_ARROW:
+                global.shouldScrollX = 0;
             case global.KEY_LEFT:
                 this.socket.cmd.set(2, false);
                 break;
             case global.KEY_RIGHT_ARROW:
+                global.shouldScrollX = 0;
             case global.KEY_RIGHT:
                 this.socket.cmd.set(3, false);
                 break;
