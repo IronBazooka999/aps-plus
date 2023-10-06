@@ -1310,7 +1310,7 @@ let tiles,
         }
         for (let i = 0; i < hasUpgrades.length; i++) {
             let upgrade = hasUpgrades[i],
-                spacing = 2 * (upgrade.tier - tier),
+                spacing = 2 * Math.max(1, upgrade.tier - tier),
                 measure = measureSize(x, y + spacing, 10 + i, upgrade);
             branches.push([{ x, y: y + Math.sign(i) }, { x, y: y + spacing + 1 }]);
             if (i === hasUpgrades.length - 1 && !noUpgrades.length) {
@@ -1323,17 +1323,17 @@ let tiles,
         y++;
         for (let i = 0; i < noUpgrades.length; i++) {
             let upgrade = noUpgrades[i],
-                spacing = 2 * (upgrade.tier - tier),
+                spacing = 2 * Math.max(1, upgrade.tier - tier),
                 height = 2 + upgrades.length;
-            measureSize(x, y + 1 + i, 10 + i, upgrade);
+            measureSize(x, y + 1 + i + Math.sign(hasUpgrades.length) * 2, 10 + i, upgrade);
             if (i === noUpgrades.length - 1) {
                 branches.push([{ x: xStart, y }, { x, y }]);
-                branches.push([{ x, y }, { x, y: y + noUpgrades.length }]);
+                branches.push([{ x, y }, { x, y: y + noUpgrades.length + Math.sign(hasUpgrades.length) * 2 }]);
             }
             if (maxHeight < height) maxHeight = height;
         }
         return {
-            width: Math.sign(hasUpgrades.length) - !noUpgrades.length + cumulativeWidth,
+            width: cumulativeWidth + Math.sign(hasUpgrades.length) - !noUpgrades.length,
             height: 2 + maxHeight,
         };
     };
