@@ -59,8 +59,23 @@ const hexnoughtBody = {
 module.exports = ({ Class }) => {
 	// Comment out the line below to enable this addon, uncomment it to disable this addon (WARNING: Increases load time by approximately 3x).
 	return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
+
 	// Set the below variable to true to enable hex dreadnought building (WARNING: increases load time by approximately 10x)
 	const buildHexnoughts = true;
+	
+	// Comment out lines from the arrays below to disable that branch of the tree from being generated.
+	const eggnoughtWeapons = [
+		"swordOfficialV2",
+		"pacifierOfficialV2",
+		"peacekeeperOfficialV2",
+		"invaderOfficialV2",
+		"centaurOfficialV2",
+	];
+	const eggnoughtBodies = [
+		"byteOfficialV2", 
+		"atmosphereOfficialV2", 
+		"juggernautOfficialV2",
+	];
 
 	// Misc
 	Class.genericEggnought = {
@@ -2443,8 +2458,6 @@ module.exports = ({ Class }) => {
 	}
 
 	// Initiate build for all dread paths and do upgrades for all eggnoughts
-	const eggnoughtWeapons = Class.dreadOfficialV2.UPGRADES_TIER_1;
-	const eggnoughtBodies = ["byteOfficialV2", "atmosphereOfficialV2", "juggernautOfficialV2"];
 	for (let w in eggnoughtWeapons) {
 		let weaponName = eggnoughtWeapons[w];
 		Class[weaponName].UPGRADES_TIER_1 = [];
