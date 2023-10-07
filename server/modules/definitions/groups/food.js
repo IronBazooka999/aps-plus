@@ -341,9 +341,7 @@ exports.rainbowHexagon = makeRare(exports.hexagon, 3);
 exports.transHexagon = makeRare(exports.hexagon, 4);
 
 // 3D POLYGONS
-exports.sphereGlow = {
-    BORDERLESS: true,
-}
+exports.sphereGlow = { BORDERLESS: true }
 exports.sphere = {
     PARENT: ["food"],
     LABEL: "The Sphere",
@@ -364,62 +362,25 @@ exports.sphere = {
     },
     DRAW_HEALTH: true,
     GIVE_KILL_MESSAGE: true,
-    TURRETS: [
-        {
-            POSITION: [17, 0, 0, 0, 0, 1],
-            TYPE: ["sphereGlow", {
-                COLOR: {
-                    BASE: 18,
-                    BRIGHTNESS_SHIFT: -14,
-                }
-            }],
-        },
-        {
-            POSITION: [15, 1, -1, 0, 0, 1],
-            TYPE: ["sphereGlow", {
-                COLOR: {
-                    BASE: 18,
-                    BRIGHTNESS_SHIFT: -9,
-                }
-            }],
-        },
-        {
-            POSITION: [13, 2, -2, 0, 0, 1],
-            TYPE: ["sphereGlow", {
-                COLOR: {
-                    BASE: 18,
-                    BRIGHTNESS_SHIFT: -8,
-                }
-            }],
-        },
-        {
-            POSITION: [11, 3, -3, 0, 0, 1],
-            TYPE: ["sphereGlow", {
-                COLOR: {
-                    BASE: 18,
-                    BRIGHTNESS_SHIFT: -3,
-                }
-            }],
-        },
-        {
-            POSITION: [8, 3.25, -3.25, 0, 0, 1],
-            TYPE: ["sphereGlow", {
-                COLOR: {
-                    BASE: 18,
-                    BRIGHTNESS_SHIFT: 3,
-                }
-            }],
-        },
-        {
-            POSITION: [6, 3, -3, 0, 0, 1],
-            TYPE: ["sphereGlow", {
-                COLOR: {
-                    BASE: 18,
-                    BRIGHTNESS_SHIFT: 9,
-                }
-            }],
-        },
-    ],
+    TURRETS: [{
+        POSITION: [17, 0, 0, 0, 0, 1],
+        TYPE: ["sphereGlow", { COLOR: { BASE: 18, BRIGHTNESS_SHIFT: -14 } }]
+    }, {
+        POSITION: [15, 1, -1, 0, 0, 1],
+        TYPE: ["sphereGlow", { COLOR: { BASE: 18, BRIGHTNESS_SHIFT: -9 } }]
+    }, {
+        POSITION: [13, 2, -2, 0, 0, 1],
+        TYPE: ["sphereGlow", { COLOR: { BASE: 18, BRIGHTNESS_SHIFT: -8 } }]
+    }, {
+        POSITION: [11, 3, -3, 0, 0, 1],
+        TYPE: ["sphereGlow", { COLOR: { BASE: 18, BRIGHTNESS_SHIFT: -3 } }]
+    }, {
+        POSITION: [8, 3.25, -3.25, 0, 0, 1],
+        TYPE: ["sphereGlow", { COLOR: { BASE: 18, BRIGHTNESS_SHIFT: 3 } }]
+    }, {
+        POSITION: [6, 3, -3, 0, 0, 1],
+        TYPE: ["sphereGlow", { COLOR: { BASE: 18, BRIGHTNESS_SHIFT: 9 } }]
+    }]
 };
 exports.cube = {
     PARENT: ["food"],
