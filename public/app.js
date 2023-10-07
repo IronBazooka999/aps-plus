@@ -874,7 +874,6 @@ let tiles,
         y++;
         for (let i = 0; i < noUpgrades.length; i++) {
             let upgrade = noUpgrades[i],
-                spacing = 2 * Math.max(1, upgrade.tier - tier),
                 height = 2 + upgrades.length;
             measureSize(x, y + 1 + i + Math.sign(hasUpgrades.length) * 2, 10 + i, upgrade);
             if (i === noUpgrades.length - 1) {
@@ -889,11 +888,11 @@ let tiles,
             height: 2 + maxHeight,
         };
     };
-function generateTankTree(rootIndex) {
-    generatedTankTree = rootIndex;
+function generateTankTree(index) {
+    generatedTankTree = index;
     tiles = [];
     branches = [];
-    tankTree = measureSize(0, 0, 10, { index: rootIndex });
+    tankTree = measureSize(0, 0, 10, { index });
 }
 
 function drawFloor(px, py, ratio) {
@@ -1028,8 +1027,7 @@ function drawUpgradeTree(spacing, alcoveSize) {
         return;
     }
 
-    let tileDiv = true ? 1 : 1.25,
-        tileSize = alcoveSize / 2,
+    let tileSize = alcoveSize / 2,
         size = tileSize - 4,
         spaceBetween = 8,
         padding = 0.5 + spaceBetween / tileSize;
