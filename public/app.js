@@ -1074,10 +1074,10 @@ function drawUpgradeTree(spacing, alcoveSize) {
             baseColor = picture.color;
 
         ctx.globalAlpha = 0.75;
-        ctx.fillStyle = getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
+        ctx.fillStyle = gameDraw.getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
         drawGuiRect(ax, ay, size, size);
         ctx.globalAlpha = 0.15;
-        ctx.fillStyle = getColor(-10 + colorIndex++);
+        ctx.fillStyle = gameDraw.getColor(-10 + colorIndex++);
         drawGuiRect(ax, ay, size, size * 0.6);
         ctx.fillStyle = color.black;
         drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
