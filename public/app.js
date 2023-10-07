@@ -298,6 +298,7 @@ function startGame() {
     util.submitToLocalStorage("optColors");
     let a = document.getElementById("optColors").value;
     color = color[a === "" ? "normal" : a];
+    gameDraw.color = color;
     // Other more important stuff
     let playerNameInput = document.getElementById("playerNameInput");
     let playerKeyInput = document.getElementById("playerKeyInput");

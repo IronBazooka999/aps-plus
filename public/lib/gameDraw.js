@@ -1,6 +1,8 @@
-import { color } from "./lib/color.js";
-import { config } from "./lib/config.js";
-const gameDraw = {
+import { config } from "./config.js";
+import { color } from "./color.js";
+
+var gameDraw = {
+    color: null,
     /** https://gist.github.com/jedfoster/7939513 **/
     decimal2hex: (d) => {
         return d.toString(16);
@@ -14,10 +16,10 @@ const gameDraw = {
         var col = "#";
         for (var i = 1; i <= 6; i += 2) {
             // loop through each of the 3 hex pairs—red, green, and blue, skip the '#'
-            var v1 = hex2decimal(color_1.substr(i, 2)), // extract the current pairs
-                v2 = hex2decimal(color_2.substr(i, 2)),
+            var v1 = gameDraw.hex2decimal(color_1.substr(i, 2)), // extract the current pairs
+                v2 = gameDraw.hex2decimal(color_2.substr(i, 2)),
                 // combine the current pairs from each source color, according to the specified weight
-                val = decimal2hex(Math.floor(v2 + (v1 - v2) * weight));
+                val = gameDraw.decimal2hex(Math.floor(v2 + (v1 - v2) * weight));
             while (val.length < 2) {
                 val = "0" + val;
             } // prepend a '0' if val results in a single digit
@@ -33,9 +35,9 @@ const gameDraw = {
         } else {
             const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
             const p = 2 * l - q;
-            r = hueToRgb(p, q, h + 1/3);
-            g = hueToRgb(p, q, h);
-            b = hueToRgb(p, q, h - 1/3);
+            r = gameDraw.hueToRgb(p, q, h + 1/3);
+            g = gameDraw.hueToRgb(p, q, h);
+            b = gameDraw.hueToRgb(p, q, h - 1/3);
         }
         return '#' +
             Math.round(r * 255).toString(16).padStart(2, '0') +
@@ -117,7 +119,7 @@ const gameDraw = {
         }
 
         // Exit if calculated already
-        let cachedColor = colorCache[colorId];
+        let cachedColor = gameDraw.colorCache[colorId];
         if (cachedColor != undefined) return cachedColor;
 
         // Get HSL values
@@ -126,7 +128,7 @@ const gameDraw = {
         if (!isNaN(baseColor)) {
             baseColor = parseInt(baseColor);
         }
-        baseColor = rgbToHsl(getColor(baseColor) ?? baseColor);
+        baseColor = gameDraw.rgbToHsl(gameDraw.getColor(baseColor) ?? baseColor);
         
         // Get color config
         let hueShift = parseFloat(colorDetails[1]) / 360,
@@ -136,17 +138,17 @@ const gameDraw = {
 
         // Apply config
         let finalHue = (baseColor[0] + hueShift) % 1,
-            finalSaturation = clamp(baseColor[1] * saturationShift, 0, 1),
+            finalSaturation = gameDraw.clamp(baseColor[1] * saturationShift, 0, 1),
             finalBrightness = baseColor[2] + brightnessShift;
 
         if (allowBrightnessInvert && (finalBrightness > 1 || finalBrightness < 0)) {
             finalBrightness -= brightnessShift * 2;
         }
-        finalBrightness = clamp(finalBrightness, 0, 1);
+        finalBrightness = gameDraw.clamp(finalBrightness, 0, 1);
 
         // Gaming.
-        let finalColor = hslToRgb(finalHue, finalSaturation, finalBrightness);
-        if (!animatedColors[colorDetails[0]]) colorCache[colorId] = finalColor
+        let finalColor = gameDraw.hslToRgb(finalHue, finalSaturation, finalBrightness);
+        if (!gameDraw.animatedColors[colorDetails[0]]) gameDraw.colorCache[colorId] = finalColor
         return finalColor;
     },
     getRainbow: (a, b, c = 0.5) => {
@@ -200,16 +202,16 @@ const gameDraw = {
             trans_blue  = "#55cdfc",
             trans_white = "#ffffff";
 
-        animatedColor.lesbian = getRainbow(lesbian_useSecondSet ? lesbian_oredange : lesbian_white, lesbian_useSecondSet ? lesbian_white : lesbian_magenta, (lesbian_useSecondSet ? five_bars : five_bars - 3) / 2);
-        animatedColor.gay = hslToRgb(gay_transition, 0.75, 0.5);
-        animatedColor.bi = [bi_pink, bi_purple, bi_blue][three_bars];
-        animatedColor.trans = [trans_blue, trans_pink, trans_white, trans_pink, trans_blue][five_bars];
+        gameDraw.animatedColor.lesbian = gameDraw.getRainbow(lesbian_useSecondSet ? lesbian_oredange : lesbian_white, lesbian_useSecondSet ? lesbian_white : lesbian_magenta, (lesbian_useSecondSet ? five_bars : five_bars - 3) / 2);
+        gameDraw.animatedColor.gay = gameDraw.hslToRgb(gay_transition, 0.75, 0.5);
+        gameDraw.animatedColor.bi = [bi_pink, bi_purple, bi_blue][three_bars];
+        gameDraw.animatedColor.trans = [trans_blue, trans_pink, trans_white, trans_pink, trans_blue][five_bars];
 
-        animatedColor.blue_red = blinker ? color.blue : color.red;
-        animatedColor.blue_grey = blinker ? color.blue : color.grey;
-        animatedColor.grey_blue = blinker ? color.grey : color.blue;
-        animatedColor.red_grey = blinker ? color.red : color.grey;
-        animatedColor.grey_red = blinker ? color.grey : color.red;
+        gameDraw.animatedColor.blue_red = blinker ? gameDraw.color.blue : gameDraw.color.red;
+        gameDraw.animatedColor.blue_grey = blinker ? gameDraw.color.blue : gameDraw.color.grey;
+        gameDraw.animatedColor.grey_blue = blinker ? gameDraw.color.grey : gameDraw.color.blue;
+        gameDraw.animatedColor.red_grey = blinker ? gameDraw.color.red : gameDraw.color.grey;
+        gameDraw.animatedColor.grey_red = blinker ? gameDraw.color.grey : gameDraw.color.red;
     },
     animatedColors: {
         // police
@@ -253,87 +255,87 @@ const gameDraw = {
             case 0:
             case "teal":
             case "aqua":
-                return color.teal;
+                return gameDraw.color.teal;
             case 1:
             case "lightGreen":
-                return color.lgreen;
+                return gameDraw.color.lgreen;
             case 2:
             case "orange":
-                return color.orange;
+                return gameDraw.color.orange;
             case 3:
             case "yellow":
-                return color.yellow;
+                return gameDraw.color.yellow;
             case 4:
             case "lavender":
-                return color.lavender;
+                return gameDraw.color.lavender;
             case 5:
             case "pink":
-                return color.pink;
+                return gameDraw.color.pink;
             case 6:
             case "veryLightGrey":
             case "veryLightGray":
-                return color.vlgrey;
+                return gameDraw.color.vlgrey;
             case 7:
             case "lightGrey":
             case "lightGray":
-                return color.lgrey;
+                return gameDraw.color.lgrey;
             case 8:
             case "pureWhite":
-                return color.guiwhite;
+                return gameDraw.color.guiwhite;
             case 9:
             case "black":
-                return color.black;
+                return gameDraw.color.black;
             case 10:
             case "blue":
-                return color.blue;
+                return gameDraw.color.blue;
             case 11:
             case "green":
-                return color.green;
+                return gameDraw.color.green;
             case 12:
             case "red":
-                return color.red;
+                return gameDraw.color.red;
             case 13:
             case "gold":
-                return color.gold;
+                return gameDraw.color.gold;
             case 14:
             case "purple":
-                return color.purple;
+                return gameDraw.color.purple;
             case 15:
             case "magenta":
-                return color.magenta;
+                return gameDraw.color.magenta;
             case 16:
             case "grey":
             case "gray":
-                return color.grey;
+                return gameDraw.color.grey;
             case 17:
             case "darkGrey":
             case "darkGray":
-                return color.dgrey;
+                return gameDraw.color.dgrey;
             case 18:
             case "white":
-                return color.white;
+                return gameDraw.color.white;
             case 19:
             case "pureBlack":
-                return color.guiblack;
+                return gameDraw.color.guiblack;
             case 20:
             case "animatedBlueRed":
-                return animatedColor.blue_red;
+                return gameDraw.animatedColor.blue_red;
             case 21:
             case "animatedBlueGrey":
             case "animatedBlueGray":
-                return animatedColor.blue_grey;
+                return gameDraw.animatedColor.blue_grey;
             case 22:
             case "animatedGreyBlue":
             case "animatedGrayBlue":
-                return animatedColor.grey_blue;
+                return gameDraw.animatedColor.grey_blue;
             case 23:
             case "animatedRedGrey":
             case "animatedRedGray":
-                return animatedColor.red_grey;
+                return gameDraw.animatedColor.red_grey;
             case 24:
             case "animatedGreyRed":
             case "animatedGrayRed":
-                return animatedColor.grey_red;
+                return gameDraw.animatedColor.grey_red;
             case 25:
             case "mustard":
                 return "#C49608";
@@ -349,7 +351,7 @@ const gameDraw = {
                 return "#13808E";
             case 29:
             case "animatedLesbian":
-                return animatedColor.lesbian;
+                return gameDraw.animatedColor.lesbian;
             case 30:
             case "powerGem":
             case "powerStone":
@@ -376,13 +378,13 @@ const gameDraw = {
                 return "#ffd300";
             case 36:
             case "rainbow":
-                return animatedColor.gay;
+                return gameDraw.animatedColor.gay;
             case 37:
             case "animatedTrans":
-                return animatedColor.trans;
+                return gameDraw.animatedColor.trans;
             case 38:
             case "animatedBi":
-                return animatedColor.bi;
+                return gameDraw.animatedColor.bi;
             case 39:
             case "pumpkinStem":
                 return "#654321";
@@ -395,29 +397,29 @@ const gameDraw = {
         }
     },
     getColorDark: (givenColor) => {
-        let dark = config.graphical.neon ? color.white : color.black;
+        let dark = config.graphical.neon ? gameDraw.color.white : gameDraw.color.black;
         if (config.graphical.darkBorders) return dark;
-        return mixColors(givenColor, dark, color.border);
+        return gameDraw.mixColors(givenColor, dark, gameDraw.color.border);
     },
     getZoneColor: (cell, real) => {
         switch (cell) {
             case "bas1":
             case "bap1":
             case "dom1":
-                return color.blue;
+                return gameDraw.color.blue;
             case "bas2":
             case "bap2":
             case "dom2":
-                return color.green;
+                return gameDraw.color.green;
             case "bas3":
             case "bap3":
             case "dom3":
             case "boss":
-                return color.red;
+                return gameDraw.color.red;
             case "bas4":
             case "bap4":
             case "dom4":
-                return color.magenta;
+                return gameDraw.color.magenta;
             case "bas5":
             case "bap5":
             case "dom5":
@@ -435,22 +437,22 @@ const gameDraw = {
             case "dom8":
                 return "#13808E";
             case "port":
-                return color.guiblack;
+                return gameDraw.color.guiblack;
             case "nest":
-                return real ? color.purple : color.lavender;
+                return real ? gameDraw.color.purple : gameDraw.color.lavender;
             case "dom0":
-                return color.gold;
+                return gameDraw.color.gold;
             default:
-                return real ? color.white : color.lgrey;
+                return real ? gameDraw.color.white : gameDraw.color.lgrey;
         }
     },
     setColor: (context, givenColor) => {
         if (config.graphical.neon) {
-            context.fillStyle = getColorDark(givenColor);
+            context.fillStyle = gameDraw.getColorDark(givenColor);
             context.strokeStyle = givenColor;
         } else {
             context.fillStyle = givenColor;
-            context.strokeStyle = getColorDark(givenColor);
+            context.strokeStyle = gameDraw.getColorDark(givenColor);
         }
     }
 }
