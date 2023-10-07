@@ -24,3 +24,5 @@ If you want to stay up to date, fork this template, download a git client, and s
 ## Other Links
 
 - [Our Discord server](https://discord.gg/kvCAZfUCjy)
+
+p.s. if something goes terribly wrong its not our fault
