@@ -1572,6 +1572,9 @@ class Entity extends EventEmitter {
                     4 / roomSpeed
                 );
                 break;
+            case "noFacing":
+                this.facing = 0;
+                break;
             case "bound":
                 let givenangle,
                     reduceIndependence = false,
