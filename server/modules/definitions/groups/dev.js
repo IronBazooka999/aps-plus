@@ -413,7 +413,7 @@ exports.colorMan = {
 exports.miscTestHelper2 = {
     PARENT: ["genericTank"],
     LABEL: "Turret Reload Test 3",
-    TURRET_FACES_CLIENT: true,
+    MIRROR_MASTER_ANGLE: true,
     COLOR: -1,
     GUNS: [
         {
@@ -429,7 +429,7 @@ exports.miscTestHelper2 = {
 exports.miscTestHelper = {
     PARENT: ["genericTank"],
     LABEL: "Turret Reload Test 2",
-    TURRET_FACES_CLIENT: true,
+    //MIRROR_MASTER_ANGLE: true,
     COLOR: {
         BASE: -1,
         BRIGHTNESS_SHIFT: 15,
@@ -446,7 +446,7 @@ exports.miscTestHelper = {
     ],
     TURRETS: [
         {
-          POSITION: [20, 0, 20, 0, 0, 1],
+          POSITION: [20, 0, 20, 30, 0, 1],
           TYPE: "miscTestHelper2",
         }
     ]
@@ -466,11 +466,48 @@ exports.miscTest = {
     ],
     TURRETS: [
         {
-            POSITION: [20, 0, 20, 0, 0, 1],
+            POSITION: [20, 0, 20, 30, 0, 1],
             TYPE: "miscTestHelper",
         }
     ]
 };
+exports.mmaTest2 = {
+    PARENT: ["genericTank"],
+    MIRROR_MASTER_ANGLE: true,
+    GUNS: [{
+            POSITION: [40, 4, 1, -20, 0, 0, 0],
+        }],
+}
+exports.mmaTest1 = {
+    PARENT: ["genericTank"],
+    COLOR: -1,
+    // Somehow, removing the gun below causes a crash when the tank is chosen ??????
+    GUNS: [
+        {
+            POSITION: [18, 8, 1, 0, 0, 0, 0],
+        }
+    ],
+    TURRETS: [
+        {
+            POSITION: [10, 0, 0, 0, 360, 1],
+            TYPE: "mmaTest2",
+        }
+    ]
+}
+exports.mmaTest = {
+    PARENT: ["genericTank"],
+    LABEL: "Mirror Master Angle Test",
+    TURRETS: [
+        {
+            POSITION: [10, 0, 0, 0, 360, 1],
+            TYPE: "mmaTest2",
+        },
+        {
+            POSITION: [20, 0, 20, 0, 360, 1],
+            TYPE: "mmaTest1",
+        },
+    ]
+}
 exports.auraBasicGen = addAura();
 exports.auraBasic = {
     PARENT: ["genericTank"],
@@ -566,16 +603,16 @@ exports.trplnrsTestTank = {
     }],
     TURRETS: [{
         POSITION: [15, 12.5, 12.5, 0, 0, 0],
-        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+        TYPE: { SHAPE: 4, COLOR: 'black', MIRROR_MASTER_ANGLE: true }
     }, {
         POSITION: [15, 12.5, -12.5, 0, 0, 0],
-        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+        TYPE: { SHAPE: 4, COLOR: 'black', MIRROR_MASTER_ANGLE: true }
     }, {
         POSITION: [15, -12.5, -12.5, 0, 0, 0],
-        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+        TYPE: { SHAPE: 4, COLOR: 'black', MIRROR_MASTER_ANGLE: true }
     }, {
         POSITION: [15, -12.5, 12.5, 0, 0, 0],
-        TYPE: { SHAPE: 4, COLOR: 'black', TURRET_FACES_CLIENT: true }
+        TYPE: { SHAPE: 4, COLOR: 'black', MIRROR_MASTER_ANGLE: true }
     }]
 }
 
@@ -650,14 +687,14 @@ exports.switcheroo = {
 exports.florr_tank_eye = {
     PARENT: "genericTank",
     BORDERLESS: true,
-    TURRET_FACES_CLIENT: true,
+    MIRROR_MASTER_ANGLE: true,
     SHAPE: 'M 0 -1.5 C -1 -1.5 -1 1.5 0 1.5 C 1 1.5 1 -1.5 0 -1.5'
 }
 exports.florr_tank_smile = {
     PARENT: "genericTank",
     COLOR: 'black',
     BORDERLESS: true,
-    TURRET_FACES_CLIENT: true,
+    MIRROR_MASTER_ANGLE: true,
     SHAPE: 'M 5 1.5 C 3 -2.5 -3 -2.5 -5 1.5 L -4 2 C -2 -1.5 2 -1.5 4 2 L 5 1.5'
 }
 exports.florr_tank = {
@@ -954,4 +991,4 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
     exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
     exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
-    exports.fun.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic", "ghoster", "switcheroo"];
+    exports.fun.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "trplnrsTestTank", "weirdAutoBasic", "ghoster", "switcheroo", "mmaTest"];

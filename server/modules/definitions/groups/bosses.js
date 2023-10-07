@@ -3921,13 +3921,13 @@ exports.taureonCore = {
 exports.taureonBase = {
     SHAPE: 4.5,
     COLOR: '#161B54',
-    TURRET_FACES_CLIENT: true
+    MIRROR_MASTER_ANGLE: true
 };
 let d = 1/4;
 exports.taureonStar = {
     SHAPE: [[0,1],[d,d],[1,0],[d,-d],[0,-1],[-d,-d],[-1,0],[-d,d]],
     COLOR: '#3F48CC',
-    TURRET_FACES_CLIENT: true
+    MIRROR_MASTER_ANGLE: true
 };
 exports.taureonRailgunTurret = {
     PARENT: "genericTank",
@@ -4091,13 +4091,13 @@ exports.shinyomegasunchip = {
     },
     TURRETS: [{
         POSITION: [20 * Math.SQRT1_2, 0, 0, 45, 0, 1],
-        TYPE: ["shinySquare", { TURRET_FACES_CLIENT: true }]
+        TYPE: ["shinySquare", { MIRROR_MASTER_ANGLE: true }]
     },{
         POSITION: [20 * Math.SQRT1_2 ** 2, 0, 0, 0, 0, 1],
-        TYPE: ["shinySquare", { TURRET_FACES_CLIENT: true }]
+        TYPE: ["shinySquare", { MIRROR_MASTER_ANGLE: true }]
     },{
         POSITION: [20 * Math.SQRT1_2 ** 3, 0, 0, 45, 0, 1],
-        TYPE: ["shinySquare", { TURRET_FACES_CLIENT: true }]
+        TYPE: ["shinySquare", { MIRROR_MASTER_ANGLE: true }]
     }]
 };
 exports.shinyEggDummy = {

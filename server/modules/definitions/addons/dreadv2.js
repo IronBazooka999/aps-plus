@@ -570,7 +570,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [11, 0, 0, 0, 0, 1],
-				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["square", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -601,7 +601,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 0, 0, 1],
-				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["square", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [10, 0, 0, 0, 360, 1],
@@ -616,7 +616,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [14, 0, 0, 0, 0, 1],
-				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["square", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [11, 0, 0, 0, 360, 1],
@@ -631,7 +631,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [15, 0, 0, 0, 0, 1],
-				TYPE: ["square", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["square", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [12, 0, 0, 0, 360, 1],
@@ -651,11 +651,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [15, 0, 0, 0, 0, 1],
-				TYPE: ['square', {TURRET_FACES_CLIENT: true}]
+				TYPE: ['square', {MIRROR_MASTER_ANGLE: true}]
 			},
 			{
 				POSITION: [24, 0, 0, 0, 0, 0],
-				TYPE: ['square', {COLOR: 9, TURRET_FACES_CLIENT: true}]
+				TYPE: ['square', {COLOR: 9, MIRROR_MASTER_ANGLE: true}]
 			},
 		],
 	}
@@ -682,7 +682,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 0, 0, 1],
-				TYPE: ['colossalTopOfficialV2', {TURRET_FACES_CLIENT: true}]
+				TYPE: ['colossalTopOfficialV2', {MIRROR_MASTER_ANGLE: true}]
 			},
 		],
 	}
@@ -987,7 +987,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [11, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1010,7 +1010,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9.5, 0, 0, 0, 360, 1],
@@ -1032,7 +1032,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1057,7 +1057,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9.5, 0, 0, 0, 360, 1],
@@ -1092,7 +1092,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [15, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [11, 0, 0, 0, 360, 1],
@@ -1107,7 +1107,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1132,7 +1132,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1156,7 +1156,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9.5, 0, 0, 0, 360, 1],
@@ -1178,7 +1178,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9.5, 0, 0, 0, 360, 1],
@@ -1206,11 +1206,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [14, 0, 0, 180, 0, 1],
-				TYPE: ['triangle', {COLOR: 9, TURRET_FACES_CLIENT: true}]
+				TYPE: ['triangle', {COLOR: 9, MIRROR_MASTER_ANGLE: true}]
 			},
 			{
 				POSITION: [24, 0, 0, 180, 0, 0],
-				TYPE: ['triangle', {COLOR: 9, TURRET_FACES_CLIENT: true}]
+				TYPE: ['triangle', {COLOR: 9, MIRROR_MASTER_ANGLE: true}]
 			},
 		],
 	}
@@ -1226,11 +1226,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [24, 0, 0, 180, 0, 0],
-				TYPE: ['triangle', {COLOR: 9, TURRET_FACES_CLIENT: true}]
+				TYPE: ['triangle', {COLOR: 9, MIRROR_MASTER_ANGLE: true}]
 			},
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			}
 		],
 	}
@@ -1254,11 +1254,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [24, 0, 0, 180, 0, 0],
-				TYPE: ['triangle', {COLOR: 9, TURRET_FACES_CLIENT: true}]
+				TYPE: ['triangle', {COLOR: 9, MIRROR_MASTER_ANGLE: true}]
 			},
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			}
 		],
 	}
@@ -1293,7 +1293,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [11, 0, 0, 0, 0, 1],
-				TYPE: ["titanTopOfficialV2", {TURRET_FACES_CLIENT: true}]
+				TYPE: ["titanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
 			}
 		],
 	}
@@ -1316,7 +1316,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			}
 		],
 	}
@@ -1345,7 +1345,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["triangle", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			}
 		],
 	}
@@ -1733,7 +1733,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			}
 		],
 	}
@@ -1760,7 +1760,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9, 0, 0, 0, 360, 1],
@@ -1782,7 +1782,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1807,7 +1807,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9.5, 0, 0, 0, 360, 1],
@@ -1842,7 +1842,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [15, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [13.5, 0, 0, 0, 360, 1],
@@ -1856,7 +1856,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [14, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1880,7 +1880,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [14, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1906,7 +1906,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1932,7 +1932,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [9.5, 0, 0, 0, 360, 1],
@@ -1960,11 +1960,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [15, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {COLOR: 9, TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {COLOR: 9, MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [24, 0, 0, 180, 0, 0],
-				TYPE: ["pentagon", {COLOR: 9, TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {COLOR: 9, MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -1980,11 +1980,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [24, 0, 0, 180, 0, 0],
-				TYPE: ["pentagon", {COLOR: 9,TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {COLOR: 9,MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -2008,11 +2008,11 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
 				POSITION: [24, 0, 0, 180, 0, 0],
-				TYPE: ["pentagon", {COLOR: 9,TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {COLOR: 9,MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -2027,7 +2027,7 @@ module.exports = ({ Class }) => {
 	Class.pentagonLeviathanTopOfficialV2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Leviathan",
-		TURRET_FACES_CLIENT: true,
+		MIRROR_MASTER_ANGLE: true,
 	    GUNS: [],
 	}
 	for (let i = 0; i < 5; i++) {
@@ -2041,7 +2041,7 @@ module.exports = ({ Class }) => {
 	Class.hexagonLeviathanTopOfficialV2 = {
 	    PARENT: ["genericHexnought"],
 	    LABEL: "Leviathan",
-		TURRET_FACES_CLIENT: true,
+		MIRROR_MASTER_ANGLE: true,
 	    GUNS: [],
 	}
 	for (let i = 0; i < 6; i++) {
@@ -2059,7 +2059,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 0, 0, 1],
-				TYPE: ["pentagonLeviathanTopOfficialV2", {TURRET_FACES_CLIENT: true}]
+				TYPE: ["pentagonLeviathanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
 			}
 		],
 	}
@@ -2078,7 +2078,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [13, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
@@ -2103,7 +2103,7 @@ module.exports = ({ Class }) => {
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
-				TYPE: ["pentagon", {TURRET_FACES_CLIENT: true}],
+				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
