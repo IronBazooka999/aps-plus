@@ -1419,7 +1419,7 @@ module.exports = ({ Class }) => {
 					TYPE: "bullet",
 				},
 			},
-      {
+      		{
 				POSITION: [15, 7, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam, {size: 0.85}]),
@@ -1449,7 +1449,7 @@ module.exports = ({ Class }) => {
 					TYPE: "bullet",
 				},
 			},
-      {
+      		{
 				POSITION: [8, 7.5, 1.2, 9.5, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.05}]),
