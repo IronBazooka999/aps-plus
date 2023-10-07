@@ -842,43 +842,58 @@ var getClassUpgradeKey = function (number) {
 
 let tiles,
     branches,
+    tankTree,
     measureSize = (x, y, colorIndex, { index, tier = 0 }) => {
         tiles.push({ x, y, colorIndex, index });
-        let { upgrades } = global.mockups[index];
-        switch (tier) {
-            case 3:
-                return { width: 1, height: 1 };
-            case 2:
-                for (let i = 0; i < upgrades.length; i++) {
-                    measureSize(x, y + 2 + i, i, upgrades[i]);   
-                }
-                branches.push([{ x, y }, { x, y: y + 1 + upgrades.length }]);
-                return { width: 1, height: 2 + upgrades.length };
-            case 1:
-            case 0:
-                let xStart = x,
-                    us = upgrades.map((u, i) => {
-                        let spacing = 2 * u.tier,
-                            measure = measureSize(x, y + spacing, i, u);
-                        branches.push([{ x, y: y + Math.sign(i) }, { x, y: y + spacing }]);
-                        if (i + 1 === upgrades.length) {
-                            branches.push([{ x: xStart, y: y + 1 }, { x, y: y + 1 }]);
-                        }
-                        x += measure.width;
-                        return measure;
-                    });
-                return {
-                    width: us.map((r) => r.width).reduce((a, b) => a + b, 0),
-                    height: 2 + Math.max(...us.map((r) => r.height)),
-                };
+        let { upgrades } = global.mockups[index],
+            xStart = x,
+            cumulativeWidth = 1,
+            maxHeight = 1,
+            hasUpgrades = [],
+            noUpgrades = [];
+        for (let i = 0; i < upgrades.length; i++) {
+            let upgrade = upgrades[i];
+            if (global.mockups[upgrade.index].upgrades.length) {
+                hasUpgrades.push(upgrade);
+            } else {
+                noUpgrades.push(upgrade);
+            }
         }
-    },
-    tankTree;
+        for (let i = 0; i < hasUpgrades.length; i++) {
+            let upgrade = hasUpgrades[i],
+                spacing = 2 * Math.max(1, upgrade.tier - tier),
+                measure = measureSize(x, y + spacing, 10 + i, upgrade);
+            branches.push([{ x, y: y + Math.sign(i) }, { x, y: y + spacing + 1 }]);
+            if (i === hasUpgrades.length - 1 && !noUpgrades.length) {
+                branches.push([{ x: xStart, y: y + 1 }, { x, y: y + 1 }]);
+            }
+            x += measure.width;
+            cumulativeWidth += measure.width;
+            if (maxHeight < measure.height) maxHeight = measure.height;
+        }
+        y++;
+        for (let i = 0; i < noUpgrades.length; i++) {
+            let upgrade = noUpgrades[i],
+                spacing = 2 * Math.max(1, upgrade.tier - tier),
+                height = 2 + upgrades.length;
+            measureSize(x, y + 1 + i + Math.sign(hasUpgrades.length) * 2, 10 + i, upgrade);
+            if (i === noUpgrades.length - 1) {
+                if (hasUpgrades.length > 1) cumulativeWidth++;
+                branches.push([{ x: xStart, y }, { x, y }]);
+                branches.push([{ x, y }, { x, y: y + noUpgrades.length + Math.sign(hasUpgrades.length) * 2 }]);
+            }
+            if (maxHeight < height) maxHeight = height;
+        }
+        return {
+            width: cumulativeWidth,
+            height: 2 + maxHeight,
+        };
+    };
 function generateTankTree(rootIndex) {
     generatedTankTree = rootIndex;
     tiles = [];
     branches = [];
-    tankTree = measureSize(0, 0, 0, { index: rootIndex });
+    tankTree = measureSize(0, 0, 10, { index: rootIndex });
 }
 
 function drawFloor(px, py, ratio) {
@@ -997,14 +1012,11 @@ function drawEntities(px, py, ratio) {
     }
 }
 
-function drawUpgradeTree() {
-    if (global.died) {
-        global.showTree = false;
-        global.scrollX = global.realScrollX = 0;
-    }
-    global.scrollX = util.lerp(global.scrollX, global.realScrollX, 0.1);
-
-    let instance = global.entities.find((i) => i.id === gui.playerid),
+global.showTree = false;
+global.scrollX = global.scrollY = global.fixedScrollX = global.fixedScrollY = -1;
+global.shouldScrollY = global.shouldScrollX = 0;
+function drawUpgradeTree(spacing, alcoveSize) {
+    let instance = global.entities.find(i => i.id === gui.playerid),
         m = global.mockups[instance.index],
         rootIndex = m.index;
     if (m.rerootUpgradeTree && rootIndex !== generatedTankTree) {
@@ -1017,13 +1029,27 @@ function drawUpgradeTree() {
     }
 
     let tileDiv = true ? 1 : 1.25,
-        tileSize = Math.min(((global.screenWidth * 0.9) / tankTree.width) * 55, (global.screenHeight * 0.9) / tankTree.height) / tileDiv,
-        size = tileSize - 4;
+        tileSize = alcoveSize / 2,
+        size = tileSize - 4,
+        spaceBetween = 8,
+        padding = 0.5 + spaceBetween / tileSize;
+
+    if (global.died) {
+        global.showTree = false;
+        global.scrollX = global.scrollY = global.fixedScrollX = global.fixedScrollY = -1;
+        global.shouldScrollY = global.shouldScrollX = 0;
+    }
+    global.fixedScrollX = Math.max(-padding, Math.min(tankTree.width + padding, global.fixedScrollX + global.shouldScrollX));
+    global.fixedScrollY = Math.max(-padding, Math.min(tankTree.height + padding, global.fixedScrollY + global.shouldScrollY));
+    global.scrollX = util.lerp(global.scrollX, global.fixedScrollX, 0.1);
+    global.scrollY = util.lerp(global.scrollY, global.fixedScrollY, 0.1);
+
     for (let [start, end] of branches) {
-        let sx = global.screenWidth / 2 + (start.x - tankTree.width * global.scrollX) * tileSize + 1 + 0.5 * size,
-            sy = global.screenHeight / 2 + (start.y - tankTree.height / 2) * tileSize + 1 + 0.5 * size,
-            ex = global.screenWidth / 2 + (end.x - tankTree.width * global.scrollX) * tileSize + 1 + 0.5 * size,
-            ey = global.screenHeight / 2 + (end.y - tankTree.height / 2) * tileSize + 1 + 0.5 * size;
+        let sx = start.x * spaceBetween + (start.x - global.scrollX) * tileSize + 1 + 0.5 * size,
+            sy = start.y * spaceBetween + (start.y - global.scrollY) * tileSize + 1 + 0.5 * size,
+            ex = end.x * spaceBetween + (end.x - global.scrollX) * tileSize + 1 + 0.5 * size,
+            ey = end.y * spaceBetween + (end.y - global.scrollY) * tileSize + 1 + 0.5 * size;
+        if (ex < 0 || sx > global.screenWidth || ey < 0 || sy > global.screenHeight) continue;
         ctx.strokeStyle = color.black;
         ctx.lineWidth = 2;
         drawGuiLine(sx, sy, ex, ey);
@@ -1031,31 +1057,14 @@ function drawUpgradeTree() {
     ctx.globalAlpha = 0.5;
     ctx.fillStyle = color.guiwhite;
     ctx.fillRect(0, 0, innerWidth, innerHeight);
-    let text = "Use the arrow keys to navigate the class tree. Press T again to close it.";
-    let w = measureText(text);
-    ctx.globalAlpha = 1;
-    ctx.lineWidth = 1;
-    ctx.fillStyle = color.red;
-    ctx.strokeStyle = color.black;
-    ctx.fillText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
-    ctx.strokeText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
     ctx.globalAlpha = 1;
 
     //draw the various tank icons
     for (let { x, y, colorIndex, index } of tiles) {
-        let ax = global.screenWidth / 2 + (x - tankTree.width * global.scrollX) * tileSize,
-            ay = global.screenHeight / 2 + (y - tankTree.height / 2) * tileSize,
+        let ax = x * spaceBetween + (x - global.scrollX) * tileSize,
+            ay = y * spaceBetween + (y - global.scrollY) * tileSize,
             size = tileSize;
-        if (ax < -50 || ax + size - 50 > global.screenWidth) continue;
-        ctx.globalAlpha = 0.75;
-        ctx.fillStyle = gameDraw.getColor(10);
-        drawGuiRect(ax, ay, size, size);
-        ctx.globalAlpha = 0.15;
-        ctx.fillStyle = gameDraw.getColor(0);
-        drawGuiRect(ax, ay, size, size * 0.6);
-        ctx.fillStyle = color.black;
-        drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
-        ctx.globalAlpha = 1;
+        if (ax < -size || ax > global.screenWidth + size || ay < -size || ay > global.screenHeight + size) continue;
         let angle = -Math.PI / 4,
             position = global.mockups[index].position,
             scale = (0.8 * size) / position.axis,
@@ -1063,12 +1072,33 @@ function drawUpgradeTree() {
             yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle),
             picture = util.getEntityImageFromMockup(index, gui.color),
             baseColor = picture.color;
-        drawEntity(baseColor, xx, yy, picture, 0.5, 1, (scale / picture.size) * 2, angle, true);
-        ctx.strokeStyle = color.black;
+
+        ctx.globalAlpha = 0.75;
+        ctx.fillStyle = getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
+        drawGuiRect(ax, ay, size, size);
+        ctx.globalAlpha = 0.15;
+        ctx.fillStyle = getColor(-10 + colorIndex++);
+        drawGuiRect(ax, ay, size, size * 0.6);
+        ctx.fillStyle = color.black;
+        drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
         ctx.globalAlpha = 1;
-        ctx.lineWidth = 2;
+
+        drawEntity(baseColor, xx, yy, picture, 1, 1, scale / picture.size, angle, true);
+
+        drawText(picture.upgradeName ?? picture.name, ax + size / 2, ay + size - 5, size / 8 - 3, color.guiwhite, "center");
+
+        ctx.lineWidth = 3;
         drawGuiRect(ax, ay, size, size, true);
     }
+
+    let text = "Use the arrow keys to navigate the class tree. Press T again to close it.";
+    let w = measureText(text, 16);
+    ctx.globalAlpha = 1;
+    ctx.lineWidth = 1;
+    ctx.fillStyle = color.red;
+    ctx.strokeStyle = color.black;
+    ctx.fillText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
+    ctx.strokeText(text, innerWidth / 2 - w / 2, innerHeight * 0.04);
 }
 
 function drawMessages(spacing) {
@@ -1373,6 +1403,13 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             xxx = x;
             global.clickables.upgrade.place(i, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);
 
+            let position = global.mockups[model].position,
+                scale = (0.6 * len) / position.axis,
+                xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
+                yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
+                picture = util.getEntityImageFromMockup(model, gui.color),
+                baseColor = picture.color;
+
             // Draw box
             ctx.globalAlpha = 0.5;
             ctx.fillStyle = gameDraw.getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
@@ -1385,12 +1422,6 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             ctx.globalAlpha = 1;
 
             // Draw Tank
-            let position = global.mockups[model].position,
-                scale = (0.6 * len) / position.axis,
-                xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
-                yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
-                picture = util.getEntityImageFromMockup(model, gui.color),
-                baseColor = picture.color;
             drawEntity(baseColor, xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
             let upgradeKey = getClassUpgradeKey(ticker);
 
@@ -1460,7 +1491,7 @@ const gameDrawAlive = (ratio, drawRatio) => {
     let lb = leaderboard.get();
     let max = lb.max;
     if (global.showTree) {
-        drawUpgradeTree();
+        drawUpgradeTree(spacing, alcoveSize);
     } else {
         drawMessages(spacing);
         drawSkillBars(spacing, alcoveSize);

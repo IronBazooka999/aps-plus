@@ -1572,6 +1572,9 @@ class Entity extends EventEmitter {
                     4 / roomSpeed
                 );
                 break;
+            case "noFacing":
+                this.facing = 0;
+                break;
             case "bound":
                 let givenangle,
                     reduceIndependence = false,
@@ -1822,7 +1825,8 @@ class Entity extends EventEmitter {
             let name = this.master.name == ""
                 ? this.master.type === "tank"
                     ? "an unnamed " + this.label : this.master.type === "miniboss"
-                    ? "a visiting " + this.label : util.addArticle(this.label)
+                    ? "a visiting " + this.label : this.label.substring(0, 3) == 'The'
+                    ? this.label : util.addArticle(this.label)
                 : this.master.name + "'s " + this.label;
             // Calculate the jackpot
             let jackpot = util.getJackpot(this.skill.score) / this.collisionArray.length;
