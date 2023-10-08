@@ -78,50 +78,50 @@ module.exports = ({ Class }) => {
 	];
 
 	// Misc
-	Class.genericEggnought = {
+	Class.genericDreadnoughtOfficialV2 = {
 		PARENT: ["genericTank"],
+		SKILL_CAP: Array(10).fill(smshskl),
+		REROOT_UPGRADE_TREE: "dreadOfficialV2",
+	}
+	Class.genericEggnought = {
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: eggnoughtBody,
 	    SHAPE: 0,
 	    COLOR: 6,
 	    SIZE: 13.75,
 		DANGER: 8,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericSquarenought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: squarenoughtBody,
 	    SHAPE: 4,
 	    COLOR: 13,
 	    SIZE: 15,
 		DANGER: 9,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericTrinought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: trinoughtBody,
 	    SHAPE: 3.5,
 	    COLOR: 2,
 	    SIZE: 20,
 		DANGER: 10,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericPentanought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: pentanoughtBody,
 	    SHAPE: 5.5,
 	    COLOR: 14,
 	    SIZE: 25,
 		DANGER: 11,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericHexnought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: hexnoughtBody,
 	    SHAPE: 6,
 	    COLOR: 0,
 	    SIZE: 30,
 		DANGER: 12,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 
 	Class.spamAutoTurret = {
@@ -189,7 +189,6 @@ module.exports = ({ Class }) => {
 	    LABEL: "Dreadnought",
 		LEVEL: 90,
 		EXTRA_SKILL: 18,
-		REROOT_UPGRADE_TREE: true,
 	}
 
 	// T1 Weapons

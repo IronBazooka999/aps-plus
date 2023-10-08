@@ -24,6 +24,7 @@ function getMockup(e, positionInfo) {
         statnames: e.settings.skillNames,
         position: positionInfo,
         rerootUpgradeTree: e.rerootUpgradeTree,
+        className: e.className,
         upgrades: e.upgrades.map(r => ({
             tier: r.tier,
             index: r.index
@@ -251,6 +252,7 @@ for (let k in Class) {
         // Create a reference entities which we'll then take an image of.
         let temptank = new Entity({ x: 0, y: 0 });
         temptank.define(type);
+        temptank.className = k;
         temptank.name = type.LABEL; // Rename it (for the upgrades menu).
         // Fetch the mockup.
         type.mockup = {

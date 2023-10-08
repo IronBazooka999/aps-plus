@@ -1132,7 +1132,6 @@ exports.weirdSpikeBody2 = {
 exports.basic = {
     PARENT: ["genericTank"],
     LABEL: "Basic",
-    REROOT_UPGRADE_TREE: true,
     BODY: {
         ACCELERATION: base.ACCEL * 1,
         SPEED: base.SPEED * 1,

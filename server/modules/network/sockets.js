@@ -727,6 +727,7 @@ function update(gui) {
     // Update physics
     gui.accel.update(b.acceleration);
     gui.topspeed.update(-b.team * room.partyHash);
+    gui.root.update(b.rerootUpgradeTree);
 }
 
 function publish(gui) {
@@ -741,6 +742,7 @@ function publish(gui) {
         skills: gui.skills.publish(),
         accel: gui.accel.publish(),
         top: gui.topspeed.publish(),
+        root: gui.root.publish(),
     };
     // Encode which we'll be updating and capture those values only
     let oo = [0];
@@ -782,6 +784,10 @@ function publish(gui) {
         oo[0] += 0x0100;
         oo.push(o.top);
     }
+    if (o.root != null) {
+        oo[0] += 0x0200;
+        oo.push(o.root);
+    }
     // Output it
     return oo;
 }
@@ -802,6 +808,7 @@ let newgui = (player) => {
         accel: floppy(),
         stats: container(player),
         bodyid: -1,
+        root: floppy(),
     };
     // This is the gui itself
     return {

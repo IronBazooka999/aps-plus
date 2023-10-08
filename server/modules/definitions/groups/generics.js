@@ -61,7 +61,7 @@ exports.genericEntity = {
     MAX_CHILDREN: 0,
     BORDERLESS: false,
     DRAW_FILL: true,
-    REROOT_UPGRADE_TREE: false,
+    REROOT_UPGRADE_TREE: null,
     BODY: {
         ACCELERATION: 1,
         SPEED: 0,
@@ -95,6 +95,7 @@ exports.genericTank = {
     MAX_CHILDREN: 0,
     DAMAGE_EFFECTS: false,
     IGNORED_BY_AI: false,
+    REROOT_UPGRADE_TREE: "basic",
     BODY: {
         ACCELERATION: base.ACCEL,
         SPEED: base.SPEED,
