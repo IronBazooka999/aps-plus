@@ -2003,7 +2003,7 @@ exports.falcon = {
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
+                STAT_CALCULATOR: gunCalcNames.thruster,
             },
         },
         {
@@ -2017,7 +2017,7 @@ exports.falcon = {
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
+                STAT_CALCULATOR: gunCalcNames.thruster,
             },
         },
         {
@@ -2031,7 +2031,7 @@ exports.falcon = {
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
+                STAT_CALCULATOR: gunCalcNames.thruster,
             },
         },
     ],
@@ -4408,7 +4408,7 @@ exports.eagle = {
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
+                STAT_CALCULATOR: gunCalcNames.thruster,
             },
         },
         {
@@ -4422,7 +4422,7 @@ exports.eagle = {
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
+                STAT_CALCULATOR: gunCalcNames.thruster,
             },
         },
         {
@@ -4436,7 +4436,7 @@ exports.eagle = {
                     g.halfrecoil,
                 ]),
                 TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
+                STAT_CALCULATOR: gunCalcNames.thruster,
             },
         },
     ],
