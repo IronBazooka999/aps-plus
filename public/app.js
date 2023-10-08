@@ -1014,12 +1014,16 @@ function drawEntities(px, py, ratio) {
 global.showTree = false;
 global.scrollX = global.scrollY = global.fixedScrollX = global.fixedScrollY = -1;
 global.shouldScrollY = global.shouldScrollX = 0;
+let lastGuiType = null;
 function drawUpgradeTree(spacing, alcoveSize) {
-    let m = global.mockups[gui.type], // The mockup that corresponds to the player's tank
-        rootName = m.rerootUpgradeTree, // The upgrade tree root of the player's tank
-        rootIndex = rootName == undefined ? -1 : global.mockups.find(i => i.className == rootName).index; // The index of the mockup that corresponds to the root tank (-1 for no root)
-    if (rootIndex > -1) {
-        generateTankTree(rootIndex);
+    if (lastGuiType != gui.type) {
+        let m = global.mockups[gui.type], // The mockup that corresponds to the player's tank
+            rootName = m.rerootUpgradeTree, // The upgrade tree root of the player's tank
+            rootIndex = rootName == undefined ? -1 : global.mockups.find(i => i.className == rootName).index; // The index of the mockup that corresponds to the root tank (-1 for no root)
+        if (rootIndex > -1) {
+            generateTankTree(rootIndex);
+        }
+        lastGuiType = gui.type;
     }
     
     if (!tankTree) {
