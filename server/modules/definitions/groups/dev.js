@@ -658,7 +658,7 @@ exports.florr_tank = {
                     LENGTH: 1, 
                     X: -2, 
                     ANGLE: (360/8)*i, 
-                    DELAY: i <= 8 ? 1 : i <= 16 ? 2 : i <= 24 ? 3 : i <= 32 ? 4 : 5
+                    DELAY: i < 8 ? 1 : i < 16 ? 2 : i < 24 ? 3 : i < 32 ? 4 : 5
                 },
                 PROPERTIES: {
                     TYPE: 'bullet',
