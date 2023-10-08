@@ -631,7 +631,7 @@ class antiNaN {
                     ["velocity.y", isNaN(this.me.velocity.y)],
                     ["accel.x"   , isNaN(this.me.accel.x)],
                     ["accel.y"   , isNaN(this.me.accel.y)],
-                ].filter(entry => !!entry[1])).join(', ');
+                ].filter(entry => !!entry[1]).join(', '));
             }
             this.saveAN(this.me, this.data);
             if (this.amNaN(this.me)) console.log("NaN instance is still NaN.");
