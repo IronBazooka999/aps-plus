@@ -16,5 +16,5 @@
   "engines": {
     "node": "16.x"
   },
-  "license": "WTFPL"
+  "license": "GPL-3.0"
 }
