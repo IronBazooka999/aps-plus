@@ -231,15 +231,14 @@ function advancedcollide(my, n, doDamage, doInelastic, nIsFirmCollide = false) {
             // Now apply it
             // my.damageRecieved += damage._n * deathFactor._n;
             // n.damageRecieved += damage._me * deathFactor._me;
-            const __n = damage._n * deathFactor._n;
-            const __m = damage._me * deathFactor._me;
-            my.damageRecieved += __n * (__n > 0
+            const __my = damage._n * deathFactor._n;
+            const __n = damage._me * deathFactor._me;
+            my.damageRecieved += __my * parseFloat(__my > 0
                 ? my.team != n.team
                 : n.healer && n.team == my.team && my.type == "tank" && n.master.id != my.id);
-            n.damageRecieved += __m * (__m > 0
+            n.damageRecieved += __n * parseFloat(__n > 0
                 ? my.team != n.team
                 : my.healer && n.team == my.team && n.type == "tank" && my.master.id != n.id);
-
         }
     }
     /************* DO MOTION ***********/
