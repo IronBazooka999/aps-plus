@@ -660,7 +660,7 @@ exports.makeDeco = (shape = 0, color = 16) => {
     };
 }
 
-exports.addAura = (damageFactor = 1, sizeFactor = 1, opacity, auraColor) => {
+exports.addAura = (damageFactor = 1, sizeFactor = 1, opacity = 0.3, auraColor) => {
     let isHeal = damageFactor < 0;
     let auraType = isHeal ? "healAura" : "aura";
     let symbolType = isHeal ? "healerSymbol" : "auraSymbol";
@@ -684,7 +684,7 @@ exports.addAura = (damageFactor = 1, sizeFactor = 1, opacity, auraColor) => {
         ],
         TURRETS: [
             {
-                POSITION: [20 - 5 * isHeal, 0, 0, 0, 360, 1],
+                POSITION: [20 - 7.5 * isHeal, 0, 0, 0, 360, 1],
                 TYPE: [symbolType, {COLOR: auraColor, INDEPENDENT: true}],
             },
         ]
