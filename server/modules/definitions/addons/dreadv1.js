@@ -40,6 +40,7 @@ module.exports = ({ Class }) => {
 	    COLOR: 9,
 	    SIZE: 50,
 	    SKILL_CAP: Array(10).fill(smshskl+3),
+		REROOT_UPGRADE_TREE: "dread_APSofficialdreadv1",
 	};
 	Class.mechanismMainTurret = {
 	    PARENT: ["genericTank"],
@@ -98,7 +99,6 @@ module.exports = ({ Class }) => {
 	Class.dread_APSofficialdreadv1 = {
 	    PARENT: ["genericDreadnought1"],
 	    LABEL: "Dreadnought",
-		REROOT_UPGRADE_TREE: true,
 		LEVEL: 150,
 		EXTRA_SKILL: 48,
 	}

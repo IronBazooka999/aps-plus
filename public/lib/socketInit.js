@@ -66,6 +66,7 @@ var serverStart = 0,
             getLevel: () => level,
         },
         type: 0,
+        root: "",
         fps: 0,
         color: 0,
         accel: 0,
@@ -550,6 +551,7 @@ const convert = {
         let index = get.next(),
             // Translate the encoded index
             indices = {
+                root: index & 0x0200,
                 topspeed: index & 0x0100,
                 accel: index & 0x0080,
                 skills: index & 0x0040,
@@ -606,6 +608,9 @@ const convert = {
         }
         if (indices.topspeed) {
             gui.topspeed = get.next();
+        }
+        if (indices.root) {
+            gui.root = get.next();
         }
     },
     broadcast: () => {

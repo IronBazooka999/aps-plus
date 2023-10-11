@@ -594,37 +594,13 @@ class antiNaN {
         this.me = me;
         this.nansInARow = 0;
         this.data = { x: 1, y: 1, vx: 0, vy: 0, ax: 0, ay: 0 };
+        this.amNaN = me => [ me.x, me.y, me.velocity.x, me.velocity.y, me.accel.x, me.accel.y ].some(isNaN);
     }
-    resetAN(me, data) {
-        data.x = me.x;
-        data.y = me.y;
-        data.vx = me.velocity.x;
-        data.vy = me.velocity.y;
-        data.ax = me.accel.x;
-        data.ay = me.accel.y;
-    }
-    saveAN (me, data) {
-        me.x = data.x;
-        me.y = data.y;
-        me.velocity.x = data.vx;
-        me.velocity.y = data.vy;
-        me.accel.x = data.ax;
-        me.accel.y = data.ay;
-    }
-    amNaN (me) {
-        return [
-            isNaN(me.x), isNaN(me.y),
-            isNaN(me.velocity.x), isNaN(me.velocity.y),
-            isNaN(me.accel.x), isNaN(me.accel.x)
-        ].some(x=>x);
-    }
-
     update() {
         if (this.amNaN(this.me)) {
             this.nansInARow++;
             if (this.nansInARow > 50) {
-                console.log("NaN instance found. (Repeated)");
-                console.log("Debug:", [
+                console.log("NaN instance found. (Repeated)\nDebug:", [
                     ["x"         , isNaN(this.me.x)],
                     ["y"         , isNaN(this.me.y)],
                     ["velocity.x", isNaN(this.me.velocity.x)],
@@ -633,10 +609,20 @@ class antiNaN {
                     ["accel.y"   , isNaN(this.me.accel.y)],
                 ].filter(entry => !!entry[1]).join(', '));
             }
-            this.saveAN(this.me, this.data);
+            this.me.x = this.data.x;
+            this.me.y = this.data.y;
+            this.me.velocity.x = this.data.vx;
+            this.me.velocity.y = this.data.vy;
+            this.me.accel.x = this.data.ax;
+            this.me.accel.y = this.data.ay;
             if (this.amNaN(this.me)) console.log("NaN instance is still NaN.");
         } else {
-            this.resetAN(this.me, this.data);
+            this.data.x = this.me.x;
+            this.data.y = this.me.y;
+            this.data.vx = this.me.velocity.x;
+            this.data.vy = this.me.velocity.y;
+            this.data.ax = this.me.accel.x;
+            this.data.ay = this.me.accel.y;
             if (this.nansInARow > 0) this.nansInARow--;
         }
     }

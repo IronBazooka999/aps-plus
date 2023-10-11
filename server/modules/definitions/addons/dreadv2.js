@@ -78,50 +78,50 @@ module.exports = ({ Class }) => {
 	];
 
 	// Misc
-	Class.genericEggnought = {
+	Class.genericDreadnoughtOfficialV2 = {
 		PARENT: ["genericTank"],
+		SKILL_CAP: Array(10).fill(smshskl),
+		REROOT_UPGRADE_TREE: "dreadOfficialV2",
+	}
+	Class.genericEggnought = {
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: eggnoughtBody,
 	    SHAPE: 0,
 	    COLOR: 6,
 	    SIZE: 13.75,
 		DANGER: 8,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericSquarenought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: squarenoughtBody,
 	    SHAPE: 4,
 	    COLOR: 13,
 	    SIZE: 15,
 		DANGER: 9,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericTrinought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: trinoughtBody,
 	    SHAPE: 3.5,
 	    COLOR: 2,
 	    SIZE: 20,
 		DANGER: 10,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericPentanought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: pentanoughtBody,
 	    SHAPE: 5.5,
 	    COLOR: 14,
 	    SIZE: 25,
 		DANGER: 11,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 	Class.genericHexnought = {
-		PARENT: ["genericTank"],
+		PARENT: ["genericDreadnoughtOfficialV2"],
 		BODY: hexnoughtBody,
 	    SHAPE: 6,
 	    COLOR: 0,
 	    SIZE: 30,
 		DANGER: 12,
-	    SKILL_CAP: Array(10).fill(smshskl),
 	}
 
 	Class.spamAutoTurret = {
@@ -129,7 +129,7 @@ module.exports = ({ Class }) => {
 		INDEPENDENT: true,
 		GUNS: [
 			{
-				POSITION: [21, 10, 1, 0, 0, 0, 0],
+				POSITION: [22, 10, 1, 0, 0, 0, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.flank, g.auto]),
 					TYPE: "bullet",
@@ -189,7 +189,6 @@ module.exports = ({ Class }) => {
 	    LABEL: "Dreadnought",
 		LEVEL: 90,
 		EXTRA_SKILL: 18,
-		REROOT_UPGRADE_TREE: true,
 	}
 
 	// T1 Weapons
@@ -217,7 +216,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 2; i++) {
 		Class.pacifierOfficialV2.GUNS.push(
 			{
-				POSITION: [15, 7.5, 1, 0, 0, 180*i, 0],
+				POSITION: [15, 7, 1, 0, 0, 180*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.8}]),
 					TYPE: "bullet",
@@ -249,7 +248,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 2; i++) {
 		Class.invaderOfficialV2.GUNS.push(
 			{
-				POSITION: [5, 9.5, 1.2, 8, 0, 180*i, 0],
+				POSITION: [5, 9, 1.2, 8, 0, 180*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.drone, g.over, {reload: 0.85}]),
 					TYPE: "drone",
@@ -284,15 +283,33 @@ module.exports = ({ Class }) => {
 	}
 
 	// T1 Bodies
-	Class.byteOfficialV2 = makeAuto({
-	    PARENT: ["genericEggnought"],
-	    TURRETS: [
+	Class.byteTurretOfficialV2 = {
+		PARENT: ["autoTankGun"],
+		INDEPENDENT: true,
+		GUNS: [
 			{
-				POSITION: [15.5, 0, 0, 0, 0, 1],
-				TYPE: 'egg',
+				POSITION: [22, 10, 1, 0, 0, 0, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.auto, {health: 1.2, speed: 0.8}]),
+					TYPE: "bullet",
+				},
 			},
 		],
-	}, "Byte", {angle: 0});
+	}
+	Class.byteOfficialV2 = {
+	    PARENT: ["genericEggnought"],
+		LABEL: "Byte",
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 0, 0, 1],
+				TYPE: 'egg',
+			},
+			{
+				POSITION: [9, 0, 0, 0, 360, 1],
+				TYPE: 'byteTurretOfficialV2',
+			},
+		],
+	}
 	Class.atmosphereAuraOfficialV2 = addAura();
 	Class.atmosphereOfficialV2 = {
 	    PARENT: ["genericEggnought"],
@@ -493,10 +510,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 4; i++) {
 		Class.assailantOfficialV2.GUNS.push(
 			{
-				POSITION: [5, 11, 1, 10.5, 0, 90*i, 0],
+				POSITION: [5, 10, 1, 10.5, 0, 90*i, 0],
 			},
 			{
-				POSITION: [1.5, 12, 1, 15.5, 0, 90*i, 0],
+				POSITION: [1.5, 11, 1, 15, 0, 90*i, 0],
 				PROPERTIES: {
 					MAX_CHILDREN: 4,
 					SHOOT_SETTINGS: combineStats([g.factory, {size: 0.9, reload: 0.5}]),
@@ -508,7 +525,7 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [12.2, 12, 1, 0, 0, 90*i, 0],
+				POSITION: [12, 11, 1, 0, 0, 90*i, 0],
 			},
 		)
 	}
@@ -523,7 +540,7 @@ module.exports = ({ Class }) => {
 				POSITION: [11.5, 4.5, 1, 0, 4.5, 90*i, 0],
 			},
 			{
-				POSITION: [2, 4.5, 1.6, 11.5, 4.5, 90*i, 0],
+				POSITION: [2, 4.5, 1.7, 11, 4.5, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, {health: 2}]),
 					TYPE: "trap",
@@ -534,7 +551,7 @@ module.exports = ({ Class }) => {
 				POSITION: [11.5, 4.5, 1, 0, -4.5, 90*i, 0],
 			},
 			{
-				POSITION: [2, 4.5, 1.6, 11.5, -4.5, 90*i, 0],
+				POSITION: [2, 4.5, 1.7, 11, -4.5, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, {health: 2}]),
 					TYPE: "trap",
@@ -554,7 +571,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 7, 1, 0, 0, 90*i, 0],
 			},
 			{
-				POSITION: [4, 7, 1.6, 13, 0, 90*i, 0],
+				POSITION: [3.75, 7, 1.75, 13, 0, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -609,7 +626,7 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}
-	Class.coronaAuraOfficialV2 = addAura(1.5);
+	Class.coronaAuraOfficialV2 = addAura(1.5, 0.7);
 	Class.coronaOfficialV2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Corona",
@@ -630,11 +647,11 @@ module.exports = ({ Class }) => {
 	    LABEL: "Thermosphere",
 	    TURRETS: [
 			{
-				POSITION: [15, 0, 0, 0, 0, 1],
+				POSITION: [14, 0, 0, 0, 0, 1],
 				TYPE: ["square", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
-				POSITION: [12, 0, 0, 0, 360, 1],
+				POSITION: [11, 0, 0, 0, 360, 1],
 				TYPE: "thermosphereAuraOfficialV2",
 			},
 		],
@@ -666,7 +683,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 4; i++) {
 		Class.colossalTopOfficialV2.GUNS.push(
 			{
-				POSITION: [4, 17.5, 0.001, 9, 0, 90*i, 0],
+				POSITION: [3.5, 17.5, 0.001, 9, 0, 90*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
@@ -752,14 +769,14 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.mitigatorOfficialV2.GUNS.push(
 			{
-				POSITION: [13.5, 8, 1, 0, 5, 120*i, 0],
+				POSITION: [13, 8, 1, 0, 5, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.85}]),
 					TYPE: "bullet",
 				},
 			},
 			{
-				POSITION: [13.5, 8, 1, 0, -5, 120*i, 0.5],
+				POSITION: [13, 8, 1, 0, -5, 120*i, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.85}]),
 					TYPE: "bullet",
@@ -775,16 +792,16 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.appeaserOfficialV2.GUNS.push(
 			{
-				POSITION: [7, 10, 1.4, 6, 0, 120*i, 0],
+				POSITION: [7, 11, 1.35, 6, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.mach, {size: 0.8}]),
 					TYPE: "bullet",
 				},
 			},
 			{
-				POSITION: [7, 9.5, 1.3, 8, 0, 120*i, 0],
+				POSITION: [7, 10, 1.3, 8, 0, 120*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.mach, {size: 0.8, reload: 0.95}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.mach, {size: 0.8, reload: 0.9}]),
 					TYPE: "bullet",
 				},
 			},
@@ -798,7 +815,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.suppressorOfficialV2.GUNS.push(
 			{
-				POSITION: [17, 11, 1, 0, 0, 120*i, 0],
+				POSITION: [16.5, 11.5, 1, 0, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, {reload: 0.85}]),
 					TYPE: "bullet",
@@ -814,7 +831,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.inhibitorOfficialV2.GUNS.push(
 			{
-				POSITION: [10, 14, -0.5, 7, 0, 120*i, 0],
+				POSITION: [10, 14, -0.75, 7, 0, 120*i, 0],
 			},
 			{
 				POSITION: [15, 15, 1, 0, 0, 120*i, 0],
@@ -883,7 +900,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.aggressorMinionOfficialV2.GUNS.push(
 			{
-				POSITION: [15, 8.5, 1, 0, 0, 120*i, 0],
+				POSITION: [16, 8.5, 1, 0, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.bitlessspeed, g.minion]),
 					WAIT_TO_CYCLE: true,
@@ -900,10 +917,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.aggressorOfficialV2.GUNS.push(
 			{
-				POSITION: [5, 12, 1, 10.5, 0, 120*i, 0],
+				POSITION: [5, 12, 1, 10, 0, 120*i, 0],
 			},
 			{
-				POSITION: [1.5, 13, 1, 15.5, 0, 120*i, 0],
+				POSITION: [1.5, 13, 1, 15, 0, 120*i, 0],
 				PROPERTIES: {
 					MAX_CHILDREN: 4,
 					SHOOT_SETTINGS: combineStats([g.factory, {size: 0.9, reload: 0.5}]),
@@ -915,7 +932,7 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [12.2, 13, 1, 0, 0, 120*i, 0],
+				POSITION: [12, 13, 1, 0, 0, 120*i, 0],
 			},
 		)
 	}
@@ -927,10 +944,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.hydraOfficialV2.GUNS.push(
 			{
-				POSITION: [6, 3.5, 1, 4, 8, 120*i, 0],
+				POSITION: [6, 3.5, 1, 4, 8.5, 120*i, 0],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 10, 8, 120*i, 0],
+				POSITION: [2, 3.5, 1.8, 10, 8.5, 120*i, 2/3],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -938,10 +955,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [6, 3.5, 1, 4, -8, 120*i, 0],
+				POSITION: [6, 3.5, 1, 4, -8.5, 120*i, 0],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 10, -8, 120*i, 0],
+				POSITION: [2, 3.5, 1.8, 10, -8.5, 120*i, 1/3],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -952,7 +969,7 @@ module.exports = ({ Class }) => {
 				POSITION: [12, 5, 1, 0, 0, 120*i, 0],
 			},
 			{
-				POSITION: [2, 5, 1.6, 12, 0, 120*i, 0],
+				POSITION: [2.5, 5, 1.7, 12, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.twin, g.pound, g.fast]),
 					TYPE: "unsetTrap",
@@ -971,7 +988,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 10, 1, 0, 0, 120*i, 0],
 			},
 			{
-				POSITION: [4, 10, 1.6, 13, 0, 120*i, 0],
+				POSITION: [3.5, 10, 1.6, 13, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, g.morespeed, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -986,7 +1003,7 @@ module.exports = ({ Class }) => {
 	    LABEL: "Mechanism",
 	    TURRETS: [
 			{
-				POSITION: [11, 0, 0, 180, 0, 1],
+				POSITION: [10, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
@@ -994,11 +1011,11 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.mechanismOfficialV2.TURRETS.push(
 			{
-				POSITION: [3.5, 6.2, 0, 120*i, 180, 1],
+				POSITION: [3.5, 6, 0, 120*i, 180, 1],
 				TYPE: "spamAutoTurret",
 			},
 			{
-				POSITION: [3.5, 10.5, 0, 120*i+60, 180, 1],
+				POSITION: [3.5, 10, 0, 120*i+60, 180, 1],
 				TYPE: "spamAutoTurret",
 			},
 		)
@@ -1078,7 +1095,7 @@ module.exports = ({ Class }) => {
 		INDEPENDENT: true,
 		GUNS: [
 			{
-				POSITION: [24, 13, 1, 0, 0, 0, 0],
+				POSITION: [26, 13, 1, 0, 0, 0, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.pound, g.auto, {health: 1.2, speed: 0.8}]),
 					TYPE: "bullet",
@@ -1095,7 +1112,7 @@ module.exports = ({ Class }) => {
 				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
-				POSITION: [11, 0, 0, 0, 360, 1],
+				POSITION: [12, 0, 0, 0, 360, 1],
 				TYPE: "megabyteTurretOfficialV2",
 			},
 		],
@@ -1114,7 +1131,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.trojanOfficialV2.TURRETS.push(
 			{
-				POSITION: [3.5, 10.5, 0, 120*i+60, 360, 1],
+				POSITION: [3.5, 11, 0, 120*i+60, 360, 1],
 				TYPE: "trinoughtSmallAura",
 			},
 		)
@@ -1139,7 +1156,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.hardwareOfficialV2.TURRETS.push(
 			{
-				POSITION: [3.5, 10.5, 0, 120*i+60, 360, 1],
+				POSITION: [3.5, 11, 0, 120*i+60, 360, 1],
 				TYPE: "trinoughtSmallHealAura",
 			},
 		)
@@ -1421,14 +1438,14 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.diplomatOfficialV2.GUNS.push(
 			{
-				POSITION: [13, 7, 1, 0, 3, 72*i, 0.5],
+				POSITION: [13, 7, 1, 0, 3.25, 72*i, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam, {size: 0.85}]),
 					TYPE: "bullet",
 				},
 			},
 			{
-				POSITION: [13, 7, 1, 0, -3, 72*i, 0.5],
+				POSITION: [13, 7, 1, 0, -3.25, 72*i, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.spam, g.spam, {size: 0.85}]),
 					TYPE: "bullet",
@@ -1451,23 +1468,23 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.arbitratorOfficialV2.GUNS.push(
 			{
-				POSITION: [8, 10, 1.4, 5.5, 0, 72*i, 0],
+				POSITION: [7.5, 10.75, 1.33, 5.5, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.2}]),
 					TYPE: "bullet",
 				},
 			},
 			{
-				POSITION: [8, 9.5, 1.33, 7.5, 0, 72*i, 0],
+				POSITION: [7.5, 9.5, 1.33, 7.5, 0, 72*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.125}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.1}]),
 					TYPE: "bullet",
 				},
 			},
       		{
-				POSITION: [8, 7.5, 1.2, 9.5, 0, 72*i, 0],
+				POSITION: [7.5, 7.25, 1.25, 9.5, 0, 72*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1.05}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.spam, g.spam, {size: 0.7, reload: 1}]),
 					TYPE: "bullet",
 				},
 			},
@@ -1481,7 +1498,7 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.retardantOfficialV2.GUNS.push(
 			{
-				POSITION: [17, 11, 1, 0, 0, 72*i, 0],
+				POSITION: [17, 12, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, {reload: 0.9, health: 1.1}]),
 					TYPE: "bullet",
@@ -1497,10 +1514,10 @@ module.exports = ({ Class }) => {
   	for (let i = 0; i < 5; i++) {
 		Class.tyrantOfficialV2.GUNS.push(
 			{
-				POSITION: [10, 10, -0.5, 6, 0, 72*i, 0],
+				POSITION: [10, 11, -0.75, 7, 0, 72*i, 0],
 			},
 			{
-				POSITION: [14.5, 11, 1, 0, 0, 72*i, 0],
+				POSITION: [15, 12, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.destroy, g.arty, g.skim, g.halfspeed, {reload: 0.8}]),
 					TYPE: "supermissile",
@@ -1517,7 +1534,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.raiderOfficialV2.GUNS.push(
 			{
-				POSITION: [4, 5, 2.1, 7.5, 3, 72*i, 0],
+				POSITION: [4, 5, 2.1, 8, 3.25, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, g.over, {size: 1.5, reload: 0.6}]),
 					TYPE: ["drone", {COLOR: 5}],
@@ -1529,7 +1546,7 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [4, 5, 2.1, 7.5, -3, 72*i, 0],
+				POSITION: [4, 5, 2.1, 8, -3.25, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, g.over, {size: 1.5, reload: 0.6}]),
 					TYPE: ["drone", {COLOR: 5}],
@@ -1541,7 +1558,7 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [5, 6, 1.4, 8.5, 0, 72*i, 0],
+				POSITION: [6, 6.5, 1.4, 8, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.drone, g.over, g.over, g.over, g.pound, {size: 2, reload: 0.4}]),
 					TYPE: ["betadrone", {COLOR: 5}],
@@ -1641,10 +1658,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.gladiatorOfficialV2.GUNS.push(
 			{
-				POSITION: [4.5, 12, 1, 10, 0, 72*i, 0],
+				POSITION: [4.75, 12, 1, 10, 0, 72*i, 0],
 			},
 			{
-				POSITION: [1.5, 13, 1, 14.5, 0, 72*i, 0],
+				POSITION: [1.5, 13, 1, 14.75, 0, 72*i, 0],
 				PROPERTIES: {
 					MAX_CHILDREN: 4,
 					SHOOT_SETTINGS: combineStats([g.factory, {size: 0.9, reload: 0.5}]),
@@ -1656,7 +1673,7 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [11.75, 13, 1, 0, 0, 72*i, 0],
+				POSITION: [12, 13, 1, 0, 0, 72*i, 0],
 			},
 		)
 	}
@@ -1673,10 +1690,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.cerberusOfficialV2.GUNS.push(
 			{
-				POSITION: [11.5, 3.5, 1, 0, 2.5, 72*i+10, 0],
+				POSITION: [12, 4, 1, 0, 2.5, 72*i+10, 0.5],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 11.5, 2.5, 72*i+10, 0],
+				POSITION: [1.5, 4, 1.6, 12, 2.5, 72*i+10, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -1684,10 +1701,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [11.5, 3.5, 1, 0, -2.5, 72*i-10, 0],
+				POSITION: [12, 4, 1, 0, -2.5, 72*i-10, 0.5],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 11.5, -2.5, 72*i-10, 0],
+				POSITION: [1.5, 4, 1.6, 12, -2.5, 72*i-10, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -1695,10 +1712,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [14, 5, 1, 0, 0, 72*i, 0],
+				POSITION: [14, 5.5, 1, 0, 0, 72*i, 0],
 			},
 			{
-				POSITION: [2, 5, 1.75, 14, 0, 72*i, 0],
+				POSITION: [2, 5.5, 1.7, 14, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.twin, g.pound, g.fast]),
 					TYPE: "unsetTrap",
@@ -1717,7 +1734,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 10, 1, 0, 0, 72*i, 0],
 			},
 			{
-				POSITION: [3.5, 10, 1.55, 13, 0, 72*i, 0],
+				POSITION: [3.5, 10, 1.6, 13, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, g.morespeed, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -1800,7 +1817,7 @@ module.exports = ({ Class }) => {
 			TYPE: "megabyteTurretOfficialV2",
 		},
 	)
-	Class.pentanoughtBigHealAura = addAura(-2, 1.5);
+	Class.pentanoughtBigHealAura = addAura(-2, 1.45);
 	Class.interstellarOfficialV2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Interstellar",
@@ -1828,7 +1845,7 @@ module.exports = ({ Class }) => {
 		INDEPENDENT: true,
 		GUNS: [
 			{
-				POSITION: [24, 13, 1, 0, 0, 0, 0],
+				POSITION: [26, 16, 1, 0, 0, 0, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.pound, g.destroy, g.auto, {speed: 1.1, health: 0.8}]),
 					TYPE: "bullet",
@@ -1841,11 +1858,11 @@ module.exports = ({ Class }) => {
 	    LABEL: "Gigabyte",
 	    TURRETS: [
 			{
-				POSITION: [15, 0, 0, 180, 0, 1],
+				POSITION: [14.5, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
-				POSITION: [13.5, 0, 0, 0, 360, 1],
+				POSITION: [13, 0, 0, 0, 360, 1],
 				TYPE: "gigabyteTurretOfficialV2",
 			},
 		],
@@ -1855,31 +1872,33 @@ module.exports = ({ Class }) => {
 	    LABEL: "Malware",
 	    TURRETS: [
 			{
-				POSITION: [14, 0, 0, 180, 0, 1],
+				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
 	}
+	Class.pentanoughtSmallAura = addAura(1, 1.6, 0.15);
 	for (let i = 0; i < 5; i++) {
 		Class.malwareOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallAura",
+				TYPE: "pentanoughtSmallAura",
 			},
 		)
 	}
 	Class.malwareOfficialV2.TURRETS.push(
 		{
-			POSITION: [12, 0, 0, 0, 360, 1],
+			POSITION: [11.5, 0, 0, 0, 360, 1],
 			TYPE: "megabyteTurretOfficialV2",
 		},
 	)
+	Class.pentanoughtSmallHealAura = addAura(-2/3, 1.6, 0.15);
 	Class.softwareOfficialV2 = {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Software",
 	    TURRETS: [
 			{
-				POSITION: [14, 0, 0, 180, 0, 1],
+				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
@@ -1888,17 +1907,17 @@ module.exports = ({ Class }) => {
 		Class.softwareOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallHealAura",
+				TYPE: "pentanoughtSmallHealAura",
 			},
 		)
 	}
 	Class.softwareOfficialV2.TURRETS.push(
 		{
-			POSITION: [12, 0, 0, 0, 360, 1],
+			POSITION: [11.5, 0, 0, 0, 360, 1],
 			TYPE: "megabyteTurretOfficialV2",
 		},
 	)
-	Class.photosphereSmallAuraOfficialV2 = addAura(1, 1.75, 0.15);
+	Class.photosphereSmallAuraOfficialV2 = addAura(1, 1.85, 0.15);
 	Class.photosphereBigAuraOfficialV2 = addAura(1.5, 4);
 	Class.photosphereOfficialV2 = {
 	    PARENT: ["genericPentanought"],
@@ -1944,7 +1963,7 @@ module.exports = ({ Class }) => {
 		Class.stratosphereOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallHealAura",
+				TYPE: "pentanoughtSmallHealAura",
 			},
 		)
 	}
@@ -1992,7 +2011,7 @@ module.exports = ({ Class }) => {
 		Class.astronomicOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallAura",
+				TYPE: "pentanoughtSmallAura",
 			},
 		)
 	}
@@ -2020,7 +2039,7 @@ module.exports = ({ Class }) => {
 		Class.grandioseOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallHealAura",
+				TYPE: "pentanoughtSmallHealAura",
 			},
 		)
 	}
@@ -2066,7 +2085,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.leviathanOfficialV2.GUNS.push(
 			{
-				POSITION: [6.5, 16, 0.001, 9, 0, 72*i, 0],
+				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
@@ -2077,7 +2096,7 @@ module.exports = ({ Class }) => {
 		GUNS: [],
 	    TURRETS: [
 			{
-				POSITION: [13, 0, 0, 180, 0, 1],
+				POSITION: [12, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
@@ -2085,14 +2104,14 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.valrayvnOfficialV2.GUNS.push(
 			{
-				POSITION: [6.5, 16, 0.001, 9, 0, 72*i, 0],
+				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
 		Class.valrayvnOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallAura",
+				TYPE: "pentanoughtSmallAura",
 			},
 		)
 	}
@@ -2117,7 +2136,7 @@ module.exports = ({ Class }) => {
 		Class.pegasusOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
-				TYPE: "trinoughtSmallHealAura",
+				TYPE: "pentanoughtSmallHealAura",
 			},
 		)
 	}
