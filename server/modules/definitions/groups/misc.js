@@ -1,5 +1,5 @@
 const { combineStats, skillSet, makeAuto, makeDeco } = require('../facilitators.js');
-const { base, statnames, gunCalcNames, smshskl } = require('../constants.js');
+const { base, statnames, gunCalcNames, dfltskl, smshskl } = require('../constants.js');
 const { genericTank } = require('./generics.js')
 const { trapper } = require('./tanks.js');
 const g = require('../gunvals.js');
@@ -1468,6 +1468,418 @@ exports.prodigy = {
         },
     ],
 };
+
+// FLAIL!!!
+exports.flailBallSpike = {
+    PARENT: ["genericTank"],
+    COLOR: 9,
+    SHAPE: 6,
+    INDEPENDENT: true,
+};
+exports.flailBall = {
+    PARENT: ["genericTank"],
+    TURRETS: [{
+        /** SIZE     X       Y     ANGLE    ARC */
+        POSITION: [21.5, 0, 0, 0, 360, 0],
+        TYPE: "flailBallSpike",
+    }, ],
+};
+exports.flailBolt1 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [40, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        POSITION: [48, 56, 0, 0, 190, 1],
+        TYPE: ["flailBall", {
+            INDEPENDENT: true
+        }]
+        },
+    ],
+};
+exports.flailBolt2 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [30, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [20, 36, 0, 0, 190, 1],
+        TYPE: ["flailBolt1", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.flailBolt3 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [30, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [18, 36, 0, 0, 190, 1],
+        TYPE: ["flailBolt2", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.flail = {
+    PARENT: ["genericTank"],
+    LABEL: "Flail",
+    STAT_NAMES: statnames.flail,
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, 0, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.doubleFlail = {
+    PARENT: ["genericTank"],
+    LABEL: "Double Flail",
+    DANGER: 6,
+    STAT_NAMES: statnames.flail,
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, {
+        POSITION: [6, 10, 0, 180, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, 0, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.tripleFlail = {
+    PARENT: ["genericTank"],
+    LABEL: "Triple Flail",
+    DANGER: 7,
+    STAT_NAMES: statnames.flail,
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, {
+        POSITION: [6, 10, 0, 120, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, {
+        POSITION: [6, 10, 0, 240, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, 0, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.maceBallSpike = {
+    PARENT: ["genericTank"],
+    COLOR: 9,
+    SHAPE: 3,
+    INDEPENDENT: true,
+};
+exports.maceBall = {
+    PARENT: ["genericTank"],
+    TURRETS: [{
+        /** SIZE     X       Y     ANGLE    ARC */
+        POSITION: [21.5, 0, 0, 0, 360, 0],
+        TYPE: ["maceBallSpike", { SHAPE: 3 }]
+    }, ],
+};
+exports.maceBolt1 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [48, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        POSITION: [76, 56, 0, 0, 190, 1],
+        TYPE: ["maceBall", {
+            INDEPENDENT: true
+        }]
+        },
+    ],
+};
+exports.maceBolt2 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [24, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [20, 28, 0, 0, 190, 1],
+        TYPE: ["maceBolt1", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.maceBolt3 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [24, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [18, 28, 0, 0, 190, 1],
+        TYPE: ["maceBolt2", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.mace = {
+    PARENT: ["genericTank"],
+    LABEL: "Mace",
+    DANGER: 6,
+    STAT_NAMES: statnames.flail,
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["maceBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, 0, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.mamaBolt1 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [48, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        POSITION: [104, 56, 0, 0, 190, 1],
+        TYPE: ["maceBall", {
+            INDEPENDENT: true
+        }]
+        },
+    ],
+};
+exports.mamaBolt2 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [18, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [20, 20, 0, 0, 190, 1],
+        TYPE: ["mamaBolt1", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.mamaBolt3 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [18, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [18, 20, 0, 0, 190, 1],
+        TYPE: ["mamaBolt2", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.bigMama = {
+    PARENT: ["genericTank"],
+    LABEL: "BIG MAMA",
+    DANGER: 7,
+    STAT_NAMES: statnames.flail,
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["mamaBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, 0, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.ihdtiBall = {
+    PARENT: ["genericTank"],
+    TURRETS: [{
+        /** SIZE     X       Y     ANGLE    ARC */
+        POSITION: [21.5, 0, 0, 0, 360, 0],
+        TYPE: "maceBallSpike"
+    }, {
+        /** SIZE     X       Y     ANGLE    ARC */
+        POSITION: [21.5, 0, 0, 180, 360, 0],
+        TYPE: "maceBallSpike"
+    },],
+};
+exports.ihdtiBolt1 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [48, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        POSITION: [76, 56, 0, 0, 190, 1],
+        TYPE: ["ihdtiBall", {
+            INDEPENDENT: true
+        }]
+        },
+    ],
+};
+exports.ihdtiBolt2 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [24, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [20, 28, 0, 0, 190, 1],
+        TYPE: ["ihdtiBolt1", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.ihdtiBolt3 = {
+    PARENT: ["genericTank"],
+    GUNS: [{
+        POSITION: [24, 5, 1, 8, 0, 0, 0]
+    }],
+    TURRETS: [{
+        /*  SIZE     X       Y     ANGLE    ARC */
+        POSITION: [18, 28, 0, 0, 190, 1],
+        TYPE: ["ihdtiBolt2", {
+            INDEPENDENT: true,
+        }]
+        },
+    ],
+};
+exports.itHurtsDontTouchIt = {
+    PARENT: ["genericTank"],
+    LABEL: "It hurts dont touch it",
+    DANGER: 7,
+    STAT_NAMES: statnames.flail,
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["ihdtiBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, 0, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.flangle = {
+    PARENT: ["genericTank"],
+    LABEL: "Flangle",
+    DANGER: 6,
+    STAT_NAMES: statnames.mixed,
+    GUNS: [
+        {
+            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+    ],
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.flooster = {
+    PARENT: ["genericTank"],
+    LABEL: "Flooster",
+    DANGER: 7,
+    STAT_NAMES: statnames.mixed,
+    GUNS: [
+        {
+            POSITION: [13, 8, 1, 0, -1, 140, 0.6],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [13, 8, 1, 0, 1, 220, 0.6],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+    ],
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["flailBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+exports.flace = {
+    PARENT: ["genericTank"],
+    LABEL: "Flace",
+    DANGER: 7,
+    STAT_NAMES: statnames.mixed,
+    GUNS: [
+        {
+            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+        {
+            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster]),
+                TYPE: "bullet",
+                LABEL: gunCalcNames.thruster,
+            },
+        },
+    ],
+    TURRETS: [{
+        POSITION: [6, 10, 0, 0, 190, 0],
+        TYPE: ["maceBolt3", {
+            INDEPENDENT: true
+        }]
+    }, ],
+    SKILL_CAP: [dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl, dfltskl],
+};
+
+exports.flail.UPGRADES_TIER_2 = ["doubleFlail", "mace", "flangle"];
+    exports.doubleFlail.UPGRADES_TIER_3 = ["tripleFlail"];
+    exports.mace.UPGRADES_TIER_3 = ["bigMama", "itHurtsDontTouchIt", "flace"];
+    exports.flangle.UPGRADES_TIER_3 = ["flooster", "flace"];
 
 // BOTS
 exports.bot = {
