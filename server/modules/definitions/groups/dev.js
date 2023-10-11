@@ -918,7 +918,7 @@ exports.teams.UPGRADES_TIER_0.push('Team' + TEAM_ROOM, 'Team' + TEAM_ENEMIES);
 
 // DEV "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools"];
-    exports.tanks.UPGRADES_TIER_0 = ["basic", "healer", "dominators", "miscTanks" "legacyTanks", "funTanks", "testingTanks"];
+    exports.tanks.UPGRADES_TIER_0 = ["basic", "healer", "dominators", "miscTanks", "legacyTanks", "funTanks", "testingTanks"];
         exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
         exports.miscTanks.UPGRADES_TIER_0 = ["baseProtector", "mothership", "arenaCloser", "antiTankMachineGun"];
         exports.legacyTanks.UPGRADES_TIER_0 = ["flail", "oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire", "autoTrapper", "oldDreadnought", "mender", "prodigy"];
