@@ -283,15 +283,33 @@ module.exports = ({ Class }) => {
 	}
 
 	// T1 Bodies
-	Class.byteOfficialV2 = makeAuto({
-	    PARENT: ["genericEggnought"],
-	    TURRETS: [
+	Class.byteTurretOfficialV2 = {
+		PARENT: ["autoTankGun"],
+		INDEPENDENT: true,
+		GUNS: [
 			{
-				POSITION: [15.5, 0, 0, 0, 0, 1],
-				TYPE: 'egg',
+				POSITION: [22, 10, 1, 0, 0, 0, 0],
+				PROPERTIES: {
+					SHOOT_SETTINGS: combineStats([g.basic, g.auto, {health: 1.2, speed: 0.8}]),
+					TYPE: "bullet",
+				},
 			},
 		],
-	}, "Byte", {angle: 0});
+	}
+	Class.byteOfficialV2 = {
+	    PARENT: ["genericEggnought"],
+		LABEL: "Byte",
+	    TURRETS: [
+			{
+				POSITION: [15, 0, 0, 0, 0, 1],
+				TYPE: 'egg',
+			},
+			{
+				POSITION: [9, 0, 0, 0, 360, 1],
+				TYPE: 'byteTurretOfficialV2',
+			},
+		],
+	}
 	Class.atmosphereAuraOfficialV2 = addAura();
 	Class.atmosphereOfficialV2 = {
 	    PARENT: ["genericEggnought"],
@@ -522,7 +540,7 @@ module.exports = ({ Class }) => {
 				POSITION: [11.5, 4.5, 1, 0, 4.5, 90*i, 0],
 			},
 			{
-				POSITION: [2, 4.5, 1.6, 11.5, 4.5, 90*i, 0],
+				POSITION: [2, 4.5, 1.7, 11, 4.5, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, {health: 2}]),
 					TYPE: "trap",
@@ -533,7 +551,7 @@ module.exports = ({ Class }) => {
 				POSITION: [11.5, 4.5, 1, 0, -4.5, 90*i, 0],
 			},
 			{
-				POSITION: [2, 4.5, 1.6, 11.5, -4.5, 90*i, 0],
+				POSITION: [2, 4.5, 1.7, 11, -4.5, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, {health: 2}]),
 					TYPE: "trap",
@@ -553,7 +571,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 7, 1, 0, 0, 90*i, 0],
 			},
 			{
-				POSITION: [4, 7, 1.6, 13, 0, 90*i, 0],
+				POSITION: [3.75, 7, 1.75, 13, 0, 90*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -926,10 +944,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.hydraOfficialV2.GUNS.push(
 			{
-				POSITION: [6, 3.5, 1, 4, 8, 120*i, 0],
+				POSITION: [6, 3.5, 1, 4, 8.5, 120*i, 0],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 10, 8, 120*i, 0],
+				POSITION: [2, 3.5, 1.8, 10, 8.5, 120*i, 2/3],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -937,10 +955,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [6, 3.5, 1, 4, -8, 120*i, 0],
+				POSITION: [6, 3.5, 1, 4, -8.5, 120*i, 0],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 10, -8, 120*i, 0],
+				POSITION: [2, 3.5, 1.8, 10, -8.5, 120*i, 1/3],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -951,7 +969,7 @@ module.exports = ({ Class }) => {
 				POSITION: [12, 5, 1, 0, 0, 120*i, 0],
 			},
 			{
-				POSITION: [2, 5, 1.6, 12, 0, 120*i, 0],
+				POSITION: [2.5, 5, 1.7, 12, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.twin, g.pound, g.fast]),
 					TYPE: "unsetTrap",
@@ -970,7 +988,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 10, 1, 0, 0, 120*i, 0],
 			},
 			{
-				POSITION: [4, 10, 1.6, 13, 0, 120*i, 0],
+				POSITION: [3.5, 10, 1.6, 13, 0, 120*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, g.morespeed, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -1077,7 +1095,7 @@ module.exports = ({ Class }) => {
 		INDEPENDENT: true,
 		GUNS: [
 			{
-				POSITION: [25, 13, 1, 0, 0, 0, 0],
+				POSITION: [26, 13, 1, 0, 0, 0, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.pound, g.auto, {health: 1.2, speed: 0.8}]),
 					TYPE: "bullet",
@@ -1113,7 +1131,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.trojanOfficialV2.TURRETS.push(
 			{
-				POSITION: [3.5, 10.5, 0, 120*i+60, 360, 1],
+				POSITION: [3.5, 11, 0, 120*i+60, 360, 1],
 				TYPE: "trinoughtSmallAura",
 			},
 		)
@@ -1138,7 +1156,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 3; i++) {
 		Class.hardwareOfficialV2.TURRETS.push(
 			{
-				POSITION: [3.5, 10.5, 0, 120*i+60, 360, 1],
+				POSITION: [3.5, 11, 0, 120*i+60, 360, 1],
 				TYPE: "trinoughtSmallHealAura",
 			},
 		)
@@ -1672,10 +1690,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.cerberusOfficialV2.GUNS.push(
 			{
-				POSITION: [11.5, 3.5, 1, 0, 2.5, 72*i+10, 0],
+				POSITION: [12, 4, 1, 0, 2.5, 72*i+10, 0.5],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 11.5, 2.5, 72*i+10, 0],
+				POSITION: [1.5, 4, 1.6, 12, 2.5, 72*i+10, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -1683,10 +1701,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [11.5, 3.5, 1, 0, -2.5, 72*i-10, 0],
+				POSITION: [12, 4, 1, 0, -2.5, 72*i-10, 0.5],
 			},
 			{
-				POSITION: [2, 3.5, 1.8, 11.5, -2.5, 72*i-10, 0],
+				POSITION: [1.5, 4, 1.6, 12, -2.5, 72*i-10, 0.5],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.twin, g.pound, g.fast]),
 					TYPE: "trap",
@@ -1694,10 +1712,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 			{
-				POSITION: [14, 5, 1, 0, 0, 72*i, 0],
+				POSITION: [14, 5.5, 1, 0, 0, 72*i, 0],
 			},
 			{
-				POSITION: [2, 5, 1.75, 14, 0, 72*i, 0],
+				POSITION: [2, 5.5, 1.7, 14, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.twin, g.pound, g.fast]),
 					TYPE: "unsetTrap",
@@ -1716,7 +1734,7 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 10, 1, 0, 0, 72*i, 0],
 			},
 			{
-				POSITION: [3.5, 10, 1.55, 13, 0, 72*i, 0],
+				POSITION: [3.5, 10, 1.6, 13, 0, 72*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, g.block, g.pound, g.morespeed, {health: 2}]),
 					TYPE: "unsetTrap",
@@ -1809,7 +1827,7 @@ module.exports = ({ Class }) => {
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
-				POSITION: [9, 0, 0, 0, 360, 1],
+				POSITION: [9.5, 0, 0, 0, 360, 1],
 				TYPE: "pentanoughtBigHealAura",
 			},
 		],
@@ -1827,7 +1845,7 @@ module.exports = ({ Class }) => {
 		INDEPENDENT: true,
 		GUNS: [
 			{
-				POSITION: [24, 13, 1, 0, 0, 0, 0],
+				POSITION: [26, 16, 1, 0, 0, 0, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.pound, g.destroy, g.auto, {speed: 1.1, health: 0.8}]),
 					TYPE: "bullet",
@@ -1840,11 +1858,11 @@ module.exports = ({ Class }) => {
 	    LABEL: "Gigabyte",
 	    TURRETS: [
 			{
-				POSITION: [15, 0, 0, 180, 0, 1],
+				POSITION: [14.5, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 			{
-				POSITION: [13.5, 0, 0, 0, 360, 1],
+				POSITION: [13, 0, 0, 0, 360, 1],
 				TYPE: "gigabyteTurretOfficialV2",
 			},
 		],
@@ -1854,7 +1872,7 @@ module.exports = ({ Class }) => {
 	    LABEL: "Malware",
 	    TURRETS: [
 			{
-				POSITION: [14, 0, 0, 180, 0, 1],
+				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
@@ -1870,7 +1888,7 @@ module.exports = ({ Class }) => {
 	}
 	Class.malwareOfficialV2.TURRETS.push(
 		{
-			POSITION: [12, 0, 0, 0, 360, 1],
+			POSITION: [11.5, 0, 0, 0, 360, 1],
 			TYPE: "megabyteTurretOfficialV2",
 		},
 	)
@@ -1880,7 +1898,7 @@ module.exports = ({ Class }) => {
 	    LABEL: "Software",
 	    TURRETS: [
 			{
-				POSITION: [14, 0, 0, 180, 0, 1],
+				POSITION: [13, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
 		],
@@ -1895,7 +1913,7 @@ module.exports = ({ Class }) => {
 	}
 	Class.softwareOfficialV2.TURRETS.push(
 		{
-			POSITION: [12, 0, 0, 0, 360, 1],
+			POSITION: [11.5, 0, 0, 0, 360, 1],
 			TYPE: "megabyteTurretOfficialV2",
 		},
 	)
@@ -2067,7 +2085,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.leviathanOfficialV2.GUNS.push(
 			{
-				POSITION: [6.5, 16, 0.001, 9, 0, 72*i, 0],
+				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
@@ -2086,7 +2104,7 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 5; i++) {
 		Class.valrayvnOfficialV2.GUNS.push(
 			{
-				POSITION: [6.5, 16, 0.001, 10, 0, 72*i, 0],
+				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
