@@ -2141,7 +2141,7 @@ module.exports = ({ Class }) => {
 		)
 	}
 
-	Class.developer.UPGRADES_TIER_0.push("dreadOfficialV2");
+	Class.tanks.UPGRADES_TIER_0.push("dreadOfficialV2");
 		Class.dreadOfficialV2.UPGRADES_TIER_1 = ["swordOfficialV2", "pacifierOfficialV2", "peacekeeperOfficialV2", "invaderOfficialV2", "centaurOfficialV2"];
 
 			Class.swordOfficialV2.UPGRADES_TIER_M1 = ["gladiusOfficialV2", "sabreOfficialV2"];
