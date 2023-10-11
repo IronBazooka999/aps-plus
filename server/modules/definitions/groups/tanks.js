@@ -1302,7 +1302,7 @@ exports.weirdTrapper = {
     PARENT: ["genericTank"],
     LABEL: "Trapper",
     DANGER: 6,
-    STAT_NAMES: statnames.generic,
+    STAT_NAMES: statnames.mixed,
     BODY: {
         SPEED: base.SPEED * 0.8,
         FOV: base.FOV * 1.2,
@@ -3977,7 +3977,7 @@ exports.fortress = {
     PARENT: ["genericTank"],
     LABEL: "Fortress",
     DANGER: 7,
-    STAT_NAMES: statnames.generic,
+    STAT_NAMES: statnames.mixed,
     BODY: {
         SPEED: 0.8 * base.SPEED,
         FOV: 1.2 * base.FOV,
@@ -4792,7 +4792,7 @@ exports.triTrapper = {
 exports.trapGuard = {
     PARENT: ["genericTank"],
     LABEL: "Trap Guard",
-    STAT_NAMES: statnames.generic,
+    STAT_NAMES: statnames.mixed,
     DANGER: 6,
     GUNS: [
         {
@@ -5163,7 +5163,7 @@ exports.gunnerTrapper = {
     PARENT: ["genericTank"],
     LABEL: "Gunner Trapper",
     DANGER: 7,
-    STAT_NAMES: statnames.generic,
+    STAT_NAMES: statnames.mixed,
     BODY: {
         FOV: 1.25 * base.FOV,
     },
@@ -5262,7 +5262,7 @@ exports.conqueror = {
     PARENT: ["genericTank"],
     DANGER: 7,
     LABEL: "Conqueror",
-    STAT_NAMES: statnames.generic,
+    STAT_NAMES: statnames.mixed,
     BODY: {
         SPEED: 0.8 * base.SPEED,
     },
@@ -5289,7 +5289,7 @@ exports.conqueror = {
 exports.bulwark = {
     PARENT: ["genericTank"],
     LABEL: "Bulwark",
-    STAT_NAMES: statnames.generic,
+    STAT_NAMES: statnames.mixed,
     DANGER: 7,
     GUNS: [
         {

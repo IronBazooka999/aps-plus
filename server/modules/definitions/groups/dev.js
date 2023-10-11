@@ -131,13 +131,9 @@ exports.otherTanks = {
     PARENT: ["menu"],
     LABEL: "Tanks",
 };
-exports.oldTanks = {
+exports.legacy = {
     PARENT: ["menu"],
-    LABEL: "Old Tanks",
-};
-exports.scrappedTanks = {
-    PARENT: ["menu"],
-    LABEL: "Scrapped Tanks",
+    LABEL: "Legacy Content",
 };
 exports.miscEntities = {
     PARENT: ["menu"],
@@ -913,7 +909,7 @@ exports['Team' + TEAM_ENEMIES] = {
 exports.teams.UPGRADES_TIER_0.push('Team' + TEAM_ROOM, 'Team' + TEAM_ENEMIES);
 
 // DEV "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntities", "eggGenerator", "bosses", "fun", "levels", "teams"];
+exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntities", "eggGenerator", "bosses", "legacy", "fun", "levels", "teams"];
     exports.miscEntities.UPGRADES_TIER_0 = ["baseProtector", "dominators", "mothership", "arenaCloser", "antiTankMachineGun"];
         exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals", "devBosses"];
@@ -926,6 +922,5 @@ exports.developer.UPGRADES_TIER_0 = ["basic", "healer", "spectator", "miscEntiti
         exports.celestials.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia"];
         exports.eternals.UPGRADES_TIER_0 = ["ragnarok", "kronos"];
         exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
-    exports.oldTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire"];
-    exports.scrappedTanks.UPGRADES_TIER_0 = ["autoTrapper", "oldDreadnought", "mender", "prodigy"];
+    exports.legacy.UPGRADES_TIER_0 = ["flail", "oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire", "autoTrapper", "oldDreadnought", "mender", "prodigy"];
     exports.fun.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "diamondShape", "rotatedTrap", "mummifier", "colorMan", "miscTest", "auraBasic", "auraHealer", "weirdAutoBasic", "ghoster", "switcheroo", "mmaTest"];
