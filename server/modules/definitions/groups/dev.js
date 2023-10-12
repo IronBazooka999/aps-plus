@@ -929,7 +929,7 @@ exports.weirdAutoBasic = {
 exports.levels = {
     PARENT: ["menu"],
     LABEL: "Level Switcher",
-    UPGRADES_TIER_0: ["developer"]
+    UPGRADES_TIER_0: []
 };
 for (let i = 0; i < 15; i++) {
     let LEVEL = i * c.TIER_MULTIPLIER;
@@ -944,7 +944,7 @@ for (let i = 0; i < 15; i++) {
 exports.teams = {
     PARENT: ["menu"],
     LABEL: "Team Switcher",
-    UPGRADES_TIER_0: ["developer"]
+    UPGRADES_TIER_0: []
 };
 for (let i = 1; i <= 8; i++) {
     let TEAM = i;
@@ -972,7 +972,7 @@ exports.teams.UPGRADES_TIER_0.push('Team' + TEAM_ROOM, 'Team' + TEAM_ENEMIES);
 
 // DEV "UPGRADE PATHS"
 exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools"];
-    exports.tanks.UPGRADES_TIER_0 = ["basic", "healer", "specialTanks", "funTanks", "legacyTanks", "testingTanks"];
+    exports.tanks.UPGRADES_TIER_0 = ["basic", "healer", "specialTanks", "legacyTanks", "funTanks", "testingTanks"];
 	exports.specialTanks.UPGRADES_TIER_0 = ["arenaCloser", "bases", "mothership"];
         exports.bases.UPGRADES_TIER_0 = ["baseProtector", "dominators", "sanctuaries", "antiTankMachineGun"];
                 exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
