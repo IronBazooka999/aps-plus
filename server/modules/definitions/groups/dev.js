@@ -921,7 +921,7 @@ exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools"];
     exports.tanks.UPGRADES_TIER_0 = ["basic", "healer", "dominators", "miscTanks", "legacyTanks", "funTanks", "testingTanks"];
         exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
         exports.miscTanks.UPGRADES_TIER_0 = ["baseProtector", "mothership", "arenaCloser", "antiTankMachineGun"];
-        exports.legacyTanks.UPGRADES_TIER_0 = ["flail", "oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire", "autoTrapper", "oldDreadnought", "mender", "prodigy"];
+        exports.legacyTanks.UPGRADES_TIER_0 = ["oldSpreadshot", "oldBentBoomer", "quadBuilder", "weirdSpike", "master", "oldCommander", "blunderbuss", "oldRimfire", "autoTrapper", "oldDreadnought", "mender", "prodigy", "whirlwind", "flail"];
         exports.funTanks.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "mummifier", "auraBasic", "auraHealer", "weirdAutoBasic", "ghoster", "switcheroo"];
         exports.testingTanks.UPGRADES_TIER_0 = ["diamondShape", "rotatedTrap", "colorMan", "miscTest", "mmaTest"];
 
