@@ -641,7 +641,7 @@ exports.florr_tank_smile = {
 exports.florr_tank = {
     PARENT: "genericTank",
     COLOR: 'yellow',
-    LABEL: 'Whirlwind',
+    LABEL: 'Flower',
     STAT_NAMES: {
         BODY_DAMAGE: 'Flower Thorns',
         BULLET_SPEED: 'Petal Speed',
