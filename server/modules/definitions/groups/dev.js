@@ -92,38 +92,62 @@ exports.bosses = {
 exports.sentries = {
     PARENT: ["menu"],
     LABEL: "Sentries",
+    COLOR: 5,
+    SHAPE: 3.5,
+    TURRETS: [
+        {
+            POSITION: [9, 0, 0, 0, 360, 1],
+            TYPE: "genericEntity",
+        },
+    ],
 };
 exports.elites = {
     PARENT: ["menu"],
     LABEL: "Elites",
+    COLOR: 5,
+    SHAPE: 3.5,
 };
 exports.mysticals = {
     PARENT: ["menu"],
     LABEL: "Mysticals",
+    COLOR: 13,
+    SHAPE: 4,
 };
 exports.nesters = {
     PARENT: ["menu"],
     LABEL: "Nesters",
+    COLOR: 14,
+    SHAPE: 5.5,
 };
 exports.rogues = {
     PARENT: ["menu"],
     LABEL: "Rogues",
+    COLOR: 17,
+    SHAPE: 6,
 };
 exports.terrestrials = {
     PARENT: ["menu"],
     LABEL: "Terrestrials",
+    COLOR: 2,
+    SHAPE: 7,
 };
 exports.celestials = {
     PARENT: ["menu"],
     LABEL: "Celestials",
+    COLOR: 1,
+    SHAPE: 9,
 };
 exports.eternals = {
     PARENT: ["menu"],
     LABEL: "Eternals",
+    COLOR: 0,
+    SHAPE: 11,
 };
 exports.devBosses = {
     PARENT: ["menu"],
     LABEL: "Developers",
+    COLOR: 1,
+    SHAPE: 4,
 };
 
 exports.tanks = {
