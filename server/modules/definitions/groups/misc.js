@@ -1284,9 +1284,9 @@ exports.oldRimfire = {
 
 // SCRAPPED TANKS
 exports.autoTrapper = makeAuto(trapper);
-exports.oldDreadnought = {
+exports.corvette = {
     PARENT: ["genericTank"],
-    LABEL: "Old Dreadnought",
+    LABEL: "Corvette",
     DANGER: 7,
     FACING_TYPE: "locksFacing",
     STAT_NAMES: statnames.swarm,
@@ -1467,6 +1467,97 @@ exports.prodigy = {
             },
         },
     ],
+};
+exports.tetraGunner = {
+  PARENT: ["genericTank"],
+  LABEL: "Tetra Gunner",
+  DANGER: 7,
+  GUNS: [
+    {
+      POSITION: [14, 3.5, 1, 0, 4, 90, 1 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, -4, 90, 2 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, 4, 270, 1 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, -4, 270, 2 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [18, 3.5, 1, 0, 0, 90, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [18, 3.5, 1, 0, 0, 270, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, 4, 0, 1 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, -4, 0, 2 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, 4, 180, 1 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [14, 3.5, 1, 0, -4, 180, 2 / 3],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [18, 3.5, 1, 0, 0, 0, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+    {
+      POSITION: [18, 3.5, 1, 0, 0, 180, 0],
+      PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.puregunner, g.fast]),
+        TYPE: "bullet",
+      },
+    },
+  ],
 };
 
 // WHIRLWIND!!!
