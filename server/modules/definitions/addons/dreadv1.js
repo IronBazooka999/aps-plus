@@ -470,7 +470,7 @@ module.exports = ({ Class }) => {
 	    }],
 	}
 
-	Class.tanks.UPGRADES_TIER_0.push("dread_APSofficialdreadv1");
+	Class.specialTanks.UPGRADES_TIER_0.push("dread_APSofficialdreadv1");
 		Class.dread_APSofficialdreadv1.UPGRADES_TIER_1 = ["sword_APSofficialdreadv1", "pacifier_APSofficialdreadv1", "invader_APSofficialdreadv1", "centaur_APSofficialdreadv1"];
 			Class.sword_APSofficialdreadv1.UPGRADES_TIER_M1 = ["sabre_APSofficialdreadv1", "gladius_APSofficialdreadv1"];
 			Class.pacifier_APSofficialdreadv1.UPGRADES_TIER_M1 = ["appeaser_APSofficialdreadv1", "peacekeeper_APSofficialdreadv1", "diplomat_APSofficialdreadv1"];
