@@ -15,7 +15,7 @@ const eggnoughtBody = {
     HEALTH: base.HEALTH * 1.75,
 	SHIELD: base.SHIELD * 1.5,
 	REGEN: base.REGEN * 1.5,
-    FOV: base.FOV * 1.1,
+    FOV: base.FOV,
 	RESIST: base.RESIST * 1.5,
 	DENSITY: base.DENSITY * 1.5,
 };
@@ -24,7 +24,7 @@ const squarenoughtBody = {
     HEALTH: base.HEALTH * 2.5,
 	SHIELD: base.SHIELD * 2,
 	REGEN: base.REGEN * 2,
-    FOV: base.FOV * 1.15,
+    FOV: base.FOV * 0.95,
 	RESIST: base.RESIST * 2,
 	DENSITY: base.DENSITY * 2,
 };
@@ -33,7 +33,7 @@ const trinoughtBody = {
     HEALTH: base.HEALTH * 3.5,
 	SHIELD: base.SHIELD * 2.5,
 	REGEN: base.REGEN * 2.5,
-    FOV: base.FOV * 1.15,
+    FOV: base.FOV * 0.95,
 	RESIST: base.RESIST * 2.5,
 	DENSITY: base.DENSITY * 2.5,
 };
@@ -42,7 +42,7 @@ const pentanoughtBody = {
     HEALTH: base.HEALTH * 4.25,
 	SHIELD: base.SHIELD * 3,
 	REGEN: base.REGEN * 3,
-    FOV: base.FOV * 1.2,
+    FOV: base.FOV * 0.95,
 	RESIST: base.RESIST * 3,
 	DENSITY: base.DENSITY * 3,
 };
@@ -51,17 +51,17 @@ const hexnoughtBody = {
     HEALTH: base.HEALTH * 5,
 	SHIELD: base.SHIELD * 3.5,
 	REGEN: base.REGEN * 3.5,
-    FOV: base.FOV * 1.2,
+    FOV: base.FOV * 0.95,
 	RESIST: base.RESIST * 3.5,
 	DENSITY: base.DENSITY * 3.5,
 };
 
 module.exports = ({ Class }) => {
 	// Comment out the line below to enable this addon, uncomment it to disable this addon (WARNING: Increases load time by approximately 3x).
-	return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
+	//return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
 
 	// Set the below variable to true to enable hex dreadnought building (WARNING: increases load time by approximately 10x)
-	const buildHexnoughts = true;
+	const buildHexnoughts = false;
 	
 	// Comment out lines from the arrays below to disable that branch of the tree from being generated.
 	const eggnoughtWeapons = [
@@ -88,7 +88,7 @@ module.exports = ({ Class }) => {
 		BODY: eggnoughtBody,
 	    SHAPE: 0,
 	    COLOR: 6,
-	    SIZE: 13.75,
+	    SIZE: 14,
 		DANGER: 8,
 	}
 	Class.genericSquarenought = {
@@ -96,7 +96,7 @@ module.exports = ({ Class }) => {
 		BODY: squarenoughtBody,
 	    SHAPE: 4,
 	    COLOR: 13,
-	    SIZE: 15,
+	    SIZE: 18,
 		DANGER: 9,
 	}
 	Class.genericTrinought = {
@@ -104,7 +104,7 @@ module.exports = ({ Class }) => {
 		BODY: trinoughtBody,
 	    SHAPE: 3.5,
 	    COLOR: 2,
-	    SIZE: 20,
+	    SIZE: 21,
 		DANGER: 10,
 	}
 	Class.genericPentanought = {
@@ -112,7 +112,7 @@ module.exports = ({ Class }) => {
 		BODY: pentanoughtBody,
 	    SHAPE: 5.5,
 	    COLOR: 14,
-	    SIZE: 25,
+	    SIZE: 23,
 		DANGER: 11,
 	}
 	Class.genericHexnought = {
@@ -120,7 +120,7 @@ module.exports = ({ Class }) => {
 		BODY: hexnoughtBody,
 	    SHAPE: 6,
 	    COLOR: 0,
-	    SIZE: 30,
+	    SIZE: 24,
 		DANGER: 12,
 	}
 
@@ -269,10 +269,10 @@ module.exports = ({ Class }) => {
 	for (let i = 0; i < 2; i++) {
 		Class.centaurOfficialV2.GUNS.push(
 			{
-				POSITION: [13, 7.5, 1, 0, 0, 180*i, 0],
+				POSITION: [13, 7, 1, 0, 0, 180*i, 0],
 			},
 			{
-				POSITION: [3, 7.5, 1.4, 13, 0, 180*i, 0],
+				POSITION: [3, 7, 1.5, 13, 0, 180*i, 0],
 				PROPERTIES: {
 					SHOOT_SETTINGS: combineStats([g.trap, {health: 2}]),
 					TYPE: "trap",
