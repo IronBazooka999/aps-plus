@@ -2307,6 +2307,51 @@ exports.flail.UPGRADES_TIER_2 = ["doubleFlail", "mace", "flangle"];
     exports.mace.UPGRADES_TIER_3 = ["bigMama", "itHurtsDontTouchIt", "flace"];
     exports.flangle.UPGRADES_TIER_3 = ["flooster", "flace"];
 
+// TRACKER-3
+exports.tracker3gun = {
+  PARENT: ["genericTank"],
+  LABEL: "",
+  COLOR: 34,
+  BODY: {
+    FOV: 3,
+  },
+  CONTROLLERS: [
+    "canRepel",
+    "onlyAcceptInArc",
+    "mapAltToFire",
+    "nearestDifferentMaster",
+  ],
+  GUNS: [
+    {
+      /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
+      POSITION: [22, 10, 1, 0, 0, 0, 0],
+    },
+    {
+      POSITION: [10, 10, -2, 20, 0, 0, 0],
+    },
+  ],
+};
+exports.tracker3 = {
+  PARENT: ["genericTank"],
+  LABEL: "Tracker-3",
+  FACING_TYPE: "autospin",
+  TURRETS: [
+    {
+      /*  SIZE     X       Y     ANGLE    ARC */
+      POSITION: [11, 8, 0, 0, 190, 0],
+      TYPE: ["tracker3gun", { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [11, 8, 0, 120, 190, 0],
+      TYPE: ["tracker3gun", { INDEPENDENT: true }],
+    },
+    {
+      POSITION: [11, 8, 0, 240, 190, 0],
+      TYPE: ["tracker3gun", { INDEPENDENT: true }],
+    },
+  ],
+};
+
 // BOTS
 exports.bot = {
     FACING_TYPE: "looseToTarget",
