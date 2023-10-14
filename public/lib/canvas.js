@@ -7,15 +7,18 @@ class Canvas {
         this.target = global.target;
         this.socket = global.socket;
         this.directions = [];
+
         this.chatInput = document.getElementById('chatInput');
-        this.chatInput.addEventListener('change', event => {
+        this.chatInput.addEventListener('keydown', event => {
+            if (![global.KEY_ENTER, global.KEY_ESC].includes(event.keyCode)) return;
             this.chatInput.blur();
             this.cv.focus();
             this.chatInput.hidden = true;
             if (!this.chatInput.value) return;
-            this.socket.talk('M', this.chatInput.value);
+            if (event.keyCode === global.KEY_ENTER) this.socket.talk('M', this.chatInput.value);
             this.chatInput.value = "";
         });
+
         this.cv = document.getElementById('gameCanvas');
         this.cv.addEventListener('mousemove', event => this.mouseMove(event), false);
         this.cv.addEventListener("mousedown", event => this.mouseDown(event), false);
