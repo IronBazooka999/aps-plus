@@ -578,7 +578,8 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         m = global.mockups[instance.index],
         xx = x,
         yy = y,
-        source = turretInfo === false ? instance : turretInfo;
+        source = turretInfo === false ? instance : turretInfo,
+        blend = turretsObeyRot ? 0 : render.status.getBlend();
     source.guns.update();
     // if (source.guns.length !== m.guns.length) {
     //     throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
@@ -630,7 +631,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
                 gunColor = g.color == null ? color.grey : gameDraw.modifyColor(g.color, baseColor),
                 borderless = g.borderless,
                 fill = g.drawFill;
-            gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
+            gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), blend));
             drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
         }
     }
@@ -638,21 +639,20 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     context.globalAlpha = 1;
     //console.log(instance, m, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
     //console.log(m, scale, drawSize);
-    gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), render.status.getBlend()));
+    gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), turretsObeyRot ? 0 : blend));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
 
     // Draw guns above us
-    context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
-    for (let i = 0; i < m.guns.length; i++) {
-        let g = m.guns[i];
+    for (let i = 0; i < source.guns.length; i++) {
+        let g = gunConfig[i];
         if (g.drawAbove) {
-            let position = positions[i] / (g.aspect === 1 ? 2 : 1),
+            let position = (turretsObeyRot ? 0 : positions[i]) / (g.aspect === 1 ? 2 : 1),
                 gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
                 gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
                 gunColor = g.color == null ? color.grey : gameDraw.modifyColor(g.color, baseColor),
                 borderless = g.borderless,
                 fill = g.drawFill;
-            gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), render.status.getBlend()));
+            gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), blend));
             drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
         }
     }

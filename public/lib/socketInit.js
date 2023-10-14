@@ -226,7 +226,7 @@ const Entry = class {
         let ref = global.mockups[this.index];
         return {
             image: util.getEntityImageFromEntity(this.index),
-            position: global.mockups[this.index].position,
+            position: ref.position,
             barColor: this.bar,
             label: this.name ? this.name + " - " + /*ref.name : ref.name,*/this.label : this.label,
             score: this.score.get(),

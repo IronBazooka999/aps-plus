@@ -123,7 +123,7 @@ module.exports = {
     BOT_XP: 125,
 
     // The class that players and player-bots spawn as.
-    SPAWN_CLASS: ["autoAssassin", "hexaTank"],
+    SPAWN_CLASS: ["autoAssassin", "hexaTank", "triTrapper"],
 
 
 

@@ -198,11 +198,14 @@ const util = {
                 let o = util.getEntityImageFromMockup(t.index);
                 o.realSize = o.realSize / o.size * mockup.size * t.sizeFactor;
                 o.size = mockup.size * t.sizeFactor;
+                o.sizeFactor = t.sizeFactor;
                 o.angle = t.angle;
                 o.offset = t.offset;
                 o.direction = t.direction;
                 o.facing = t.direction + t.angle;
                 o.render.f = o.facing;
+                o.layer = t.layer;
+                o.mirrorMasterAngle = t.mirrorMasterAngle;
                 return o;
             }),
         };
@@ -210,7 +213,6 @@ const util = {
     getEntityImageFromEntity: (index) => {
         let entity = global.entities.find((i) => i.index === index);
         // entity.guns.getPositions = () => Array(entity.guns.length).fill(0);
-        console.log(entity);
         return entity;
     },
 }
