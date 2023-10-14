@@ -580,12 +580,12 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         yy = y,
         source = turretInfo === false ? instance : turretInfo;
     source.guns.update();
-    if (source.guns.length !== m.guns.length) {
-        throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
-    }
-    if (source.turrets.length !== m.turrets.length) {
-        throw new Error("Mismatch turret number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
-    }
+    // if (source.guns.length !== m.guns.length) {
+    //     throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
+    // }
+    // if (source.turrets.length !== m.turrets.length) {
+    //     throw new Error("Mismatch turret number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
+    // }
     if (fade === 0 || alpha === 0) return;
     if (render.expandsWithDeath) drawSize *= 1 + 0.5 * (1 - fade);
     if (config.graphical.fancyAnimations && assignedContext != ctx2 && (fade !== 1 || alpha !== 1)) {
@@ -600,9 +600,9 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     context.lineCap = "round";
     context.lineJoin = "round";
     // Draw turrets beneath us
-    for (let i = 0; i < m.turrets.length; i++) {
-        let mirrorMasterAngle = m.turrets[i].mirrorMasterAngle
-        let t = m.turrets[i];
+    for (let i = 0; i < source.turrets.length; i++) {
+        let mirrorMasterAngle = source.turrets[i].mirrorMasterAngle
+        let t = source.turrets[i];
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
             : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
@@ -620,9 +620,10 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     }
     // Draw guns below us
     context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
-    let positions = source.guns.getPositions();
-    for (let i = 0; i < m.guns.length; i++) {
-        let g = m.guns[i];
+    let positions = source.guns.getPositions(),
+        gunConfig = source.guns.getConfig();
+    for (let i = 0; i < source.guns.length; i++) {
+        let g = gunConfig[i];
         if (!g.drawAbove) {
             let position = positions[i] / (g.aspect === 1 ? 2 : 1),
                 gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
@@ -638,6 +639,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     context.globalAlpha = 1;
     gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), render.status.getBlend()));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
+
     // Draw guns above us
     context.lineWidth = Math.max(config.graphical.mininumBorderChunk, ratio * config.graphical.borderChunk);
     for (let i = 0; i < m.guns.length; i++) {
@@ -654,9 +656,9 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         }
     }
     // Draw turrets above us
-    for (let i = 0; i < m.turrets.length; i++) {
-        let t = m.turrets[i];
-        let mirrorMasterAngle = m.turrets[i].mirrorMasterAngle
+    for (let i = 0; i < source.turrets.length; i++) {
+        let t = source.turrets[i];
+        let mirrorMasterAngle = source.turrets[i].mirrorMasterAngle
         if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
@@ -1242,7 +1244,7 @@ function drawSelfInfo(spacing, alcoveSize, max) {
     drawBar(x, x + len * gui.__s.getProgress(), y + height / 2, height - 3.5, color.gold);
 
     // Draw the class type
-    drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x + len / 2, y + height / 2, height - 4, color.guiwhite, "center", true);
+    drawText("Level " + gui.__s.getLevel() + " " + gui.class, x + len / 2, y + height / 2, height - 4, color.guiwhite, "center", true);
     height = 14;
     y -= height + vspacing;
 
@@ -1487,7 +1489,7 @@ const gameDrawAlive = (ratio, drawRatio) => {
     scaleScreenRatio(ratio, true);
 
     //draw hud
-    let alcoveSize = 200 / ratio; // / drawRatio * global.screenWidth;
+    let alcoveSize = 200 / ratio; // drawRatio * global.screenWidth;
     let spacing = 20;
     gui.__s.update();
     let lb = leaderboard.get();

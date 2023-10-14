@@ -67,6 +67,7 @@ var serverStart = 0,
         },
         type: 0,
         root: "",
+        class: "",
         fps: 0,
         color: 0,
         accel: 0,
@@ -325,12 +326,53 @@ const GunContainer = n => {
             motion: 0,
             position: 0,
             isUpdated: true,
+            configLoaded: false,
+            color: "",
+            borderless: false, 
+            drawFill: true, 
+            drawAbove: false,
+            length: 0,
+            width: 0,
+            aspect: 0,
+            angle: 0,
+            direction: 0,
+            offset: 0,
         });
     }
     return {
         getPositions: () => a.map(g => {
             return g.position;
         }),
+        getConfig: () => a.map(g => {
+            return {
+                color: g.color,
+                borderless: g.borderless, 
+                drawFill: g.drawFill,
+                drawAbove: g.drawAbove,
+                length: g.length,
+                width: g.width,
+                aspect: g.aspect,
+                angle: g.angle,
+                direction: g.direction,
+                offset: g.offset,
+            };
+        }),
+        setConfig: (ind, c) => {
+            let g = a[ind];
+            if (!g.configLoaded) {
+                g.configLoaded = true;
+                g.color = c.color;
+                g.borderless = c.borderless; 
+                g.drawFill = c.drawFill;
+                g.drawAbove = c.drawAbove;
+                g.length = c.length;
+                g.width = c.width;
+                g.aspect = c.aspect;
+                g.angle = c.angle;
+                g.direction = c.direction;
+                g.offset = c.offset;
+            }
+        },
         update: () => {
             for (let instance of a) {
                 physics(instance);
@@ -485,10 +527,19 @@ const process = (z = {}) => {
     // Decide if guns need to be fired one by one
     for (let i = 0; i < gunnumb; i++) {
         let time = get.next(),
-            power = get.next();
-        if (time > global.player.lastUpdate - global.metrics.rendergap) { // shoot it
-            z.guns.fire(i, power);
-        }
+            power = get.next(),
+            color = get.next(),
+            borderless = get.next(),
+            drawFill = get.next(),
+            drawAbove = get.next(),
+            length = get.next(),
+            width = get.next(),
+            aspect = get.next(),
+            angle = get.next(),
+            direction = get.next(),
+            offset = get.next();
+        z.guns.setConfig(i, {color, borderless, drawFill, drawAbove, length, width, aspect, angle, direction, offset}); // Load gun config into container
+        if (time > global.player.lastUpdate - global.metrics.rendergap) z.guns.fire(i, power); // Shoot it
     }
     // Update turrets
     let turnumb = get.next();
@@ -551,6 +602,7 @@ const convert = {
         let index = get.next(),
             // Translate the encoded index
             indices = {
+                class: index & 0x0400,
                 root: index & 0x0200,
                 topspeed: index & 0x0100,
                 accel: index & 0x0080,
@@ -611,6 +663,9 @@ const convert = {
         }
         if (indices.root) {
             gui.root = get.next();
+        }
+        if (indices.class) {
+            gui.class = get.next();
         }
     },
     broadcast: () => {

@@ -178,6 +178,20 @@ const util = {
             guns: {
                 length: mockup.guns.length,
                 getPositions: () => Array(mockup.guns.length).fill(0),
+                getConfig: () => mockup.guns.map(g => {
+                    return {
+                        color: g.color,
+                        borderless: g.borderless, 
+                        drawFill: g.drawFill,
+                        drawAbove: g.drawAbove,
+                        length: g.length,
+                        width: g.width,
+                        aspect: g.aspect,
+                        angle: g.angle,
+                        direction: g.direction,
+                        offset: g.offset,
+                    };
+                }),
                 update: () => {},
             },
             turrets: mockup.turrets.map((t) => {

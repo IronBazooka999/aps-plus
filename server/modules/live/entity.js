@@ -178,8 +178,20 @@ class Gun {
         }
         return this.bulletStats.raw;
     }
-    getLastShot() {
-        return this.lastShot;
+    getPhotoInfo() {
+        return {
+            ...this.lastShot, 
+            color: this.color,
+            borderless: this.borderless, 
+            drawFill: this.drawFill, 
+            drawAbove: this.drawAbove,
+            length: this.length,
+            width: this.width,
+            aspect: this.aspect,
+            angle: this.angle,
+            direction: this.direction,
+            offset: this.offset,
+        };
     }
     spawnBullets(useWhile, shootPermission) {
 
@@ -942,8 +954,11 @@ class Entity extends EventEmitter {
         player.body = fakeBody;
         player.body.kill();
     }
-    define(set, emitEvent = true) {
-        set = ensureIsClass(set);
+    define(defs, emitEvent = true) {
+        if (!Array.isArray(defs)) defs = [defs];
+        
+        // Define all primary stats
+        let set = ensureIsClass(defs[0]);
         this.store = {}
         for (let gun of this.guns) {
             gun.store = {}
@@ -1184,6 +1199,70 @@ class Entity extends EventEmitter {
         if (emitEvent) {
             this.emit('define', set);
         }
+
+        // Define additional stats for other split upgrades
+        for (let i = 1; i < defs.length; i++) {
+            set = ensureIsClass(defs[i]);
+            if (set.LABEL != null) this.label = this.label + "-" + set.LABEL;
+            if (set.BODY != null) {
+                if (set.BODY.ACCELERATION != null) this.ACCELERATION *= set.BODY.ACCELERATION;
+                if (set.BODY.SPEED != null) this.SPEED *= set.BODY.SPEED;
+                if (set.BODY.HEALTH != null) this.HEALTH *= set.BODY.HEALTH;
+                if (set.BODY.RESIST != null) this.RESIST *= set.BODY.RESIST;
+                if (set.BODY.SHIELD != null) this.SHIELD *= set.BODY.SHIELD;
+                if (set.BODY.REGEN != null) this.REGEN *= set.BODY.REGEN;
+                if (set.BODY.DAMAGE != null) this.DAMAGE *= set.BODY.DAMAGE;
+                if (set.BODY.PENETRATION != null) this.PENETRATION *= set.BODY.PENETRATION;
+                if (set.BODY.RANGE != null) this.RANGE *= set.BODY.RANGE;
+                if (set.BODY.FOV != null) this.FOV *= set.BODY.FOV;
+                if (set.BODY.SHOCK_ABSORB != null) this.SHOCK_ABSORB *= set.BODY.SHOCK_ABSORB;
+                if (set.BODY.RECOIL_MULTIPLIER != null) this.RECOIL_MULTIPLIER *= set.BODY.RECOIL_MULTIPLIER;
+                if (set.BODY.DENSITY != null) this.DENSITY *= set.BODY.DENSITY;
+                if (set.BODY.STEALTH != null) this.STEALTH *= set.BODY.STEALTH;
+                if (set.BODY.PUSHABILITY != null) this.PUSHABILITY *= set.BODY.PUSHABILITY;
+                if (set.BODY.HETERO != null) this.heteroMultiplier *= set.BODY.HETERO;
+                this.refreshBodyAttributes();
+            }
+            if (set.GUNS != null) {
+                let newGuns = [];
+                for (let i = 0; i < set.GUNS.length; i++) {
+                    newGuns.push(new Gun(this, set.GUNS[i]));
+                }
+                this.guns.push(...newGuns);
+            }
+            if (set.TURRETS != null) {
+                for (let i = 0; i < this.turrets.length; i++) {
+                    this.turrets[i].destroy();
+                }
+                this.turrets = [];
+                for (let i = 0; i < set.TURRETS.length; i++) {
+                    let def = set.TURRETS[i],
+                        o = new Entity(this, this.master),
+                        turretDanger = false,
+                        type = Array.isArray(def.TYPE) ? def.TYPE : [def.TYPE];
+                    for (let j = 0; j < type.length; j++) {
+                        o.define(type[j]);
+                        if (type.TURRET_DANGER) turretDanger = true;
+                    }
+                    if (!turretDanger) o.define({ DANGER: 0 });
+                    o.bindToMaster(def.POSITION, this);
+                }
+            }
+            for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
+                let tierProp = 'UPGRADES_TIER_' + i;
+                if (set[tierProp] != null) {
+                    for (let j = 0; j < set[tierProp].length; j++) {
+                        let e = ensureIsClass(set[tierProp][j]);
+                        this.upgrades.push({
+                            class: e,
+                            level: c.TIER_MULTIPLIER * i,
+                            index: e.index,
+                            tier: i
+                        });
+                    }
+                }
+            }
+        }
     }
     refreshBodyAttributes() {
 
@@ -1304,6 +1383,7 @@ class Entity extends EventEmitter {
             invuln: this.invuln,
             id: this.id,
             index: this.index,
+            label: this.label,
             x: this.x,
             y: this.y,
             vx: this.velocity.x,
@@ -1322,7 +1402,7 @@ class Entity extends EventEmitter {
             color: this.color,
             name: (this.nameColor || "#FFFFFF") + this.name,
             score: this.skill.score,
-            guns: this.guns.map((gun) => gun.getLastShot()),
+            guns: this.guns.map((gun) => gun.getPhotoInfo()),
             turrets: this.turrets.map((turret) => turret.camera(true)),
         };
     }
