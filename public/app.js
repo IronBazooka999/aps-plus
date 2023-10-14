@@ -689,7 +689,13 @@ function drawHealth(x, y, instance, ratio, alpha) {
         let health = instance.render.health.get(),
             shield = instance.render.shield.get();
         if (health < 1 - 1e-4 || shield < 1 - 1e-4) {
-            const col = config.graphical.coloredHealthbars ? gameDraw.mixColors(gameDraw.getColor(instance.color), color.guiwhite, 0.5) : color.lgreen;
+            let instanceColor = null
+            let getColor = true
+            if (typeof instance.color == 'string') {
+                instanceColor = instance.color.split(' ')[0]
+                if (instanceColor[0] == '#') getColor = false
+            } else instanceColor = instance.color
+            const col = config.graphical.coloredHealthbars ? gameDraw.mixColors(getColor ? gameDraw.getColor(parseInt(instanceColor)) : instanceColor, color.guiwhite, 0.5) : color.lgreen;
             let yy = y + 1.1 * realSize + 15;
             let barWidth = 5;
             ctx.globalAlpha = alpha * alpha * fade;
