@@ -51,6 +51,7 @@ const global = {
     // Keys and other mathematical constants
     KEY_ESC: 27,
     KEY_ENTER: 13,
+    KEY_SHIFT: 16,
     KEY_BECOME: 72,
     KEY_CHAT: 13,
     KEY_FIREFOOD: 119,
@@ -98,8 +99,6 @@ const global = {
     KEY_CHOOSE_4: 72,
     KEY_CHOOSE_5: 74,
     KEY_CHOOSE_6: 75,
-
-    KEY_ENTER: 13,
 
     showTree: false,
     scrollX: 0,
