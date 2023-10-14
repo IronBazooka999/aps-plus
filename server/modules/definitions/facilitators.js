@@ -16,7 +16,7 @@ let skcnv = {
 };
 
 // GUN DEFINITIONS
-exports.combineStats = function (array_of_objects) {
+exports.combineStats = function (stats) {
     try {
         // Build a blank array of the appropiate length
         let data = {
@@ -35,8 +35,8 @@ exports.combineStats = function (array_of_objects) {
             resist: 1
         };
 
-        for (let object = 0; object < array_of_objects.length; object++) {
-            let gStat = array_of_objects[object];
+        for (let object = 0; object < stats.length; object++) {
+            let gStat = stats[object];
             if (Array.isArray(gStat)) {
                 gStat = {
                     reload: gStat[0], recoil: gStat[1], shudder: gStat[2],
@@ -63,7 +63,7 @@ exports.combineStats = function (array_of_objects) {
         return data;
     } catch (err) {
         console.log(err);
-        console.log(JSON.stringify(array_of_objects));
+        console.log(JSON.stringify(stats));
     }
 };
 exports.setBuild = (build) => {
