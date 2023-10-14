@@ -219,16 +219,18 @@ const Entry = class {
         this.score.set(to.score);
         this.old = false;
         this.nameColor = to.nameColor;
+        this.id = to.id;
+        this.label = to.label;
     }
     publish() {
         let ref = global.mockups[this.index];
         return {
-            image: util.getEntityImageFromMockup(this.index, this.color),
-            position: ref.position,
+            image: util.getEntityImageFromEntity(this.index),
+            position: global.mockups[this.index].position,
             barColor: this.bar,
-            label: this.name ? this.name + " - " + ref.name : ref.name,
+            label: this.name ? this.name + " - " + /*ref.name : ref.name,*/this.label : this.label,
             score: this.score.get(),
-            nameColor: this.nameColor
+            nameColor: this.nameColor,
         };
     }
 };
@@ -262,7 +264,7 @@ const Leaderboard = class {
 };
 let minimapAllInt = new Integrate(5),
     minimapTeamInt = new Integrate(3),
-    leaderboardInt = new Integrate(6),
+    leaderboardInt = new Integrate(7),
     leaderboard = new Leaderboard(),
     minimap = new Minimap(200);
 let lags = [];
@@ -422,6 +424,15 @@ const process = (z = {}) => {
     if (type & 0x01) { // issa turret
         z.facing = get.next();
         z.layer = get.next();
+        z.index = get.next();
+        z.color = get.next();
+        z.size = get.next();
+        z.realSize = get.next();
+        z.sizeFactor = get.next();
+        z.angle = get.next();
+        z.direction = get.next();
+        z.offset = get.next();
+        z.mirrorMasterAngle = get.next();
     } else { // issa something real
         z.interval = global.metrics.rendergap;
         z.id = get.next();
@@ -715,7 +726,8 @@ const convert = {
                 name: data[2],
                 color: data[3],
                 bar: data[4],
-                nameColor: data[5]
+                nameColor: data[5],
+                label: data[6],
             })
         }
         leaderboard.update(entries);

@@ -48,6 +48,7 @@ class Gun {
         this.canShoot = false;
         this.borderless = false;
         this.drawFill = true;
+        this.drawAbove = false;
         if (info.PROPERTIES != null) {
             if (info.PROPERTIES.TYPE != null) {
                 this.canShoot = true;
@@ -1389,18 +1390,24 @@ class Entity extends EventEmitter {
             vx: this.velocity.x,
             vy: this.velocity.y,
             size: this.size,
+            realSize: this.realSize,
             rsize: this.realSize,
             status: 1,
             health: this.health.display(),
             shield: this.shield.display(),
             alpha: this.alpha,
             facing: this.facing,
+            direction: this.bound ? this.bound.direction : 0,
+            offset: this.bound ? this.bound.offset : 0,
+            sizeFactor: this.bound ? this.bound.size : 1,
+            mirrorMasterAngle: this.settings.mirrorMasterAngle ?? false,
             perceptionAngleIndependence: this.perceptionAngleIndependence, //vfacing: this.vfacing,
             defaultAngle: this.firingArc[0],
             twiggle: this.facingType === "autospin" || (this.facingType === "locksFacing" && this.control.alt),
             layer: this.layerID ? this.layerID : this.bond != null ? this.bound.layer : this.type === "wall" ? 11 : this.type === "food" ? 10 : this.type === "tank" ? 5 : this.type === "crasher" ? 1 : 0,
             color: this.color,
             name: (this.nameColor || "#FFFFFF") + this.name,
+            label: this.label,
             score: this.skill.score,
             guns: this.guns.map((gun) => gun.getPhotoInfo()),
             turrets: this.turrets.map((turret) => turret.camera(true)),

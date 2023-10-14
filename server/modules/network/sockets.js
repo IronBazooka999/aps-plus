@@ -975,8 +975,17 @@ function flatten(data) {
     let output = [data.type]; // We will remove the first entry in the persepective method
     if (data.type & 0x01) {
         output.push(
-            /* 1 */ data.facing,
-            /* 2 */ data.layer
+            /*  1 */ data.facing,
+            /*  2 */ data.layer,
+            /*  3 */ data.index,
+            /*  4 */ data.color,
+            /*  5 */ data.size,
+            /*  6 */ data.realSize,
+            /*  7 */ data.sizeFactor,
+            /*  8 */ data.defaultAngle,
+            /*  9 */ data.direction,
+            /* 10 */ data.offset,
+            /* 11 */ data.mirrorMasterAngle,
         );
     } else {
         output.push(
@@ -996,7 +1005,7 @@ function flatten(data) {
             /* 14 */ data.invuln,
             /* 15 */ Math.ceil(65535 * data.health),
             /* 16 */ Math.round(65535 * data.shield),
-            /* 17 */ Math.round(255 * data.alpha)
+            /* 17 */ Math.round(255 * data.alpha),
         );
         if (data.type & 0x04) {
             output.push(
@@ -1307,7 +1316,7 @@ let minimapTeams = teamIDs.map((team) =>
         return all;
     })
 );
-let leaderboard = new Delta(6, () => {
+let leaderboard = new Delta(7, () => {
     let list = [];
     if (c.TAG)
         for (let id = 0; id < c.TEAMS; id++) {
@@ -1361,6 +1370,7 @@ let leaderboard = new Delta(6, () => {
                 entry.color,
                 getBarColor(entry),
                 entry.nameColor || "#FFFFFF",
+                entry.label,
             ],
         });
         list.splice(top, 1);

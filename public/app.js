@@ -601,7 +601,6 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     context.lineJoin = "round";
     // Draw turrets beneath us
     for (let i = 0; i < source.turrets.length; i++) {
-        let mirrorMasterAngle = source.turrets[i].mirrorMasterAngle
         let t = source.turrets[i];
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
@@ -610,7 +609,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
                 facing = 0
-            if (mirrorMasterAngle && !turretsObeyRot) {
+            if (t.mirrorMasterAngle && !turretsObeyRot) {
                 facing = render.f + turretsObeyRot * rot + t.angle
             } else {
                 facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
@@ -625,7 +624,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     for (let i = 0; i < source.guns.length; i++) {
         let g = gunConfig[i];
         if (!g.drawAbove) {
-            let position = positions[i] / (g.aspect === 1 ? 2 : 1),
+            let position = (turretsObeyRot ? 0 : positions[i]) / (g.aspect === 1 ? 2 : 1),
                 gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
                 gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
                 gunColor = g.color == null ? color.grey : gameDraw.modifyColor(g.color, baseColor),
@@ -637,6 +636,8 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     }
     // Draw body
     context.globalAlpha = 1;
+    //console.log(instance, m, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
+    //console.log(m, scale, drawSize);
     gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), render.status.getBlend()));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
 
@@ -658,12 +659,11 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     // Draw turrets above us
     for (let i = 0; i < source.turrets.length; i++) {
         let t = source.turrets[i];
-        let mirrorMasterAngle = source.turrets[i].mirrorMasterAngle
         if (t.layer) {
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
                 facing = 0;
-            if (mirrorMasterAngle || turretsObeyRot) {
+            if (t.mirrorMasterAngle || turretsObeyRot) {
                 facing = rot + t.angle;
             } else {
                 facing = source.turrets[i].lerpedFacing;

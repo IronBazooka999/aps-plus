@@ -206,6 +206,12 @@ const util = {
                 return o;
             }),
         };
-    }
+    },
+    getEntityImageFromEntity: (index) => {
+        let entity = global.entities.find((i) => i.index === index);
+        // entity.guns.getPositions = () => Array(entity.guns.length).fill(0);
+        console.log(entity);
+        return entity;
+    },
 }
 export { util }
