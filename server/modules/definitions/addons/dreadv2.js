@@ -61,7 +61,7 @@ module.exports = ({ Class }) => {
 	return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
 
 	// Set the below variable to true to enable hex dreadnought building (WARNING: increases load time by approximately 10x)
-	//const buildHexnoughts = true;
+	const buildHexnoughts = true;
 	
 	// Comment out lines from the arrays below to disable that branch of the tree from being generated.
 	const eggnoughtWeapons = [
@@ -2427,7 +2427,7 @@ module.exports = ({ Class }) => {
 	const pentanoughtWeapons = ["rapierOfficialV2", "javelinOfficialV2", "diplomatOfficialV2", "arbitratorOfficialV2", "retardantOfficialV2", "tyrantOfficialV2", "raiderOfficialV2", "gladiatorOfficialV2", "cerberusOfficialV2", "luciferOfficialV2"];
 
 	function mergeDreadv2(weapon, body) {
-		let className = weapon.split("_")[0] + body;
+		let className = weapon.split("Official")[0] + body;
 
 		weapon = ensureIsClass(Class, weapon);
 		body = ensureIsClass(Class, body);
@@ -2454,12 +2454,15 @@ module.exports = ({ Class }) => {
 		for (let w in weapon.UPGRADES_TIER_M1) {
 			for (let b in body.UPGRADES_TIER_M1) {
 				let weaponName = weapon.UPGRADES_TIER_M1[w],
+					shortWeaponName = weaponName.split("Official")[0],
 					bodyName = body.UPGRADES_TIER_M1[b];
 
-				if (!mergedDreads.includes(weaponName + bodyName))
+				if (!mergedDreads.includes(shortWeaponName + bodyName)) {
 					mergeDreadv2(weaponName, bodyName);
+					mergedDreads.push(shortWeaponName + bodyName);
+				}
 				
-				UPGRADES_TIER_0.push(weaponName.split("_")[0] + bodyName);
+				UPGRADES_TIER_0.push(shortWeaponName + bodyName);
 			}
 		}
 
@@ -2483,7 +2486,8 @@ module.exports = ({ Class }) => {
 		for (let b in eggnoughtBodies) {
 			let bodyName = eggnoughtBodies[b];
 			mergeDreadv2(weaponName, bodyName);
-			Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("_")[0] + bodyName);
+			Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("Official")[0] + bodyName);
 		}
 	}
+	console.log(mergedDreads);
 };
