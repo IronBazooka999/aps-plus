@@ -610,11 +610,11 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
             let ang = t.direction + t.angle + rot,
                 len = t.offset * drawSize,
                 facing = 0
-            if (mirrorMasterAngle && !turretsObeyRot) {
-                facing = render.f + turretsObeyRot * rot + t.angle
-            } else {
-                facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
-            }
+                if (mirrorMasterAngle || turretsObeyRot) {
+                    facing = rot + t.angle;
+                } else {
+                    facing = source.turrets[i].lerpedFacing;
+                }
             drawEntity(baseColor, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
