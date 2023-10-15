@@ -975,7 +975,7 @@ class Entity extends EventEmitter {
             }
         }
         if (set.LAYER != null) this.layerID = set.LAYER;
-        if (set.index != null) this.index = set.index;
+        if (set.index != null) this.index = set.index.toString();
         if (set.NAME != null) this.name = set.NAME;
         if (set.LABEL != null) this.label = set.LABEL;
         if (set.UPGRADE_LABEL != null) this.upgradeLabel = set.UPGRADE_LABEL;
@@ -1204,6 +1204,7 @@ class Entity extends EventEmitter {
         // Define additional stats for other split upgrades
         for (let i = 1; i < defs.length; i++) {
             set = ensureIsClass(defs[i]);
+            if (set.index != null) this.index += "-" + set.index;
             if (set.LABEL != null) this.label = this.label + "-" + set.LABEL;
             if (set.BODY != null) {
                 if (set.BODY.ACCELERATION != null) this.ACCELERATION *= set.BODY.ACCELERATION;
@@ -1398,6 +1399,7 @@ class Entity extends EventEmitter {
             alpha: this.alpha,
             facing: this.facing,
             direction: this.bound ? this.bound.direction : 0,
+            angle: this.bound ? this.bound.angle : 0,
             offset: this.bound ? this.bound.offset : 0,
             sizeFactor: this.bound ? this.bound.size : 1,
             mirrorMasterAngle: this.settings.mirrorMasterAngle ?? false,

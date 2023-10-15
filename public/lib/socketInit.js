@@ -223,9 +223,11 @@ const Entry = class {
         this.label = to.label;
     }
     publish() {
-        let ref = global.mockups[this.index];
+        let indexes = this.index.split("-"),
+            ref = global.mockups[parseInt(indexes[0])];
+        // console.log("lb", this.index);
         return {
-            image: util.getEntityImageFromEntity(this.index),
+            image: util.getEntityImageFromMockup(this.index, this.color),
             position: ref.position,
             barColor: this.bar,
             label: this.name ? this.name + " - " + /*ref.name : ref.name,*/this.label : this.label,

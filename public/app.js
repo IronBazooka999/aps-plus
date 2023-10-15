@@ -575,11 +575,13 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     let context = assignedContext ? assignedContext : ctx;
     let fade = turretInfo ? 1 : render.status.getFade(),
         drawSize = scale * ratio * instance.size,
-        m = global.mockups[instance.index],
+        indexes = instance.index.split("-"),
+        m = global.mockups[parseInt(indexes[0])],
         xx = x,
         yy = y,
         source = turretInfo === false ? instance : turretInfo,
         blend = turretsObeyRot ? 0 : render.status.getBlend();
+    // console.log("ind", parseInt(indexes[0]), indexes, [instance.index]);
     source.guns.update();
     // if (source.guns.length !== m.guns.length) {
     //     throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
@@ -603,18 +605,26 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     // Draw turrets beneath us
     for (let i = 0; i < source.turrets.length; i++) {
         let t = source.turrets[i];
+        let t2 = m.turrets[i];
         source.turrets[i].lerpedFacing == undefined
             ? (source.turrets[i].lerpedFacing = source.turrets[i].facing)
             : (source.turrets[i].lerpedFacing = util.lerpAngle(source.turrets[i].lerpedFacing, source.turrets[i].facing, 0.1, true));
         if (!t.layer) {
             let ang = t.direction + t.angle + rot,
-                len = t.offset * drawSize,
-                facing = 0
-            if (t.mirrorMasterAngle && !turretsObeyRot) {
-                facing = render.f + turretsObeyRot * rot + t.angle
+                len = t.offset * drawSize;
+            let facing = 0;
+            let z = 0
+            //console.log(t);
+            if (t.mirrorMasterAngle || turretsObeyRot) {
+                facing = rot + t.angle;
+                // console.log('rotangle', facing);
             } else {
-                facing = source.turrets[i].lerpedFacing + turretsObeyRot * rot;
+                facing = source.turrets[i].lerpedFacing;
+                console.log(facing);
             }
+            // console.log('facing', z, facing, source.turrets[i].lerpedFacing);
+            //console.log(facing, t.mirrorMasterAngle || turretsObeyRot, source.turrets[i].lerpedFacing);
+            if (!turretsObeyRot) console.log(t.direction, t2.direction, t.angle, t2.angle, t.offset, t2.offset, t.mirrorMasterAngle, t2.mirrorMasterAngle, t.sizeFactor, t2.sizeFactor);
             drawEntity(baseColor, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
@@ -685,7 +695,8 @@ function drawHealth(x, y, instance, ratio, alpha) {
     let fade = instance.render.status.getFade();
     ctx.globalAlpha = fade * fade;
     let size = instance.size * ratio,
-        m = global.mockups[instance.index],
+        indexes = instance.index.split("-"),
+        m = global.mockups[parseInt(indexes[0])],
         realSize = (size / m.size) * m.realSize;
     if (instance.drawsHealth) {
         let health = instance.render.health.get(),
@@ -988,7 +999,8 @@ function drawEntities(px, py, ratio) {
     for (let instance of global.entities) {
         //put chat msg above name
         let size = instance.size * ratio,
-            m = global.mockups[instance.index],
+            indexes = instance.index.split("-"),
+            m = global.mockups[parseInt(indexes[0])],
             realSize = (size / m.size) * m.realSize,
             x = instance.id === gui.playerid ? 0 : ratio * instance.render.x - px,
             y = instance.id === gui.playerid ? 0 : ratio * instance.render.y - py;
@@ -1161,7 +1173,7 @@ function drawSkillBars(spacing, alcoveSize) {
     let x = spacing + (statMenu.get() - 1) * (height + 50 + len * ska(gui.skills.reduce((largest, skill) => Math.max(largest, skill.cap), 0)));
     let y = global.screenHeight - spacing - height;
     let ticker = 11;
-    let namedata = gui.getStatNames(global.mockups[gui.type].statnames);
+    let namedata = gui.getStatNames(global.mockups[parseInt(gui.type.split("-")[0])].statnames);
     let clickableRatio = canvas.height / global.screenHeight / global.ratio;
     for (let i = 0; i < gui.skills.length; i++) {
         ticker--;
@@ -1402,7 +1414,8 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         let clickableRatio = global.canvas.height / global.screenHeight / global.ratio;
         upgradeSpin += 0.01;
         for (let i = 0; i < gui.upgrades.length; i++) {
-            let model = gui.upgrades[i];
+            let model = gui.upgrades[i].toString();
+            // console.log("model", [model]);
             if (y > yo) yo = y;
             xxx = x;
             global.clickables.upgrade.place(i, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);
@@ -1562,7 +1575,7 @@ const gameDrawDead = () => {
     let x = global.screenWidth / 2,
         y = global.screenHeight / 2 - 50;
     let len = 140,
-        position = global.mockups[gui.type].position,
+        position = global.mockups[parseInt(gui.type.split("-")[0])].position,
         scale = len / position.axis,
         xx = global.screenWidth / 2 - scale * position.middle.x * 0.707,
         yy = global.screenHeight / 2 - 35 + scale * position.middle.x * 0.707,
@@ -1570,7 +1583,7 @@ const gameDrawDead = () => {
         baseColor = picture.color;
     drawEntity(baseColor, (xx - 190 - len / 2 + 0.5) | 0, (yy - 10 + 0.5) | 0, picture, 1.5, 1, (0.5 * scale) / picture.realSize, -Math.PI / 4, true);
     drawText("Game over man, game over.", x, y - 80, 8, color.guiwhite, "center");
-    drawText("Level " + gui.__s.getLevel() + " " + global.mockups[gui.type].name, x - 170, y - 30, 24, color.guiwhite);
+    drawText("Level " + gui.__s.getLevel() + " " + picture.name, x - 170, y - 30, 24, color.guiwhite);
     drawText("Final score: " + util.formatLargeNumber(Math.round(global.finalScore.get())), x - 170, y + 25, 50, color.guiwhite);
     drawText("⌚ Survived for " + util.timeForHumans(Math.round(global.finalLifetime.get())), x - 170, y + 55, 16, color.guiwhite);
     drawText(getKills(), x - 170, y + 77, 16, color.guiwhite);

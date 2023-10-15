@@ -982,7 +982,7 @@ function flatten(data) {
             /*  5 */ data.size,
             /*  6 */ data.realSize,
             /*  7 */ data.sizeFactor,
-            /*  8 */ data.defaultAngle,
+            /*  8 */ data.angle,
             /*  9 */ data.direction,
             /* 10 */ data.offset,
             /* 11 */ data.mirrorMasterAngle,

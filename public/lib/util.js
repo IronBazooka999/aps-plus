@@ -131,19 +131,33 @@ const util = {
         }
         return x > -r && x < global.screenWidth / ratio + r && y > -r && y < global.screenHeight / ratio + r;
     },
-    getEntityImageFromMockup: (index, color = global.mockups[index].color) => {
-        let mockup = global.mockups[index];
-        let trueColor = global.mockups[index].color;
-        if (trueColor == '16 0 1 0 false') trueColor = color;
+    getEntityImageFromMockup: (index, color) => {
+        // console.log(index);
+        let firstIndex = parseInt(index.split("-")[0]),
+            mainMockup = global.mockups[firstIndex],
+            guns = [],
+            turrets = [],
+            name = "",
+            trueColor = mainMockup.color;
+        if (trueColor == '16 0 1 0 false' && color) trueColor = color;
+        
+        for (let i of index.split("-")) {
+            let mockup = global.mockups[parseInt(i)];
+            // console.log("i", i);
+            guns.push(...mockup.guns);
+            turrets.push(...mockup.turrets);
+            name += "-" + mockup.name;
+        }
+        // console.log(guns, turrets);
         return {
             time: 0,
             index: index,
-            x: mockup.x,
-            y: mockup.y,
+            x: mainMockup.x,
+            y: mainMockup.y,
             vx: 0,
             vy: 0,
-            size: mockup.size,
-            realSize: mockup.realSize,
+            size: mainMockup.size,
+            realSize: mainMockup.realSize,
             color: trueColor,
             render: {
                 status: {
@@ -168,17 +182,17 @@ const util = {
                     },
                 },
             },
-            facing: mockup.facing,
-            shape: mockup.shape,
-            name: mockup.name,
-            upgradeName: mockup.upgradeName,
+            facing: mainMockup.facing,
+            shape: mainMockup.shape,
+            name: name.substring(1),
+            upgradeName: mainMockup.upgradeName,
             score: 0,
             tiggle: 0,
-            layer: mockup.layer,
+            layer: mainMockup.layer,
             guns: {
-                length: mockup.guns.length,
-                getPositions: () => Array(mockup.guns.length).fill(0),
-                getConfig: () => mockup.guns.map(g => {
+                length: guns.length,
+                getPositions: () => Array(guns.length).fill(0),
+                getConfig: () => guns.map(g => {
                     return {
                         color: g.color,
                         borderless: g.borderless, 
@@ -194,10 +208,10 @@ const util = {
                 }),
                 update: () => {},
             },
-            turrets: mockup.turrets.map((t) => {
+            turrets: turrets.map((t) => {
                 let o = util.getEntityImageFromMockup(t.index);
-                o.realSize = o.realSize / o.size * mockup.size * t.sizeFactor;
-                o.size = mockup.size * t.sizeFactor;
+                o.realSize = o.realSize / o.size * mainMockup.size * t.sizeFactor;
+                o.size = mainMockup.size * t.sizeFactor;
                 o.sizeFactor = t.sizeFactor;
                 o.angle = t.angle;
                 o.offset = t.offset;
@@ -209,11 +223,6 @@ const util = {
                 return o;
             }),
         };
-    },
-    getEntityImageFromEntity: (index) => {
-        let entity = global.entities.find((i) => i.index === index);
-        // entity.guns.getPositions = () => Array(entity.guns.length).fill(0);
-        return entity;
     },
 }
 export { util }
