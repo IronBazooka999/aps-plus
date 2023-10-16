@@ -581,14 +581,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         yy = y,
         source = turretInfo === false ? instance : turretInfo,
         blend = turretsObeyRot ? 0 : render.status.getBlend();
-    // console.log("ind", parseInt(indexes[0]), indexes, [instance.index]);
     source.guns.update();
-    // if (source.guns.length !== m.guns.length) {
-    //     throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
-    // }
-    // if (source.turrets.length !== m.turrets.length) {
-    //     throw new Error("Mismatch turret number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
-    // }
     if (fade === 0 || alpha === 0) return;
     if (render.expandsWithDeath) drawSize *= 1 + 0.5 * (1 - fade);
     if (config.graphical.fancyAnimations && assignedContext != ctx2 && (fade !== 1 || alpha !== 1)) {
@@ -614,17 +607,11 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
                 len = t.offset * drawSize;
             let facing = 0;
             let z = 0
-            //console.log(t);
             if (t.mirrorMasterAngle || turretsObeyRot) {
                 facing = rot + t.angle;
-                // console.log('rotangle', facing);
             } else {
                 facing = source.turrets[i].lerpedFacing;
-                console.log(facing);
             }
-            // console.log('facing', z, facing, source.turrets[i].lerpedFacing);
-            //console.log(facing, t.mirrorMasterAngle || turretsObeyRot, source.turrets[i].lerpedFacing);
-            if (!turretsObeyRot) console.log(t.direction, t2.direction, t.angle, t2.angle, t.offset, t2.offset, t.mirrorMasterAngle, t2.mirrorMasterAngle, t.sizeFactor, t2.sizeFactor);
             drawEntity(baseColor, xx + len * Math.cos(ang), yy + len * Math.sin(ang), t, ratio, 1, (drawSize / ratio / t.size) * t.sizeFactor, facing, turretsObeyRot, context, source.turrets[i], render);
         }
     }
@@ -647,8 +634,6 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     }
     // Draw body
     context.globalAlpha = 1;
-    //console.log(instance, m, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
-    //console.log(m, scale, drawSize);
     gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), turretsObeyRot ? 0 : blend));
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
 
@@ -1414,8 +1399,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         let clickableRatio = global.canvas.height / global.screenHeight / global.ratio;
         upgradeSpin += 0.01;
         for (let i = 0; i < gui.upgrades.length; i++) {
-            let model = gui.upgrades[i].toString();
-            // console.log("model", [model]);
+            let model = gui.upgrades[i][1];
             if (y > yo) yo = y;
             xxx = x;
             global.clickables.upgrade.place(i, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);

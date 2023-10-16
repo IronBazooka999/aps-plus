@@ -805,8 +805,8 @@ class Entity extends EventEmitter {
         this.team = master.team;
         this.turnAngle = 0;
         // Stored Variables
-        this.globalStore = {}
-        this.store = {}
+        this.globalStore = {};
+        this.store = {};
         // This is for collisions
         this.AABB_data = {};
         this.AABB_savedSize = 0;
@@ -960,10 +960,8 @@ class Entity extends EventEmitter {
         
         // Define all primary stats
         let set = ensureIsClass(defs[0]);
-        this.store = {}
-        for (let gun of this.guns) {
-            gun.store = {}
-        }
+        this.store = {};
+        for (let gun of this.guns) gun.store = {};
 
         if (set.PARENT != null) {
             if (Array.isArray(set.PARENT)) {
@@ -1104,7 +1102,8 @@ class Entity extends EventEmitter {
                         class: e,
                         level: c.TIER_MULTIPLIER * i,
                         index: e.index,
-                        tier: i
+                        tier: i,
+                        branch: 0,
                     });
                 }
             }
@@ -1196,14 +1195,15 @@ class Entity extends EventEmitter {
         if (set.mockup != null) {
             this.mockup = set.mockup;
         }
-
         if (emitEvent) {
             this.emit('define', set);
         }
+        this.defs = [];
+        for (let def of defs) this.defs.push(def);
 
         // Define additional stats for other split upgrades
-        for (let i = 1; i < defs.length; i++) {
-            set = ensureIsClass(defs[i]);
+        for (let z = 1; z < defs.length; z++) {
+            set = ensureIsClass(defs[z]);
             if (set.index != null) this.index += "-" + set.index;
             if (set.LABEL != null) this.label = this.label + "-" + set.LABEL;
             if (set.BODY != null) {
@@ -1259,11 +1259,13 @@ class Entity extends EventEmitter {
                             class: e,
                             level: c.TIER_MULTIPLIER * i,
                             index: e.index,
-                            tier: i
+                            tier: i,
+                            branch: z,
                         });
                     }
                 }
             }
+            this.maxChildren = null; // Required because it just doesn't work out otherwise - overlord-triplet would make the triplet inoperable at 8 drones, etc
         }
     }
     refreshBodyAttributes() {
@@ -1436,12 +1438,15 @@ class Entity extends EventEmitter {
             number < this.upgrades.length &&
             this.level >= this.upgrades[number].level
         ) {
-            let upgrade = this.upgrades[number].class;
+            let upgrade = this.upgrades[number],
+                upgradeClass = upgrade.class,
+                upgradeBranch = upgrade.branch;
+            this.defs[upgradeBranch] = upgradeClass;
             this.upgrades = [];
-            this.define(upgrade);
+            this.define(this.defs);
             this.sendMessage("You have upgraded to " + this.label + ".");
-            if (upgrade.TOOLTIP != null && upgrade.TOOLTIP.length > 0) {
-                this.sendMessage(upgrade.TOOLTIP);
+            if (upgradeClass.TOOLTIP != null && upgradeClass.TOOLTIP.length > 0) {
+                this.sendMessage(upgradeClass.TOOLTIP);
             }
             for (let instance of entities) {
                 if (

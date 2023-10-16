@@ -132,7 +132,6 @@ const util = {
         return x > -r && x < global.screenWidth / ratio + r && y > -r && y < global.screenHeight / ratio + r;
     },
     getEntityImageFromMockup: (index, color) => {
-        // console.log(index);
         let firstIndex = parseInt(index.split("-")[0]),
             mainMockup = global.mockups[firstIndex],
             guns = [],
@@ -143,12 +142,10 @@ const util = {
         
         for (let i of index.split("-")) {
             let mockup = global.mockups[parseInt(i)];
-            // console.log("i", i);
             guns.push(...mockup.guns);
             turrets.push(...mockup.turrets);
             name += "-" + mockup.name;
         }
-        // console.log(guns, turrets);
         return {
             time: 0,
             index: index,

@@ -225,12 +225,11 @@ const Entry = class {
     publish() {
         let indexes = this.index.split("-"),
             ref = global.mockups[parseInt(indexes[0])];
-        // console.log("lb", this.index);
         return {
             image: util.getEntityImageFromMockup(this.index, this.color),
             position: ref.position,
             barColor: this.bar,
-            label: this.name ? this.name + " - " + /*ref.name : ref.name,*/this.label : this.label,
+            label: this.name ? this.name + " - " + this.label : this.label,
             score: this.score.get(),
             nameColor: this.nameColor,
         };
@@ -645,7 +644,7 @@ const convert = {
         if (indices.upgrades) {
             gui.upgrades = [];
             for (let i = 0, len = get.next(); i < len; i++) {
-                gui.upgrades.push(get.next());
+                gui.upgrades.push(get.next().split("-"));
             }
         }
         if (indices.statsdata) {
