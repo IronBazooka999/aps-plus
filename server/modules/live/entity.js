@@ -5,8 +5,11 @@ let EventEmitter = require('events'),
 function setNatural(natural, type) {
     type = ensureIsClass(type);
     if (type.PARENT != null) {
-        for (let i = 0; i < type.PARENT.length; i++) {
-            setNatural(natural, type.PARENT[i]);
+        if (typeof type.PARENT == 'string') setNatural(natural, type.PARENT)
+        else {
+            for (let i = 0; i < type.PARENT.length; i++) {
+                setNatural(natural, type.PARENT[i]);
+            }
         }
     }
     if (type.BODY != null) {
