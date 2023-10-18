@@ -1388,26 +1388,46 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         let len = alcoveSize / 2; // * global.screenWidth / 2 * 1;
         let height = len;
         let x = glide * 2 * spacing - spacing;
-        let y = spacing;
+        let y = spacing - height - 2 * internalSpacing;
         let xStart = x;
-        let xo = x;
-        let xxx = 0;
-        let yo = y;
+        let initialX = x;
+        let rowWidth = 0;
+        let initialY = y;
         let ticker = 0;
         let colorIndex = 10;
         let columnCount = Math.max(3, Math.ceil(gui.upgrades.length / 4));
         let clickableRatio = global.canvas.height / global.screenHeight / global.ratio;
+        let lastBranch = -1;
         upgradeSpin += 0.01;
         for (let i = 0; i < gui.upgrades.length; i++) {
-            let model = gui.upgrades[i][1];
-            if (y > yo) yo = y;
-            xxx = x;
+            let upgrade = gui.upgrades[i];
+            let upgradeBranch = upgrade[0];
+            let upgradeBranchLabel = upgrade[1] == "undefined" ? upgradeBranch : upgrade[1];
+            let model = upgrade[2];
+
+            //draw either in the next row or next column
+            if (ticker === columnCount || upgradeBranch != lastBranch) {
+                x = xStart;
+                y += height + internalSpacing;
+                if (upgradeBranch != lastBranch) {
+                    drawText(upgradeBranchLabel, xStart, y + internalSpacing * 3, internalSpacing * 3, color.guiwhite, "left", false);
+                    y += 4 * internalSpacing;
+                }
+                lastBranch = upgradeBranch;
+                ticker = 0;
+            } else {
+                x += glide * (len + internalSpacing);
+            }
+
+            if (y > initialY) initialY = y;
+            rowWidth = x;
+
             global.clickables.upgrade.place(i, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);
 
             let position = global.mockups[model].position,
                 scale = (0.6 * len) / position.axis,
-                xx = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
-                yy = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
+                entityX = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
+                entityY = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
                 picture = util.getEntityImageFromMockup(model, gui.color),
                 baseColor = picture.color;
 
@@ -1423,7 +1443,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             ctx.globalAlpha = 1;
 
             // Draw Tank
-            drawEntity(baseColor, xx, yy, picture, 1, 1, scale / picture.size, upgradeSpin, true);
+            drawEntity(baseColor, entityX, entityY, picture, 1, 1, scale / picture.size, upgradeSpin, true);
             let upgradeKey = getClassUpgradeKey(ticker);
 
             // Tank name
@@ -1437,26 +1457,19 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             ctx.globalAlpha = 1;
             ctx.lineWidth = 3;
             drawGuiRect(x, y, len, height, true); // Border
-
-            //draw either in the next row or next column
-            if (++ticker % columnCount === 0) {
-                x = xStart;
-                y += height + internalSpacing;
-            } else {
-                x += glide * (len + internalSpacing);
-            }
+            ticker++;
         }
 
         // Draw dont upgrade button
         let h = 14,
             msg = "Don't Upgrade",
             m = measureText(msg, h - 3) + 10;
-        let xx = xo + (xxx + len + internalSpacing - xo) / 2,
-            yy = yo + height + internalSpacing;
-        drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h + config.graphical.barChunk, color.black);
-        drawBar(xx - m / 2, xx + m / 2, yy + h / 2, h, color.white);
-        drawText(msg, xx, yy + h / 2, h - 2, color.guiwhite, "center", true);
-        global.clickables.skipUpgrades.place(0, (xx - m / 2) * clickableRatio, yy * clickableRatio, m * clickableRatio, h * clickableRatio);
+        let buttonX = initialX + (rowWidth + len + internalSpacing - initialX) / 2,
+            buttonY = initialY + height + internalSpacing;
+        drawBar(buttonX - m / 2, buttonX + m / 2, buttonY + h / 2, h + config.graphical.barChunk, color.black);
+        drawBar(buttonX - m / 2, buttonX + m / 2, buttonY + h / 2, h, color.white);
+        drawText(msg, buttonX, buttonY + h / 2, h - 2, color.guiwhite, "center", true);
+        global.clickables.skipUpgrades.place(0, (buttonX - m / 2) * clickableRatio, initialY * clickableRatio, m * clickableRatio, h * clickableRatio);
     } else {
         global.canUpgrade = false;
         global.clickables.upgrade.hide();

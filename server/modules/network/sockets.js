@@ -716,8 +716,9 @@ function update(gui) {
     // Update the upgrades
     let upgrades = [];
     for (let i = 0; i < b.upgrades.length; i++) {
+        let upgrade = b.upgrades[i];
         if (b.skill.level >= b.upgrades[i].level) {
-            upgrades.push(b.upgrades[i].branch.toString() + "-" + b.upgrades[i].index.toString());
+            upgrades.push(upgrade.branch.toString() + "-" + upgrade.branchLabel + "-" + upgrade.index.toString());
         }
     }
     gui.upgrades.update(upgrades);

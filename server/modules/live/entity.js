@@ -1093,6 +1093,7 @@ class Entity extends EventEmitter {
             this.isArenaCloser = set.ARENA_CLOSER;
             this.ac = set.ARENA_CLOSER;
         }
+        if (set.BRANCH_LABEL != null) this.branchLabel = set.BRANCH_LABEL;
         for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
             let tierProp = 'UPGRADES_TIER_' + i;
             if (set[tierProp] != null) {
@@ -1104,6 +1105,7 @@ class Entity extends EventEmitter {
                         index: e.index,
                         tier: i,
                         branch: 0,
+                        branchLabel: this.branchLabel,
                     });
                 }
             }
@@ -1204,7 +1206,17 @@ class Entity extends EventEmitter {
         // Define additional stats for other split upgrades
         for (let branch = 1; branch < defs.length; branch++) {
             set = ensureIsClass(defs[branch]);
+            
             if (set.index != null) this.index += "-" + set.index;
+            if (set.PARENT != null) {
+                if (Array.isArray(set.PARENT)) {
+                    for (let i = 0; i < set.PARENT.length; i++) {
+                        this.branchLabel = ensureIsClass(set.PARENT[i]).BRANCH_LABEL;
+                    }
+                } else {
+                    this.branchLabel = ensureIsClass(set.PARENT).BRANCH_LABEL;
+                }
+            }
             if (set.LABEL != null) this.label = this.label + "-" + set.LABEL;
             if (set.BODY != null) {
                 if (set.BODY.ACCELERATION != null) this.ACCELERATION *= set.BODY.ACCELERATION;
@@ -1257,6 +1269,7 @@ class Entity extends EventEmitter {
                             index: e.index,
                             tier: i,
                             branch,
+                            branchLabel: this.branchLabel,
                         });
                     }
                 }
