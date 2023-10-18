@@ -1202,8 +1202,8 @@ class Entity extends EventEmitter {
         for (let def of defs) this.defs.push(def);
 
         // Define additional stats for other split upgrades
-        for (let z = 1; z < defs.length; z++) {
-            set = ensureIsClass(defs[z]);
+        for (let branch = 1; branch < defs.length; branch++) {
+            set = ensureIsClass(defs[branch]);
             if (set.index != null) this.index += "-" + set.index;
             if (set.LABEL != null) this.label = this.label + "-" + set.LABEL;
             if (set.BODY != null) {
@@ -1233,10 +1233,6 @@ class Entity extends EventEmitter {
                 this.guns.push(...newGuns);
             }
             if (set.TURRETS != null) {
-                for (let i = 0; i < this.turrets.length; i++) {
-                    this.turrets[i].destroy();
-                }
-                this.turrets = [];
                 for (let i = 0; i < set.TURRETS.length; i++) {
                     let def = set.TURRETS[i],
                         o = new Entity(this, this.master),
@@ -1260,7 +1256,7 @@ class Entity extends EventEmitter {
                             level: c.TIER_MULTIPLIER * i,
                             index: e.index,
                             tier: i,
-                            branch: z,
+                            branch,
                         });
                     }
                 }
