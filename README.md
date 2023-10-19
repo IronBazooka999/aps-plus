@@ -16,8 +16,6 @@ If you want to stay up to date, fork this template, download a git client, and s
 ## Useful Tools
 
 - [Create a custom shape](https://arras.io/ext/custom-shape)
-- [Create a custom tank](https://dogeiscut.github.io/Arras-Tank-Builder/)
-  - [WIP update to this tool](https://github.com/DogeisCut/Arras.io-Entity-Designer-v2)
 - [Create a custom theme](https://codepen.io/road-to-100k/full/GRpvMzb)
 - [Random Tank Generator](https://perchance.org/chomp-arras-gen)
 
