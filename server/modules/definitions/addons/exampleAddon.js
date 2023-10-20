@@ -50,7 +50,7 @@ module.exports = ({ Class }) => {
 
 	// This adds the tank to the definitions and to the fun menu
 	Class.abomination = {
-		PARENT: ["genericTank"],
+		PARENT: "genericTank",
 		LABEL: "The Abomination",
 		SKILL_CAP: Array(10).fill(15),
 	    SIZE: 15,
@@ -71,7 +71,12 @@ module.exports = ({ Class }) => {
 	    EXTRA_SKILL: 28,
 		MAX_CHILDREN, GUNS, TURRETS
 	};
-	Class.fun.UPGRADES_TIER_0.push("abomination");
+	Class.exampleAddon = {
+	    PARENT: "menu",
+	    LABEL: "Example Addon",
+	    UPGRADES_TIER_0: ["abomination"]
+	};
+	Class.addons.UPGRADES_TIER_0.push("exampleAddon");
 
 	console.log('[exampleAddon] The Amalgamation has been created..');
 };

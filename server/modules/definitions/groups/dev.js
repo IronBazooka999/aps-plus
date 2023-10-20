@@ -970,8 +970,14 @@ exports['Team' + TEAM_ENEMIES] = {
 };
 exports.teams.UPGRADES_TIER_0.push('Team' + TEAM_ROOM, 'Team' + TEAM_ENEMIES);
 
+exports.addons = {
+    PARENT: "menu",
+    LABEL: "Addon Entities",
+    UPGRADES_TIER_0: []
+};
+
 // DEV "UPGRADE PATHS"
-exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools"];
+exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools", "addons"];
     exports.tanks.UPGRADES_TIER_0 = ["basic", "healer", "specialTanks", "legacyTanks", "funTanks", "testingTanks"];
 	exports.specialTanks.UPGRADES_TIER_0 = ["arenaCloser", "bases", "mothership"];
         exports.bases.UPGRADES_TIER_0 = ["baseProtector", "dominators", "sanctuaries", "antiTankMachineGun"];
