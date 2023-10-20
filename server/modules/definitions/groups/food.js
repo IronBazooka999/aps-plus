@@ -7,11 +7,13 @@ makeRelic = (type, scale = 1, gem, SIZE) => {
         PARENT: ['genericEntity'],
         LABEL: 'Relic Casing',
         COLOR: type.COLOR,
+        MIRROR_MASTER_ANGLE: true,
         SHAPE: [[-0.4,-1],[0.4,-0.25],[0.4,0.25],[-0.4,1]].map(r => r.map(s => s * scale))
     }, relicBody = {
         PARENT: ['genericEntity'],
         LABEL: 'Relic Mantle',
         COLOR: type.COLOR,
+        MIRROR_MASTER_ANGLE: true,
         SHAPE: type.SHAPE
     };
     exports[Math.random().toString(36)] = relicCasing;
@@ -62,7 +64,7 @@ makeRelic = (type, scale = 1, gem, SIZE) => {
     if (gem) {
         TURRETS.push({
             POSITION: [8, 0, 0, 0, 0, 1],
-            TYPE: gem
+            TYPE: [gem, { MIRROR_MASTER_ANGLE: true }]
         });
     }
 
@@ -124,7 +126,7 @@ makeLaby = (type, level) => {
         GUNS: type.GUNS,
         TURRETS: [...(type.TURRETS ? type.TURRETS : []), ...Array(level).fill().map((_, i) => ({
             POSITION: [20 * downscale ** (i + 1), 0, 0, !(i & 1) ? 180 / usableSHAPE : 0, 0, 1],
-            TYPE: type
+            TYPE: [type, { MIRROR_MASTER_ANGLE: true }]
         }))]
     };
 };
