@@ -1394,6 +1394,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         let rowWidth = 0;
         let initialY = y;
         let ticker = 0;
+        let upgradeNum = 0;
         let colorIndex = 10;
         let columnCount = Math.max(3, Math.ceil(gui.upgrades.length / 4));
         let clickableRatio = global.canvas.height / global.screenHeight / global.ratio;
@@ -1425,11 +1426,11 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
 
             global.clickables.upgrade.place(i, x * clickableRatio, y * clickableRatio, len * clickableRatio, height * clickableRatio);
 
-            let position = global.mockups[model].position,
+            let picture = util.getEntityImageFromMockup(model, gui.color),
+                position = picture.position,
                 scale = (0.6 * len) / position.axis,
                 entityX = x + 0.5 * len - scale * position.middle.x * Math.cos(upgradeSpin),
                 entityY = y + 0.5 * height - scale * position.middle.x * Math.sin(upgradeSpin),
-                picture = util.getEntityImageFromMockup(model, gui.color),
                 baseColor = picture.color;
 
             // Draw box
@@ -1445,7 +1446,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
 
             // Draw Tank
             drawEntity(baseColor, entityX, entityY, picture, 1, 1, scale / picture.size, upgradeSpin, true);
-            let upgradeKey = getClassUpgradeKey(ticker);
+            let upgradeKey = getClassUpgradeKey(upgradeNum);
 
             // Tank name
             drawText(picture.upgradeName ?? picture.name, x + ((upgradeKey ? 0.9 : 1) * len) / 2, y + height - 6, height / 8 - 3, color.guiwhite, "center");
@@ -1459,6 +1460,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
             ctx.lineWidth = 3;
             drawGuiRect(x, y, len, height, true); // Border
             ticker++;
+            upgradeNum++;
         }
 
         // Draw dont upgrade button

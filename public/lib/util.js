@@ -186,6 +186,7 @@ const util = {
             score: 0,
             tiggle: 0,
             layer: mainMockup.layer,
+            position: mainMockup.position,
             guns: {
                 length: guns.length,
                 getPositions: () => Array(guns.length).fill(0),

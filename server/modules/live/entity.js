@@ -1094,18 +1094,28 @@ class Entity extends EventEmitter {
             this.ac = set.ARENA_CLOSER;
         }
         if (set.BRANCH_LABEL != null) this.branchLabel = set.BRANCH_LABEL;
+        if (set.BATCH_UPGRADES != null) this.batchUpgrades = set.BATCH_UPGRADES;
         for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
             let tierProp = 'UPGRADES_TIER_' + i;
             if (set[tierProp] != null) {
                 for (let j = 0; j < set[tierProp].length; j++) {
-                    let e = ensureIsClass(set[tierProp][j]);
+                    let upgrades = set[tierProp][j];
+                    let index = "";
+                    if (!Array.isArray(upgrades)) upgrades = [upgrades];
+                    let redefineAll = upgrades.includes(true);
+                    let trueUpgrades = upgrades.slice(0, upgrades.length - redefineAll); // Ignore last element if it's true
+                    for (let k of trueUpgrades) {
+                        let e = ensureIsClass(k);
+                        index += e.index + "-";
+                    }
                     this.upgrades.push({
-                        class: e,
+                        class: trueUpgrades,
                         level: c.TIER_MULTIPLIER * i,
-                        index: e.index,
+                        index: index.substring(0, index.length-1),
                         tier: i,
                         branch: 0,
                         branchLabel: this.branchLabel,
+                        redefineAll,
                     });
                 }
             }
@@ -1262,23 +1272,66 @@ class Entity extends EventEmitter {
                 let tierProp = 'UPGRADES_TIER_' + i;
                 if (set[tierProp] != null) {
                     for (let j = 0; j < set[tierProp].length; j++) {
-                        let e = ensureIsClass(set[tierProp][j]);
+                        let upgrades = set[tierProp][j];
+                        let index = "";
+                        if (!Array.isArray(upgrades)) upgrades = [upgrades];
+                        let redefineAll = upgrades.includes(true);
+                        let trueUpgrades = upgrades.slice(0, upgrades.length - redefineAll); // Ignore last element if it's true
+                        for (let k of trueUpgrades) {
+                            let e = ensureIsClass(k);
+                            index += e.index + "-";
+                        }
                         this.upgrades.push({
-                            class: e,
+                            class: trueUpgrades,
                             level: c.TIER_MULTIPLIER * i,
-                            index: e.index,
+                            index: index.substring(0, index.length-1),
                             tier: i,
                             branch,
                             branchLabel: this.branchLabel,
+                            redefineAll,
                         });
                     }
                 }
             }
             this.maxChildren = null; // Required because it just doesn't work out otherwise - overlord-triplet would make the triplet inoperable at 8 drones, etc
         }
+        // Batch upgrades
+        /* why you no work aaa
+        if (this.batchUpgrades) {
+            this.tempUpgrades = [];
+            let numBranches = this.defs.length;
+            for (let i = 0; i < numBranches; i++) { // Create a 2d array for the upgrades (1st index is branch index)
+                this.tempUpgrades.push([]);
+            }
+            console.log('a', this.label, this.upgrades);
+            for (let upgrade of this.upgrades) {
+                let upgradeBranch = upgrade.branch;
+                console.log(upgradeBranch);
+                this.tempUpgrades[upgradeBranch].push(upgrade);
+            }
+
+            // this.upgrades = [];
+            this.selection = JSON.parse(JSON.stringify(this.defs));
+            console.log('a', this.selection);
+            // this.selection.class.push(true); // Force redefine the entire entity
+            // this.chooseUpgradeFromBranch(numBranches); // Recursively build upgrade options
+        }
+        */
+    }
+    chooseUpgradeFromBranch(remaining) {
+        if (remaining > 0) { // If there's more to select
+            let branchUgrades = this.tempUpgrades[this.defs.length - remaining];
+            for (let i = 0; i < branchUgrades.length; i++) { // Pick all possible options and continue selecting
+                this.selection[this.defs.length - remaining] = branchUgrades[i];
+                this.chooseUpgradeFromBranch(remaining - 1);
+            }
+            if (branchUgrades.length == 0) // For when the branch has no upgrades
+                this.chooseUpgradeFromBranch(remaining - 1);
+        } else { // If there's nothing more to select
+            this.upgrades.push(...this.selection);
+        }
     }
     refreshBodyAttributes() {
-
         let accelerationMultiplier = 1,
             topSpeedMultiplier = 1,
             healthMultiplier = 1,
@@ -1449,10 +1502,19 @@ class Entity extends EventEmitter {
         ) {
             let upgrade = this.upgrades[number],
                 upgradeClass = upgrade.class,
-                upgradeBranch = upgrade.branch;
-            this.defs[upgradeBranch] = upgradeClass;
-            this.upgrades = [];
-            this.define(this.defs);
+                upgradeBranch = upgrade.branch,
+                redefineAll = upgrade.redefineAll;
+            if (redefineAll) {
+                for (let i = 0; i < upgradeClass.length; i++){
+                    upgradeClass[i] = ensureIsClass(upgradeClass[i]);
+                }
+                this.upgrades = [];
+                this.define(upgradeClass);
+            } else {
+                this.defs.splice(upgradeBranch, 1, ...upgradeClass);
+                this.upgrades = [];
+                this.define(this.defs);
+            }
             this.sendMessage("You have upgraded to " + this.label + ".");
             if (upgradeClass.TOOLTIP != null && upgradeClass.TOOLTIP.length > 0) {
                 this.sendMessage(upgradeClass.TOOLTIP);

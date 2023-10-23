@@ -67,7 +67,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -84,7 +84,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -101,7 +101,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -117,7 +117,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -1132,6 +1132,7 @@ exports.weirdSpikeBody2 = {
 exports.basic = {
     PARENT: ["genericTank"],
     LABEL: "Basic",
+    BATCH_UPGRADES: true,
     BODY: {
         ACCELERATION: base.ACCEL * 1,
         SPEED: base.SPEED * 1,
