@@ -5612,7 +5612,7 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
         exports.sprayer.UPGRADES_TIER_3 = ["redistributor", "phoenix", "atomizer", "focal"];
 
     exports.flankGuard.UPGRADES_TIER_2 = ["hexaTank", "triAngle", "auto3", "trapGuard", "triTrapper"];
-        exports.flankGuard.UPGRADES_TIER_3 = ["tripleTwin"];
+        exports.flankGuard.UPGRADES_TIER_3 = ["tripleTwin"/*, "quadruplex"*/];
         exports.hexaTank.UPGRADES_TIER_3 = ["octoTank", "cyclone", "hexaTrapper"];
         exports.triAngle.UPGRADES_TIER_3 = ["fighter", "booster", "falcon", "bomber", "autoTriAngle", "surfer", "eagle", "phoenix", "vulture"];
         exports.auto3.UPGRADES_TIER_3 = ["auto5", "mega3", "auto4", "banshee"];
@@ -5637,5 +5637,5 @@ exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "
         exports.trapGuard.UPGRADES_TIER_3 = ["bushwhacker", "gunnerTrapper", "bomber", "conqueror", "bulwark"];
 
     /*exports.desmos.UPGRADES_TIER_2 = ["helix", "volute"],
-        exports.helix.UPGRADES_TIER_3 = ["triplex"],
+        exports.helix.UPGRADES_TIER_3 = ["triplex", "quadruplex"],
         exports.volute.UPGRADES_TIER_3 = ["sidewinder"],*/
