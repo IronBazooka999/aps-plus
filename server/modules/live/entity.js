@@ -1296,27 +1296,24 @@ class Entity extends EventEmitter {
             this.maxChildren = null; // Required because it just doesn't work out otherwise - overlord-triplet would make the triplet inoperable at 8 drones, etc
         }
         // Batch upgrades
-        /* why you no work aaa
-        if (this.batchUpgrades) {
+        if (this.batchUpgrades && emitEvent) {
             this.tempUpgrades = [];
             let numBranches = this.defs.length;
             for (let i = 0; i < numBranches; i++) { // Create a 2d array for the upgrades (1st index is branch index)
                 this.tempUpgrades.push([]);
             }
-            console.log('a', this.label, this.upgrades);
             for (let upgrade of this.upgrades) {
                 let upgradeBranch = upgrade.branch;
-                console.log(upgradeBranch);
                 this.tempUpgrades[upgradeBranch].push(upgrade);
             }
 
-            // this.upgrades = [];
+            this.upgrades = [];
             this.selection = JSON.parse(JSON.stringify(this.defs));
-            console.log('a', this.selection);
             // this.selection.class.push(true); // Force redefine the entire entity
-            // this.chooseUpgradeFromBranch(numBranches); // Recursively build upgrade options
+            this.chooseUpgradeFromBranch(numBranches); // Recursively build upgrade options
+            // console.log(this.upgrades);
+            // TODO: figure out level requirement for combined upgrades
         }
-        */
     }
     chooseUpgradeFromBranch(remaining) {
         if (remaining > 0) { // If there's more to select
@@ -1328,7 +1325,7 @@ class Entity extends EventEmitter {
             if (branchUgrades.length == 0) // For when the branch has no upgrades
                 this.chooseUpgradeFromBranch(remaining - 1);
         } else { // If there's nothing more to select
-            this.upgrades.push(...this.selection);
+            this.upgrades.push(JSON.parse(JSON.stringify(this.selection)));
         }
     }
     refreshBodyAttributes() {
