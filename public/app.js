@@ -105,8 +105,7 @@ global.player = {
 };
 var upgradeSpin = 0,
     lastPing = 0,
-    renderTimes = 0,
-    generatedTankTree = null;
+    renderTimes = 0;
 global.clearUpgrades = () => gui.upgrades = [];
 // Build the leaderboard object
 global.player = global.player;
@@ -559,13 +558,24 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
 function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless, fill) {
     let h = [];
     h = aspect > 0 ? [height * aspect, height] : [height, -height * aspect];
-    let r = [Math.atan2(h[0], length), Math.atan2(h[1], length)];
-    let l = [Math.sqrt(length ** 2 + h[0] ** 2), Math.sqrt(length ** 2 + h[1] ** 2)];
+
+    console.log(y, length, height);
+
+    // Construct a trapezoid at angle 0
+    let points = [];
+    points.push([0, h[1]]);
+    points.push([length * 2, h[0]]);
+    points.push([length * 2, -h[0]]);
+    points.push([0, -h[1]]);
+
+    // Rotate it to the new angle via vector rotation
     context.beginPath();
-    context.lineTo(x + l[0] * Math.cos(angle +           r[0]), y + l[0] * Math.sin(angle           + r[0]));
-    context.lineTo(x + l[1] * Math.cos(angle + Math.PI - r[1]), y + l[1] * Math.sin(angle + Math.PI - r[1]));
-    context.lineTo(x + l[1] * Math.cos(angle + Math.PI + r[1]), y + l[1] * Math.sin(angle + Math.PI + r[1]));
-    context.lineTo(x + l[0] * Math.cos(angle           - r[0]), y + l[0] * Math.sin(angle           - r[0]));
+    for (let point of points) {
+        let newX = point[0] * Math.cos(angle) - point[1] * Math.sin(angle) + x,
+            newY = point[0] * Math.sin(angle) + point[1] * Math.cos(angle) + y;
+        // console.log(point);
+        context.lineTo(newX, newY);
+    }
     context.closePath();
     if (!borderless) context.stroke();
     if (fill) context.fill();
@@ -623,13 +633,13 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         let g = gunConfig[i];
         if (!g.drawAbove) {
             let position = (turretsObeyRot ? 0 : positions[i]) / (g.aspect === 1 ? 2 : 1),
-                gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
-                gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
+                gx = g.offset * Math.cos(g.direction + g.angle + rot),
+                gy = g.offset * Math.sin(g.direction + g.angle + rot),
                 gunColor = g.color == null ? color.grey : gameDraw.modifyColor(g.color, baseColor),
                 borderless = g.borderless,
                 fill = g.drawFill;
             gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), blend));
-            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
+            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : position)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
         }
     }
     // Draw body
@@ -642,13 +652,13 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         let g = gunConfig[i];
         if (g.drawAbove) {
             let position = (turretsObeyRot ? 0 : positions[i]) / (g.aspect === 1 ? 2 : 1),
-                gx = g.offset * Math.cos(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.cos(g.angle + rot),
-                gy = g.offset * Math.sin(g.direction + g.angle + rot) + (g.length / 2 - position) * Math.sin(g.angle + rot),
+                gx = g.offset * Math.cos(g.direction + g.angle + rot),
+                gy = g.offset * Math.sin(g.direction + g.angle + rot),
                 gunColor = g.color == null ? color.grey : gameDraw.modifyColor(g.color, baseColor),
                 borderless = g.borderless,
                 fill = g.drawFill;
             gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), blend));
-            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : 0)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
+            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : position)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
         }
     }
     // Draw turrets above us
@@ -843,7 +853,7 @@ let tiles,
     tankTree,
     measureSize = (x, y, colorIndex, { index, tier = 0 }) => {
         tiles.push({ x, y, colorIndex, index });
-        let { upgrades } = global.mockups[index],
+        let { upgrades } = global.mockups[parseInt(index)],
             xStart = x,
             cumulativeWidth = 1,
             maxHeight = 1,
@@ -886,11 +896,16 @@ let tiles,
             height: 2 + maxHeight,
         };
     };
-function generateTankTree(index) {
-    generatedTankTree = index;
+function generateTankTree(indexes) {
     tiles = [];
     branches = [];
-    tankTree = measureSize(0, 0, 10, { index });
+    let initialX = 0;
+    if (!Array.isArray(indexes)) indexes = [indexes];
+    for (let index of indexes) {
+        tankTree = measureSize(initialX, 0, 10, { index });
+        tankTree.width += initialX;
+        initialX = tankTree.width + 3;
+    }
 }
 
 function drawFloor(px, py, ratio) {
@@ -1016,10 +1031,14 @@ global.shouldScrollY = global.shouldScrollX = 0;
 let lastGuiType = null;
 function drawUpgradeTree(spacing, alcoveSize) {
     if (lastGuiType != gui.type) {
-        let m = global.mockups[gui.type], // The mockup that corresponds to the player's tank
+        let m = util.getEntityImageFromMockup(gui.type), // The mockup that corresponds to the player's tank
             rootName = m.rerootUpgradeTree, // The upgrade tree root of the player's tank
-            rootIndex = rootName == undefined ? -1 : global.mockups.find(i => i.className == rootName).index; // The index of the mockup that corresponds to the root tank (-1 for no root)
-        if (rootIndex > -1) {
+            rootIndex = [];
+            for (let name of rootName) {
+                let ind = name == undefined ? -1 : global.mockups.find(i => i.className == name).index;
+                rootIndex.push(ind); // The index of the mockup that corresponds to the root tank (-1 for no root)
+            }
+        if (!rootIndex.includes(-1)) {
             generateTankTree(rootIndex);
         }
         lastGuiType = gui.type;
@@ -1071,7 +1090,7 @@ function drawUpgradeTree(spacing, alcoveSize) {
             scale = (0.8 * size) / position.axis,
             xx = ax + 0.5 * size - scale * position.middle.x * Math.cos(angle),
             yy = ay + 0.5 * size - scale * position.middle.x * Math.sin(angle),
-            picture = util.getEntityImageFromMockup(index, gui.color),
+            picture = util.getEntityImageFromMockup(index.toString(), gui.color),
             baseColor = picture.color;
 
         ctx.globalAlpha = 0.75;

@@ -137,6 +137,7 @@ const util = {
             guns = [],
             turrets = [],
             name = "",
+            rerootUpgradeTree = [],
             trueColor = mainMockup.color;
         if (trueColor == '16 0 1 0 false' && color) trueColor = color;
         
@@ -145,6 +146,8 @@ const util = {
             guns.push(...mockup.guns);
             turrets.push(...mockup.turrets);
             name += "-" + mockup.name;
+            if (!rerootUpgradeTree.includes(mockup.rerootUpgradeTree))
+                rerootUpgradeTree.push(mockup.rerootUpgradeTree);
         }
         return {
             time: 0,
@@ -187,6 +190,7 @@ const util = {
             tiggle: 0,
             layer: mainMockup.layer,
             position: mainMockup.position,
+            rerootUpgradeTree,
             guns: {
                 length: guns.length,
                 getPositions: () => Array(guns.length).fill(0),

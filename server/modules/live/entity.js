@@ -1268,6 +1268,7 @@ class Entity extends EventEmitter {
                     o.bindToMaster(def.POSITION, this);
                 }
             }
+            if (set.BATCH_UPGRADES != null) this.batchUpgrades = set.BATCH_UPGRADES;
             for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
                 let tierProp = 'UPGRADES_TIER_' + i;
                 if (set[tierProp] != null) {
@@ -1309,10 +1310,7 @@ class Entity extends EventEmitter {
 
             this.upgrades = [];
             this.selection = JSON.parse(JSON.stringify(this.defs));
-            // this.selection.class.push(true); // Force redefine the entire entity
             this.chooseUpgradeFromBranch(numBranches); // Recursively build upgrade options
-            // console.log(this.upgrades);
-            // TODO: figure out level requirement for combined upgrades
         }
     }
     chooseUpgradeFromBranch(remaining) {
@@ -1325,7 +1323,23 @@ class Entity extends EventEmitter {
             if (branchUgrades.length == 0) // For when the branch has no upgrades
                 this.chooseUpgradeFromBranch(remaining - 1);
         } else { // If there's nothing more to select
-            this.upgrades.push(JSON.parse(JSON.stringify(this.selection)));
+            let upgradeClass = [],
+                upgradeTier = 0,
+                upgradeIndex = "";
+            for (let u of this.selection) {
+                upgradeClass.push(u.class);
+                upgradeIndex += u.index + '-';
+                upgradeTier = Math.max(upgradeTier, u.tier);
+            }
+            this.upgrades.push({
+                class: upgradeClass,
+                level: c.TIER_MULTIPLIER * upgradeTier,
+                index: upgradeIndex.substring(0, upgradeIndex.length-1),
+                tier: upgradeTier,
+                branch: 0,
+                branchLabel: "",
+                redefineAll: true,
+            });
         }
     }
     refreshBodyAttributes() {
@@ -1513,8 +1527,11 @@ class Entity extends EventEmitter {
                 this.define(this.defs);
             }
             this.sendMessage("You have upgraded to " + this.label + ".");
-            if (upgradeClass.TOOLTIP != null && upgradeClass.TOOLTIP.length > 0) {
-                this.sendMessage(upgradeClass.TOOLTIP);
+            for (let def of this.defs) {
+                def = ensureIsClass(def);
+                if (def.TOOLTIP != null && def.TOOLTIP.length > 0) {
+                    this.sendMessage(def.TOOLTIP);
+                }
             }
             for (let instance of entities) {
                 if (
