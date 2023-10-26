@@ -559,8 +559,6 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless,
     let h = [];
     h = aspect > 0 ? [height * aspect, height] : [height, -height * aspect];
 
-    console.log(y, length, height);
-
     // Construct a trapezoid at angle 0
     let points = [];
     points.push([0, h[1]]);

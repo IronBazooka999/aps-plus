@@ -58,10 +58,10 @@ const hexnoughtBody = {
 
 module.exports = ({ Class }) => {
 	// Comment out the line below to enable this addon, uncomment it to disable this addon (WARNING: Increases load time by approximately 3x).
-	return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
+	// return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
 
 	// Set the below variable to true to enable hex dreadnought building (WARNING: increases load time by approximately 10x)
-	const buildHexnoughts = true;
+	const buildHexnoughts = false;
 	
 	// Comment out lines from the arrays below to disable that branch of the tree from being generated.
 	const eggnoughtWeapons = [
@@ -189,6 +189,12 @@ module.exports = ({ Class }) => {
 	    LABEL: "Dreadnought",
 		LEVEL: 90,
 		EXTRA_SKILL: 18,
+		BATCH_UPGRADES: true,
+	}
+	Class.dreadBodyOfficialV2 = {
+		LABEL: "",
+		COLOR: 6,
+		REROOT_UPGRADE_TREE: "dreadBodyOfficialV2",
 	}
 
 	// T1 Weapons
@@ -208,6 +214,10 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.sword2OfficialV2 = {
+		PARENT: "swordOfficialV2",
+		BATCH_UPGRADES: true,
+	}
 	Class.pacifierOfficialV2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Pacifier",
@@ -224,6 +234,10 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.pacifier2OfficialV2 = {
+		PARENT: "pacifierOfficialV2",
+		BATCH_UPGRADES: true,
+	}
 	Class.peacekeeperOfficialV2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Peacekeeper",
@@ -239,6 +253,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 		)
+	}
+	Class.peacekeeper2OfficialV2 = {
+		PARENT: "peacekeeperOfficialV2",
+		BATCH_UPGRADES: true,
 	}
 	Class.invaderOfficialV2 = {
 	    PARENT: ["genericEggnought"],
@@ -261,6 +279,10 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.invader2OfficialV2 = {
+		PARENT: "invaderOfficialV2",
+		BATCH_UPGRADES: true,
+	}
 	Class.centaurOfficialV2 = {
 	    PARENT: ["genericEggnought"],
 	    LABEL: "Centaur",
@@ -280,6 +302,10 @@ module.exports = ({ Class }) => {
 				},
 			},
 		)
+	}
+	Class.centaur2OfficialV2 = {
+		PARENT: "centaurOfficialV2",
+		BATCH_UPGRADES: true,
 	}
 
 	// T1 Bodies
@@ -688,6 +714,26 @@ module.exports = ({ Class }) => {
 			},
 		)
 	}
+	Class.colossalBottomOfficialV2 = {
+	    PARENT: ["genericSquarenought"],
+	    GUNS: [],
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.colossalTopOfficialV2.GUNS.push(
+			{
+				POSITION: [3.5, 17.5, 0.001, 9, 0, 90*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
+	}
+	for (let i = 0; i < 4; i++) {
+		Class.colossalBottomOfficialV2.GUNS.push(
+			{
+				POSITION: [4, 17.5, 0.001, 9, 0, 90*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
+	}
 	Class.colossalOfficialV2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Colossal",
@@ -701,17 +747,12 @@ module.exports = ({ Class }) => {
 				POSITION: [13, 0, 0, 0, 0, 1],
 				TYPE: ['colossalTopOfficialV2', {MIRROR_MASTER_ANGLE: true}]
 			},
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ['colossalBottomOfficialV2', {MIRROR_MASTER_ANGLE: true}]
+			},
 		],
 	}
-	for (let i = 0; i < 4; i++) {
-		Class.colossalOfficialV2.GUNS.push(
-			{
-				POSITION: [4, 17.5, 0.001, 9, 0, 90*i, 0],
-				PROPERTIES: {COLOR: 9},
-			},
-		)
-	}
-
 	// T3 Weapons
 	Class.bayonetOfficialV2 = {
 	    PARENT: ["genericTrinought"],
@@ -1311,16 +1352,12 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [11, 0, 0, 0, 0, 1],
 				TYPE: ["titanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
-			}
-		],
-	}
-	for (let i = 0; i < 3; i++) {
-		Class.titanOfficialV2.GUNS.push(
-			{
-				POSITION: [5, 26, 0.001, 8, 0, 120*i, 0],
-				PROPERTIES: {COLOR: 9},
 			},
-		)
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ["titanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
+			},
+		],
 	}
 	Class.sirenOfficialV2 = {
 	    PARENT: ["genericTrinought"],
@@ -1334,16 +1371,14 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
-			}
+			},
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ["titanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
+			},
 		],
 	}
 	for (let i = 0; i < 3; i++) {
-		Class.sirenOfficialV2.GUNS.push(
-			{
-				POSITION: [5, 26, 0.001, 8, 0, 120*i, 0],
-				PROPERTIES: {COLOR: 9},
-			},
-		)
 		Class.sirenOfficialV2.TURRETS.push(
 			{
 				POSITION: [3.5, 10.5, 0, 120*i+60, 360, 1],
@@ -1363,16 +1398,14 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
 				TYPE: ["triangle", {MIRROR_MASTER_ANGLE: true}],
-			}
+			},
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ["titanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
+			},
 		],
 	}
 	for (let i = 0; i < 3; i++) {
-		Class.harpyOfficialV2.GUNS.push(
-			{
-				POSITION: [5, 26, 0.001, 8, 0, 120*i, 0],
-				PROPERTIES: {COLOR: 9},
-			},
-		)
 		Class.harpyOfficialV2.TURRETS.push(
 			{
 				POSITION: [3.5, 10.5, 0, 120*i+60, 360, 1],
@@ -2049,13 +2082,25 @@ module.exports = ({ Class }) => {
 		MIRROR_MASTER_ANGLE: true,
 	    GUNS: [],
 	}
+	Class.pentagonLeviathanBottomOfficialV2 = {
+	    PARENT: ["genericPentanought"],
+	    LABEL: "Leviathan",
+		MIRROR_MASTER_ANGLE: true,
+	    GUNS: [],
+	}
 	for (let i = 0; i < 5; i++) {
 		Class.pentagonLeviathanTopOfficialV2.GUNS.push(
 			{
 				POSITION: [6, 13.5, 0.001, 9, 0, 72*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
-		)
+		);
+		Class.pentagonLeviathanBottomOfficialV2.GUNS.push(
+			{
+				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		);
 	}
 	Class.hexagonLeviathanTopOfficialV2 = {
 	    PARENT: ["genericHexnought"],
@@ -2079,16 +2124,12 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [12, 0, 0, 0, 0, 1],
 				TYPE: ["pentagonLeviathanTopOfficialV2", {MIRROR_MASTER_ANGLE: true}]
-			}
-		],
-	}
-	for (let i = 0; i < 5; i++) {
-		Class.leviathanOfficialV2.GUNS.push(
-			{
-				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
-				PROPERTIES: {COLOR: 9},
 			},
-		)
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ["pentagonLeviathanBottomOfficialV2", {MIRROR_MASTER_ANGLE: true}]
+			},
+		],
 	}
 	Class.valrayvnOfficialV2 = {
 	    PARENT: ["genericPentanought"],
@@ -2099,15 +2140,13 @@ module.exports = ({ Class }) => {
 				POSITION: [12, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ["pentagonLeviathanBottomOfficialV2", {MIRROR_MASTER_ANGLE: true}]
+			},
 		],
 	}
 	for (let i = 0; i < 5; i++) {
-		Class.valrayvnOfficialV2.GUNS.push(
-			{
-				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
-				PROPERTIES: {COLOR: 9},
-			},
-		)
 		Class.valrayvnOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
@@ -2124,15 +2163,13 @@ module.exports = ({ Class }) => {
 				POSITION: [12, 0, 0, 180, 0, 1],
 				TYPE: ["pentagon", {MIRROR_MASTER_ANGLE: true}],
 			},
+			{
+				POSITION: [20, 0, 0, 0, 0, 0],
+				TYPE: ["pentagonLeviathanBottomOfficialV2", {MIRROR_MASTER_ANGLE: true}]
+			},
 		],
 	}
 	for (let i = 0; i < 5; i++) {
-		Class.pegasusOfficialV2.GUNS.push(
-			{
-				POSITION: [7, 17, 0.001, 9, 0, 72*i, 0],
-				PROPERTIES: {COLOR: 9},
-			},
-		)
 		Class.pegasusOfficialV2.TURRETS.push(
 			{
 				POSITION: [4, 8.5, 0, 72*i+36, 360, 1],
@@ -2141,78 +2178,93 @@ module.exports = ({ Class }) => {
 		)
 	}
 
-	Class.specialTanks.UPGRADES_TIER_0.push("dreadOfficialV2");
+	Class.specialTanks.UPGRADES_TIER_0.push(["dreadOfficialV2", "dreadBodyOfficialV2"]);
 		Class.dreadOfficialV2.UPGRADES_TIER_1 = ["swordOfficialV2", "pacifierOfficialV2", "peacekeeperOfficialV2", "invaderOfficialV2", "centaurOfficialV2"];
+		// Class.dreadOfficialV2.UPGRADES_TIER_0 = [
+		// 	["sword2OfficialV2", "dreadBodyOfficialV2",],
+		// 	["pacifier2OfficialV2", "dreadBodyOfficialV2"],
+		// 	["peacekeeper2OfficialV2", "dreadBodyOfficialV2"],
+		// 	["invader2OfficialV2", "dreadBodyOfficialV2"],
+		// 	["centaur2OfficialV2", "dreadBodyOfficialV2"],
+		// ];
 
-			Class.swordOfficialV2.UPGRADES_TIER_M1 = ["gladiusOfficialV2", "sabreOfficialV2"];
-				Class.gladiusOfficialV2.UPGRADES_TIER_M1 = ["bladeOfficialV2"];
-					Class.bladeOfficialV2.UPGRADES_TIER_M1 = ["rapierOfficialV2"];
-				Class.sabreOfficialV2.UPGRADES_TIER_M1 = ["bayonetOfficialV2"];
-					Class.bayonetOfficialV2.UPGRADES_TIER_M1 = ["javelinOfficialV2"];
+		// Class.sword2OfficialV2.UPGRADES_TIER_0 = ["swordOfficialV2"];
+		// Class.pacifier2OfficialV2.UPGRADES_TIER_0 = ["pacifierOfficialV2"];
+		// Class.peacekeeper2OfficialV2.UPGRADES_TIER_0 = ["peacekeeperOfficialV2"];
+		// Class.invader2OfficialV2.UPGRADES_TIER_0 = ["invaderOfficialV2"];
+		// Class.centaur2OfficialV2.UPGRADES_TIER_0 = ["centaurOfficialV2"];
 
-			Class.pacifierOfficialV2.UPGRADES_TIER_M1 = ["mediatorOfficialV2", "negotiatorOfficialV2"];
-				Class.mediatorOfficialV2.UPGRADES_TIER_M1 = ["mitigatorOfficialV2"];
-					Class.mitigatorOfficialV2.UPGRADES_TIER_M1 = ["diplomatOfficialV2"];
-				Class.negotiatorOfficialV2.UPGRADES_TIER_M1 = ["appeaserOfficialV2"];
-					Class.appeaserOfficialV2.UPGRADES_TIER_M1 = ["arbitratorOfficialV2"];
+			Class.swordOfficialV2.UPGRADES_TIER_0 = ["gladiusOfficialV2", "sabreOfficialV2"];
+				Class.gladiusOfficialV2.UPGRADES_TIER_0 = ["bladeOfficialV2"];
+					Class.bladeOfficialV2.UPGRADES_TIER_0 = ["rapierOfficialV2"];
+				Class.sabreOfficialV2.UPGRADES_TIER_0 = ["bayonetOfficialV2"];
+					Class.bayonetOfficialV2.UPGRADES_TIER_0 = ["javelinOfficialV2"];
 
-			Class.peacekeeperOfficialV2.UPGRADES_TIER_M1 = ["enforcerOfficialV2", "executorOfficialV2"];
-				Class.enforcerOfficialV2.UPGRADES_TIER_M1 = ["suppressorOfficialV2"];
-					Class.suppressorOfficialV2.UPGRADES_TIER_M1 = ["retardantOfficialV2"];
-				Class.executorOfficialV2.UPGRADES_TIER_M1 = ["inhibitorOfficialV2"];
-					Class.inhibitorOfficialV2.UPGRADES_TIER_M1 = ["tyrantOfficialV2"];
+			Class.pacifierOfficialV2.UPGRADES_TIER_0 = ["mediatorOfficialV2", "negotiatorOfficialV2"];
+				Class.mediatorOfficialV2.UPGRADES_TIER_0 = ["mitigatorOfficialV2"];
+					Class.mitigatorOfficialV2.UPGRADES_TIER_0 = ["diplomatOfficialV2"];
+				Class.negotiatorOfficialV2.UPGRADES_TIER_0 = ["appeaserOfficialV2"];
+					Class.appeaserOfficialV2.UPGRADES_TIER_0 = ["arbitratorOfficialV2"];
 
-			Class.invaderOfficialV2.UPGRADES_TIER_M1 = ["inquisitorOfficialV2", "assailantOfficialV2"];
-				Class.inquisitorOfficialV2.UPGRADES_TIER_M1 = ["infiltratorOfficialV2"];
-					Class.infiltratorOfficialV2.UPGRADES_TIER_M1 = ["raiderOfficialV2"];
-				Class.assailantOfficialV2.UPGRADES_TIER_M1 = ["aggressorOfficialV2"];
-					Class.aggressorOfficialV2.UPGRADES_TIER_M1 = ["gladiatorOfficialV2"];
+			Class.peacekeeperOfficialV2.UPGRADES_TIER_0 = ["enforcerOfficialV2", "executorOfficialV2"];
+				Class.enforcerOfficialV2.UPGRADES_TIER_0 = ["suppressorOfficialV2"];
+					Class.suppressorOfficialV2.UPGRADES_TIER_0 = ["retardantOfficialV2"];
+				Class.executorOfficialV2.UPGRADES_TIER_0 = ["inhibitorOfficialV2"];
+					Class.inhibitorOfficialV2.UPGRADES_TIER_0 = ["tyrantOfficialV2"];
 
-			Class.centaurOfficialV2.UPGRADES_TIER_M1 = ["daemonOfficialV2", "minotaurOfficialV2"];
-				Class.daemonOfficialV2.UPGRADES_TIER_M1 = ["hydraOfficialV2"];
-					Class.hydraOfficialV2.UPGRADES_TIER_M1 = ["cerberusOfficialV2"];
-				Class.minotaurOfficialV2.UPGRADES_TIER_M1 = ["beelzebubOfficialV2"];
-					Class.beelzebubOfficialV2.UPGRADES_TIER_M1 = ["luciferOfficialV2"];
+			Class.invaderOfficialV2.UPGRADES_TIER_0 = ["inquisitorOfficialV2", "assailantOfficialV2"];
+				Class.inquisitorOfficialV2.UPGRADES_TIER_0 = ["infiltratorOfficialV2"];
+					Class.infiltratorOfficialV2.UPGRADES_TIER_0 = ["raiderOfficialV2"];
+				Class.assailantOfficialV2.UPGRADES_TIER_0 = ["aggressorOfficialV2"];
+					Class.aggressorOfficialV2.UPGRADES_TIER_0 = ["gladiatorOfficialV2"];
 
-			Class.byteOfficialV2.UPGRADES_TIER_M1 = ["automationOfficialV2", "kilobyteOfficialV2"];
+			Class.centaurOfficialV2.UPGRADES_TIER_0 = ["daemonOfficialV2", "minotaurOfficialV2"];
+				Class.daemonOfficialV2.UPGRADES_TIER_0 = ["hydraOfficialV2"];
+					Class.hydraOfficialV2.UPGRADES_TIER_0 = ["cerberusOfficialV2"];
+				Class.minotaurOfficialV2.UPGRADES_TIER_0 = ["beelzebubOfficialV2"];
+					Class.beelzebubOfficialV2.UPGRADES_TIER_0 = ["luciferOfficialV2"];
 
-				Class.automationOfficialV2.UPGRADES_TIER_M1 = ["mechanismOfficialV2", "fusionOfficialV2", "binaryOfficialV2", "exosphereOfficialV2"];
-					Class.mechanismOfficialV2.UPGRADES_TIER_M1 = ["skynetOfficialV2"];
-					Class.fusionOfficialV2.UPGRADES_TIER_M1 = ["supernovaOfficialV2"];
-					Class.binaryOfficialV2.UPGRADES_TIER_M1 = ["cipherOfficialV2"];
-					Class.exosphereOfficialV2.UPGRADES_TIER_M1 = ["interstellarOfficialV2"];
+		Class.dreadBodyOfficialV2.UPGRADES_TIER_0 = ["byteOfficialV2", "atmosphereOfficialV2", "juggernautOfficialV2"];
 
-				Class.kilobyteOfficialV2.UPGRADES_TIER_M1 = ["megabyteOfficialV2", "binaryOfficialV2", "trojanOfficialV2", "hardwareOfficialV2"];
-					Class.megabyteOfficialV2.UPGRADES_TIER_M1 = ["gigabyteOfficialV2"];
-					// Class.binaryOfficialV2.UPGRADES_TIER_M1 = ["cipherOfficialV2"];
-					Class.trojanOfficialV2.UPGRADES_TIER_M1 = ["malwareOfficialV2"];
-					Class.hardwareOfficialV2.UPGRADES_TIER_M1 = ["softwareOfficialV2"];
+			Class.byteOfficialV2.UPGRADES_TIER_0 = ["automationOfficialV2", "kilobyteOfficialV2"];
 
-			Class.atmosphereOfficialV2.UPGRADES_TIER_M1 = ["coronaOfficialV2", "thermosphereOfficialV2"];
+				Class.automationOfficialV2.UPGRADES_TIER_0 = ["mechanismOfficialV2", "fusionOfficialV2", "binaryOfficialV2", "exosphereOfficialV2"];
+					Class.mechanismOfficialV2.UPGRADES_TIER_0 = ["skynetOfficialV2"];
+					Class.fusionOfficialV2.UPGRADES_TIER_0 = ["supernovaOfficialV2"];
+					Class.binaryOfficialV2.UPGRADES_TIER_0 = ["cipherOfficialV2"];
+					Class.exosphereOfficialV2.UPGRADES_TIER_0 = ["interstellarOfficialV2"];
 
-				Class.coronaOfficialV2.UPGRADES_TIER_M1 = ["chromosphereOfficialV2", "fusionOfficialV2", "trojanOfficialV2", "planetOfficialV2"];
-					Class.chromosphereOfficialV2.UPGRADES_TIER_M1 = ["photosphereOfficialV2"];
-					// Class.fusionOfficialV2.UPGRADES_TIER_M1 = ["supernovaOfficialV2"];
-					// Class.trojanOfficialV2.UPGRADES_TIER_M1 = ["malwareOfficialV2"];
-					Class.planetOfficialV2.UPGRADES_TIER_M1 = ["astronomicOfficialV2"];
+				Class.kilobyteOfficialV2.UPGRADES_TIER_0 = ["megabyteOfficialV2", "binaryOfficialV2", "trojanOfficialV2", "hardwareOfficialV2"];
+					Class.megabyteOfficialV2.UPGRADES_TIER_0 = ["gigabyteOfficialV2"];
+					// Class.binaryOfficialV2.UPGRADES_TIER_0 = ["cipherOfficialV2"];
+					Class.trojanOfficialV2.UPGRADES_TIER_0 = ["malwareOfficialV2"];
+					Class.hardwareOfficialV2.UPGRADES_TIER_0 = ["softwareOfficialV2"];
 
-				Class.thermosphereOfficialV2.UPGRADES_TIER_M1 = ["mesosphereOfficialV2", "exosphereOfficialV2", "hardwareOfficialV2", "moonOfficialV2"];
-					Class.mesosphereOfficialV2.UPGRADES_TIER_M1 = ["stratosphereOfficialV2"];
-					// Class.exosphereOfficialV2.UPGRADES_TIER_M1 = ["interstellarOfficialV2"];
-					// Class.hardwareOfficialV2.UPGRADES_TIER_M1 = ["softwareOfficialV2"];
-					Class.moonOfficialV2.UPGRADES_TIER_M1 = ["grandioseOfficialV2"];
+			Class.atmosphereOfficialV2.UPGRADES_TIER_0 = ["coronaOfficialV2", "thermosphereOfficialV2"];
 
-			Class.juggernautOfficialV2.UPGRADES_TIER_M1 = ["jumboOfficialV2", "colossalOfficialV2"];
+				Class.coronaOfficialV2.UPGRADES_TIER_0 = ["chromosphereOfficialV2", "fusionOfficialV2", "trojanOfficialV2", "planetOfficialV2"];
+					Class.chromosphereOfficialV2.UPGRADES_TIER_0 = ["photosphereOfficialV2"];
+					// Class.fusionOfficialV2.UPGRADES_TIER_0 = ["supernovaOfficialV2"];
+					// Class.trojanOfficialV2.UPGRADES_TIER_0 = ["malwareOfficialV2"];
+					Class.planetOfficialV2.UPGRADES_TIER_0 = ["astronomicOfficialV2"];
 
-				Class.jumboOfficialV2.UPGRADES_TIER_M1 = ["goliathOfficialV2", "planetOfficialV2", "moonOfficialV2"];
-					Class.goliathOfficialV2.UPGRADES_TIER_M1 = ["behemothOfficialV2"];
-					// Class.planetOfficialV2.UPGRADES_TIER_M1 = ["astronomicOfficialV2"];
-					// Class.moonOfficialV2.UPGRADES_TIER_M1 = ["grandioseOfficialV2"];
+				Class.thermosphereOfficialV2.UPGRADES_TIER_0 = ["mesosphereOfficialV2", "exosphereOfficialV2", "hardwareOfficialV2", "moonOfficialV2"];
+					Class.mesosphereOfficialV2.UPGRADES_TIER_0 = ["stratosphereOfficialV2"];
+					// Class.exosphereOfficialV2.UPGRADES_TIER_0 = ["interstellarOfficialV2"];
+					// Class.hardwareOfficialV2.UPGRADES_TIER_0 = ["softwareOfficialV2"];
+					Class.moonOfficialV2.UPGRADES_TIER_0 = ["grandioseOfficialV2"];
 
-				Class.colossalOfficialV2.UPGRADES_TIER_M1 = ["titanOfficialV2", "sirenOfficialV2", "harpyOfficialV2"];
-					Class.titanOfficialV2.UPGRADES_TIER_M1 = ["leviathanOfficialV2"];
-					Class.sirenOfficialV2.UPGRADES_TIER_M1 = ["valrayvnOfficialV2"];
-					Class.harpyOfficialV2.UPGRADES_TIER_M1 = ["pegasusOfficialV2"];
+			Class.juggernautOfficialV2.UPGRADES_TIER_0 = ["jumboOfficialV2", "colossalOfficialV2"];
+
+				Class.jumboOfficialV2.UPGRADES_TIER_0 = ["goliathOfficialV2", "planetOfficialV2", "moonOfficialV2"];
+					Class.goliathOfficialV2.UPGRADES_TIER_0 = ["behemothOfficialV2"];
+					// Class.planetOfficialV2.UPGRADES_TIER_0 = ["astronomicOfficialV2"];
+					// Class.moonOfficialV2.UPGRADES_TIER_0 = ["grandioseOfficialV2"];
+
+				Class.colossalOfficialV2.UPGRADES_TIER_0 = ["titanOfficialV2", "sirenOfficialV2", "harpyOfficialV2"];
+					Class.titanOfficialV2.UPGRADES_TIER_0 = ["leviathanOfficialV2"];
+					Class.sirenOfficialV2.UPGRADES_TIER_0 = ["valrayvnOfficialV2"];
+					Class.harpyOfficialV2.UPGRADES_TIER_0 = ["pegasusOfficialV2"];
 
 	const hexDreadNames = {
 		Javelin: {
@@ -2451,11 +2503,11 @@ module.exports = ({ Class }) => {
 		if (body.BODY) for (let m in body.BODY) BODY[m] *= body.BODY[m];
 
 		// Upgrades
-		for (let w in weapon.UPGRADES_TIER_M1) {
-			for (let b in body.UPGRADES_TIER_M1) {
-				let weaponName = weapon.UPGRADES_TIER_M1[w],
+		for (let w in weapon.UPGRADES_TIER_0) {
+			for (let b in body.UPGRADES_TIER_0) {
+				let weaponName = weapon.UPGRADES_TIER_0[w],
 					shortWeaponName = weaponName.split("Official")[0],
-					bodyName = body.UPGRADES_TIER_M1[b];
+					bodyName = body.UPGRADES_TIER_0[b];
 
 				if (!mergedDreads.includes(shortWeaponName + bodyName)) {
 					mergeDreadv2(weaponName, bodyName);
@@ -2480,14 +2532,14 @@ module.exports = ({ Class }) => {
 	}
 
 	// Initiate build for all dread paths and do upgrades for all eggnoughts
-	for (let w in eggnoughtWeapons) {
-		let weaponName = eggnoughtWeapons[w];
-		Class[weaponName].UPGRADES_TIER_1 = [];
-		for (let b in eggnoughtBodies) {
-			let bodyName = eggnoughtBodies[b];
-			mergeDreadv2(weaponName, bodyName);
-			Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("Official")[0] + bodyName);
-		}
-	}
-	console.log(mergedDreads);
+	// for (let w in eggnoughtWeapons) {
+	// 	let weaponName = eggnoughtWeapons[w];
+	// 	Class[weaponName].UPGRADES_TIER_1 = [];
+	// 	for (let b in eggnoughtBodies) {
+	// 		let bodyName = eggnoughtBodies[b];
+	// 		mergeDreadv2(weaponName, bodyName);
+	// 		Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("Official")[0] + bodyName);
+	// 	}
+	// }
+	// console.log(mergedDreads);
 };

@@ -1097,7 +1097,7 @@ class Entity extends EventEmitter {
         if (set.BATCH_UPGRADES != null) this.batchUpgrades = set.BATCH_UPGRADES;
         for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
             let tierProp = 'UPGRADES_TIER_' + i;
-            if (set[tierProp] != null) {
+            if (set[tierProp] != null && emitEvent) {
                 for (let j = 0; j < set[tierProp].length; j++) {
                     let upgrades = set[tierProp][j];
                     let index = "";
@@ -1271,7 +1271,7 @@ class Entity extends EventEmitter {
             if (set.BATCH_UPGRADES != null) this.batchUpgrades = set.BATCH_UPGRADES;
             for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
                 let tierProp = 'UPGRADES_TIER_' + i;
-                if (set[tierProp] != null) {
+                if (set[tierProp] != null && emitEvent) {
                     for (let j = 0; j < set[tierProp].length; j++) {
                         let upgrades = set[tierProp][j];
                         let index = "";
@@ -1517,7 +1517,7 @@ class Entity extends EventEmitter {
                 redefineAll = upgrade.redefineAll;
             if (redefineAll) {
                 for (let i = 0; i < upgradeClass.length; i++){
-                    upgradeClass[i] = ensureIsClass(upgradeClass[i]);
+                    upgradeClass[i] = ensureIsClass(...upgradeClass[i]);
                 }
                 this.upgrades = [];
                 this.define(upgradeClass);
