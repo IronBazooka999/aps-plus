@@ -84,7 +84,7 @@ class Gun {
             if (info.PROPERTIES.COLOR != null) {
                 if (typeof info.PROPERTIES.COLOR === "number" || typeof info.PROPERTIES.COLOR === "string") {
                     if (!isNaN(info.PROPERTIES.COLOR) && !isNaN(parseFloat(info.PROPERTIES.COLOR)) || /^[a-zA-Z]*$/.test(info.PROPERTIES.COLOR))
-                        this.colorUnboxed.base = info.PROPERTIES.COLOR; 
+                        this.colorUnboxed.base = info.PROPERTIES.COLOR;
                 }
                 else if (typeof info.PROPERTIES.COLOR === "object")
                     this.colorUnboxed = {
@@ -201,7 +201,7 @@ class Gun {
             offset_final_x = offset_base_x + offset_end_x,
             offset_final_y = offset_base_y + offset_end_y,
             skill = this.bulletStats === "master" ? this.body.skill : this.bulletStats;
-        
+
         // Shoot, multiple times in a tick if needed
         do {
             this.fire(offset_final_x, offset_final_y, skill);
@@ -697,7 +697,8 @@ class Entity extends EventEmitter {
         };
         this.addToGrid = () => {
             if (!mockupsLoaded) return;
-            if (!this.isInGrid && this.bond == null) {
+            if (!this.collidingBond && this.bond != null) return;
+            if (!this.isInGrid) {
                 grid.addObject(this);
                 this.isInGrid = true;
             }
@@ -800,8 +801,9 @@ class Entity extends EventEmitter {
         // This is for collisions
         this.AABB_data = {};
         this.AABB_savedSize = 0;
+        this.collidingBond = false
         this.updateAABB = (active) => {
-            if (this.bond != null) return 0;
+            if (!this.collidingBond && this.bond != null) return 0;
             if (!active) {
                 this.AABB_data.active = false;
                 return 0;
@@ -1177,7 +1179,8 @@ class Entity extends EventEmitter {
                     if (type.TURRET_DANGER) turretDanger = true;
                 }
                 if (!turretDanger) o.define({ DANGER: 0 });
-                o.bindToMaster(def.POSITION, this);
+                o.collidingBond = def.VULNERABLE
+                o.bindToMaster(def.POSITION, this, def.VULNERABLE);
             }
         }
         if (set.mockup != null) {
@@ -1240,16 +1243,16 @@ class Entity extends EventEmitter {
         this.sizeMultiplier = sizeMultiplier;
         this.recoilMultiplier = this.RECOIL_MULTIPLIER * recoilReceivedMultiplier;
     }
-    bindToMaster(position, bond) {
+    bindToMaster(position, bond, isInvulnerable) {
         this.bond = bond;
         this.source = bond;
         this.bond.turrets.push(this);
         this.skill = this.bond.skill;
         this.label = this.label.length ? this.bond.label + " " + this.label : this.bond.label;
         // It will not be in collision calculations any more nor shall it be seen or continue to run independently.
-        this.removeFromGrid();
+        if (!isInvulnerable) this.removeFromGrid();
         this.settings.drawShape = false;
-        this.skipLife = true;
+        if (!isInvulnerable) this.skipLife = true;
         // Get my position.
         if (Array.isArray(position)) {
             position = {

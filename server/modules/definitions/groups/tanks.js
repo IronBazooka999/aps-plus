@@ -656,12 +656,12 @@ exports.tinyMinion = {
         BLIND: true,
     },
     GUNS: [ { /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-        POSITION: [    17,         9,            1,            0,            0,            0,            0,     ], 
+        POSITION: [    17,         9,            1,            0,            0,            0,            0,     ],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.basic, g.minion, g.lowpower]),
             WAIT_TO_CYCLE: true,
             TYPE: "bullet",
-        }, }, 
+        }, },
     ],
     DIE_AT_RANGE: true,
     BUFF_VS_FOOD: true,
@@ -5589,8 +5589,22 @@ exports.paramedic = {
     STAT_NAMES: statnames.heal,
 };
 
+exports.vulnturrettest = {
+    PARENT: ["genericTank"],
+    LABEL: "Vulurable Turret Test",
+    DANGER: 6,
+    FACING_TYPE: "autospin",
+    TURRETS: [
+        {
+            POSITION: [100, 0, 0, 0, 190, 0],
+            TYPE: "autoTankGun",
+            VULNERABLE: true
+        },
+    ],
+};
+
 // TANK UPGRADE PATHS
-exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper"/* "desmos"*/];
+exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper", "vulnturrettest"/* "desmos"*/];
     exports.basic.UPGRADES_TIER_2 = ["smasher"];
         exports.smasher.UPGRADES_TIER_3 = ["megaSmasher", "spike", "autoSmasher", "landmine"];
         exports.healer.UPGRADES_TIER_3 = ["medic", "ambulance", "surgeon", "paramedic"]
