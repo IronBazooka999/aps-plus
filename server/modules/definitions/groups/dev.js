@@ -53,7 +53,6 @@ exports.developer = {
         [-0.8, 1],
         [-1, 0.8],
     ],
-    BATCH_UPGRADES: false,
     GUNS: [
         {
             /*** LENGTH WIDTH     ASPECT        X             Y         ANGLE     DELAY */

@@ -1528,7 +1528,6 @@ class Entity extends EventEmitter {
                 for (let i = 0; i < upgradeClass.length; i++){
                     upgradeClass[i] = ensureIsClass(...upgradeClass[i]);
                 }
-                console.log(this.upgrades);
                 this.upgrades = [];
                 this.define(upgradeClass);
             } else {

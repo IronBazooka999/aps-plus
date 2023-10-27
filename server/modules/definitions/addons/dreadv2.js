@@ -71,6 +71,7 @@ module.exports = ({ Class }) => {
 		PARENT: ["genericTank"],
 		SKILL_CAP: Array(10).fill(smshskl),
 		REROOT_UPGRADE_TREE: ["dreadWeaponOfficialV2", "dreadBodyOfficialV2"],
+		BRANCH_LABEL: "",
 	}
 	Class.genericEggnought = {
 		PARENT: ["genericDreadnoughtOfficialV2"],
@@ -376,7 +377,7 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [24, 7, 1, 0, 0, 90*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, {reload: 0.85}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, {reload: 0.85, density: 1/2}]),
 					TYPE: "bullet",
 				},
 			},
@@ -757,7 +758,7 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [28, 7, 1, 0, 0, 120*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.assass, {reload: 0.8}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.assass, {reload: 0.8, density: 2/5}]),
 					TYPE: "bullet",
 				},
 			},
@@ -1418,7 +1419,7 @@ module.exports = ({ Class }) => {
 			{
 				POSITION: [28, 7, 1, 0, 0, 72*i, 0],
 				PROPERTIES: {
-					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.assass, g.assass, {reload: 0.8}]),
+					SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.assass, g.assass, g.assass, {reload: 0.8, density: 2/9}]),
 					TYPE: "bullet",
 				},
 			},
