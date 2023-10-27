@@ -1186,6 +1186,11 @@ class Entity extends EventEmitter {
         }
         if (set.SPAWN_ON_DEATH) this.spawnOnDeath = set.SPAWN_ON_DEATH;
         if (set.REROOT_UPGRADE_TREE) this.rerootUpgradeTree = set.REROOT_UPGRADE_TREE;
+        if (Array.isArray(this.rerootUpgradeTree)) {
+            let finalRoot = "";
+            for (let root of this.rerootUpgradeTree) finalRoot += root + "_";
+            this.rerootUpgradeTree = finalRoot.substring(0, finalRoot.length - 1);
+        }
         if (set.TURRETS != null) {
             for (let i = 0; i < this.turrets.length; i++) {
                 this.turrets[i].destroy();
@@ -1227,7 +1232,7 @@ class Entity extends EventEmitter {
                     this.branchLabel = ensureIsClass(set.PARENT).BRANCH_LABEL;
                 }
             }
-            if (set.LABEL != null) this.label = this.label + "-" + set.LABEL;
+            if (set.LABEL != null && set.LABEL.length > 0) this.label = this.label + "-" + set.LABEL;
             if (set.BODY != null) {
                 if (set.BODY.ACCELERATION != null) this.ACCELERATION *= set.BODY.ACCELERATION;
                 if (set.BODY.SPEED != null) this.SPEED *= set.BODY.SPEED;
@@ -1293,6 +1298,12 @@ class Entity extends EventEmitter {
                         });
                     }
                 }
+            }
+            if (set.REROOT_UPGRADE_TREE) this.rerootUpgradeTree = set.REROOT_UPGRADE_TREE;
+            if (Array.isArray(this.rerootUpgradeTree)) {
+                let finalRoot = "";
+                for (let root of this.rerootUpgradeTree) finalRoot += root + "_";
+                this.rerootUpgradeTree += finalRoot.substring(0, finalRoot.length - 1);
             }
             this.maxChildren = null; // Required because it just doesn't work out otherwise - overlord-triplet would make the triplet inoperable at 8 drones, etc
         }
@@ -1467,7 +1478,6 @@ class Entity extends EventEmitter {
             vy: this.velocity.y,
             size: this.size,
             realSize: this.realSize,
-            rsize: this.realSize,
             status: 1,
             health: this.health.display(),
             shield: this.shield.display(),
@@ -1484,7 +1494,6 @@ class Entity extends EventEmitter {
             layer: this.layerID ? this.layerID : this.bond != null ? this.bound.layer : this.type === "wall" ? 11 : this.type === "food" ? 10 : this.type === "tank" ? 5 : this.type === "crasher" ? 1 : 0,
             color: this.color,
             name: (this.nameColor || "#FFFFFF") + this.name,
-            label: this.label,
             score: this.skill.score,
             guns: this.guns.map((gun) => gun.getPhotoInfo()),
             turrets: this.turrets.map((turret) => turret.camera(true)),
@@ -1519,6 +1528,7 @@ class Entity extends EventEmitter {
                 for (let i = 0; i < upgradeClass.length; i++){
                     upgradeClass[i] = ensureIsClass(...upgradeClass[i]);
                 }
+                console.log(this.upgrades);
                 this.upgrades = [];
                 this.define(upgradeClass);
             } else {

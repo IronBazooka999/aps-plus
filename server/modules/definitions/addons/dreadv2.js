@@ -61,27 +61,16 @@ module.exports = ({ Class }) => {
 	// return console.log('--- Dreadnoughts v2 addon [dreadv2.js] is disabled. See lines 60-61 to enable it. ---');
 
 	// Set the below variable to true to enable hex dreadnought building (WARNING: increases load time by approximately 10x)
-	const buildHexnoughts = false;
+	const buildHexnoughts = true;
 	
-	// Comment out lines from the arrays below to disable that branch of the tree from being generated.
-	const eggnoughtWeapons = [
-		"swordOfficialV2",
-		"pacifierOfficialV2",
-		"peacekeeperOfficialV2",
-		"invaderOfficialV2",
-		"centaurOfficialV2",
-	];
-	const eggnoughtBodies = [
-		"byteOfficialV2", 
-		"atmosphereOfficialV2", 
-		"juggernautOfficialV2",
-	];
+	// For hexnought merging
+	const hexnoughtScaleFactor = 0.9;
 
 	// Misc
 	Class.genericDreadnoughtOfficialV2 = {
 		PARENT: ["genericTank"],
 		SKILL_CAP: Array(10).fill(smshskl),
-		REROOT_UPGRADE_TREE: "dreadOfficialV2",
+		REROOT_UPGRADE_TREE: ["dreadWeaponOfficialV2", "dreadBodyOfficialV2"],
 	}
 	Class.genericEggnought = {
 		PARENT: ["genericDreadnoughtOfficialV2"],
@@ -189,7 +178,11 @@ module.exports = ({ Class }) => {
 	    LABEL: "Dreadnought",
 		LEVEL: 90,
 		EXTRA_SKILL: 18,
-		BATCH_UPGRADES: true,
+	}
+	Class.dreadWeaponOfficialV2 = {
+		LABEL: "",
+		COLOR: 6,
+		REROOT_UPGRADE_TREE: "dreadWeaponOfficialV2",
 	}
 	Class.dreadBodyOfficialV2 = {
 		LABEL: "",
@@ -2108,10 +2101,22 @@ module.exports = ({ Class }) => {
 		MIRROR_MASTER_ANGLE: true,
 	    GUNS: [],
 	}
+	Class.hexagonLeviathanBottomOfficialV2 = {
+	    PARENT: ["genericHexnought"],
+	    LABEL: "Leviathan",
+		MIRROR_MASTER_ANGLE: true,
+	    GUNS: [],
+	}
 	for (let i = 0; i < 6; i++) {
 		Class.hexagonLeviathanTopOfficialV2.GUNS.push(
 			{
 				POSITION: [6, 10, 0.001, 9.5, 0, 60*i, 0],
+				PROPERTIES: {COLOR: 9},
+			},
+		)
+		Class.hexagonLeviathanBottomOfficialV2.GUNS.push(
+			{
+				POSITION: [7, 13.5, 0.001, 9.5, 0, 60*i, 0],
 				PROPERTIES: {COLOR: 9},
 			},
 		)
@@ -2120,6 +2125,10 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Leviathan",
 		GUNS: [],
+		BODY: {
+			SPEED: 2.35,
+			HEALTH: 0.35,
+		},
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 0, 0, 1],
@@ -2135,6 +2144,10 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Valrayvn",
 		GUNS: [],
+		BODY: {
+			SPEED: 2.15,
+			HEALTH: 0.5,
+		},
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
@@ -2158,6 +2171,10 @@ module.exports = ({ Class }) => {
 	    PARENT: ["genericPentanought"],
 	    LABEL: "Pegasus",
 		GUNS: [],
+		BODY: {
+			SPEED: 2.15,
+			HEALTH: 0.5,
+		},
 	    TURRETS: [
 			{
 				POSITION: [12, 0, 0, 180, 0, 1],
@@ -2178,51 +2195,62 @@ module.exports = ({ Class }) => {
 		)
 	}
 
-	Class.specialTanks.UPGRADES_TIER_0.push(["dreadOfficialV2", "dreadBodyOfficialV2"]);
-		Class.dreadOfficialV2.UPGRADES_TIER_1 = ["swordOfficialV2", "pacifierOfficialV2", "peacekeeperOfficialV2", "invaderOfficialV2", "centaurOfficialV2"];
-		// Class.dreadOfficialV2.UPGRADES_TIER_0 = [
-		// 	["sword2OfficialV2", "dreadBodyOfficialV2",],
-		// 	["pacifier2OfficialV2", "dreadBodyOfficialV2"],
-		// 	["peacekeeper2OfficialV2", "dreadBodyOfficialV2"],
-		// 	["invader2OfficialV2", "dreadBodyOfficialV2"],
-		// 	["centaur2OfficialV2", "dreadBodyOfficialV2"],
-		// ];
+	Class.specialTanks.UPGRADES_TIER_0.push("dreadOfficialV2");
+		Class.dreadOfficialV2.UPGRADES_TIER_0 = [
+			["sword2OfficialV2", "dreadBodyOfficialV2",],
+			["pacifier2OfficialV2", "dreadBodyOfficialV2"],
+			["peacekeeper2OfficialV2", "dreadBodyOfficialV2"],
+			["invader2OfficialV2", "dreadBodyOfficialV2"],
+			["centaur2OfficialV2", "dreadBodyOfficialV2"],
+		];
 
-		// Class.sword2OfficialV2.UPGRADES_TIER_0 = ["swordOfficialV2"];
-		// Class.pacifier2OfficialV2.UPGRADES_TIER_0 = ["pacifierOfficialV2"];
-		// Class.peacekeeper2OfficialV2.UPGRADES_TIER_0 = ["peacekeeperOfficialV2"];
-		// Class.invader2OfficialV2.UPGRADES_TIER_0 = ["invaderOfficialV2"];
-		// Class.centaur2OfficialV2.UPGRADES_TIER_0 = ["centaurOfficialV2"];
+		Class.sword2OfficialV2.UPGRADES_TIER_0 = ["swordOfficialV2"];
+		Class.pacifier2OfficialV2.UPGRADES_TIER_0 = ["pacifierOfficialV2"];
+		Class.peacekeeper2OfficialV2.UPGRADES_TIER_0 = ["peacekeeperOfficialV2"];
+		Class.invader2OfficialV2.UPGRADES_TIER_0 = ["invaderOfficialV2"];
+		Class.centaur2OfficialV2.UPGRADES_TIER_0 = ["centaurOfficialV2"];
+
+		Class.dreadWeaponOfficialV2.UPGRADES_TIER_0 = ["swordOfficialV2", "pacifierOfficialV2", "peacekeeperOfficialV2", "invaderOfficialV2", "centaurOfficialV2"];
 
 			Class.swordOfficialV2.UPGRADES_TIER_0 = ["gladiusOfficialV2", "sabreOfficialV2"];
 				Class.gladiusOfficialV2.UPGRADES_TIER_0 = ["bladeOfficialV2"];
 					Class.bladeOfficialV2.UPGRADES_TIER_0 = ["rapierOfficialV2"];
+						Class.rapierOfficialV2.UPGRADES_TIER_0 = [];
 				Class.sabreOfficialV2.UPGRADES_TIER_0 = ["bayonetOfficialV2"];
 					Class.bayonetOfficialV2.UPGRADES_TIER_0 = ["javelinOfficialV2"];
+						Class.javelinOfficialV2.UPGRADES_TIER_0 = [];
 
 			Class.pacifierOfficialV2.UPGRADES_TIER_0 = ["mediatorOfficialV2", "negotiatorOfficialV2"];
 				Class.mediatorOfficialV2.UPGRADES_TIER_0 = ["mitigatorOfficialV2"];
 					Class.mitigatorOfficialV2.UPGRADES_TIER_0 = ["diplomatOfficialV2"];
+						Class.diplomatOfficialV2.UPGRADES_TIER_0 = [];
 				Class.negotiatorOfficialV2.UPGRADES_TIER_0 = ["appeaserOfficialV2"];
 					Class.appeaserOfficialV2.UPGRADES_TIER_0 = ["arbitratorOfficialV2"];
+						Class.arbitratorOfficialV2.UPGRADES_TIER_0 = [];
 
 			Class.peacekeeperOfficialV2.UPGRADES_TIER_0 = ["enforcerOfficialV2", "executorOfficialV2"];
 				Class.enforcerOfficialV2.UPGRADES_TIER_0 = ["suppressorOfficialV2"];
 					Class.suppressorOfficialV2.UPGRADES_TIER_0 = ["retardantOfficialV2"];
+						Class.retardantOfficialV2.UPGRADES_TIER_0 = [];
 				Class.executorOfficialV2.UPGRADES_TIER_0 = ["inhibitorOfficialV2"];
 					Class.inhibitorOfficialV2.UPGRADES_TIER_0 = ["tyrantOfficialV2"];
+						Class.tyrantOfficialV2.UPGRADES_TIER_0 = [];
 
 			Class.invaderOfficialV2.UPGRADES_TIER_0 = ["inquisitorOfficialV2", "assailantOfficialV2"];
 				Class.inquisitorOfficialV2.UPGRADES_TIER_0 = ["infiltratorOfficialV2"];
 					Class.infiltratorOfficialV2.UPGRADES_TIER_0 = ["raiderOfficialV2"];
+						Class.raiderOfficialV2.UPGRADES_TIER_0 = [];
 				Class.assailantOfficialV2.UPGRADES_TIER_0 = ["aggressorOfficialV2"];
 					Class.aggressorOfficialV2.UPGRADES_TIER_0 = ["gladiatorOfficialV2"];
+						Class.gladiatorOfficialV2.UPGRADES_TIER_0 = [];
 
 			Class.centaurOfficialV2.UPGRADES_TIER_0 = ["daemonOfficialV2", "minotaurOfficialV2"];
 				Class.daemonOfficialV2.UPGRADES_TIER_0 = ["hydraOfficialV2"];
 					Class.hydraOfficialV2.UPGRADES_TIER_0 = ["cerberusOfficialV2"];
+						Class.cerberusOfficialV2.UPGRADES_TIER_0 = [];
 				Class.minotaurOfficialV2.UPGRADES_TIER_0 = ["beelzebubOfficialV2"];
 					Class.beelzebubOfficialV2.UPGRADES_TIER_0 = ["luciferOfficialV2"];
+						Class.luciferOfficialV2.UPGRADES_TIER_0 = [];
 
 		Class.dreadBodyOfficialV2.UPGRADES_TIER_0 = ["byteOfficialV2", "atmosphereOfficialV2", "juggernautOfficialV2"];
 
@@ -2230,41 +2258,56 @@ module.exports = ({ Class }) => {
 
 				Class.automationOfficialV2.UPGRADES_TIER_0 = ["mechanismOfficialV2", "fusionOfficialV2", "binaryOfficialV2", "exosphereOfficialV2"];
 					Class.mechanismOfficialV2.UPGRADES_TIER_0 = ["skynetOfficialV2"];
+						Class.skynetOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("skynetOfficialV2")];
 					Class.fusionOfficialV2.UPGRADES_TIER_0 = ["supernovaOfficialV2"];
+						Class.supernovaOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("supernovaOfficialV2")];
 					Class.binaryOfficialV2.UPGRADES_TIER_0 = ["cipherOfficialV2"];
+						Class.cipherOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("cipherOfficialV2")];
 					Class.exosphereOfficialV2.UPGRADES_TIER_0 = ["interstellarOfficialV2"];
+						Class.interstellarOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("interstellarOfficialV2")];
 
 				Class.kilobyteOfficialV2.UPGRADES_TIER_0 = ["megabyteOfficialV2", "binaryOfficialV2", "trojanOfficialV2", "hardwareOfficialV2"];
 					Class.megabyteOfficialV2.UPGRADES_TIER_0 = ["gigabyteOfficialV2"];
+						Class.gigabyteOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("gigabyteOfficialV2")];
 					// Class.binaryOfficialV2.UPGRADES_TIER_0 = ["cipherOfficialV2"];
 					Class.trojanOfficialV2.UPGRADES_TIER_0 = ["malwareOfficialV2"];
+						Class.malwareOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("malwareOfficialV2")];
 					Class.hardwareOfficialV2.UPGRADES_TIER_0 = ["softwareOfficialV2"];
+						Class.softwareOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("softwareOfficialV2")];
 
 			Class.atmosphereOfficialV2.UPGRADES_TIER_0 = ["coronaOfficialV2", "thermosphereOfficialV2"];
 
 				Class.coronaOfficialV2.UPGRADES_TIER_0 = ["chromosphereOfficialV2", "fusionOfficialV2", "trojanOfficialV2", "planetOfficialV2"];
 					Class.chromosphereOfficialV2.UPGRADES_TIER_0 = ["photosphereOfficialV2"];
+						Class.photosphereOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("photosphereOfficialV2")];
 					// Class.fusionOfficialV2.UPGRADES_TIER_0 = ["supernovaOfficialV2"];
 					// Class.trojanOfficialV2.UPGRADES_TIER_0 = ["malwareOfficialV2"];
 					Class.planetOfficialV2.UPGRADES_TIER_0 = ["astronomicOfficialV2"];
+						Class.astronomicOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("astronomicOfficialV2")];
 
 				Class.thermosphereOfficialV2.UPGRADES_TIER_0 = ["mesosphereOfficialV2", "exosphereOfficialV2", "hardwareOfficialV2", "moonOfficialV2"];
 					Class.mesosphereOfficialV2.UPGRADES_TIER_0 = ["stratosphereOfficialV2"];
+						Class.stratosphereOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("stratosphereOfficialV2")];
 					// Class.exosphereOfficialV2.UPGRADES_TIER_0 = ["interstellarOfficialV2"];
 					// Class.hardwareOfficialV2.UPGRADES_TIER_0 = ["softwareOfficialV2"];
 					Class.moonOfficialV2.UPGRADES_TIER_0 = ["grandioseOfficialV2"];
+						Class.grandioseOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("grandioseOfficialV2")];
 
 			Class.juggernautOfficialV2.UPGRADES_TIER_0 = ["jumboOfficialV2", "colossalOfficialV2"];
 
 				Class.jumboOfficialV2.UPGRADES_TIER_0 = ["goliathOfficialV2", "planetOfficialV2", "moonOfficialV2"];
 					Class.goliathOfficialV2.UPGRADES_TIER_0 = ["behemothOfficialV2"];
+						Class.behemothOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("behemothOfficialV2")];
 					// Class.planetOfficialV2.UPGRADES_TIER_0 = ["astronomicOfficialV2"];
 					// Class.moonOfficialV2.UPGRADES_TIER_0 = ["grandioseOfficialV2"];
 
 				Class.colossalOfficialV2.UPGRADES_TIER_0 = ["titanOfficialV2", "sirenOfficialV2", "harpyOfficialV2"];
 					Class.titanOfficialV2.UPGRADES_TIER_0 = ["leviathanOfficialV2"];
+						Class.leviathanOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("leviathanOfficialV2")];
 					Class.sirenOfficialV2.UPGRADES_TIER_0 = ["valrayvnOfficialV2"];
+						Class.valrayvnOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("valrayvnOfficialV2")];
 					Class.harpyOfficialV2.UPGRADES_TIER_0 = ["pegasusOfficialV2"];
+						Class.pegasusOfficialV2.UPGRADES_TIER_0 = [makeHexnoughtBodyV2("pegasusOfficialV2")];
 
 	const hexDreadNames = {
 		Javelin: {
@@ -2344,19 +2387,16 @@ module.exports = ({ Class }) => {
 		},
 	};
 
-	const hexnoughtScaleFactor = 0.9;
-	function mergeHexnoughtV2(weapon1, weapon2, body) {
+	function mergeHexnoughtWeaponV2(weapon1, weapon2) {
 		weapon1 = ensureIsClass(Class, weapon1);
 		weapon2 = ensureIsClass(Class, weapon2);
-		body = ensureIsClass(Class, body);
 
 		let PARENT = Class.genericHexnought,
 			BODY = JSON.parse(JSON.stringify(PARENT.BODY)),
 			GUNS = [],
 			gunsOnOneSide = [],
 			weapon2GunsOnOneSide = [],
-			TURRETS = [],
-			bodyLabel = body.LABEL;
+			TURRETS = [];
 
 		// Label
 		let name1 = hexDreadNames[weapon1.LABEL][weapon2.LABEL],
@@ -2369,15 +2409,10 @@ module.exports = ({ Class }) => {
 			weaponName = name2,
 			orientationId = 1;
 		}
-		let LABEL = weaponName + "-" + bodyLabel,
-			className = weaponName.toLowerCase() + orientationId + bodyLabel.toLowerCase() + "OfficialV2";
+		let LABEL = weaponName,
+			className = weaponName.toLowerCase() + orientationId + "OfficialV2";
 		
 		// Guns ----------------------
-		if (body.GUNS) gunsOnOneSide.push(...JSON.parse(JSON.stringify(body.GUNS.slice(0, body.GUNS.length / 5 * 2))));
-		for (let g in gunsOnOneSide) {
-			gunsOnOneSide[g].POSITION[5] *= 5 / 6;
-			gunsOnOneSide[g].POSITION[1] *= hexnoughtScaleFactor;
-		}
 		if (weapon1.GUNS) gunsOnOneSide.push(...JSON.parse(JSON.stringify(weapon1.GUNS.slice(0, weapon1.GUNS.length / 5))));
 		if (weapon2.GUNS) weapon2GunsOnOneSide = JSON.parse(JSON.stringify(weapon2.GUNS.slice(0, weapon2.GUNS.length / 5)));
 
@@ -2426,6 +2461,47 @@ module.exports = ({ Class }) => {
 			}
 		}
 		
+		// Body stat modification
+		if (weapon1.BODY) for (let m in weapon1.BODY) BODY[m] *= weapon1.BODY[m];
+		if (weapon2.BODY) for (let m in weapon2.BODY) BODY[m] *= weapon2.BODY[m];
+
+		// Smash it together
+		Class[className] = {
+			PARENT, BODY, LABEL, GUNS, TURRETS,
+		};
+		return className;
+	}
+	function makeHexnoughtBodyV2(body) {
+		if (!buildHexnoughts) return;
+		
+		body = ensureIsClass(Class, body);
+
+		let PARENT = Class.genericHexnought,
+			BODY = {},
+			GUNS = [],
+			gunsOnOneSide = [],
+			TURRETS = [],
+			LABEL = body.LABEL;
+
+		// Label
+		let className = LABEL.toLowerCase() + "HexOfficialV2";
+		
+		// Guns ----------------------
+		if (body.GUNS) gunsOnOneSide.push(...JSON.parse(JSON.stringify(body.GUNS.slice(0, body.GUNS.length / 5 * 2))));
+		for (let g in gunsOnOneSide) {
+			gunsOnOneSide[g].POSITION[5] *= 5 / 6;
+			gunsOnOneSide[g].POSITION[1] *= hexnoughtScaleFactor ** 3;
+			gunsOnOneSide[g].POSITION[4] *= hexnoughtScaleFactor ** 2;
+		}
+
+		for (let i = 0; i < 3; i++) {
+			for (let g in gunsOnOneSide) {
+				let gun = JSON.parse(JSON.stringify(gunsOnOneSide[g]));
+				gun.POSITION[5] += 120 * i;
+				GUNS.push(gun);
+			}
+		};
+		
 		// Turrets --------------------
 		let turretRingLoopLength = Math.floor(body.TURRETS.length / 5);
   
@@ -2463,9 +2539,7 @@ module.exports = ({ Class }) => {
 		}
 		
 		// Body stat modification
-		if (weapon1.BODY) for (let m in weapon1.BODY) BODY[m] *= weapon1.BODY[m];
-		if (weapon2.BODY) for (let m in weapon2.BODY) BODY[m] *= weapon2.BODY[m];
-		if (body.BODY) for (let m in body.BODY) BODY[m] *= body.BODY[m];
+		if (body.BODY) for (let m in body.BODY) BODY[m] = body.BODY[m];
 
 		// Smash it together
 		Class[className] = {
@@ -2474,72 +2548,13 @@ module.exports = ({ Class }) => {
 		return className;
 	}
 
-	// Merge function
-	let mergedDreads = [];
+	// Merge hexdreads
 	const pentanoughtWeapons = ["rapierOfficialV2", "javelinOfficialV2", "diplomatOfficialV2", "arbitratorOfficialV2", "retardantOfficialV2", "tyrantOfficialV2", "raiderOfficialV2", "gladiatorOfficialV2", "cerberusOfficialV2", "luciferOfficialV2"];
-
-	function mergeDreadv2(weapon, body) {
-		let className = weapon.split("Official")[0] + body;
-
-		weapon = ensureIsClass(Class, weapon);
-		body = ensureIsClass(Class, body);
-
-		let PARENT = ensureIsClass(Class, weapon.PARENT[0]),
-			BODY = JSON.parse(JSON.stringify(PARENT.BODY)),
-			GUNS = [],
-			TURRETS = [],
-			LABEL = weapon.LABEL + "-" + body.LABEL,
-			UPGRADES_TIER_0 = [];
-		
-		// Guns
-		if (body.GUNS) GUNS.push(...body.GUNS);
-		if (weapon.GUNS) GUNS.push(...weapon.GUNS);
-		
-		// Turrets
-		TURRETS.push(...body.TURRETS);
-		
-		// Body stat modification
-		if (weapon.BODY) for (let m in weapon.BODY) BODY[m] *= weapon.BODY[m];
-		if (body.BODY) for (let m in body.BODY) BODY[m] *= body.BODY[m];
-
-		// Upgrades
-		for (let w in weapon.UPGRADES_TIER_0) {
-			for (let b in body.UPGRADES_TIER_0) {
-				let weaponName = weapon.UPGRADES_TIER_0[w],
-					shortWeaponName = weaponName.split("Official")[0],
-					bodyName = body.UPGRADES_TIER_0[b];
-
-				if (!mergedDreads.includes(shortWeaponName + bodyName)) {
-					mergeDreadv2(weaponName, bodyName);
-					mergedDreads.push(shortWeaponName + bodyName);
-				}
-				
-				UPGRADES_TIER_0.push(shortWeaponName + bodyName);
+	if(buildHexnoughts) {
+		for (let i of pentanoughtWeapons) {
+			for (let j of pentanoughtWeapons) {
+				Class[i].UPGRADES_TIER_0.push(mergeHexnoughtWeaponV2(i, j));
 			}
 		}
-
-		// Hexnought building
-		if (weapon.PARENT[0] == "genericPentanought" && buildHexnoughts) {
-			for (let i in pentanoughtWeapons) {
-				UPGRADES_TIER_0.push(mergeHexnoughtV2(weapon, ensureIsClass(Class, pentanoughtWeapons[i]), body));
-			}
-		}
-
-		// Can he build it? Yes he can!
-		Class[className] = {
-			PARENT, BODY, LABEL, GUNS, TURRETS, UPGRADES_TIER_0,
-		};
 	}
-
-	// Initiate build for all dread paths and do upgrades for all eggnoughts
-	// for (let w in eggnoughtWeapons) {
-	// 	let weaponName = eggnoughtWeapons[w];
-	// 	Class[weaponName].UPGRADES_TIER_1 = [];
-	// 	for (let b in eggnoughtBodies) {
-	// 		let bodyName = eggnoughtBodies[b];
-	// 		mergeDreadv2(weaponName, bodyName);
-	// 		Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("Official")[0] + bodyName);
-	// 	}
-	// }
-	// console.log(mergedDreads);
 };

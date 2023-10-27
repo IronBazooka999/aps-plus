@@ -138,6 +138,7 @@ const util = {
             turrets = [],
             name = "",
             rerootUpgradeTree = [],
+            allRoots = [],
             trueColor = mainMockup.color;
         if (trueColor == '16 0 1 0 false' && color) trueColor = color;
         
@@ -145,9 +146,13 @@ const util = {
             let mockup = global.mockups[parseInt(i)];
             guns.push(...mockup.guns);
             turrets.push(...mockup.turrets);
-            name += "-" + mockup.name;
-            if (!rerootUpgradeTree.includes(mockup.rerootUpgradeTree))
-                rerootUpgradeTree.push(mockup.rerootUpgradeTree);
+            name += mockup.name.length > 0 ? "-" + mockup.name : "";
+            // name += "-" + mockup.name;
+            if (mockup.rerootUpgradeTree) allRoots.push(...mockup.rerootUpgradeTree.split("_"));
+        }
+        for (let root of allRoots) {
+            if (!rerootUpgradeTree.includes(root))
+                rerootUpgradeTree.push(root);
         }
         return {
             time: 0,
