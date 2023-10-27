@@ -2489,5 +2489,4 @@ module.exports = ({ Class }) => {
 			Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("Official")[0] + bodyName);
 		}
 	}
-	console.log(mergedDreads);
 };
