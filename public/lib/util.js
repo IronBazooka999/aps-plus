@@ -163,8 +163,8 @@ const util = {
             size: mainMockup.size,
             realSize: mainMockup.realSize,
             color: trueColor,
-            upgradeColor: mockup.upgradeColor,
-            glow: mockup.glow,
+            upgradeColor: mainMockup.upgradeColor,
+            glow: mainMockup.glow,
             render: {
                 status: {
                     getFade: () => {
