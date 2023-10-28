@@ -1203,9 +1203,6 @@ exports.sniper = {
 exports.machineGun = {
     PARENT: ["genericTank"],
     LABEL: "Machine Gun",
-    GLOW: {
-        STRENGTH: 10
-    },
     GUNS: [
         {
             POSITION: [12, 10, 1.4, 8, 0, 0, 0],
