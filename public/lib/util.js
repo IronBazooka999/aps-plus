@@ -147,7 +147,6 @@ const util = {
             guns.push(...mockup.guns);
             turrets.push(...mockup.turrets);
             name += mockup.name.length > 0 ? "-" + mockup.name : "";
-            // name += "-" + mockup.name;
             if (mockup.rerootUpgradeTree) allRoots.push(...mockup.rerootUpgradeTree.split("_"));
         }
         for (let root of allRoots) {
@@ -216,9 +215,8 @@ const util = {
                 update: () => {},
             },
             turrets: turrets.map((t) => {
-                let tColor = t.color;
                 let o = util.getEntityImageFromMockup(t.index);
-                o.color = tColor;
+                o.color = t.color;
                 o.realSize = o.realSize / o.size * mainMockup.size * t.sizeFactor;
                 o.size = mainMockup.size * t.sizeFactor;
                 o.sizeFactor = t.sizeFactor;

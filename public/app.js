@@ -637,7 +637,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
                 borderless = g.borderless,
                 fill = g.drawFill;
             gameDraw.setColor(context, gameDraw.mixColors(gunColor, render.status.getColor(), blend));
-            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position * 2 : position)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
+            drawTrapezoid(context, xx + drawSize * gx, yy + drawSize * gy, drawSize * (g.length / 2 - (g.aspect === 1 ? position : position / 2)), (drawSize * g.width) / 2, g.aspect, g.angle + rot, borderless, fill);
         }
     }
     // Draw body
@@ -1402,10 +1402,10 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
     if (gui.upgrades.length > 0) {
         global.canUpgrade = true;
         let internalSpacing = 8;
-        let len = alcoveSize / 2; // * global.screenWidth / 2 * 1;
+        let len = alcoveSize / 2;
         let height = len;
         let x = glide * 2 * spacing - spacing;
-        let y = spacing - height - 2 * internalSpacing;
+        let y = spacing - height - internalSpacing;
         let xStart = x;
         let initialX = x;
         let rowWidth = 0;
@@ -1420,16 +1420,18 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         for (let i = 0; i < gui.upgrades.length; i++) {
             let upgrade = gui.upgrades[i];
             let upgradeBranch = upgrade[0];
-            let upgradeBranchLabel = upgrade[1] == "undefined" ? upgradeBranch : upgrade[1];
+            let upgradeBranchLabel = upgrade[1] == "undefined" ? "" : upgrade[1];
             let model = upgrade[2];
 
-            //draw either in the next row or next column
+            // Draw either in the next row or next column
             if (ticker === columnCount || upgradeBranch != lastBranch) {
                 x = xStart;
                 y += height + internalSpacing;
                 if (upgradeBranch != lastBranch) {
-                    drawText(" " + upgradeBranchLabel, xStart, y + internalSpacing * 3, internalSpacing * 2.3, color.guiwhite, "left", false);
-                    y += 4 * internalSpacing;
+                    if (upgradeBranchLabel.length > 0) {
+                        drawText(" " + upgradeBranchLabel, xStart, y + internalSpacing * 2, internalSpacing * 2.3, color.guiwhite, "left", false);
+                        y += 3 * internalSpacing;
+                    }
                     colorIndex = 10;
                 }
                 lastBranch = upgradeBranch;

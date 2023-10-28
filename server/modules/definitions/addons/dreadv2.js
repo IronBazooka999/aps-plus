@@ -71,7 +71,6 @@ module.exports = ({ Class }) => {
 		PARENT: ["genericTank"],
 		SKILL_CAP: Array(10).fill(smshskl),
 		REROOT_UPGRADE_TREE: ["dreadWeaponOfficialV2", "dreadBodyOfficialV2"],
-		BRANCH_LABEL: "",
 	}
 	Class.genericEggnought = {
 		PARENT: ["genericDreadnoughtOfficialV2"],
