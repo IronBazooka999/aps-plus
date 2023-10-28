@@ -785,6 +785,7 @@ class Entity extends EventEmitter {
             allowBrightnessInvert: false,
         };
         this.color = '16 0 1 0 false';
+        this.glow = {strength: null, color: null, alpha: null}
         this.invisible = [0, 0];
         this.alphaRange = [0, 1];
         this.levelCap = undefined;
@@ -985,6 +986,14 @@ class Entity extends EventEmitter {
                     allowBrightnessInvert: set.COLOR.ALLOW_BRIGHTNESS_INVERT ?? false,
                 };
             this.color = this.colorUnboxed.base + " " + this.colorUnboxed.hueShift + " " + this.colorUnboxed.saturationShift + " " + this.colorUnboxed.brightnessShift + " " + this.colorUnboxed.allowBrightnessInvert;
+        }
+        this.upgradeColor = set.UPGRADE_COLOR == null ? null : set.UPGRADE_COLOR;
+        if (set.GLOW != null) {
+            this.glow = {
+                strength: set.GLOW.STRENGTH ?? 0,
+                color: set.GLOW.COLOR ?? null,
+                alpha: set.GLOW.ALPHA ?? null
+            };
         }
         if (set.CONTROLLERS != null) {
             let toAdd = [];
@@ -1187,18 +1196,7 @@ class Entity extends EventEmitter {
             this.mockup = set.mockup;
         }
 
-        if (set.UPGRADE_COLOR != null) {
-            this.upgradeColor = set.UPGRADE_COLOR;
-        }
-        if (set.GLOW_STRENGTH != null) {
-            this.glowStrength = set.GLOW_STRENGTH;
-        }
-        if (set.GLOW_COLOR != null) {
-            this.glowColor = set.GLOW_COLOR;
-        }
-        if (set.GLOW_ALPHA != null) {
-            this.glowAlpha = set.GLOW_ALPHA;
-        }
+
 
         if (emitEvent) {
             this.emit('define', set);
@@ -1345,9 +1343,7 @@ class Entity extends EventEmitter {
             turrets: this.turrets.map((turret) => turret.camera(true)),
 
             upgradeColor: this.upgradeColor,
-            glowStrength: this.glowStrength,
-            glowColor: this.glowColor,
-            glowRecursion: this.glowRecursion,
+            glow: this.glow,
         };
     }
     syncTurrets() {

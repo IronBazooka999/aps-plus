@@ -637,13 +637,13 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     // Draw body
     context.globalAlpha = 1;
     gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), render.status.getBlend()));
-    context.shadowColor = m.glowColor!=null ? gameDraw.getColor(m.glowColor) : gameDraw.mixColors(
-        gameDraw.getColor(instance.color),
+    context.shadowColor = m.glow.color!=null ? gameDraw.modifyColor(m.glow.color) : gameDraw.mixColors(
+        gameDraw.modifyColor(instance.color),
         render.status.getColor(),
         render.status.getBlend()
     );
-    if (m.glowStrength && m.glowStrength>0){
-      context.shadowBlur = m.glowStrength;
+    if (m.glow.strength && m.glow.strength>0){
+      context.shadowBlur = m.glow.strength;
       context.shadowOffsetX = 0;
       context.shadowOffsetY = 0;
     } else {

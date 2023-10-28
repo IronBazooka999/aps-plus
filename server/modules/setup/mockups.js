@@ -13,6 +13,8 @@ function getMockup(e, positionInfo) {
         x: rounder(e.x),
         y: rounder(e.y),
         color: e.color,
+        upgradeColor: e.upgradeColor,
+        glow: e.glow,
         borderless: e.borderless,
         drawFill: e.drawFill,
         shape: e.shapeData,
@@ -52,11 +54,6 @@ function getMockup(e, positionInfo) {
             out.angle = rounder(t.bound.angle);
             return out;
         }),
-
-        upgradeColor: e.upgradeColor,
-        glowStrength: e.glowStrength,
-        glowColor: e.glowColor,
-        glowAlpha: e.glowAlpha,
     };
 }
 

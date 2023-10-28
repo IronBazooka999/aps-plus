@@ -145,6 +145,8 @@ const util = {
             size: mockup.size,
             realSize: mockup.realSize,
             color: trueColor,
+            upgradeColor: mockup.upgradeColor,
+            glow: mockup.glow,
             render: {
                 status: {
                     getFade: () => {
@@ -191,11 +193,6 @@ const util = {
                 o.render.f = o.facing;
                 return o;
             }),
-
-            upgradeColor: mockup.upgradeColor,
-            glowStrength: mockup.glowStrength,
-            glowColor: mockup.glowColor,
-            glowAlpha: mockup.glowAlpha,
         };
     }
 }
