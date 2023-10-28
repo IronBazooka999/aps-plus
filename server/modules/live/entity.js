@@ -1276,6 +1276,10 @@ class Entity extends EventEmitter {
                     o.bindToMaster(def.POSITION, this);
                 }
             }
+            if (set.SIZE != null) {
+                this.SIZE *= set.SIZE * this.squiggle;
+                if (this.coreSize == null) this.coreSize = this.SIZE;
+            }
             if (set.BATCH_UPGRADES != null) this.batchUpgrades = set.BATCH_UPGRADES;
             for (let i = 0; i < c.MAX_UPGRADE_TIER; i++) {
                 let tierProp = 'UPGRADES_TIER_' + i;
