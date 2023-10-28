@@ -5,6 +5,10 @@ import { Canvas } from "./lib/canvas.js";
 import { color } from "./lib/color.js";
 import { gameDraw } from "./lib/gameDraw.js";
 import * as socketStuff from "./lib/socketInit.js";
+
+
+
+
 (async function (util, global, config, Canvas, color, gameDraw, socketStuff) {
 
 let { socketInit, gui, leaderboard, minimap, moveCompensation, lag, getNow } = socketStuff;
@@ -580,7 +584,11 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
         yy = y,
         source = turretInfo === false ? instance : turretInfo;
     source.guns.update();
+    if(source.name && source.name.includes("localhost")){
+        //console.error(source,m);
+    }   
     if (source.guns.length !== m.guns.length) {
+        
         throw new Error("Mismatch gun number with mockup.\nMockup ID: " + instance.index + "\nLabel: " + m.label);
     }
     if (source.turrets.length !== m.turrets.length) {
@@ -965,14 +973,21 @@ function drawEntities(px, py, ratio) {
         } else {
             motion.set(instance.render.lastRender, instance.render.interval);
         }
-        instance.render.x = util.lerp(instance.render.x, Math.round(instance.x + instance.vx), 0.1, true);
-        instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
+
+        //fix 1: just remove the camera smoothing for player
+        instance.render.x = util.lerp(instance.render.x, instance.id === gui.playerid ? instance.x : Math.round(instance.x + instance.vx), 0.1, true);
+        instance.render.y = util.lerp(instance.render.y, instance.id === gui.playerid ? instance.y : Math.round(instance.y + instance.vy), 0.1, true);
+        //instance.render.x = util.lerp(instance.render.x, Math.round(instance.x + instance.vx), 0.1, true);
+        //instance.render.y = util.lerp(instance.render.y, Math.round(instance.y + instance.vy), 0.1, true);
         instance.render.f = instance.id === gui.playerid && !global.autoSpin && !instance.twiggle && !global.died ? Math.atan2(global.target.y, global.target.x) : util.lerpAngle(instance.render.f, instance.facing, 0.15, true);
-        let x = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.x - px,
-            y = instance.id === gui.playerid && config.graphical.centerTank ? 0 : ratio * instance.render.y - py,
+
+        //fix 2: player isnt always in the center, especially when predator
+        let x = instance.id === gui.playerid && config.graphical.centerTank && false ? 0 : ratio * instance.render.x - px,
+            y = instance.id === gui.playerid && config.graphical.centerTank && false ? 0 : ratio * instance.render.y - py,
             baseColor = instance.color;
         x += global.screenWidth / 2;
         y += global.screenHeight / 2;
+        
         drawEntity(baseColor, x, y, instance, ratio, instance.id === gui.playerid || global.showInvisible ? instance.alpha ? instance.alpha * 0.75 + 0.25 : 0.25 : instance.alpha, 1.1, instance.render.f);
     }
 
@@ -981,8 +996,9 @@ function drawEntities(px, py, ratio) {
 
     //draw health bars above entities
     for (let instance of global.entities) {
-        let x = instance.id === gui.playerid ? 0 : ratio * instance.render.x - px,
-            y = instance.id === gui.playerid ? 0 : ratio * instance.render.y - py;
+        //fix 3: ahh, again, dont draw health bar in center, just draw it normally on player like other entities
+        let x = instance.id === gui.playerid && false ? 0 : ratio * instance.render.x - px,
+            y = instance.id === gui.playerid && false ? 0 : ratio * instance.render.y - py;
         x += global.screenWidth / 2;
         y += global.screenHeight / 2;
         drawHealth(x, y, instance, ratio, instance.alpha);
