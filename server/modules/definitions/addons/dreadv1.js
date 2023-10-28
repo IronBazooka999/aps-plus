@@ -470,7 +470,7 @@ module.exports = ({ Class }) => {
 	    }],
 	}
 
-	Class.specialTanks.UPGRADES_TIER_0.push("dreadOfficialV1");
+	Class.addons.UPGRADES_TIER_0.push("dreadOfficialV1");
 		Class.dreadOfficialV1.UPGRADES_TIER_1 = ["swordOfficialV1", "pacifierOfficialV1", "invaderOfficialV1", "centaurOfficialV1"];
 			Class.swordOfficialV1.UPGRADES_TIER_M1 = ["sabreOfficialV1", "gladiusOfficialV1"];
 			Class.pacifierOfficialV1.UPGRADES_TIER_M1 = ["appeaserOfficialV1", "peacekeeperOfficialV1", "diplomatOfficialV1"];

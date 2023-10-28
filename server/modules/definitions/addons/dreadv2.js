@@ -2195,7 +2195,7 @@ module.exports = ({ Class }) => {
 		)
 	}
 
-	Class.specialTanks.UPGRADES_TIER_0.push("dreadOfficialV2");
+	Class.addons.UPGRADES_TIER_0.push("dreadOfficialV2");
 		Class.dreadOfficialV2.UPGRADES_TIER_0 = [
 			["sword2OfficialV2", "dreadBodyOfficialV2",],
 			["pacifier2OfficialV2", "dreadBodyOfficialV2"],
@@ -2555,17 +2555,6 @@ module.exports = ({ Class }) => {
 			for (let j of pentanoughtWeapons) {
 				Class[i].UPGRADES_TIER_0.push(mergeHexnoughtWeaponV2(i, j));
 			}
-		}
-	}
-
-	// Initiate build for all dread paths and do upgrades for all eggnoughts
-	for (let w in eggnoughtWeapons) {
-		let weaponName = eggnoughtWeapons[w];
-		Class[weaponName].UPGRADES_TIER_1 = [];
-		for (let b in eggnoughtBodies) {
-			let bodyName = eggnoughtBodies[b];
-			mergeDreadv2(weaponName, bodyName);
-			Class[weaponName].UPGRADES_TIER_1.push(weaponName.split("Official")[0] + bodyName);
 		}
 	}
 };
