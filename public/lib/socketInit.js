@@ -67,6 +67,7 @@ var serverStart = 0,
         },
         type: 0,
         root: "",
+        class: "",
         fps: 0,
         color: 0,
         accel: 0,
@@ -218,16 +219,19 @@ const Entry = class {
         this.score.set(to.score);
         this.old = false;
         this.nameColor = to.nameColor;
+        this.id = to.id;
+        this.label = to.label;
     }
     publish() {
-        let ref = global.mockups[this.index];
+        let indexes = this.index.split("-"),
+            ref = global.mockups[parseInt(indexes[0])];
         return {
             image: util.getEntityImageFromMockup(this.index, this.color),
             position: ref.position,
             barColor: this.bar,
-            label: this.name ? this.name + " - " + ref.name : ref.name,
+            label: this.name ? this.name + " - " + this.label : this.label,
             score: this.score.get(),
-            nameColor: this.nameColor
+            nameColor: this.nameColor,
         };
     }
 };
@@ -261,7 +265,7 @@ const Leaderboard = class {
 };
 let minimapAllInt = new Integrate(5),
     minimapTeamInt = new Integrate(3),
-    leaderboardInt = new Integrate(6),
+    leaderboardInt = new Integrate(7),
     leaderboard = new Leaderboard(),
     minimap = new Minimap(200);
 let lags = [];
@@ -325,12 +329,53 @@ const GunContainer = n => {
             motion: 0,
             position: 0,
             isUpdated: true,
+            configLoaded: false,
+            color: "",
+            borderless: false, 
+            drawFill: true, 
+            drawAbove: false,
+            length: 0,
+            width: 0,
+            aspect: 0,
+            angle: 0,
+            direction: 0,
+            offset: 0,
         });
     }
     return {
         getPositions: () => a.map(g => {
             return g.position;
         }),
+        getConfig: () => a.map(g => {
+            return {
+                color: g.color,
+                borderless: g.borderless, 
+                drawFill: g.drawFill,
+                drawAbove: g.drawAbove,
+                length: g.length,
+                width: g.width,
+                aspect: g.aspect,
+                angle: g.angle,
+                direction: g.direction,
+                offset: g.offset,
+            };
+        }),
+        setConfig: (ind, c) => {
+            let g = a[ind];
+            if (!g.configLoaded) {
+                g.configLoaded = true;
+                g.color = c.color;
+                g.borderless = c.borderless; 
+                g.drawFill = c.drawFill;
+                g.drawAbove = c.drawAbove;
+                g.length = c.length;
+                g.width = c.width;
+                g.aspect = c.aspect;
+                g.angle = c.angle;
+                g.direction = c.direction;
+                g.offset = c.offset;
+            }
+        },
         update: () => {
             for (let instance of a) {
                 physics(instance);
@@ -380,6 +425,15 @@ const process = (z = {}) => {
     if (type & 0x01) { // issa turret
         z.facing = get.next();
         z.layer = get.next();
+        z.index = get.next();
+        z.color = get.next();
+        z.size = get.next();
+        z.realSize = get.next();
+        z.sizeFactor = get.next();
+        z.angle = get.next();
+        z.direction = get.next();
+        z.offset = get.next();
+        z.mirrorMasterAngle = get.next();
     } else { // issa something real
         z.interval = global.metrics.rendergap;
         z.id = get.next();
@@ -485,10 +539,19 @@ const process = (z = {}) => {
     // Decide if guns need to be fired one by one
     for (let i = 0; i < gunnumb; i++) {
         let time = get.next(),
-            power = get.next();
-        if (time > global.player.lastUpdate - global.metrics.rendergap) { // shoot it
-            z.guns.fire(i, power);
-        }
+            power = get.next(),
+            color = get.next(),
+            borderless = get.next(),
+            drawFill = get.next(),
+            drawAbove = get.next(),
+            length = get.next(),
+            width = get.next(),
+            aspect = get.next(),
+            angle = get.next(),
+            direction = get.next(),
+            offset = get.next();
+        z.guns.setConfig(i, {color, borderless, drawFill, drawAbove, length, width, aspect, angle, direction, offset}); // Load gun config into container
+        if (time > global.player.lastUpdate - global.metrics.rendergap) z.guns.fire(i, power); // Shoot it
     }
     // Update turrets
     let turnumb = get.next();
@@ -551,6 +614,7 @@ const convert = {
         let index = get.next(),
             // Translate the encoded index
             indices = {
+                class: index & 0x0400,
                 root: index & 0x0200,
                 topspeed: index & 0x0100,
                 accel: index & 0x0080,
@@ -580,7 +644,7 @@ const convert = {
         if (indices.upgrades) {
             gui.upgrades = [];
             for (let i = 0, len = get.next(); i < len; i++) {
-                gui.upgrades.push(get.next());
+                gui.upgrades.push(get.next().split("_"));
             }
         }
         if (indices.statsdata) {
@@ -611,6 +675,9 @@ const convert = {
         }
         if (indices.root) {
             gui.root = get.next();
+        }
+        if (indices.class) {
+            gui.class = get.next();
         }
     },
     broadcast: () => {
@@ -660,7 +727,8 @@ const convert = {
                 name: data[2],
                 color: data[3],
                 bar: data[4],
-                nameColor: data[5]
+                nameColor: data[5],
+                label: data[6],
             })
         }
         leaderboard.update(entries);

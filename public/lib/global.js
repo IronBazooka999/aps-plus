@@ -129,7 +129,7 @@ const global = {
     updateTimes: 0,
     clickables: {
         stat: Region(10),
-        upgrade: Region(32),
+        upgrade: Region(100),
         hover: Region(1),
         skipUpgrades: Region(1),
     },
