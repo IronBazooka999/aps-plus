@@ -1187,6 +1187,19 @@ class Entity extends EventEmitter {
             this.mockup = set.mockup;
         }
 
+        if (set.UPGRADE_COLOR != null) {
+            this.upgradeColor = set.UPGRADE_COLOR;
+        }
+        if (set.GLOW_STRENGTH != null) {
+            this.glowStrength = set.GLOW_STRENGTH;
+        }
+        if (set.GLOW_COLOR != null) {
+            this.glowColor = set.GLOW_COLOR;
+        }
+        if (set.GLOW_ALPHA != null) {
+            this.glowAlpha = set.GLOW_ALPHA;
+        }
+
         if (emitEvent) {
             this.emit('define', set);
         }
@@ -1330,6 +1343,11 @@ class Entity extends EventEmitter {
             score: this.skill.score,
             guns: this.guns.map((gun) => gun.getLastShot()),
             turrets: this.turrets.map((turret) => turret.camera(true)),
+
+            upgradeColor: this.upgradeColor,
+            glowStrength: this.glowStrength,
+            glowColor: this.glowColor,
+            glowRecursion: this.glowRecursion,
         };
     }
     syncTurrets() {

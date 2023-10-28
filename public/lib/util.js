@@ -191,6 +191,11 @@ const util = {
                 o.render.f = o.facing;
                 return o;
             }),
+
+            upgradeColor: mockup.upgradeColor,
+            glowStrength: mockup.glowStrength,
+            glowColor: mockup.glowColor,
+            glowAlpha: mockup.glowAlpha,
         };
     }
 }

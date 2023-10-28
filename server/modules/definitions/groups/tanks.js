@@ -5589,22 +5589,8 @@ exports.paramedic = {
     STAT_NAMES: statnames.heal,
 };
 
-exports.vulnturrettest = {
-    PARENT: ["genericTank"],
-    LABEL: "Vulurable Turret Test",
-    DANGER: 6,
-    FACING_TYPE: "autospin",
-    TURRETS: [
-        {
-            POSITION: [100, 0, 0, 0, 190, 0],
-            TYPE: "autoTankGun",
-            VULNERABLE: true
-        },
-    ],
-};
-
 // TANK UPGRADE PATHS
-exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper", "vulnturrettest"/* "desmos"*/];
+exports.basic.UPGRADES_TIER_1 = ["twin", "sniper", "machineGun", "flankGuard", "director", "pounder", "trapper"/* "desmos"*/];
     exports.basic.UPGRADES_TIER_2 = ["smasher"];
         exports.smasher.UPGRADES_TIER_3 = ["megaSmasher", "spike", "autoSmasher", "landmine"];
         exports.healer.UPGRADES_TIER_3 = ["medic", "ambulance", "surgeon", "paramedic"]
