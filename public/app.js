@@ -560,7 +560,9 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless,
     h = aspect > 0 ? [height * aspect, height] : [height, -height * aspect];
 
     // Construct a trapezoid at angle 0
-    let points = [];
+    let points = [],
+        sinT = Math.sin(angle),
+        cosT = Math.cos(angle);
     points.push([0, h[1]]);
     points.push([length * 2, h[0]]);
     points.push([length * 2, -h[0]]);
@@ -569,9 +571,8 @@ function drawTrapezoid(context, x, y, length, height, aspect, angle, borderless,
     // Rotate it to the new angle via vector rotation
     context.beginPath();
     for (let point of points) {
-        let newX = point[0] * Math.cos(angle) - point[1] * Math.sin(angle) + x,
-            newY = point[0] * Math.sin(angle) + point[1] * Math.cos(angle) + y;
-        // console.log(point);
+        let newX = point[0] * cosT - point[1] * sinT + x,
+            newY = point[0] * sinT + point[1] * cosT + y;
         context.lineTo(newX, newY);
     }
     context.closePath();
@@ -1571,7 +1572,7 @@ let getDeath = () => {
     if (global.finalKillers.length) {
         txt = "🔪 Succumbed to";
         for (let e of global.finalKillers) {
-            txt += " " + util.addArticle(global.mockups[e].name) + " and";
+            txt += " " + util.addArticle(util.getEntityImageFromMockup(e).name) + " and";
         }
         txt = txt.slice(0, -4);
     } else {
