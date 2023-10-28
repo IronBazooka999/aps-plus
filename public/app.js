@@ -903,12 +903,15 @@ function generateTankTree(indexes) {
     tiles = [];
     branches = [];
     let initialX = 0;
+    let maxHeight = 0;
     if (!Array.isArray(indexes)) indexes = [indexes];
     for (let index of indexes) {
         tankTree = measureSize(initialX, 0, 10, { index });
         tankTree.width += initialX;
+        maxHeight = Math.max(maxHeight, tankTree.height);
         initialX = tankTree.width + 3;
     }
+    tankTree.height = maxHeight;
 }
 
 function drawFloor(px, py, ratio) {
