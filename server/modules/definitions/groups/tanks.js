@@ -67,7 +67,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -84,7 +84,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -101,7 +101,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",
@@ -117,7 +117,7 @@ exports.hypermissile = {
                 AUTOFIRE: true,
                 SHOOT_SETTINGS: combineStats([
                     g.basic,
-                    [3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    {reload: 3},
                 ]),
                 TYPE: [
                     "bullet",

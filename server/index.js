@@ -509,7 +509,7 @@ spawnBots = () => {
             color = getTeamColor(team);
         }
         o.define(Class.bot);
-        o.define(Class[c.SPAWN_CLASS]);
+        o.define(c.SPAWN_CLASS);
         o.refreshBodyAttributes();
         o.isBot = true;
         o.team = team;
