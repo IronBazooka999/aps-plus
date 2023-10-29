@@ -568,27 +568,56 @@ exports.mmaTest = {
 }
 
 exports.vulnturrettest_turret = {
-    PARENT: "autoTankGun",
-    HITS_OWN_TYPE: 'hard'
+    PARENT: "genericTank",
+    HITS_OWN_TYPE: 'hard',
+    LABEL: 'Shield',
+    COLOR: 'teal',
 }
 
 exports.vulnturrettest = {
     PARENT: ["genericTank"],
     LABEL: "Vulurable Turret Test",
+    TOOLTIP: 'warning: vuln turrets aren\'t done yet',
+    BODY: {
+        FOV: 2,
+    },
     DANGER: 6,
-    FACING_TYPE: "autospin",
-    TURRETS: [
-        {
-            POSITION: [100, 0, 0, 0, 190, 0],
-            TYPE: "vulnturrettest_turret",
-            VULNERABLE: true
-        },
-    ],
+    GUNS: [{
+        POSITION: {},
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic]),
+            TYPE: 'bullet'
+        }
+    }],
+    TURRETS: (() => {
+        let output = []
+        for (let i = 0; i < 10; i++) {
+            output.push({
+                POSITION: {SIZE: 20, X: 40, ANGLE: (360/10)*i},
+                TYPE: "vulnturrettest_turret",
+                VULNERABLE: true
+            })
+        }
+        return output
+    })(),
 };
-exports.auraBasicGen = addAura();
+
+exports.auraBasicGen = {
+    PARENT: 'genericTank',
+    TYPE: 'aura',
+    COLOR: 'teal',
+    LABEL: 'Aura',
+    HITS_OWN_TYPE: 'never',
+    BODY: {
+        HEALTH: 1e99
+    },
+    INTANGIBLE: true,
+    ALPHA: 0.35
+};
 exports.auraBasic = {
     PARENT: ["genericTank"],
     LABEL: "Aura Basic",
+    SIZE: 40,
     GUNS: [
         {
             POSITION: [18, 8, 1, 0, 0, 0, 0],
@@ -600,8 +629,9 @@ exports.auraBasic = {
     ],
     TURRETS: [
         {
-            POSITION: [14, 0, 0, 0, 0, 1],
+            POSITION: [120, 0, 0, 0, 0, 0],
             TYPE: "auraBasicGen",
+            VULNERABLE: true,
         }
     ],
 };
