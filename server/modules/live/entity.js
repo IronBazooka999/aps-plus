@@ -337,6 +337,16 @@ class Gun {
             o.team = this.body.team;
             o.refreshBodyAttributes();
             o.life();
+            if (this.onFire != null) {
+                this.onFire({
+                    body: this.master.master,
+                    gun: this,
+                    masterStore: this.master.master.store,
+                    gunStore: this.store,
+                    globalMasterStore: this.master.master.globalStore,
+                    globalGunStore: this.globalStore
+                });
+            }
             return;
         }
 

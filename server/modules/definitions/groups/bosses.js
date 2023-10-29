@@ -4511,46 +4511,50 @@ exports.trplnrBoss_auraBullet = {
  * @type {import('../../../../index.js').Tank}
  */
 exports.trplnrBoss = {
-    PARENT: "genericTank",
+    PARENT: "miniboss",
     COLOR: 'teal',
     LABEL: 'Lavender',
     NAME: 'Trioplane',
+    SHAPE: 3,
+    SIZE: 40,
     GUNS: (() => {
         /**
         * @type {import('../../../../index.js').Guns}
         */
         let output = []
-        for (let i = 0; i<3; i++) {
+        for (let i = 0; i<2; i++) {
             output.push({
-                POSITION: { WIDTH: 20, ANGLE: (360/4)*i },
+                POSITION: { WIDTH: 10, X: -5, ASPECT: -0.7, ANGLE: (360/3)*i },
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic]),
+                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.1}]),
                     TYPE: "trplnrBoss_auraBullet",
                     INDEPENDENT_CHILDREN: true,
                 }
             })
         }
+        output.push({
+            POSITION: { WIDTH: 10, X: -5, ASPECT: -0.7, ANGLE: (360/3)*3 },
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic]),
+                TYPE: "trplnrBoss_auraBullet",
+                INDEPENDENT_CHILDREN: true,
+                ON_FIRE: ({ body }) => {
+                    for (let i = 0; i < 24; i++) {
+                        i < 12 ? 
+                            setTimeout(() => {body.SIZE /= 1.05; body.alpha /= 1.1}, i*50)
+                            : 
+                            setTimeout(() => {body.SIZE *= 1.05; body.alpha *= 1.1}, i*50)
+                    }
+                    setTimeout(() => {
+                        let range = 500
+                        let whereToGoX = Math.random() > 0.5 ? Math.floor(Math.random() * -range) : Math.floor(Math.random() * range)
+                        let whereToGoY = Math.random() > 0.5 ? Math.floor(Math.random() * -range) : Math.floor(Math.random() * range)
+                        body.x += whereToGoX
+                        body.y += whereToGoY
+                    }, 12*50);
+                }
+            }
+        })
         return output
     })()
 }
-exports.trplnrBoss.GUNS.push({
-    POSITION: { WIDTH: 20, ANGLE: 270 },
-    PROPERTIES: {
-        SHOOT_SETTINGS: combineStats([g.basic]),
-        TYPE: "trplnrBoss_auraBullet",
-        INDEPENDENT_CHILDREN: true,
-        ON_FIRE: ({ body, masterStore }) => {
-            masterStore.phase1_shotsFired ??= 0
-            masterStore.phase1_shotsFired++
-
-            let range = 20
-            let whereToGo = Math.random() > 0.5 ? Math.floor(Math.random() * -range) : Math.floor(Math.random() * range)
-            console.log(whereToGo)
-            body.x += whereToGo
-            body.y += whereToGo
-            console.log('232329329')
-
-            if (masterStore.phase1_shotsFired > 10) { }
-        }
-    }
-})
