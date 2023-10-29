@@ -1429,9 +1429,11 @@ class Entity extends EventEmitter {
         this.skill = this.bond.skill;
         this.label = this.label.length ? this.bond.label + " " + this.label : this.bond.label;
         // It will not be in collision calculations any more nor shall it be seen or continue to run independently.
-        if (!isInvulnerable) this.removeFromGrid();
+        if (!isInvulnerable) {
+            this.removeFromGrid();
+            this.skipLife = true;
+        }
         this.settings.drawShape = false;
-        if (!isInvulnerable) this.skipLife = true;
         // Get my position.
         if (Array.isArray(position)) {
             position = {
