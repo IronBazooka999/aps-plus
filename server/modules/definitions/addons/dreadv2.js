@@ -645,7 +645,7 @@ module.exports = ({ Class }) => {
 			},
 		],
 	}
-	Class.coronaAuraOfficialV2 = addAura(1.5, 0.7);
+	Class.coronaAuraOfficialV2 = addAura(1.5, 0.8);
 	Class.coronaOfficialV2 = {
 	    PARENT: ["genericSquarenought"],
 	    LABEL: "Corona",
