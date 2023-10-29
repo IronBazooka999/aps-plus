@@ -808,7 +808,7 @@ class Entity extends EventEmitter {
             allowBrightnessInvert: false,
         };
         this.color = '16 0 1 0 false';
-        this.glow = {strength: null, color: null, alpha: null}
+        this.glow = {radius: null, color: null, alpha: 1, recursion: 1}
         this.invisible = [0, 0];
         this.alphaRange = [0, 1];
         this.levelCap = undefined;
@@ -1014,9 +1014,10 @@ class Entity extends EventEmitter {
         this.upgradeColor = set.UPGRADE_COLOR == null ? null : set.UPGRADE_COLOR;
         if (set.GLOW != null) {
             this.glow = {
-                strength: set.GLOW.STRENGTH ?? 0,
+                radius: set.GLOW.RADIUS ?? 0,
                 color: set.GLOW.COLOR ?? null,
-                alpha: set.GLOW.ALPHA ?? null
+                alpha: set.GLOW.ALPHA ?? 1,
+                recursion: set.GLOW.RECURSION ?? 1
             };
         }
         if (set.CONTROLLERS != null) {

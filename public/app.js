@@ -642,24 +642,29 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     // Draw body
     context.globalAlpha = 1;
     gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), turretsObeyRot ? 0 : blend));
+    
+    //just so you know, the glow implimentation is REALLY bad and subject to change in the future
     context.shadowColor = m.glow.color!=null ? gameDraw.modifyColor(m.glow.color) : gameDraw.mixColors(
         gameDraw.modifyColor(instance.color),
         render.status.getColor(),
         render.status.getBlend()
     );
-    if (m.glow.strength && m.glow.strength>0){
-      context.shadowBlur = m.glow.strength;
+    if (m.glow.radius && m.glow.radius>0){
+      context.shadowBlur = m.glow.radius * ((drawSize / m.size) * m.realSize);
       context.shadowOffsetX = 0;
       context.shadowOffsetY = 0;
-    } else {
-      context.shadowBlur = 0
-      context.shadowOffsetX = 0;
-      context.shadowOffsetY = 0;
+      context.globalAlpha = m.glow.alpha;
+      for (var i = 0; i < m.glow.recursion; i++) {
+        drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, true, m.drawFill);
+      }
+      context.globalAlpha = 1;
     }
-    drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
     context.shadowBlur = 0
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
+    
+    drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
+    
     // Draw guns above us
     for (let i = 0; i < source.guns.length; i++) {
         let g = gunConfig[i];
