@@ -4182,3 +4182,296 @@ exports.tgsBoss = {
     }]
 };
 
+exports.dogeiscutBody = {
+    PARENT: "genericTank",
+    SHAPE: [[1,0],[-0.7,0.7],[-0.35,0],[-0.7,-0.7]]
+}
+exports.dogeiscutTurret = {
+    PARENT: "genericTank",
+    GUNS: [ {
+            POSITION: [ 50, 5, 2.5, 0, 0, 0, 0, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.assass, g.mini, {reload: 0.1}]),
+                TYPE: "bullet",
+            },
+        }, {
+            POSITION: [ 18, 8, -2, 0, 0, 0, 0, ],
+        }, 
+    ],
+    TURRETS: [
+        {
+            POSITION: [16, 0, 0, 0, 360, 1],
+            TYPE: ["genericTank",  { MIRROR_MASTER_ANGLE: true, COLOR: "#f6c6a2"}],
+        },
+        {
+            POSITION: [12, 0, 0, 0, 360, 1],
+            TYPE: ["genericTank",  { MIRROR_MASTER_ANGLE: true, COLOR: "pink"}],
+        },
+    ]
+}
+function createDogeiscutMissileTurret(color) {
+    return {
+        PARENT: "genericTank",
+        GUNS: [ {
+                POSITION: [ 15, 8, 2.5, 0, 0, 180, 0, ],
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([
+                        g.basic,
+                        g.skim,
+                        g.doublereload,
+                        g.lowpower,
+                        g.muchmorerecoil,
+                        g.morespeed,
+                        g.morespeed,
+                        {reload: 0.15, recoil: 1, range: 0.1}]),
+                    TYPE: ["bullet", 
+                        {
+                        PERSISTS_AFTER_DEATH: true,
+                        COLOR: color
+                        },
+                    ],
+                    AUTOFIRE: true,
+                    STAT_CALCULATOR: gunCalcNames.thruster,
+                },
+            },
+        ],
+    }
+}
+function createDogeiscutMissile(color) {
+    return {
+        PARENT: "bullet",
+        LABEL: color + " Missile",
+        COLOR: color,
+        GUNS: [...Array(11).fill().map((_, i)=>({
+            POSITION: [0, 8, 0, 0, 0, ((360) / 11)*i, 9999],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.noRandom, { recoil: 0, range: 0.4, damage: 2.5, density: 30 }]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true, COLOR: color }],
+                SHOOT_ON_DEATH: true,
+            },
+        }))],
+        TURRETS: [
+            {
+                POSITION: [16, 0, 0, 0, 360, 1],
+                TYPE: ["dogeiscutMissileTurret_" + color],
+            },
+            {
+                POSITION: [12, 0, 0, 0, 360, 1],
+                TYPE: ["genericTank"],
+            }
+        ]
+    }
+}
+exports.dogeiscutMissileTurret_red = createDogeiscutMissileTurret('red')
+exports.dogeiscutMissile_red = createDogeiscutMissile('red')
+exports.dogeiscutMissileTurret_orange = createDogeiscutMissileTurret('orange')
+exports.dogeiscutMissile_orange = createDogeiscutMissile('orange')
+exports.dogeiscutMissileTurret_yellow = createDogeiscutMissileTurret('yellow')
+exports.dogeiscutMissile_yellow = createDogeiscutMissile('yellow')
+exports.dogeiscutMissileTurret_green = createDogeiscutMissileTurret('green')
+exports.dogeiscutMissile_green = createDogeiscutMissile('green')
+exports.dogeiscutMissileTurret_cyan = createDogeiscutMissileTurret('cyan')
+exports.dogeiscutMissile_cyan = createDogeiscutMissile('cyan')
+exports.dogeiscutMissileTurret_blue = createDogeiscutMissileTurret('blue')
+exports.dogeiscutMissile_blue = createDogeiscutMissile('blue')
+exports.dogeiscutMissileTurret_purple = createDogeiscutMissileTurret('purple')
+exports.dogeiscutMissile_purple = createDogeiscutMissile('purple')
+exports.dogeiscutBomb = {
+        PARENT: "trap",
+        LABEL: "Bomb",
+        SHAPE: 0,
+        GUNS: [...Array(32).fill().map((_, i)=>({
+            POSITION: [0, 8, 0, 0, 0, ((360) / 32)*i, 9999],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.mach, g.shotgun, g.noRandom, { recoil: 0, range: 0.4, damage: 2.5, size: 0.5}]),
+                TYPE: ["bullet", { PERSISTS_AFTER_DEATH: true }],
+                SHOOT_ON_DEATH: true,
+            },
+        })),...Array(10).fill().map((_,i)=>({
+            POSITION: [12, 3.5, 1, 0, 0, (360/10)*i, (i%3)/3],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([
+                    g.basic,
+                    g.twin,
+                    g.puregunner,
+                    g.hurricane,
+                    {reload: 3}
+                ]),
+                TYPE: "bullet",
+                AUTOFIRE: true,
+            },
+            }))
+        ],
+        TURRETS: [
+            {
+                POSITION: [8, 0, 0, 0, 360, 1],
+                TYPE: ["genericTank"],
+            }
+        ]
+    }
+exports.dogeiscutBoss = {
+    PARENT: "miniboss",
+    LABEL: "DOG",
+    NAME: "DogeisCut",
+    DANGER: 10,
+    FACING_TYPE: "smoothToTarget",
+    SHAPE: [[1,0],[-0.7,0.7],[-0.35,0],[-0.7,-0.7]],
+    COLOR: "yellow",
+    SIZE: 50,
+    VALUE: 5e6,
+    BODY: {
+        FOV: 0.75,
+        SPEED: 0.25 * base.SPEED,
+        HEALTH: 14 * base.HEALTH,
+        DAMAGE: 4 * base.DAMAGE,
+    },
+    GUNS: [ {
+            POSITION: [ 6, 8, 1.5, 3, 0, 180, 0, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, {size: 1, reload: 3, recoil: 5}]),
+                TYPE: ["dogeiscutBomb"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+            }
+        }, {
+            POSITION: [ 4, 4, 1.5, 3, 0, 180, 0, ],
+            PROPERTIES: {
+                COLOR: 9
+            }
+        }, 
+        
+        {
+            POSITION: [ 1, 2, 1, 4, -8, 68, 0, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_red"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'red'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, -5.333, 68, 1/7, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_orange"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'orange'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, -2.666, 68, (1/7)*2, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_yellow"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'yellow'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, 0, 68, (1/7)*3, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_green"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'green'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, 2.666, 68, (1/7)*4, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_cyan"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'cyan'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, 5.333, 68, (1/7)*5, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_blue"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'blue'
+            }
+        }, {
+        POSITION: [ 1, 2, 1, 4, 8, 68, (1/7)*6, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_purple"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'purple'
+            }
+        }, 
+        
+        
+        {
+        POSITION: [ 1, 2, 1, 4, 8, -68, 0, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_red"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'red'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, 5.333, -68, 1/7, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_orange"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'orange'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, 2.666, -68, (1/7)*2, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_yellow"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'yellow'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, 0, -68, (1/7)*3, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_green"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'green'
+            }
+        }, {
+        POSITION: [ 1, 2, 1, 4, -2.666, -68, (1/7)*4, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_cyan"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'cyan'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, -5.333, -68, (1/7)*5, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_blue"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'blue'
+            }
+        }, {
+            POSITION: [ 1, 2, 1, 4, -8, -68, (1/7)*6, ],
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.sniper, g.hunter, g.sidewind, {speed: 3, range: 0.8, reload: 4}]),
+                TYPE: ["dogeiscutMissile_purple"],
+                STAT_CALCULATOR: gunCalcNames.sustained,
+                COLOR: 'purple'
+            }
+        },
+    ],
+    TURRETS: [
+        {
+            POSITION: [16, 0, 0, 0, 360, 1],
+            TYPE: ["dogeiscutBody",  { MIRROR_MASTER_ANGLE: true, COLOR: "#f6c6a2"}],
+        },
+        {
+            POSITION: [12, 0, 0, 0, 360, 1],
+            TYPE: ["dogeiscutBody",  { MIRROR_MASTER_ANGLE: true, COLOR: "pink"}],
+        },
+        {
+            POSITION: [5, 0, 0, 0, 360, 1],
+            TYPE: ["dogeiscutTurret",  { INDEPENDENT: true, CONTROLLERS: ["nearestDifferentMaster"], COLOR: "yellow" }],
+        },
+        {
+            POSITION: [1, 10.5, 0, 0, 360, 0],
+            TYPE: ["genericTank",  {COLOR: "black"}],
+        },
+    ]
+}
