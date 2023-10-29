@@ -169,7 +169,6 @@ function collide(collision) {
                     advancedcollide(instance, other, false, false);
                     break;
                 case "hard":
-                case instance.collidingBond:
                     firmcollide(instance, other);
                     break;
                 case "hardWithBuffer":
