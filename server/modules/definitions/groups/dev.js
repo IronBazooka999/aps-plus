@@ -1045,7 +1045,7 @@ exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools", "addons"];
         exports.terrestrials.UPGRADES_TIER_0 = ["ares", "gersemi", "ezekiel", "eris", "selene"];
         exports.celestials.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia"];
         exports.eternals.UPGRADES_TIER_0 = ["ragnarok", "kronos"];
-        exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss", "dogeiscutBoss"];
+        exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss", "dogeiscutBoss", "trplnrBoss"];
 
     exports.tools.UPGRADES_TIER_0 = ["spectator", "levels", "teams", "eggGenerator"];
 

@@ -1,4 +1,4 @@
-const { combineStats, skillSet, makeAuto } = require('../facilitators.js');
+const { combineStats, skillSet, makeAuto, addAura } = require('../facilitators.js');
 const { base, gunCalcNames } = require('../constants.js');
 const g = require('../gunvals.js');
 const { bullet } = require('./generics.js');
@@ -4475,3 +4475,82 @@ exports.dogeiscutBoss = {
         },
     ]
 }
+exports.trplnrBoss_auraBullet_aura = addAura(1, 2)
+exports.trplnrBoss_auraBullet = {
+    PARENT: 'trap',
+    SHAPE: -4,
+    PERSISTS_AFTER_DEATH: true,
+    BODY: {
+        HEALTH: 100,
+    },
+    SIZE: 20,
+    COLOR: 'teal',
+    DRAW_HEALTH: true,
+    GUNS: (() => {
+        let output = []
+        for (let i = 0; i < 4; i++) {
+            output.push({
+                POSITION: { ANGLE: (360/4)*i, ASPECT: -0.35, X: -5 },
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.small, {reload: 2}]),
+                    TYPE: 'autoswarm',
+                    AUTOFIRE: true,
+                },
+            })
+        }
+        return output
+    })(),
+    TURRETS: [
+        {
+            POSITION: {SIZE: 10, LAYER: 1},
+            TYPE: "trplnrBoss_auraBullet_aura"
+        }
+    ]
+}
+/** 
+ * @type {import('../../../../index.js').Tank}
+ */
+exports.trplnrBoss = {
+    PARENT: "genericTank",
+    COLOR: 'teal',
+    LABEL: 'Lavender',
+    NAME: 'Trioplane',
+    GUNS: (() => {
+        /**
+        * @type {import('../../../../index.js').Guns}
+        */
+        let output = []
+        for (let i = 0; i<3; i++) {
+            output.push({
+                POSITION: { WIDTH: 20, ANGLE: (360/4)*i },
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic]),
+                    TYPE: "trplnrBoss_auraBullet",
+                    INDEPENDENT_CHILDREN: true,
+                }
+            })
+        }
+        return output
+    })()
+}
+exports.trplnrBoss.GUNS.push({
+    POSITION: { WIDTH: 20, ANGLE: 270 },
+    PROPERTIES: {
+        SHOOT_SETTINGS: combineStats([g.basic]),
+        TYPE: "trplnrBoss_auraBullet",
+        INDEPENDENT_CHILDREN: true,
+        ON_FIRE: ({ body, masterStore }) => {
+            masterStore.phase1_shotsFired ??= 0
+            masterStore.phase1_shotsFired++
+
+            let range = 20
+            let whereToGo = Math.random() > 0.5 ? Math.floor(Math.random() * -range) : Math.floor(Math.random() * range)
+            console.log(whereToGo)
+            body.x += whereToGo
+            body.y += whereToGo
+            console.log('232329329')
+
+            if (masterStore.phase1_shotsFired > 10) { }
+        }
+    }
+})
