@@ -4181,3 +4181,4 @@ exports.tgsBoss = {
         TYPE: "shinySquare"
     }]
 };
+

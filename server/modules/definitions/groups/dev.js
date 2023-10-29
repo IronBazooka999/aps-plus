@@ -566,6 +566,19 @@ exports.mmaTest = {
         },
     ]
 }
+exports.vulnturrettest = {
+    PARENT: ["genericTank"],
+    LABEL: "Vulurable Turret Test",
+    DANGER: 6,
+    FACING_TYPE: "autospin",
+    TURRETS: [
+        {
+            POSITION: [100, 0, 0, 0, 190, 0],
+            TYPE: "autoTankGun",
+            VULNERABLE: true
+        },
+    ],
+};
 exports.auraBasicGen = addAura();
 exports.auraBasic = {
     PARENT: ["genericTank"],
@@ -985,7 +998,7 @@ exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools", "addons"];
                 exports.sanctuaries.UPGRADES_TIER_0 = [];
         exports.legacyTanks.UPGRADES_TIER_0 = ["weirdSpike", "oldBentBoomer", "quadBuilder", "master", "blunderbuss", "oldRimfire", "oldSpreadshot", "oldCommander", "autoTrapper", "prodigy", "mender", "tetraGunner", "corvette", "whirlwind", "flail"];
         exports.funTanks.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "mummifier", "auraBasic", "auraHealer", "weirdAutoBasic", "ghoster", "switcheroo", "tracker3"];
-        exports.testingTanks.UPGRADES_TIER_0 = ["diamondShape", "rotatedTrap", "colorMan", "miscTest", "mmaTest", ["assassin", "dreadOfficialV1"]];
+        exports.testingTanks.UPGRADES_TIER_0 = ["diamondShape", "rotatedTrap", "colorMan", "miscTest", "mmaTest", ["assassin", "dreadOfficialV1"], "vulnturrettest"];
 
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals", "devBosses"];
         exports.sentries.UPGRADES_TIER_0 = ["sentrySwarm", "sentryGun", "sentryTrap", "shinySentrySwarm", "shinySentryGun", "shinySentryTrap"];

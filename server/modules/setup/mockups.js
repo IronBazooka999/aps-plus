@@ -13,6 +13,8 @@ function getMockup(e, positionInfo) {
         x: rounder(e.x),
         y: rounder(e.y),
         color: e.color,
+        upgradeColor: e.upgradeColor,
+        glow: e.glow,
         borderless: e.borderless,
         drawFill: e.drawFill,
         shape: e.shapeData,

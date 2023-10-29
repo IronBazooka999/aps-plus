@@ -656,12 +656,12 @@ exports.tinyMinion = {
         BLIND: true,
     },
     GUNS: [ { /*** LENGTH    WIDTH     ASPECT        X             Y         ANGLE     DELAY */
-        POSITION: [    17,         9,            1,            0,            0,            0,            0,     ], 
+        POSITION: [    17,         9,            1,            0,            0,            0,            0,     ],
         PROPERTIES: {
             SHOOT_SETTINGS: combineStats([g.basic, g.minion, g.lowpower]),
             WAIT_TO_CYCLE: true,
             TYPE: "bullet",
-        }, }, 
+        }, },
     ],
     DIE_AT_RANGE: true,
     BUFF_VS_FOOD: true,

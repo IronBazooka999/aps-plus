@@ -29,7 +29,7 @@ fetch("changelog.html", { cache: "no-cache" })
         for (const title of titles) {
             title.classList.add('title');
         }
-        
+
         patchNotes.innerHTML += ParsedHTML.documentElement.innerHTML;
     } catch (error) {
         patchNotes.innerHTML = `<p>An error occured while trying to fetch 'changelogs.html'</p><p>${error}</p>`;
@@ -642,8 +642,24 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     // Draw body
     context.globalAlpha = 1;
     gameDraw.setColor(context, gameDraw.mixColors(gameDraw.modifyColor(instance.color, baseColor), render.status.getColor(), turretsObeyRot ? 0 : blend));
+    context.shadowColor = m.glow.color!=null ? gameDraw.modifyColor(m.glow.color) : gameDraw.mixColors(
+        gameDraw.modifyColor(instance.color),
+        render.status.getColor(),
+        render.status.getBlend()
+    );
+    if (m.glow.strength && m.glow.strength>0){
+      context.shadowBlur = m.glow.strength;
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+    } else {
+      context.shadowBlur = 0
+      context.shadowOffsetX = 0;
+      context.shadowOffsetY = 0;
+    }
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
-
+    context.shadowBlur = 0
+    context.shadowOffsetX = 0;
+    context.shadowOffsetY = 0;
     // Draw guns above us
     for (let i = 0; i < source.guns.length; i++) {
         let g = gunConfig[i];
@@ -1049,7 +1065,7 @@ function drawUpgradeTree(spacing, alcoveSize) {
         }
         lastGuiType = gui.type;
     }
-    
+
     if (!tankTree) {
         console.log('No tank tree rendered yet.');
         return;
@@ -1100,10 +1116,10 @@ function drawUpgradeTree(spacing, alcoveSize) {
             baseColor = picture.color;
 
         ctx.globalAlpha = 0.75;
-        ctx.fillStyle = gameDraw.getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
+        ctx.fillStyle = picture.upgradeColor!=null ? gameDraw.getColor(picture.upgradeColor) : gameDraw.getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
         drawGuiRect(ax, ay, size, size);
         ctx.globalAlpha = 0.15;
-        ctx.fillStyle = gameDraw.getColor(-10 + colorIndex++);
+        ctx.fillStyle = picture.upgradeColor!=null ? gameDraw.getColor(picture.upgradeColor) : gameDraw.getColor(-10 + colorIndex++);
         drawGuiRect(ax, ay, size, size * 0.6);
         ctx.fillStyle = color.black;
         drawGuiRect(ax, ay + size * 0.6, size, size * 0.4);
@@ -1462,10 +1478,10 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
 
             // Draw box
             ctx.globalAlpha = 0.5;
-            ctx.fillStyle = gameDraw.getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
+            ctx.fillStyle = picture.upgradeColor!=null ? gameDraw.getColor(picture.upgradeColor) : gameDraw.getColor(colorIndex > 18 ? colorIndex - 19 : colorIndex);
             drawGuiRect(x, y, len, height);
             ctx.globalAlpha = 0.1;
-            ctx.fillStyle = gameDraw.getColor(-10 + colorIndex++);
+            ctx.fillStyle = picture.upgradeColor!=null ? gameDraw.getColor(picture.upgradeColor) : gameDraw.getColor(-10 + colorIndex++);
             drawGuiRect(x, y, len, height * 0.6);
             ctx.fillStyle = color.black;
             drawGuiRect(x, y + height * 0.6, len, height * 0.4);
