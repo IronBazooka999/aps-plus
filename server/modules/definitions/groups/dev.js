@@ -1033,7 +1033,7 @@ exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools", "addons"];
                 exports.dominators.UPGRADES_TIER_0 = ["dominator", "destroyerDominator", "gunnerDominator", "trapperDominator"];
                 exports.sanctuaries.UPGRADES_TIER_0 = [];
         exports.legacyTanks.UPGRADES_TIER_0 = ["weirdSpike", "oldBentBoomer", "quadBuilder", "master", "blunderbuss", "oldRimfire", "oldSpreadshot", "oldCommander", "autoTrapper", "prodigy", "mender", "tetraGunner", "corvette", "whirlwind", "flail"];
-        exports.funTanks.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "mummifier", "auraBasic", "auraHealer", "weirdAutoBasic", "ghoster", "switcheroo", "tracker3"];
+        exports.funTanks.UPGRADES_TIER_0 = ["florr_tank", "vanquisher", "armyOfOne", "godbasic", "maximumOverdrive", "mummifier", "auraBasic", "auraHealer", "weirdAutoBasic", "ghoster", "switcheroo", "tracker3", ["developer", "developer"]];
         exports.testingTanks.UPGRADES_TIER_0 = ["diamondShape", "rotatedTrap", "colorMan", "miscTest", "mmaTest", ["assassin", "dreadOfficialV1"], "vulnturrettest"];
 
     exports.bosses.UPGRADES_TIER_0 = ["sentries", "elites", "mysticals", "nesters", "rogues", "terrestrials", "celestials", "eternals", "devBosses"];
@@ -1045,7 +1045,7 @@ exports.developer.UPGRADES_TIER_0 = ["tanks", "bosses", "tools", "addons"];
         exports.terrestrials.UPGRADES_TIER_0 = ["ares", "gersemi", "ezekiel", "eris", "selene"];
         exports.celestials.UPGRADES_TIER_0 = ["paladin", "freyja", "zaphkiel", "nyx", "theia"];
         exports.eternals.UPGRADES_TIER_0 = ["ragnarok", "kronos"];
-        exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss"];
+        exports.devBosses.UPGRADES_TIER_0 = ["taureonBoss", "tgsBoss", "dogeiscutBoss"];
 
     exports.tools.UPGRADES_TIER_0 = ["spectator", "levels", "teams", "eggGenerator"];
 
