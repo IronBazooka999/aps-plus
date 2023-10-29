@@ -566,6 +566,12 @@ exports.mmaTest = {
         },
     ]
 }
+
+exports.vulnturrettest_turret = {
+    PARENT: "autoTankGun",
+    HITS_OWN_TYPE: 'hard'
+}
+
 exports.vulnturrettest = {
     PARENT: ["genericTank"],
     LABEL: "Vulurable Turret Test",
@@ -574,7 +580,7 @@ exports.vulnturrettest = {
     TURRETS: [
         {
             POSITION: [100, 0, 0, 0, 190, 0],
-            TYPE: "autoTankGun",
+            TYPE: "vulnturrettest_turret",
             VULNERABLE: true
         },
     ],
