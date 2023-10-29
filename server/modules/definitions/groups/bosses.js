@@ -4475,16 +4475,21 @@ exports.dogeiscutBoss = {
         },
     ]
 }
-exports.trplnrBoss_auraBullet_aura = addAura(1, 2)
+exports.trplnrBoss_auraBullet_aura = addAura(1, 1)
 exports.trplnrBoss_auraBullet = {
-    PARENT: 'trap',
+    PARENT: 'genericTank',
     SHAPE: -4,
     PERSISTS_AFTER_DEATH: true,
     BODY: {
         HEALTH: 100,
     },
-    SIZE: 20,
-    COLOR: 'teal',
+    SIZE: 25,
+    COLOR: '#F49EFF',
+    GLOW: {
+        STRENGTH: 25,
+        COLOR: -1,
+        ALPHA: 1
+    },
     DRAW_HEALTH: true,
     GUNS: (() => {
         let output = []
@@ -4492,7 +4497,8 @@ exports.trplnrBoss_auraBullet = {
             output.push({
                 POSITION: { ANGLE: (360/4)*i, ASPECT: -0.35, X: -5 },
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.small, {reload: 2}]),
+                    COLOR: 'white',
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.small, {reload: 0.8}]),
                     TYPE: 'autoswarm',
                     AUTOFIRE: true,
                 },
@@ -4507,16 +4513,34 @@ exports.trplnrBoss_auraBullet = {
         }
     ]
 }
+const trplnrBoss_decor = {
+    COLOR: '#F49EFF',
+    LABEL: 'Lavender',
+    NAME: 'Trioplane',
+    SHAPE: 3,
+    SIZE: 25,
+    GLOW: {
+        STRENGTH: 25,
+        COLOR: -1,
+        ALPHA: 1
+    },
+    TURRETS: [{
+        POSITION: { SIZE: 25 ** Math.SQRT1_2, ANGLE: 180, LAYER: 1 },
+        TYPE: ['triangle', { COLOR: 'black', MIRROR_MASTER_ANGLE: true }]
+    }, {
+        POSITION: { SIZE: 25 ** Math.SQRT1_2, LAYER: 1 },
+        TYPE: ['triangle', { COLOR: -1, MIRROR_MASTER_ANGLE: true }]
+    }, {
+        POSITION: { SIZE: 25 },
+        TYPE: ['triangle', { COLOR: 'black', MIRROR_MASTER_ANGLE: true }]
+    }],
+}
 /** 
  * @type {import('../../../../index.js').Tank}
  */
 exports.trplnrBoss = {
     PARENT: "miniboss",
-    COLOR: 'teal',
-    LABEL: 'Lavender',
-    NAME: 'Trioplane',
-    SHAPE: 3,
-    SIZE: 40,
+    ...trplnrBoss_decor,
     GUNS: (() => {
         /**
         * @type {import('../../../../index.js').Guns}
@@ -4524,26 +4548,28 @@ exports.trplnrBoss = {
         let output = []
         for (let i = 0; i<2; i++) {
             output.push({
-                POSITION: { WIDTH: 10, X: -5, ASPECT: -0.7, ANGLE: (360/3)*i },
+                POSITION: { WIDTH: 10, X: -5, ASPECT: -0.7, ANGLE: ((360 / 3) * i) - 180 },
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 0.1}]),
+                    COLOR: 'white',
+                    SHOOT_SETTINGS: combineStats([g.basic, {reload: 100}]),
                     TYPE: "trplnrBoss_auraBullet",
                     INDEPENDENT_CHILDREN: true,
                 }
             })
         }
         output.push({
-            POSITION: { WIDTH: 10, X: -5, ASPECT: -0.7, ANGLE: (360/3)*3 },
+            POSITION: { WIDTH: 10, X: -5, ASPECT: -0.7, ANGLE: ((360 / 3) * 2) - 180 },
             PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic]),
+                COLOR: 'white',
+                SHOOT_SETTINGS: combineStats([g.basic, {reload: 100}]),
                 TYPE: "trplnrBoss_auraBullet",
                 INDEPENDENT_CHILDREN: true,
                 ON_FIRE: ({ body }) => {
                     for (let i = 0; i < 24; i++) {
                         i < 12 ? 
-                            setTimeout(() => {body.SIZE /= 1.05; body.alpha /= 1.1}, i*50)
+                            setTimeout(() => {body.SIZE /= 1.1; body.alpha /= 1.2}, i*50)
                             : 
-                            setTimeout(() => {body.SIZE *= 1.05; body.alpha *= 1.1}, i*50)
+                            setTimeout(() => {body.SIZE *= 1.1; body.alpha *= 1.2}, i*50)
                     }
                     setTimeout(() => {
                         let range = 500
@@ -4552,9 +4578,95 @@ exports.trplnrBoss = {
                         body.x += whereToGoX
                         body.y += whereToGoY
                     }, 12*50);
+                    setTimeout(() => body.define('trplnrBoss_bulletHellForm'), 24*50)
                 }
             }
         })
+        for (let i = 0; i < 3; i++) {
+            output.push({
+                POSITION: { WIDTH: 5, ASPECT: -0.7, ANGLE: ((360 / 3) * i) - 180 },
+                PROPERTIES: {
+                    COLOR: 'black'
+                }
+            })
+            output.push({
+                POSITION: { WIDTH: 5, HEIGHT: 5, X: -30, ASPECT: 0, ANGLE: ((360 / 3) * i) - 180 },
+                PROPERTIES: {
+                    COLOR: 'black'
+                }
+            }, {
+                POSITION: { WIDTH: 5, HEIGHT: 5, X: -25, ASPECT: 0, ANGLE: ((360 / 3) * i) - 180 },
+                PROPERTIES: {
+                    COLOR: 'white'
+                }
+            })
+        }
+        return output
+    })()
+}
+
+exports.trplnrBoss_bulletHellForm_pentagons_auraBullet = {
+    PARENT: 'bullet',
+    TURRETS: [{
+        POSITION: {SIZE: 15, LAYER: 1},
+        TYPE: "trplnrBoss_auraBullet_aura"
+    }]
+} 
+
+exports.trplnrBoss_bulletHellForm_pentagons = {
+    PARENT: 'bullet',
+    SHAPE: -5,
+    TURRETS: [{
+        POSITION: { SIZE: 20 ** Math.SQRT1_2, ANGLE: 180 },
+        TYPE: ['pentagon', {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+    }],
+    GUNS: (() => {
+        let output = []
+        for (let i = 0; i < 5; i++) {
+            output.push({
+                POSITION: { WIDTH: 10, HEIGHT: 10, ANGLE: ((360/5)*i) - 180, DELAY: 1 },
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 1.5}]),
+                    TYPE: 'trplnrBoss_bulletHellForm_pentagons_auraBullet',
+                    AUTOFIRE: true,
+                }
+            })
+        }
+        return output
+    })()
+}
+exports.trplnrBoss_bulletHellForm = {
+    PARENT: "miniboss",
+    ...trplnrBoss_decor,
+    GUNS: (() => {
+        let output = []
+        for (let i = 0; i<3; i++) {
+            output.push({
+                POSITION: { WIDTH: 15, HEIGHT: 5, ANGLE: ((360 / 3) * i)-180, ASPECT: 0, X: -25 },
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, { reload: 1 }]),
+                    TYPE: 'trplnrBoss_bulletHellForm_pentagons_auraBullet',
+                    COLOR: 'black'
+                }
+            }, {
+                POSITION: { WIDTH: 15, HEIGHT: 5, ANGLE: ((360 / 3) * i)-180, ASPECT: 0, X: -20 },
+                PROPERTIES: {
+                    COLOR: 'white'
+                }
+            }, {
+                POSITION: { WIDTH: 10, HEIGHT: 10, ANGLE: ((360 / 3) * i) - 180 },
+                PROPERTIES: {
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, { reload: 2 }]),
+                    TYPE: 'trplnrBoss_bulletHellForm_pentagons',
+                    COLOR: 'white'
+                }
+            }, {
+                POSITION: { WIDTH: 5, HEIGHT: 10, ANGLE: ((360 / 3) * i) - 180 },
+                PROPERTIES: {
+                    COLOR: -1,
+                }
+            })
+        }
         return output
     })()
 }
