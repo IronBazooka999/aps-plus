@@ -473,7 +473,23 @@ function drawBar(x1, x2, y, width, color) {
     ctx.closePath();
     ctx.stroke();
 }
+//checking for images in the shape so we can draw them
+function isImageURL(url) {
+    try {
+        const parsedUrl = new URL(url);
+        const path = parsedUrl.pathname;
+        const ext = path.split('.').pop().toLowerCase(); // Get the lowercase file extension
+
+        // List of common image file extensions
+        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg'];
+
+        return imageExtensions.includes(ext);
+    } catch (error) {
+        return false; // URL parsing failed, or it's not an image URL.
+    }
+}
 // Sub-drawing functions
+const drawPolyImgs = []
 function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderless, fill) {
     // Start drawing
     context.beginPath();
@@ -487,17 +503,67 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
             );
     } else {
         if ("string" === typeof sides) {
-            let path = new Path2D(sides);
-            context.save();
-            context.translate(centerX, centerY);
-            context.scale(radius, radius);
-            context.lineWidth /= radius;
-            context.rotate(angle);
-            context.lineWidth *= fill ? 1 : 0.5; // Maintain constant border width
-            if (!borderless) context.stroke(path);
-            if (fill) context.fill(path);
-            context.restore();
-            return;
+            if (isImageURL(sides)) {
+                //ideally we'd preload images when mockups are loaded but im too lazy for that atm
+                if (!drawPolyImgs[sides]) {
+                    drawPolyImgs[sides] = new Image();
+                    drawPolyImgs[sides].src = sides
+                    drawPolyImgs[sides].isBroken = false;
+                    drawPolyImgs[sides].onerror = function() {
+                        console.log('One or more images failed to load!')
+                        this.isBroken = true;
+                    };
+                }
+                let img = drawPolyImgs[sides]
+                if (img.isBroken || !img.complete) { // check if img is broken and draw placeholder if so
+                    //this is probably the worst way to draw a missing texture checkerboard but im too lazy to do a better one
+                    context.translate(centerX, centerY);
+                    context.rotate(angle);
+                    context.beginPath();
+                    context.fillStyle = '#ff00ff'
+                    context.lineTo(-radius,-radius)
+                    context.lineTo(radius,-radius)
+                    context.lineTo(radius,radius)
+                    context.lineTo(-radius,radius)
+                    context.lineTo(-radius,-radius)
+                    context.fill();
+                    context.closePath();
+                    context.beginPath();
+                    context.fillStyle = '#000000'
+                    context.lineTo(-radius,-radius)
+                    context.lineTo(0,-radius)
+                    context.lineTo(0,0)
+                    context.lineTo(0, radius)
+                    context.lineTo(radius, radius)
+                    context.lineTo(radius, 0)
+                    context.lineTo(0, 0)
+                    context.lineTo(-radius, 0)
+                    context.lineTo(-radius,-radius)
+                    context.fill();
+                    context.closePath();
+                    context.rotate(-angle);
+                    context.translate(-centerX, -centerY);
+                    return;
+                }
+                context.translate(centerX, centerY);
+                context.rotate(angle);
+                context.drawImage(img, -radius, -radius, radius*2, radius*2);
+                context.rotate(-angle);
+                context.translate(-centerX, -centerY);
+                return;
+            } else {
+                let path = new Path2D(sides);
+                context.save();
+                context.translate(centerX, centerY);
+                context.scale(radius, radius);
+                context.lineWidth /= radius;
+                context.rotate(angle);
+                context.lineWidth *= fill ? 1 : 0.5; // Maintain constant border width
+                if (!borderless) context.stroke(path);
+                if (fill) context.fill(path);
+                context.restore();
+                return;
+            }
         }
         angle += sides % 2 ? 0 : Math.PI / sides;
     }
@@ -662,7 +728,7 @@ const drawEntity = (baseColor, x, y, instance, ratio, alpha = 1, scale = 1, rot 
     context.shadowBlur = 0
     context.shadowOffsetX = 0;
     context.shadowOffsetY = 0;
-    
+
     drawPoly(context, xx, yy, (drawSize / m.size) * m.realSize, m.shape, rot, m.borderless, m.drawFill);
     
     // Draw guns above us
