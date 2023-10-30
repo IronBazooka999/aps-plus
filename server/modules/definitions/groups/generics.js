@@ -244,7 +244,7 @@ exports.healerSymbol = {
     PARENT: ["genericEntity"],
     SHAPE: [[0.3, -0.3],[1,-0.3],[1,0.3],[0.3,0.3],[0.3,1],[-0.3,1],[-0.3,0.3],[-1,0.3],[-1,-0.3],[-0.3,-0.3],[-0.3,-1],[0.3,-1]],
     SIZE: 13,
-    COLOR: 12,
+    COLOR: 11,
 };
 
 exports.auraBase = {
