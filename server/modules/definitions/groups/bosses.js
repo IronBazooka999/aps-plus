@@ -4520,6 +4520,8 @@ const trplnrBoss_decor = {
     NAME: 'Trioplane',
     SHAPE: 3,
     SIZE: 25,
+    VALUE: 5e9,
+    DANGER: 10,
     GLOW: {
         RADIUS: 15,
         COLOR: -1,
