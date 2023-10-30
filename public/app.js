@@ -1586,7 +1586,7 @@ function drawAvailableUpgrades(spacing, alcoveSize) {
         drawBar(buttonX - m / 2, buttonX + m / 2, buttonY + h / 2, h + config.graphical.barChunk, color.black);
         drawBar(buttonX - m / 2, buttonX + m / 2, buttonY + h / 2, h, color.white);
         drawText(msg, buttonX, buttonY + h / 2, h - 2, color.guiwhite, "center", true);
-        global.clickables.skipUpgrades.place(0, (buttonX - m / 2) * clickableRatio, initialY * clickableRatio, m * clickableRatio, h * clickableRatio);
+        global.clickables.skipUpgrades.place(0, (buttonX - m / 2) * clickableRatio, buttonY * clickableRatio, m * clickableRatio, h * clickableRatio);
     } else {
         global.canUpgrade = false;
         global.clickables.upgrade.hide();
