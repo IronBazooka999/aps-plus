@@ -4539,9 +4539,6 @@ const trplnrBoss_decor = {
         TYPE: ['triangle', { COLOR: 'black', MIRROR_MASTER_ANGLE: true }]
     }],
 }
-/** 
- * @type {import('../../../../index.js').Tank}
- */
 exports.trplnrBoss = {
     PARENT: "miniboss",
     ...trplnrBoss_decor,
@@ -4549,9 +4546,6 @@ exports.trplnrBoss = {
         HEALTH: 500,
     },
     GUNS: (() => {
-        /**
-        * @type {import('../../../../index.js').Guns}
-        */
         let output = []
         for (let i = 0; i<2; i++) {
             output.push({
@@ -4661,9 +4655,6 @@ exports.trplnrBoss_bulletHellForm = {
         HEALTH: 500,
     },
     GUNS: (() => {
-        /**
-         * @type {import('../../../../index.js').Guns}
-         */
         let output = []
         for (let i = 0; i<3; i++) {
             output.push({
@@ -4738,10 +4729,6 @@ exports.trplnrBoss_bulletHellForm = {
         return output
     })()
 }
-
-/**
- * @type {import('../../../../index.js').Tank}
- */
 exports.trplnrBoss_vulnerableForm = {
     PARENT: "miniboss",
     ...trplnrBoss_decor,
