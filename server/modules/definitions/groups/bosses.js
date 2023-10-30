@@ -4498,7 +4498,7 @@ exports.trplnrBoss_auraBullet = {
                 POSITION: { ANGLE: (360/4)*i, ASPECT: -0.35, X: -5 },
                 PROPERTIES: {
                     COLOR: 'white',
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.small, {reload: 0.8}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.small, {reload: 0.8, damage: 1.25}]),
                     TYPE: 'autoswarm',
                     AUTOFIRE: true,
                 },
@@ -4520,9 +4520,10 @@ const trplnrBoss_decor = {
     SHAPE: 3,
     SIZE: 25,
     GLOW: {
-        STRENGTH: 25,
+        RADIUS: 15,
         COLOR: -1,
-        ALPHA: 1
+        ALPHA: 1,
+        RECURSION: 5
     },
     TURRETS: [{
         POSITION: { SIZE: 25 ** Math.SQRT1_2, ANGLE: 180, LAYER: 1 },
@@ -4541,6 +4542,9 @@ const trplnrBoss_decor = {
 exports.trplnrBoss = {
     PARENT: "miniboss",
     ...trplnrBoss_decor,
+    BODY: {
+        HEALTH: 500,
+    },
     GUNS: (() => {
         /**
         * @type {import('../../../../index.js').Guns}
@@ -4565,6 +4569,15 @@ exports.trplnrBoss = {
                 TYPE: "trplnrBoss_auraBullet",
                 INDEPENDENT_CHILDREN: true,
                 ON_FIRE: ({ body }) => {
+                    const messages = [
+                        'Attack my little swarms!',
+                        'Deploying, Attack swarms',
+                        'You really think you can defeat me? Heres a little challenge for you.',
+                        'This thing is really gonna annoy you HAHA!',
+                        'I don\'t know what to say uhhh, die i guess.'
+                    ]
+                    body.sendMessage(messages[Math.floor(Math.random() * messages.length)])
+                    body.sendMessage('Lavender will turn into `BULL3T HELL F0rM`, Run!')
                     for (let i = 0; i < 24; i++) {
                         i < 12 ? 
                             setTimeout(() => {body.SIZE /= 1.1; body.alpha /= 1.2}, i*50)
@@ -4617,8 +4630,8 @@ exports.trplnrBoss_bulletHellForm_pentagons = {
     PARENT: 'bullet',
     SHAPE: -5,
     TURRETS: [{
-        POSITION: { SIZE: 20 ** Math.SQRT1_2, ANGLE: 180 },
-        TYPE: ['pentagon', {COLOR: -1, MIRROR_MASTER_ANGLE: true}]
+        POSITION: { SIZE: 40 ** Math.SQRT1_2, ANGLE: 180, LAYER: 1 },
+        TYPE: ['pentagon', {COLOR: 'black', MIRROR_MASTER_ANGLE: true}]
     }],
     GUNS: (() => {
         let output = []
@@ -4626,9 +4639,10 @@ exports.trplnrBoss_bulletHellForm_pentagons = {
             output.push({
                 POSITION: { WIDTH: 10, HEIGHT: 10, ANGLE: ((360/5)*i) - 180, DELAY: 1 },
                 PROPERTIES: {
-                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 1.5}]),
+                    SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 0.8}]),
                     TYPE: 'trplnrBoss_bulletHellForm_pentagons_auraBullet',
                     AUTOFIRE: true,
+                    COLOR: 'white'
                 }
             })
         }
@@ -4638,7 +4652,13 @@ exports.trplnrBoss_bulletHellForm_pentagons = {
 exports.trplnrBoss_bulletHellForm = {
     PARENT: "miniboss",
     ...trplnrBoss_decor,
+    BODY: {
+        HEALTH: 500,
+    },
     GUNS: (() => {
+        /**
+         * @type {import('../../../../index.js').Guns}
+         */
         let output = []
         for (let i = 0; i<3; i++) {
             output.push({
@@ -4654,19 +4674,89 @@ exports.trplnrBoss_bulletHellForm = {
                     COLOR: 'white'
                 }
             }, {
-                POSITION: { WIDTH: 10, HEIGHT: 10, ANGLE: ((360 / 3) * i) - 180 },
+                POSITION: { WIDTH: 10, HEIGHT: 5, ASPECT: 1.5, ANGLE: ((360 / 3) * i) - 180 },
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, { reload: 2 }]),
                     TYPE: 'trplnrBoss_bulletHellForm_pentagons',
                     COLOR: 'white'
                 }
             }, {
-                POSITION: { WIDTH: 5, HEIGHT: 10, ANGLE: ((360 / 3) * i) - 180 },
+                POSITION: { WIDTH: 8, HEIGHT: 3, X: -1, ASPECT: 1.5, ANGLE: ((360 / 3) * i) - 180 },
+                PROPERTIES: {
+                    COLOR: 'pureWhite',
+                }
+            }, {
+                POSITION: { WIDTH: 5, HEIGHT: 10, X: 5, ASPECT: 0.2, ANGLE: ((360 / 3) * i) - 180 },
                 PROPERTIES: {
                     COLOR: -1,
                 }
             })
         }
+        output.push({
+            POSITION: { WIDTH: 0, HEIGHT: 0 },
+            PROPERTIES: {
+                SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, { reload: 2 }, g.fake]),
+                TYPE: 'bullet',
+                ON_FIRE: ({body, masterStore}) => {
+                    masterStore.shotsFired ??= 0
+                    masterStore.shotsFired++
+
+                    for (let i = 0; i < 24; i++) {
+                        i < 12 ?
+                            setTimeout(() => { body.SIZE /= 1.1; body.alpha /= 1.2 }, i * 50)
+                            :
+                            setTimeout(() => { body.SIZE *= 1.1; body.alpha *= 1.2 }, i * 50)
+                    }
+                    setTimeout(() => {
+                        let range = 500
+                        let whereToGoX = Math.random() > 0.5 ? Math.floor(Math.random() * -range) : Math.floor(Math.random() * range)
+                        let whereToGoY = Math.random() > 0.5 ? Math.floor(Math.random() * -range) : Math.floor(Math.random() * range)
+                        body.x += whereToGoX
+                        body.y += whereToGoY
+                    }, 12*50)
+
+                    if (masterStore.shotsFired > 5) {
+                        body.define('trplnrBoss_vulnerableForm')
+                        const messages = [
+                            'I\'m a little tired right now',
+                            'Ouch my leg!',
+                            'i sleep',
+                            'Bruh my keyboard isn\'t working',
+                            'Omg bruh I chose the wrong form'
+                        ]
+                        body.sendMessage(messages[Math.floor(Math.random() * messages.length)])
+                        body.sendMessage('Lavender is in its `VULN3RABLE F0RM`, Attack!')
+                    }
+                }
+            }
+        })
         return output
     })()
+}
+
+/**
+ * @type {import('../../../../index.js').Tank}
+ */
+exports.trplnrBoss_vulnerableForm = {
+    PARENT: "miniboss",
+    ...trplnrBoss_decor,
+    BODY: {
+        HEALTH: 500,
+        SPEED: 0.01
+    },
+    GUNS: [{
+        POSITION: {LENGTH: 0, WIDTH: 0},
+        PROPERTIES: {
+            SHOOT_SETTINGS: combineStats([g.basic, {reload: 500}]),
+            TYPE: 'bullet',
+            AUTOFIRE: true,
+            ON_FIRE: ({body}) => {
+                setTimeout(() => {
+                    body.define('trplnrBoss')
+                    body.sendMessage('im awake')
+                }, 15000)
+                setTimeout(() => body.sendMessage('Lavender will activate in 10 seconds and turn into S4nctuary F0rM'), 5000)
+            }
+        }
+    }]
 }
