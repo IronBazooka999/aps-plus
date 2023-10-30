@@ -4478,6 +4478,7 @@ exports.dogeiscutBoss = {
 exports.trplnrBoss_auraBullet_aura = addAura(1, 1)
 exports.trplnrBoss_auraBullet = {
     PARENT: 'genericTank',
+    LABEL: 'Nest',
     SHAPE: -4,
     PERSISTS_AFTER_DEATH: true,
     BODY: {
@@ -4628,6 +4629,7 @@ exports.trplnrBoss_bulletHellForm_pentagons_auraBullet = {
 
 exports.trplnrBoss_bulletHellForm_pentagons = {
     PARENT: 'bullet',
+    LABEL: 'Pentagon',
     SHAPE: -5,
     TURRETS: [{
         POSITION: { SIZE: 40 ** Math.SQRT1_2, ANGLE: 180, LAYER: 1 },
@@ -4652,6 +4654,7 @@ exports.trplnrBoss_bulletHellForm_pentagons = {
 exports.trplnrBoss_bulletHellForm = {
     PARENT: "miniboss",
     ...trplnrBoss_decor,
+    LABEL: 'Lavender - Bullet Hell Form',
     BODY: {
         HEALTH: 500,
     },
@@ -4740,6 +4743,7 @@ exports.trplnrBoss_bulletHellForm = {
 exports.trplnrBoss_vulnerableForm = {
     PARENT: "miniboss",
     ...trplnrBoss_decor,
+    LABEL: 'Lavender - Vulnerable Form',
     BODY: {
         HEALTH: 500,
         SPEED: 0.01
