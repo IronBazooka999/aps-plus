@@ -510,7 +510,7 @@ function drawPoly(context, centerX, centerY, radius, sides, angle = 0, borderles
                     drawPolyImgs[sides].src = sides
                     drawPolyImgs[sides].isBroken = false;
                     drawPolyImgs[sides].onerror = function() {
-                        console.log('One or more images failed to load!')
+                        console.log('Failed to load image!\nURL:', sides);
                         this.isBroken = true;
                     };
                 }
