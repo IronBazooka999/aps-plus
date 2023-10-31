@@ -4475,8 +4475,8 @@ exports.dogeiscutBoss = {
         },
     ]
 }
-exports.trplnrBoss_auraBullet_aura = addAura(1, 1)
-exports.trplnrBoss_auraBullet = {
+exports.trplnrBossAuraBulletAura = addAura(1, 1)
+exports.trplnrBossAuraBullet = {
     PARENT: 'genericTank',
     LABEL: 'Nest',
     SHAPE: -4,
@@ -4510,11 +4510,11 @@ exports.trplnrBoss_auraBullet = {
     TURRETS: [
         {
             POSITION: {SIZE: 10, LAYER: 1},
-            TYPE: "trplnrBoss_auraBullet_aura"
+            TYPE: "trplnrBossAuraBulletAura"
         }
     ]
 }
-const trplnrBoss_decor = {
+const trplnrBossDecor = {
     COLOR: '#F49EFF',
     LABEL: 'Lavender',
     NAME: 'Trioplane',
@@ -4541,7 +4541,7 @@ const trplnrBoss_decor = {
 }
 exports.trplnrBoss = {
     PARENT: "miniboss",
-    ...trplnrBoss_decor,
+    ...trplnrBossDecor,
     BODY: {
         HEALTH: 500,
     },
@@ -4553,7 +4553,7 @@ exports.trplnrBoss = {
                 PROPERTIES: {
                     COLOR: 'white',
                     SHOOT_SETTINGS: combineStats([g.basic, {reload: 100}]),
-                    TYPE: "trplnrBoss_auraBullet",
+                    TYPE: "trplnrBossAuraBullet",
                     INDEPENDENT_CHILDREN: true,
                 }
             })
@@ -4563,7 +4563,7 @@ exports.trplnrBoss = {
             PROPERTIES: {
                 COLOR: 'white',
                 SHOOT_SETTINGS: combineStats([g.basic, {reload: 100}]),
-                TYPE: "trplnrBoss_auraBullet",
+                TYPE: "trplnrBossAuraBullet",
                 INDEPENDENT_CHILDREN: true,
                 ON_FIRE: ({ body }) => {
                     const messages = [
@@ -4588,7 +4588,7 @@ exports.trplnrBoss = {
                         body.x += whereToGoX
                         body.y += whereToGoY
                     }, 12*50);
-                    setTimeout(() => body.define('trplnrBoss_bulletHellForm'), 24*50)
+                    setTimeout(() => body.define('trplnrBossBulletHellForm'), 24*50)
                 }
             }
         })
@@ -4615,15 +4615,15 @@ exports.trplnrBoss = {
     })()
 }
 
-exports.trplnrBoss_bulletHellForm_pentagons_auraBullet = {
+exports.trplnrBossBulletHellFormPentagonsAuraBullet = {
     PARENT: 'bullet',
     TURRETS: [{
         POSITION: {SIZE: 15, LAYER: 1},
-        TYPE: "trplnrBoss_auraBullet_aura"
+        TYPE: "trplnrBossAuraBulletAura"
     }]
 } 
 
-exports.trplnrBoss_bulletHellForm_pentagons = {
+exports.trplnrBossBulletHellFormPentagons = {
     PARENT: 'bullet',
     LABEL: 'Pentagon',
     SHAPE: -5,
@@ -4638,7 +4638,7 @@ exports.trplnrBoss_bulletHellForm_pentagons = {
                 POSITION: { WIDTH: 10, HEIGHT: 10, ANGLE: ((360/5)*i) - 180, DELAY: 1 },
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, {reload: 0.8}]),
-                    TYPE: 'trplnrBoss_bulletHellForm_pentagons_auraBullet',
+                    TYPE: 'trplnrBossBulletHellFormPentagonsAuraBullet',
                     AUTOFIRE: true,
                     COLOR: 'white'
                 }
@@ -4647,9 +4647,9 @@ exports.trplnrBoss_bulletHellForm_pentagons = {
         return output
     })()
 }
-exports.trplnrBoss_bulletHellForm = {
+exports.trplnrBossBulletHellForm = {
     PARENT: "miniboss",
-    ...trplnrBoss_decor,
+    ...trplnrBossDecor,
     LABEL: 'Lavender - Bullet Hell Form',
     BODY: {
         HEALTH: 500,
@@ -4661,7 +4661,7 @@ exports.trplnrBoss_bulletHellForm = {
                 POSITION: { WIDTH: 15, HEIGHT: 5, ANGLE: ((360 / 3) * i)-180, ASPECT: 0, X: -25 },
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, { reload: 1 }]),
-                    TYPE: 'trplnrBoss_bulletHellForm_pentagons_auraBullet',
+                    TYPE: 'trplnrBossBulletHellFormPentagonsAuraBullet',
                     COLOR: 'black'
                 }
             }, {
@@ -4673,7 +4673,7 @@ exports.trplnrBoss_bulletHellForm = {
                 POSITION: { WIDTH: 10, HEIGHT: 5, ASPECT: 1.5, ANGLE: ((360 / 3) * i) - 180 },
                 PROPERTIES: {
                     SHOOT_SETTINGS: combineStats([g.basic, g.pound, g.destroy, g.anni, { reload: 2 }]),
-                    TYPE: 'trplnrBoss_bulletHellForm_pentagons',
+                    TYPE: 'trplnrBossBulletHellFormPentagons',
                     COLOR: 'white'
                 }
             }, {
@@ -4712,7 +4712,7 @@ exports.trplnrBoss_bulletHellForm = {
                     }, 12*50)
 
                     if (masterStore.shotsFired > 5) {
-                        body.define('trplnrBoss_vulnerableForm')
+                        body.define('trplnrBossVulnerableForm')
                         const messages = [
                             'I\'m a little tired right now',
                             'Ouch my leg!',
@@ -4729,9 +4729,9 @@ exports.trplnrBoss_bulletHellForm = {
         return output
     })()
 }
-exports.trplnrBoss_vulnerableForm = {
+exports.trplnrBossVulnerableForm = {
     PARENT: "miniboss",
-    ...trplnrBoss_decor,
+    ...trplnrBossDecor,
     LABEL: 'Lavender - Vulnerable Form',
     BODY: {
         HEALTH: 500,
