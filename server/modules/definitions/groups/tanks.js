@@ -2164,7 +2164,7 @@ exports.dual = {
             },
         },
         {
-            POSITION: [18, 7, 1, 0, -5.5, 0, 0.5],
+            POSITION: [18, 7, 1, 0, -5.5, 0, .5],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.dual, g.lowpower]),
                 TYPE: "bullet",
@@ -2172,14 +2172,14 @@ exports.dual = {
             },
         },
         {
-            POSITION: [16, 8.5, 1, 0, 5.5, 0, 0],
+            POSITION: [16, 8.5, 1, 0, 5.5, 0, 0.25],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.dual]),
                 TYPE: "bullet",
             },
         },
         {
-            POSITION: [16, 8.5, 1, 0, -5.5, 0, 0.5],
+            POSITION: [16, 8.5, 1, 0, -5.5, 0, .75],
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.twin, g.dual]),
                 TYPE: "bullet",
