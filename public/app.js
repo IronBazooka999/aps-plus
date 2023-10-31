@@ -785,39 +785,45 @@ function drawHealth(x, y, instance, ratio, alpha) {
             let getColor = true;
             if (typeof instance.color == 'string') {
                 instanceColor = instance.color.split(' ')[0];
-                if (instanceColor[0] == '#') 
+                if (instanceColor[0] == '#') {
                     getColor = false;
-                else if (!isNaN(parseInt(instanceColor)))
+                } else if (!isNaN(parseInt(instanceColor))) {
                     instanceColor = parseInt(instanceColor);
+                }
             } else {
                 instanceColor = instance.color;
             }
             let col = config.graphical.coloredHealthbars ? gameDraw.mixColors(getColor ? gameDraw.getColor(instanceColor) : instanceColor, color.guiwhite, 0.5) : color.lgreen;
-            let yy = y + 1.1 * realSize + 15;
-            let barWidth = 5;
-            ctx.globalAlpha = alpha * alpha * fade;
+            let yy = y + realSize + 15 * ratio;
+            let barWidth = 3 * ratio;
+            ctx.globalAlpha = fade * (alpha ** 2);
             //TODO: seperate option for hp bars
             // function drawBar(x1, x2, y, width, color) {
+
+            //background bar
             drawBar(x - size, x + size, yy + barWidth * config.graphical.seperatedHealthbars / 2, barWidth * (1 + config.graphical.seperatedHealthbars) + config.graphical.barChunk, color.black);
+
+            //hp bar
             drawBar(x - size, x - size + 2 * size * health, yy + barWidth * config.graphical.seperatedHealthbars, barWidth, col);
+
+            //shield bar
             if (shield || config.graphical.seperatedHealthbars) {
-                if (!config.graphical.seperatedHealthbars) ctx.globalAlpha = (0.3 + shield * 0.3) * alpha * alpha * fade;
+                if (!config.graphical.seperatedHealthbars) ctx.globalAlpha = (1 + shield) * 0.3 * (alpha ** 2) * fade;
                 drawBar(x - size, x - size + 2 * size * shield, yy, barWidth, config.graphical.coloredHealthbars ? gameDraw.mixColors(col, color.guiblack, 0.25) : color.teal);
                 ctx.globalAlpha = 1;
             }
         }
     }
-    if (instance.id !== gui.playerid) {
-        if (instance.nameplate) {
-            var name = instance.name.substring(7, instance.name.length + 1);
-            var namecolor = instance.name.substring(0, 7);
-            ctx.globalAlpha = alpha;
-            drawText(name, x, y - realSize - 30, 16, namecolor, "center");
-            drawText(util.handleLargeNumber(instance.score, 1), x, y - realSize - 16, 8, namecolor, "center");
-            ctx.globalAlpha = 1;
-        }
+    if (instance.id !== gui.playerid && instance.nameplate) {
+        var name = instance.name.substring(7, instance.name.length + 1);
+        var namecolor = instance.name.substring(0, 7);
+        ctx.globalAlpha = alpha;
+        drawText(name, x, y - realSize - 22 * ratio, 12 * ratio, namecolor, "center");
+        drawText(util.handleLargeNumber(instance.score, 1), x, y - realSize - 12 * ratio, 6 * ratio, namecolor, "center");
+        ctx.globalAlpha = 1;
     }
 }
+
 // Start animation
 window.requestAnimFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || (callback => setTimeout(callback, 1000 / 60));
 window.cancelAnimFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
@@ -1093,7 +1099,8 @@ function drawEntities(px, py, ratio) {
         drawHealth(x, y, instance, ratio, instance.alpha);
     }
 
-    let now = Date.now();
+    let now = Date.now(),
+        ratioForChat = (1 + ratio) / 2;
     for (let instance of global.entities) {
         //put chat msg above name
         let size = instance.size * ratio,
@@ -1103,22 +1110,23 @@ function drawEntities(px, py, ratio) {
             x = instance.id === gui.playerid ? 0 : ratio * instance.render.x - px,
             y = instance.id === gui.playerid ? 0 : ratio * instance.render.y - py;
         x += global.screenWidth / 2;
-        y += global.screenHeight / 2 - realSize - 45;
+        y += global.screenHeight / 2 - realSize - 46 * ratio;
+        if (instance.id !== gui.playerid && instance.nameplate) y -= 8 * ratio;
 
         //draw all the msgs
         for (let i in global.chats[instance.id]) {
             let chat = global.chats[instance.id][i],
                 text = chat.text,
-                msgLength = measureText(text, 15),
+                msgLengthHalf = measureText(text, 15 * ratioForChat) / 2,
                 alpha = Math.max(0, Math.min(1000, chat.expires - now) / 1000);
 
             ctx.globalAlpha = 0.5 * alpha;
-            drawBar(x - msgLength / 2, x + msgLength / 2, y, 30, gameDraw.modifyColor(instance.color));
+            drawBar(x - msgLengthHalf, x + msgLengthHalf, y, 30 * ratioForChat, gameDraw.modifyColor(instance.color));
             ctx.globalAlpha = alpha;
             config.graphical.fontStrokeRatio *= 1.2;
-            drawText(text, x, y + 7, 15, color.guiwhite, "center");
+            drawText(text, x, y + 7 * ratioForChat, 15 * ratioForChat, color.guiwhite, "center");
             config.graphical.fontStrokeRatio /= 1.2;
-            y -= 35;
+            y -= 35 * ratioForChat;
         }
     }
 }

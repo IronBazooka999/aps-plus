@@ -388,9 +388,10 @@ function incoming(message, socket) {
             }
 
             if (player.body != null) {
+                let limit = 256;
                 do {
                     player.body.skillUp(stat);
-                } while (max && player.body.skill.points && player.body.skill.amount(stat) < player.body.skill.cap(stat))
+                } while (limit-- && max && player.body.skill.points && player.body.skill.amount(stat) < player.body.skill.cap(stat))
             }
             break;
         case "L":

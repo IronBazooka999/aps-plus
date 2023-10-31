@@ -4120,10 +4120,10 @@ exports.shinybetawaferbread = {
         TYPE: "shinyEggDummy"
     },]
 };;
-exports.tgsBoss = {
+exports.zenphiaBoss = {
     PARENT: "miniboss",
     LABEL: "Shiny Omega Thaumaturge",
-    NAME: "TGS",
+    NAME: "Zenphia",
     DANGER: 10,
     SHAPE: 4,
     COLOR: 1,

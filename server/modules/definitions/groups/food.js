@@ -87,7 +87,7 @@ makeRare = (type, level) => ({
     LABEL: ["Shiny", "Legendary", "Shadow", "Rainbow", "Transgender"][level] + " " + type.LABEL,
     VALUE: [100, 500, 2000, 4000, 5000][level] * type.VALUE,
     SHAPE: type.SHAPE,
-    SIZE: type.SHAPE + level,
+    SIZE: type.SIZE + level,
     COLOR: [1, 0, 19, 36, 37][level],
     ALPHA: level == 2 ? 0.25 : 1,
     BODY: {
@@ -102,16 +102,19 @@ makeRare = (type, level) => ({
     GIVE_KILL_MESSAGE: true,
 }),
 
+lerp = (a, b, t) => a + (b - a) * t,
+
 makeLaby = (type, level) => {
     let usableSHAPE = Math.max(type.SHAPE, 3),
         downscale = Math.cos(Math.PI / usableSHAPE),
-        strenghtMultiplier = 5 ** (level - 1);
+        strenghtMultiplier = 5 ** (level - 1),
+        SIZE = lerp(type.SIZE * (1 + level * (1 - downscale)), type.SIZE / downscale ** (level - 1), 0.5 ** level);
     return {
-        PARENT: ["food"],
+        PARENT: "food",
         LABEL: ["", "Beta ", "Alpha ", "Omega ", "Gamma ", "Delta "][level] + type.LABEL,
         VALUE: type.VALUE * strenghtMultiplier,
         SHAPE: type.SHAPE,
-        SIZE: type.SIZE / downscale ** (level - 1),
+        SIZE,
         COLOR: type.COLOR,
         ALPHA: type.ALPHA,
         BODY: {
