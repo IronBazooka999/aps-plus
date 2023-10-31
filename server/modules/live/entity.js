@@ -1215,8 +1215,8 @@ class Entity extends EventEmitter {
         if (set.REROOT_UPGRADE_TREE) this.rerootUpgradeTree = set.REROOT_UPGRADE_TREE;
         if (Array.isArray(this.rerootUpgradeTree)) {
             let finalRoot = "";
-            for (let root of this.rerootUpgradeTree) finalRoot += root + "_";
-            this.rerootUpgradeTree = finalRoot.substring(0, finalRoot.length - 1);
+            for (let root of this.rerootUpgradeTree) finalRoot += root + "\\/";
+            this.rerootUpgradeTree = finalRoot.substring(0, finalRoot.length - 2);
         }
         if (set.TURRETS != null) {
             for (let i = 0; i < this.turrets.length; i++) {
@@ -1241,11 +1241,10 @@ class Entity extends EventEmitter {
             this.mockup = set.mockup;
         }
 
-
-
         if (emitEvent) {
             this.emit('define', set);
         }
+
         this.defs = [];
         for (let def of defs) this.defs.push(def);
 
@@ -1337,8 +1336,8 @@ class Entity extends EventEmitter {
             if (set.REROOT_UPGRADE_TREE) this.rerootUpgradeTree = set.REROOT_UPGRADE_TREE;
             if (Array.isArray(this.rerootUpgradeTree)) {
                 let finalRoot = "";
-                for (let root of this.rerootUpgradeTree) finalRoot += root + "_";
-                this.rerootUpgradeTree += finalRoot.substring(0, finalRoot.length - 1);
+                for (let root of this.rerootUpgradeTree) finalRoot += root + "\\/";
+                this.rerootUpgradeTree += finalRoot.substring(0, finalRoot.length - 2);
             }
             this.maxChildren = null; // Required because it just doesn't work out otherwise - overlord-triplet would make the triplet inoperable at 8 drones, etc
         }

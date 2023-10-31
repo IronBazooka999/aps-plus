@@ -147,7 +147,7 @@ const util = {
             guns.push(...mockup.guns);
             turrets.push(...mockup.turrets);
             name += mockup.name.length > 0 ? "-" + mockup.name : "";
-            if (mockup.rerootUpgradeTree) allRoots.push(...mockup.rerootUpgradeTree.split("_"));
+            if (mockup.rerootUpgradeTree) allRoots.push(...mockup.rerootUpgradeTree.split("\\/"));
         }
         for (let root of allRoots) {
             if (!rerootUpgradeTree.includes(root))
