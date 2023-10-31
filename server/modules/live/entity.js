@@ -344,7 +344,8 @@ class Gun {
                     masterStore: this.master.master.store,
                     gunStore: this.store,
                     globalMasterStore: this.master.master.globalStore,
-                    globalGunStore: this.globalStore
+                    globalGunStore: this.globalStore,
+                    child: o
                 });
             }
             return;
@@ -373,7 +374,8 @@ class Gun {
                 masterStore: this.master.master.store,
                 gunStore: this.store,
                 globalMasterStore: this.master.master.globalStore,
-                globalGunStore: this.globalStore
+                globalGunStore: this.globalStore,
+                child: o
             });
         }
     }
