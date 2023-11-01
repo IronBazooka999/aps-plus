@@ -2479,9 +2479,9 @@ exports.barricade = {
         },
     ],
 };
-exports.vulture = {
+exports.vulture = makeBird({
     PARENT: ["genericTank"],
-    LABEL: "Vulture",
+    LABEL: "Minigun",
     DANGER: 7,
     GUNS: [
         {
@@ -2490,8 +2490,6 @@ exports.vulture = {
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.trifront, g.mini]),
                 TYPE: "bullet",
-                ALT_FIRE: true,
-                LABEL: "Minigun",
             },
         },
         {
@@ -2499,8 +2497,6 @@ exports.vulture = {
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.trifront, g.mini]),
                 TYPE: "bullet",
-                ALT_FIRE: true,
-                LABEL: "Minigun",
             },
         },
         {
@@ -2508,36 +2504,10 @@ exports.vulture = {
             PROPERTIES: {
                 SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.trifront, g.mini]),
                 TYPE: "bullet",
-                ALT_FIRE: true,
-                LABEL: "Minigun",
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster, g.halfrecoil]),
-                TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster, g.halfrecoil]),
-                TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [18, 8, 1, 0, 0, 180, 0.6],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.flank, g.tri, g.thruster, g.halfrecoil]),
-                TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
             },
         },
     ],
-};
+}, "Vulture");
 
 // GUNNER UPGRADES
 exports.autoGunner = makeAuto(exports.gunner);
