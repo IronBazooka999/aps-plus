@@ -173,13 +173,13 @@ exports.addBackGunner = (type, name = -1) => {
     return output;
 }
 exports.makeMulti = (type, count, name = -1, startRotation = 0) => {
-    let output = dereference(type),
+    let output = exports.dereference(type),
         shootyBois = output.GUNS,
         fraction = 360 / count;
     output.GUNS = [];
     for (let gun of type.GUNS) {
         for (let i = 0; i < count; i++) {
-            let newgun = dereference(gun);
+            let newgun = exports.dereference(gun);
             newgun.POSITION[5] += startRotation + fraction * i;
             if (gun.PROPERTIES) newgun.PROPERTIES.TYPE = gun.PROPERTIES.TYPE;
             output.GUNS.push(newgun);
@@ -189,7 +189,7 @@ exports.makeMulti = (type, count, name = -1, startRotation = 0) => {
     return output;
 },
 exports.makeBird = (type, name = -1, color) => {
-    let output = dereference(type),
+    let output = exports.dereference(type),
         shootyBois = [{
             POSITION: [16, 8, 1, 0, 0, 150, 0.1],
             PROPERTIES: { SHOOT_SETTINGS: exports.combineStats([g.basic, g.flank, g.tri, g.thruster, g.halfrecoil]), TYPE: "bullet", LABEL: gunCalcNames.thruster }
