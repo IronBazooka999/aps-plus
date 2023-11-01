@@ -1,4 +1,4 @@
-const { combineStats, makeAuto, makeHybrid, makeOver, makeDeco, makeGuard } = require('../facilitators.js');
+const { combineStats, makeAuto, makeHybrid, makeOver, makeDeco, makeGuard, makeBird, makeMulti } = require('../facilitators.js');
 const { base, statnames, gunCalcNames, dfltskl, smshskl } = require('../constants.js');
 const generics = require('./generics.js');
 const g = require('../gunvals.js');
@@ -1964,77 +1964,7 @@ exports.ranger = {
         },
     ],
 };
-exports.falcon = {
-    PARENT: ["genericTank"],
-    LABEL: "Falcon",
-    DANGER: 7,
-    BODY: {
-        FOV: 1.2 * base.FOV,
-    },
-    TOOLTIP: "Right click to fire your main barrel.",
-    GUNS: [
-        {
-            /*** LENGTH  WIDTH   ASPECT    X       Y     ANGLE   DELAY */
-            POSITION: [27, 8, 1, 0, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.sniper,
-                    g.assass,
-                    g.lessreload,
-                ]),
-                TYPE: "bullet",
-                LABEL: "Assassin",
-                ALT_FIRE: true,
-            },
-        },
-        {
-            POSITION: [5, 8, -1.4, 8, 0, 0, 0],
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                STAT_CALCULATOR: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                STAT_CALCULATOR: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [18, 8, 1, 0, 0, 180, 0.6],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                STAT_CALCULATOR: gunCalcNames.thruster,
-            },
-        },
-    ],
-};
+exports.falcon = makeBird(exports.assassin, "Falcon");
 exports.stalker = {
     PARENT: ["genericTank"],
     DANGER: 7,
@@ -2777,80 +2707,7 @@ exports.redistributor = {
         },
     ],
 };
-exports.phoenix = {
-    PARENT: ["genericTank"],
-    LABEL: "Phoenix",
-    DANGER: 7,
-    TOOLTIP: "Right click to fire your main barrel.",
-    GUNS: [
-        {
-            POSITION: [23, 7, 1, 0, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.gunner,
-                    g.lowpower,
-                    g.mach,
-                    g.morerecoil,
-                ]),
-                TYPE: "bullet",
-                LABEL: "Sprayer",
-                ALT_FIRE: true,
-            },
-        },
-        {
-            POSITION: [12, 10, 1.4, 8, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.mach]),
-                TYPE: "bullet",
-                LABEL: "Sprayer",
-                ALT_FIRE: true,
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [18, 8, 1, 0, 0, 180, 0.6],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                LABEL: gunCalcNames.thruster,
-            },
-        },
-    ],
-};
+exports.phoenix = makeBird(exports.sprayer, "Phoenix");
 exports.atomizer = {
     PARENT: ["genericTank"],
     LABEL: "Atomizer",
@@ -4381,65 +4238,7 @@ exports.shotgun = {
         },
     ],
 };
-exports.eagle = {
-    PARENT: ["genericTank"],
-    LABEL: "Eagle",
-    DANGER: 7,
-    TOOLTIP: "Right click to fire your main barrel.",
-    GUNS: [
-        {
-            POSITION: [20, 12, 1, 0, 0, 0, 0],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([g.basic, g.pound]),
-                TYPE: "bullet",
-                LABEL: "Pounder",
-                ALT_FIRE: true,
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 150, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                STAT_CALCULATOR: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [16, 8, 1, 0, 0, 210, 0.1],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                STAT_CALCULATOR: gunCalcNames.thruster,
-            },
-        },
-        {
-            POSITION: [18, 8, 1, 0, 0, 180, 0.6],
-            PROPERTIES: {
-                SHOOT_SETTINGS: combineStats([
-                    g.basic,
-                    g.flank,
-                    g.tri,
-                    g.thruster,
-                    g.halfrecoil,
-                ]),
-                TYPE: "bullet",
-                STAT_CALCULATOR: gunCalcNames.thruster,
-            },
-        },
-    ],
-};
+exports.eagle = makeBird(exports.pounder, "Eagle");
 
 // DESTROYER UPGRADES
 exports.annihilator = {
